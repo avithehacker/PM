@@ -1,0 +1,72 @@
+   
+     #textbox{
+        font-size: 3.5em;
+        font-family: 'Times New Roman', Times, serif;
+       
+        
+    }
+    
+      
+       body {
+           font-family: 'Times New Roman', Times, serif;
+          
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3%;
+}
+p
+{
+    font-style: oblique;
+}
+
+.links{
+    
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    font-style: normal;
+   
+}
+
+
+a, a:focus, a:active {
+     text-decoration: none;
+     color: inherit;
+}
+a:hover{
+   color: #F9D276;
+}
+
+.intro{
+  font-family: 'Times New Roman', Times, serif;
+  
+  font-size: x-large;
+}
+.italic{
+  font-style: italic;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: xx-large;
+}
+table, th, td {
+  border: 1px solid black;
+}
+
+@media only screen and (max-width: 600px) {
+    #textbox{
+        font-size: 3em;
+        font-family: 'Times New Roman', Times, serif;
+       
+        
+    }
+ 
+    .intro{
+      font-family: 'Times New Roman', Times, serif;
+      
+      font-size: 1em;
+    }
+    .italic{
+      font-style: italic;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1.5em;
+    }
+
+  }
