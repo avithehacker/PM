@@ -1,124 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset='utf-8'>    
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Avinash Singh</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <meta name="keywords" content="Avinash Singh,Avinash Singh, theeazyway, the easy way ">
-    <meta name="description" content="Hi, My name is Avinash, I am a social entrepreneur and a product guy based in Bangalore, India. Here I share my experiences and thought in a hope that these experiences might be helpful to someone who is trying to figure out something in their life related to entrepreneurship. ">
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <!--google fonts-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap" rel="stylesheet">
-  <!--google fonts work san-->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
-    <!--header code start here-->
-    <script
-    src="https://code.jquery.com/jquery-3.3.1.js"
-    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    crossorigin="anonymous">
-</script>
-<script> 
-$(function(){
-  $("#header").load("header.html"); 
-  $("#footer").load("footer.html"); 
-});
-</script> 
- <!--header code end here-->
-    <!--Dark mode start here-->
-     
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css'>  
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
+    <title>Avinash's Portfolio</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e; /* Dark background color */
+            color: #ffffff; /* Light text color */
+            transition: background-color 0.5s, color 0.5s;
+        }
 
-  <!-- IE 11 polyfill for CSS and Custom Properties -->
-  <script
-  nomodule>window.MSInputMethodContext && document.documentMode && document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-ie11@5/css/bootstrap-ie11.min.css"><script src="https://cdn.jsdelivr.net/npm/ie11-custom-properties@4/ie11CustomProperties.min.js"><\/script>');</script>
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
 
-<link rel="stylesheet" href="dark-mode.css">
-<!--Dark mode end here-->
-    <!-- fevicon start here-->
-    <link rel="apple-touch-icon" sizes="180x180" href="images/fevi/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="images/fevi/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/fevi/favicon-16x16.png">
-<link rel="manifest" href="images/fevi/site.webmanifest">
- <!-- fevicon end here-->
-    <script src='main.js'></script>
-      
-    </script>
-   <link rel="stylesheet" href="design.css">
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        /* Light mode styles */
+        .light-mode {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        h1, h2, h3 {
+            color: #ff5555; /* Reddish color for headings */
+        }
+
+        a {
+            color: #bf55ec; /* Purple color for links */
+        }
+    </style>
 </head>
 <body>
-   
-<!--Dark mode switch code start from here-->
- 
-<div class="form-check form-switch" style="float: right;">
-    <input type="checkbox" class="form-check-input" id="darkSwitch">
-    <label class="custom-control-label" for="darkSwitch">  </label>
-  </div>
-  <script src="dark-mode-switch.min.js"></script>
- <!--Dark mode switch code end here-->
- <!--Header start  here-->
- <div id="header"></div>
-   <!--Header start  here-->
-   <p class="italic">  
-   
-    "Join me on a journey of entrepreneurship and product management as we explore the exciting world of business and innovation together"
-</p> <hr>
-<p class="intro"> 
-  <b><u>About Me</u></b> <br><br>
 
-My name is Avinash and I am a social entrepreneur and product manager based in Bangalore, India. I am passionate about using my skills and expertise to create innovative products and drive social change, and I am excited to share my experiences and insights with you.
-<br><br>
-My entrepreneurial journey began with a chance encounter with a visually impaired student, which sparked the idea for Veeery – a company that I am deeply committed to. Over the years, I have built Veeery from the ground up and have had the opportunity to wear many hats – from programmer to salesperson to product manager. I have learned so much along the way and have grown in ways that I never could have imagined.
-<br><br>
-In addition to my work with Veeery, I also founded the Dharnika Foundation – an NGO that I am proud to be a part of. Working with Dharnika has been a truly rewarding experience, and I have learned so much about team building and leading without authority.
-<br><br>
-I have been fortunate enough to have the support of so many amazing people along the way, who have inspired me to continue this noble work and push myself to be the best version of myself. My entrepreneurial journey has been an incredibly fulfilling and enriching experience, and I believe that everyone should have the opportunity to pursue something similar in their own lives.
-<br><br>
-Entrepreneurship is not easy, and it requires hard work, determination, and a willingness to take risks. But if you are willing to put in the effort, the rewards can be immeasurable. I am grateful for every challenge and obstacle that I have faced along the way, as they have helped me to grow and become the person I am today. I am excited to see where my entrepreneurial journey takes me next, and I hope that my story can inspire others to pursue their own dreams and make a positive impact in the world. <br><br>
-Thank you for joining me on this journey! <br>
+<div class="toggle-btn" onclick="toggleMode()">🌙</div>
 
-<br>
-<hr>
-<b><h4> <a href="https://avithehacker.github.io/PM/reading-section.html"> Start Reading</a></h4></b>
-<hr> <ul>
-<b> <h5> Latest Blog</h5></b>
-<ul>
-  <li> <u>
-<a href="https://avithehacker.github.io/PM/writings-How-to-find-a-Co-founder.html">How to find a Co-founder</a>
-</u> </li>
-  <li> <u>
-    <a href="https://avithehacker.github.io/PM/writings-Start-a-startup-with-zero-money(myths).html">Start a startup with zero money(myths)</a>
-  </u></li>
-<li>
-  <u>
-  <a href="https://avithehacker.github.io/PM/writings_how_we_fooled_our_self.html">How we fooled our-self</a>
-</u>
-</li>
+<div class="container">
+    <h1>Welcome to Avinash's Portfolio</h1>
 
-</ul>
-</p>
+    <p>Hey, I'm Avinash, your friendly neighborhood Product Manager. Based in Bangalore, India, I'm all about turning ideas into awesome products.</p>
 
-<hr>
-<b><h5>Projects</h5></b>
-<ul>
-  <li>
-    <u><a href="https://avithehacker.github.io/PM/whatsapp_for_digitally_challenged.html">WhatsApp for illiterate and digitally challenged</a></u>
-  </li>
-  <li>
-    <u><a href="https://avithehacker.github.io/PM/coupon-management-system.html">
-      Coupon Code Management System</a></u>
-  </li>
-  <li>
-    <u><a href="https://avithehacker.github.io/PM/swm.html">Solid Waste Management Platform</a></u>
-  </li>
-</ul> </ul>
-<hr>
+    <h2>What Drives Me</h2>
+    <p>Passionate about using my skills to create products that not only rock in functionality but also make a positive impact.</p>
+
+    <h2>My Journey</h2>
+    <p>Started my product management journey by chance, and it led me to Veeery – a project close to my heart. Wore many hats along the way – from coding to managing, every step taught me something new.</p>
+
+    <h2>Making a Difference</h2>
+    <p>Co-founder of the Dharnika Foundation, an NGO I'm proud to be part of. Learning the ropes of team building and leadership without the big titles.</p>
+
+    <h2>Gratitude and Learning</h2>
+    <p>Big shoutout to the amazing folks who've supported me. Challenges are my best teachers, and every obstacle has shaped me into who I am today.</p>
+
+    <h2>Why Product Management</h2>
+    <p>Love the challenge, the grind, and the thrill of bringing a product to life. It's not always easy, but the lessons learned are worth it.</p>
+
+    <h2>Let's Dive In</h2>
+    <p>Explore my latest blog posts on product management tips, lessons learned, and maybe a few fun stories. Check out some of the projects I've been working on, from WhatsApp for the digitally challenged to a Solid Waste Management Platform.</p>
+
+    <h2>Connect with Me</h2>
+    <p>Excited to connect with like-minded folks. Let's chat about product management, entrepreneurship, or just about anything interesting. Looking forward to the journey ahead!</p>
+</div>
+
+<script>
+    function toggleMode() {
+        const body = document.body;
+        body.classList.toggle("light-mode");
+    }
+</script>
 
 </body>
 </html>
