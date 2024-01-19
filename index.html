@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avinash's Portfolio</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -15,7 +16,7 @@
         }
 
         .container {
-            width: 80%;
+            max-width: 800px;
             margin: auto;
             padding: 20px;
         }
@@ -25,6 +26,12 @@
             top: 20px;
             right: 20px;
             cursor: pointer;
+            font-size: 1.8rem; /* Slightly larger font size */
+        }
+
+        .toggle-btn:before {
+            content: '🌚'; /* Moon icon for dark mode by default */
+            color: #bf55ec; /* Purple color for dark mode icon */
         }
 
         /* Light mode styles */
@@ -33,18 +40,45 @@
             color: #000000;
         }
 
+        .light-mode .toggle-btn:before {
+            content: '🌞'; /* Sun icon for light mode */
+            color: #ff9900; /* Orange color for light mode icon */
+        }
+
         h1, h2, h3 {
             color: #ff5555; /* Reddish color for headings */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); /* Slight text shadow for better contrast */
         }
 
         a {
             color: #bf55ec; /* Purple color for links */
         }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 20px; /* Increased spacing between paragraphs */
+        }
+
+        .resume-section {
+            margin-top: 40px;
+        }
+
+        .resume-btn {
+            display: block;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #bf55ec; /* Purple color for button background */
+            color: #ffffff; /* Text color for the button */
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<div class="toggle-btn" onclick="toggleMode()">🌙</div>
+<div class="toggle-btn" onclick="toggleMode()"></div>
 
 <div class="container">
     <h1>Welcome to Avinash's Portfolio</h1>
@@ -67,10 +101,18 @@
     <p>Love the challenge, the grind, and the thrill of bringing a product to life. It's not always easy, but the lessons learned are worth it.</p>
 
     <h2>Let's Dive In</h2>
-    <p>Explore my latest blog posts on product management tips, lessons learned, and maybe a few fun stories. Check out some of the projects I've been working on, from WhatsApp for the digitally challenged to a Solid Waste Management Platform.</p>
+    <p>Explore my latest blog posts on product management tips, lessons learned, and maybe a few fun stories. Check out some of the projects I've been working on:</p>
+    
+    <ul>
+        <li><a href="#link">WhatsApp for illiterate and digitally challenged</a></li>
+        <li><a href="#link">Coupon Code Management System</a></li>
+        <li><a href="#link">Solid Waste Management Platform</a></li>
+    </ul>
 
-    <h2>Connect with Me</h2>
-    <p>Excited to connect with like-minded folks. Let's chat about product management, entrepreneurship, or just about anything interesting. Looking forward to the journey ahead!</p>
+    <div class="resume-section">
+        <h2>Resume</h2>
+        <p>Ready to elevate your team? Want to hire a passionate Product Manager? Check out my resume <a href="https://avithehacker.github.io/PM/resume.pdf" target="_blank">here</a>.</p>
+    </div>
 </div>
 
 <script>
