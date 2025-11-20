@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avinash's Portfolio</title>
+    <link rel="icon" type="image/png" href="https://github.com/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "mjjppi513f");
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="top-icon" id="theme-toggle" onclick="toggleMode()" aria-label="Toggle Dark Mode">☀️</div>
+
+        <header class="intro">
+            <div class="hanko">Avi</div>
+            <h1>Avinash Singh</h1>
+            <p>
+                Product Manager based in Bangalore. <br>
+                <span id="experience-counter"></span> of crafting digital experiences.
+            </p>
+        </header>
+
+        <section class="zen-section">
+            <h2 class="vertical-heading">Philosophy</h2>
+            <div class="zen-content">
+                <p>
+                    I believe in the art of subtraction. Crafting products that are intuitive, removing the unnecessary,
+                    and focusing purely on the user's need.
+                </p>
+            </div>
+        </section>
+
+        <section class="zen-section">
+            <h2 class="vertical-heading">Journey</h2>
+            <div class="zen-content">
+                <div class="timeline-item">
+                    <div class="timeline-date">Dec 2022 - Present</div>
+                    <h3 class="timeline-title">Mahindra</h3>
+                    <p>Redesigned the EDiig auction platform. Modernized the ecosystem for a seamless user experience.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">July 2022 - Dec 2022</div>
+                    <h3 class="timeline-title">Smartivity</h3>
+                    <p>Led product launches that drove growth. Optimized funnels with precision.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2019 - 2022</div>
+                    <h3 class="timeline-title">Veeery & Dharnika</h3>
+                    <p>Founded initiatives to empower the visually impaired. Merged into a non-profit for greater
+                        impact.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="zen-section">
+            <h2 class="vertical-heading">Works</h2>
+            <div class="zen-content">
+                <div class="project-grid">
+                    <div class="project-card">
+                        <span class="project-title">WhatsApp for Illiterate</span>
+                        <p>Bridging the digital divide.</p>
+                        <a href="pdf/prd/Building WhatsApp for illiterate and digitally challenged.pdf"
+                            class="project-link">View PRD</a>
+                    </div>
+                    <div class="project-card">
+                        <span class="project-title">Accessible Ebook</span>
+                        <p>Reading for everyone.</p>
+                        <a href="pdf/prd/Veeery Accessible Ebook for Visually Impaired.pdf" class="project-link">View
+                            PRD</a>
+                    </div>
+                    <div class="project-card">
+                        <span class="project-title">Accessible Audiobook</span>
+                        <p>Inclusive education tools.</p>
+                        <a href="pdf/prd/Veeery Accessible Audiobook for Visually Impaired.pdf"
+                            class="project-link">View PRD</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="resume-section">
+            <h2>Professional History</h2>
+            <p>For a detailed account of my path.</p>
+            <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank" class="resume-btn">Download Resume</a>
+            <br><br>
+            <a href="https://www.linkedin.com/in/avithehacker/" target="_blank"
+                style="color: var(--text-light); text-decoration: none; font-size: 0.9rem;">LinkedIn</a>
+        </div>
+
+        <footer>
+            <p>&copy;
+                <script>document.write(new Date().getFullYear())</script> Avinash Singh.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleMode() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute("data-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            html.setAttribute("data-theme", newTheme);
+
+            const icon = document.getElementById("theme-toggle");
+            icon.textContent = newTheme === "light" ? "☀️" : "✨";
+
+            // Save preference
+            localStorage.setItem("theme", newTheme);
+        }
+
+        function updateExperience() {
+            const startDate = new Date('2019-04-01'); // April 2019
+            const currentDate = new Date();
+
+            let years = currentDate.getFullYear() - startDate.getFullYear();
+            let months = currentDate.getMonth() - startDate.getMonth();
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            const experienceText = `${years} years and ${months} months`;
+            document.getElementById('experience-counter').textContent = experienceText;
+        }
+
+        // Load preference
+        const savedTheme = localStorage.getItem("theme") || "light";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        document.getElementById("theme-toggle").textContent = savedTheme === "light" ? "☀️" : "✨";
+
+        // Init experience counter
+        updateExperience();
+    </script>
+
+</body>
+
+</html>

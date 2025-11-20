@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&family=Outfit:wght@300;400;500&display=swap');
+
+:root {
+    --bg-paper: #F9F8F4;
+    --text-ink: #2B2B2B;
+    --text-light: #5a5a5a;
+    --accent-red: #BC002D;
+    /* Vermilion */
+    --border-color: #e0e0e0;
+    --font-serif: 'Shippori Mincho', serif;
+    --font-sans: 'Outfit', sans-serif;
+}
+
+[data-theme="dark"] {
+    --bg-paper: #1a1a1a;
+    --text-ink: #e0e0e0;
+    --text-light: #a0a0a0;
+    --border-color: #333;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-paper);
+    color: var(--text-ink);
+    margin: 0;
+    padding: 0;
+    line-height: 1.8;
+    /* Subtle noise texture for paper effect */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    transition: background-color 0.5s;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 40px;
+    position: relative;
+}
+
+/* Top Icon (Sun/Moon) - Minimalist */
+.top-icon {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    /* Moved to right for balance */
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+    z-index: 100;
+}
+
+.top-icon:hover {
+    opacity: 1;
+}
+
+/* Typography & Layout */
+h1,
+h2,
+h3 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Intro Section - Asymmetric */
+.intro {
+    margin-bottom: 120px;
+    padding-top: 60px;
+    position: relative;
+}
+
+.intro h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+}
+
+.intro p {
+    font-size: 1.1rem;
+    max-width: 500px;
+    color: var(--text-light);
+    margin-left: auto;
+    /* Push to right */
+}
+
+/* Hanko Seal */
+.hanko {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border: 3px solid var(--accent-red);
+    border-radius: 8px;
+    /* Slightly rounded square */
+    color: var(--accent-red);
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 54px;
+    text-align: center;
+    margin-bottom: 20px;
+    transform: rotate(-5deg);
+    opacity: 0.9;
+}
+
+/* Zen Sections */
+.zen-section {
+    display: flex;
+    margin-bottom: 100px;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+/* Vertical Text Heading */
+.vertical-heading {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 2rem;
+    letter-spacing: 0.2em;
+    border-left: 1px solid var(--accent-red);
+    /* Red line accent */
+    padding-left: 20px;
+    height: 200px;
+    /* Fixed height for visual balance */
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    /* Center text vertically within the block */
+}
+
+.zen-content {
+    flex-grow: 1;
+    padding-top: 10px;
+}
+
+/* Timeline (Minimalist) */
+.timeline-item {
+    border-left: 1px solid var(--border-color);
+    padding-left: 30px;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 8px;
+    width: 7px;
+    height: 7px;
+    background-color: var(--text-ink);
+    border-radius: 50%;
+}
+
+.timeline-date {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 5px;
+}
+
+.timeline-title {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+/* Project Grid (Clean) */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+}
+
+.project-card {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+    transition: border-color 0.3s;
+}
+
+.project-card:hover {
+    border-color: var(--accent-red);
+}
+
+.project-title {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.project-link {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: var(--accent-red);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.project-link:hover {
+    border-bottom-color: var(--accent-red);
+}
+
+/* Resume Section */
+.resume-section {
+    text-align: center;
+    margin-top: 120px;
+    padding: 60px;
+    border: 1px solid var(--border-color);
+}
+
+.resume-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background-color: transparent;
+    color: var(--text-ink);
+    border: 1px solid var(--text-ink);
+    text-decoration: none;
+    font-family: var(--font-serif);
+    transition: all 0.3s;
+}
+
+.resume-btn:hover {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+    color: white;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 80px;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    font-family: var(--font-serif);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .zen-section {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .vertical-heading {
+        writing-mode: horizontal-tb;
+        height: auto;
+        border-left: none;
+        border-bottom: 1px solid var(--accent-red);
+        padding-left: 0;
+        padding-bottom: 10px;
+        width: 100%;
+        font-size: 1.5rem;
+    }
+
+    .intro h1 {
+        font-size: 2.5rem;
+    }
+
+    .intro p {
+        margin-left: 0;
+    }
+
+    .top-icon {
+        top: 20px;
+        right: 20px;
+    }
+}
