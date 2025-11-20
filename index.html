@@ -1,152 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avinash's Portfolio</title>
     <link rel="icon" type="image/png" href="https://github.com/favicon.ico">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1e1e1e; /* Dark background color */
-            color: #ffffff; /* Light text color */
-            transition: background-color 0.5s, color 0.5s;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .toggle-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-            font-size: 1.8rem; /* Slightly larger font size */
-        }
-
-        .toggle-btn:before {
-            content: '🌚'; /* Moon icon for dark mode by default */
-            color: #bf55ec; /* Purple color for dark mode icon */
-        }
-
-        /* Light mode styles */
-        .light-mode {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        .light-mode .toggle-btn:before {
-            content: '🌞'; /* Sun icon for light mode */
-            color: #ff9900; /* Orange color for light mode icon */
-        }
-
-        h1, h2, h3 {
-            color: #ff5555; /* Reddish color for headings */
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); /* Slight text shadow for better contrast */
-        }
-
-        a {
-            color: #ff5555; /* Red color for links */
-        }
-
-        p {
-            line-height: 1.6;
-            margin-bottom: 20px; /* Increased spacing between paragraphs */
-        }
-
-        .resume-section {
-            margin-top: 40px;
-        }
-
-        .resume-btn {
-            display: block;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #bf55ec; /* Purple color for button background */
-            color: #ffffff; /* Text color for the button */
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", "mjjppi513f");
     </script>
 </head>
+
 <body>
 
-<div class="toggle-btn" onclick="toggleMode()"></div>
+    <div class="container">
+        <div class="top-icon" id="theme-toggle" onclick="toggleMode()" aria-label="Toggle Dark Mode">☀️</div>
 
-<div class="container">
-    <h1>Welcome to Avinash's Portfolio</h1>
+        <main>
+            <section class="intro">
+                <h1>Welcome to Avinash's Portfolio</h1>
+                <p>
+                    Hi, I’m Avinash, a Product Manager based in Bangalore, India, with <span
+                        id="experience-counter"></span> of experience in
+                    startups and product management. My journey is fueled by a passion for creating impactful products.
+                </p>
+            </section>
 
-    <p>
+            <section>
+                <h2>What Drives Me</h2>
+                <p>
+                    I’m dedicated to crafting products that are intuitive and genuinely make a difference. My approach
+                    is always user-first, ensuring that every decision is based on real needs.
+                </p>
+            </section>
 
-        Hi, I’m Avinash, a Product Manager based in Bangalore, India, with over 5 years of experience in startups and product management. My journey is fueled by a passion for creating impactful products.
-    </p>
+            <section>
+                <h2>My Journey & Experience</h2>
+                <p>
+                    My career began at Veeery, a company focused on empowering visually impaired individuals through
+                    better learning tools. This experience shaped my understanding of product management and leadership.
+                </p>
+                <p>
+                    In 2022, I merged Veeery’s as a projects into a non-profit organization, Dharnika, which aims to
+                    make education and jobs accessible to people with disabilities.
+                </p>
+                <p>
+                    In July 2022, I embraced a new challenge at Smartivity, leading successful product launches that
+                    boosted the company’s growth. By December 2022, I moved to Mahindra, where I took on an even bigger
+                    project. At Mahindra, I completely redesigned the EDiig auction platform, modernizing the mobile and
+                    desktop sites as well as the Android and iOS apps for a more intuitive user experience.
+                </p>
+                <p>
+                    I’m proud that with every project I take on, the scope and impact grow larger, pushing me to achieve
+                    more and make a greater difference.
+                </p>
+            </section>
 
-    <h2>What Drives Me</h2>
-    <p>
-        I’m dedicated to crafting products that are intuitive and genuinely make a difference. My approach is always user-first, ensuring that every decision is based on real needs.
-    </p>
+            <section>
+                <h2>Embracing New Challenges</h2>
+                <p>
+                    I approach every job and business as a unique project, bringing fresh perspectives and innovative
+                    solutions. My work with Dharnika, for example, reflects my commitment to social change through
+                    technology. Our focus is on inclusive education and employment for people with disabilities. <a
+                        href="https://dharnikafoundation.org/">Learn more about Dharnika</a>
+                </p>
+            </section>
 
-    <h2>My Journey & Experience</h2>
-    <p>
-        My career began at Veeery, a company focused on empowering visually impaired individuals through better learning tools. This experience shaped my understanding of product management and leadership.
-<br><br>
-In 2022, I merged Veeery’s as a projects into a non-profit organization, Dharnika, which aims to make education and jobs accessible to people with disabilities.
-<br><br>
-In July 2022, I embraced a new challenge at Smartivity, leading successful product launches that boosted the company’s growth. By December 2022, I moved to Mahindra, where I took on an even bigger project. At Mahindra, I completely redesigned the EDiig auction platform, modernizing the mobile and desktop sites as well as the Android and iOS apps for a more intuitive user experience.
+            <section>
+                <h2>Why Product Management</h2>
+                <p>Understanding user needs and solving complex problems is what I thrive on. Every project is an
+                    opportunity to make a positive impact, and that’s what keeps me going.</p>
+            </section>
 
-<br><br>
-I’m proud that with every project I take on, the scope and impact grow larger, pushing me to achieve more and make a greater difference.
+            <section>
+                <h2>Explore My Work</h2>
+                <p>Here are a few of the projects I’ve worked on:</p>
+                <ul>
+                    <li><a href="pdf/prd/Building WhatsApp for illiterate and digitally challenged.pdf">WhatsApp for
+                            illiterate and digitally challenged</a></li>
+                    <li><a href="pdf/prd/Veeery Accessible Ebook for Visually Impaired.pdf">Ebook for Visually
+                            Impaired</a></li>
+                    <li><a href="pdf/prd/Veeery Accessible Audiobook for Visually Impaired.pdf">Audiobook for
+                            Visually Impaired</a></li>
+                </ul>
+            </section>
 
-</p>
+            <div class="resume-section">
+                <h2>Resume</h2>
+                <p>Looking for a passionate Product Manager?</p>
+                <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank" class="resume-btn">See my resume</a>
 
-    <h2>Embracing New Challenges</h2>
-    <p>
-        I approach every job and business as a unique project, bringing fresh perspectives and innovative solutions. My work with Dharnika, for example, reflects my commitment to social change through technology. Our focus is on inclusive education and employment for people with disabilities.&nbsp;<a href="https://dharnikafoundation.org/">Learn more about Dharnika</a> </p>
+                <div style="margin-top: 30px;">
+                    <h3>Connect with Me</h3>
+                    <p>I know my portfolio only scratches the surface. If you’re curious to learn more about my journey,
+                        let's connect!</p>
+                    <a href="https://www.linkedin.com/in/avithehacker/" target="_blank">LinkedIn Profile</a>
+                </div>
+            </div>
+        </main>
 
-
-    <h2>Why Product Management</h2>
-    <p>Understanding user needs and solving complex problems is what I thrive on. Every project is an opportunity to make a positive impact, and that’s what keeps me going.</p>
-
-    <h2>Explore My Work</h2>
-    <p>Here are a few of the projects I’ve worked on:</p>
-        
-    <ul>
-        <li><a href="/PM/pdf/prd/Building WhatsApp for illiterate and digitally challenged.pdf">WhatsApp for illiterate and digitally challenged</a></li>
-        <li><a href="/PM/pdf/prd/Veeery Accessible Ebook for Visually Impaired.pdf">Ebook for Visually Impaired</a></li>
-        <li><a href="/PM/pdf/prd/Veeery Accessible Audiobook for Visually Impaired.pdf">Audiobook for Visually Impaired</a></li>
-    </ul>
-    
-    <div class="resume-section">
-        <h2>Resume</h2>
-        <p>Looking for a passionate Product Manager? <a href="/PM/pdf/resume/Avinash-Singh-Resume.pdf" target="_blank">See my resume</a>.</p>
-
-         <!-- Add your LinkedIn profile link here -->
-          <h2>Connect with Me        </h2>
-         <p>I know my portfolio only scratches the surface and doesn’t tell the whole story because, let’s face it, no one wants to read a long essay. But if you’ve made it this far and are curious to learn more about my journey, why not connect? I’d love to chat and share more about the experiences and projects that didn’t make it onto this page. <a href="https://www.linkedin.com/in/avithehacker/" target="_blank">LinkedIn</a>.</p>
-
+        <footer>
+            <p>&copy;
+                <script>document.write(new Date().getFullYear())</script> Avinash Singh. All rights reserved.
+            </p>
+        </footer>
     </div>
-</div>
 
-<script>
-    function toggleMode() {
-        const body = document.body;
-        body.classList.toggle("light-mode");
-    }
-</script>
+    <script>
+        function toggleMode() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute("data-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            html.setAttribute("data-theme", newTheme);
+
+            const icon = document.getElementById("theme-toggle");
+            icon.textContent = newTheme === "light" ? "☀️" : "✨";
+
+            // Save preference
+            localStorage.setItem("theme", newTheme);
+        }
+
+        function updateExperience() {
+            const startDate = new Date('2019-04-01'); // April 2019
+            const currentDate = new Date();
+
+            let years = currentDate.getFullYear() - startDate.getFullYear();
+            let months = currentDate.getMonth() - startDate.getMonth();
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            const experienceText = `${years} years and ${months} months`;
+            document.getElementById('experience-counter').textContent = experienceText;
+        }
+
+        // Load preference
+        const savedTheme = localStorage.getItem("theme") || "light";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        document.getElementById("theme-toggle").textContent = savedTheme === "light" ? "☀️" : "✨";
+
+        // Init experience counter
+        updateExperience();
+    </script>
 
 </body>
+
 </html>

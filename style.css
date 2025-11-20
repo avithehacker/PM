@@ -1,0 +1,197 @@
+:root {
+    /* Minimalist Light Theme */
+    --bg-color: #ffffff;
+    --text-color: #1d1d1f;
+    /* Apple dark gray */
+    --heading-color: #1d1d1f;
+    --accent-color: #0066cc;
+    /* Classic blue link */
+    --secondary-text: #86868b;
+    --card-bg: #ffffff;
+    --border-color: #d2d2d7;
+    --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+[data-theme="dark"] {
+    /* Minimalist Dark Theme */
+    --bg-color: #000000;
+    --text-color: #f5f5f7;
+    /* Apple light gray */
+    --heading-color: #f5f5f7;
+    --accent-color: #2997ff;
+    /* Apple blue */
+    --secondary-text: #86868b;
+    --card-bg: #000000;
+    --border-color: #424245;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 180px 20px 100px 20px;
+    position: relative;
+}
+
+/* Top Icon - Static & Clean */
+.top-icon {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+    color: var(--heading-color);
+}
+
+.top-icon:hover {
+    opacity: 0.7;
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+    color: var(--heading-color);
+    margin-top: 0;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: 3rem;
+    /* Large and bold */
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-top: 4rem;
+    /* Generous spacing */
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+p {
+    margin-bottom: 1.5rem;
+    color: var(--secondary-text);
+    font-size: 1.25rem;
+    /* Larger body text */
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+a:hover {
+    opacity: 0.7;
+    text-decoration: none;
+}
+
+/* Lists */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 1rem;
+    font-size: 1.15rem;
+}
+
+li a {
+    display: inline-block;
+}
+
+/* Resume Section - Simplified */
+.resume-section {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border-color);
+    text-align: left;
+    /* Left aligned for minimalism */
+}
+
+.resume-section h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.resume-btn {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 1.25rem;
+    color: var(--accent-color);
+    background: none;
+    padding: 0;
+    border: none;
+    font-weight: 500;
+}
+
+.resume-btn::after {
+    content: " ›";
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.resume-btn:hover {
+    background: none;
+    transform: none;
+    opacity: 0.7;
+}
+
+.resume-btn:hover::after {
+    transform: translateX(4px);
+}
+
+/* Footer */
+footer {
+    margin-top: 100px;
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+    padding-bottom: 40px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 140px 20px 60px 20px;
+    }
+
+    .top-icon {
+        top: 40px;
+        font-size: 1.8rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+        margin-top: 3rem;
+    }
+
+    p {
+        font-size: 1.15rem;
+    }
+}
