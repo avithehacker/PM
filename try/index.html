@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    <!-- Professional Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
         rel="stylesheet">
     <script type="text/javascript">
         (function (c, l, a, r, i, t, y) {
@@ -23,69 +25,113 @@
 <body>
 
     <div class="container">
-        <div class="top-icon" id="theme-toggle" onclick="toggleMode()" aria-label="Toggle Dark Mode">☀️</div>
+        <div class="top-icon" id="theme-toggle" onclick="toggleMode()" aria-label="Toggle Dark Mode">
+            <!-- Sun Icon -->
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <!-- Moon Icon -->
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                style="display: none;">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </div>
 
         <header class="intro">
             <div class="hanko">Avi</div>
-            <h1>Avinash Singh</h1>
+            <h1>Welcome to Avinash's Portfolio</h1>
             <p>
-                Product Manager based in Bangalore. <br>
-                <span id="experience-counter"></span> of crafting digital experiences.
+                Hi, I’m Avinash, a Product Manager based in Bangalore, India, with <span id="experience-counter"></span>
+                of experience in
+                startups and product management. My journey is fueled by a passion for creating impactful products.
             </p>
         </header>
 
         <section class="zen-section">
-            <h2 class="vertical-heading">Philosophy</h2>
+            <h2 class="vertical-heading">What Drives Me</h2>
             <div class="zen-content">
                 <p>
-                    I believe in the art of subtraction. Crafting products that are intuitive, removing the unnecessary,
-                    and focusing purely on the user's need.
+                    I’m dedicated to crafting products that are intuitive and genuinely make a difference. My approach
+                    is always user-first, ensuring that every decision is based on real needs.
                 </p>
             </div>
         </section>
 
         <section class="zen-section">
-            <h2 class="vertical-heading">Journey</h2>
+            <h2 class="vertical-heading">My Journey & Experience</h2>
             <div class="zen-content">
-                <div class="timeline-item">
-                    <div class="timeline-date">Dec 2022 - Present</div>
-                    <h3 class="timeline-title">Mahindra</h3>
-                    <p>Redesigned the EDiig auction platform. Modernized the ecosystem for a seamless user experience.
-                    </p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">July 2022 - Dec 2022</div>
-                    <h3 class="timeline-title">Smartivity</h3>
-                    <p>Led product launches that drove growth. Optimized funnels with precision.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">2019 - 2022</div>
-                    <h3 class="timeline-title">Veeery & Dharnika</h3>
-                    <p>Founded initiatives to empower the visually impaired. Merged into a non-profit for greater
-                        impact.</p>
-                </div>
+                <p>
+                    My career began at Veeery, a company focused on empowering visually impaired individuals through
+                    better learning tools. This experience shaped my understanding of product management and leadership.
+                </p>
+                <p>
+                    In 2022, I merged Veeery’s as a projects into a non-profit organization, Dharnika, which aims to
+                    make education and jobs accessible to people with disabilities.
+                </p>
+                <p>
+                    In July 2022, I embraced a new challenge at Smartivity, leading successful product launches that
+                    boosted the company’s growth. By December 2022, I moved to Mahindra, where I took on an even bigger
+                    project. At Mahindra, I completely redesigned the EDiig auction platform, modernizing the mobile and
+                    desktop sites as well as the Android and iOS apps for a more intuitive user experience.
+                </p>
+                <p>
+                    I’m proud that with every project I take on, the scope and impact grow larger, pushing me to achieve
+                    more and make a greater difference.
+                </p>
             </div>
         </section>
 
         <section class="zen-section">
-            <h2 class="vertical-heading">Works</h2>
+            <h2 class="vertical-heading">Embracing New Challenges</h2>
             <div class="zen-content">
+                <p>
+                    I approach every job and business as a unique project, bringing fresh perspectives and innovative
+                    solutions. My work with Dharnika, for example, reflects my commitment to social change through
+                    technology. Our focus is on inclusive education and employment for people with disabilities. <a
+                        href="https://dharnikafoundation.org/" style="color: var(--accent-red);">Learn more about
+                        Dharnika</a>
+                </p>
+            </div>
+        </section>
+
+        <section class="zen-section">
+            <h2 class="vertical-heading">Why Product Management</h2>
+            <div class="zen-content">
+                <p>Understanding user needs and solving complex problems is what I thrive on. Every project is an
+                    opportunity to make a positive impact, and that’s what keeps me going.</p>
+            </div>
+        </section>
+
+        <section class="zen-section">
+            <h2 class="vertical-heading">Explore My Work</h2>
+            <div class="zen-content">
+                <p>Here are a few of the projects I’ve worked on:</p>
                 <div class="project-grid">
                     <div class="project-card">
-                        <span class="project-title">WhatsApp for Illiterate</span>
-                        <p>Bridging the digital divide.</p>
+                        <span class="project-title">WhatsApp for illiterate and digitally challenged</span>
+                        <p>Bridging the digital divide for the digitally challenged.</p>
                         <a href="pdf/prd/Building WhatsApp for illiterate and digitally challenged.pdf"
                             class="project-link">View PRD</a>
                     </div>
                     <div class="project-card">
-                        <span class="project-title">Accessible Ebook</span>
-                        <p>Reading for everyone.</p>
+                        <span class="project-title">Ebook for Visually Impaired</span>
+                        <p>Making reading accessible for the visually impaired.</p>
                         <a href="pdf/prd/Veeery Accessible Ebook for Visually Impaired.pdf" class="project-link">View
                             PRD</a>
                     </div>
                     <div class="project-card">
-                        <span class="project-title">Accessible Audiobook</span>
-                        <p>Inclusive education tools.</p>
+                        <span class="project-title">Audiobook for Visually Impaired</span>
+                        <p>Audio learning solutions for inclusive education.</p>
                         <a href="pdf/prd/Veeery Accessible Audiobook for Visually Impaired.pdf"
                             class="project-link">View PRD</a>
                     </div>
@@ -94,17 +140,23 @@
         </section>
 
         <div class="resume-section">
-            <h2>Professional History</h2>
-            <p>For a detailed account of my path.</p>
-            <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank" class="resume-btn">Download Resume</a>
+            <h2>Resume</h2>
+            <p>Looking for a passionate Product Manager?</p>
+            <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank" class="resume-btn">See my resume</a>
             <br><br>
-            <a href="https://www.linkedin.com/in/avithehacker/" target="_blank"
-                style="color: var(--text-light); text-decoration: none; font-size: 0.9rem;">LinkedIn</a>
+            <div style="margin-top: 30px;">
+                <h3>Connect with Me</h3>
+                <p>I know my portfolio only scratches the surface. If you’re curious to learn more about my journey,
+                    let's connect!</p>
+                <a href="https://www.linkedin.com/in/avithehacker/" target="_blank"
+                    style="color: var(--text-light); text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid var(--text-light);">LinkedIn
+                    Profile</a>
+            </div>
         </div>
 
         <footer>
             <p>&copy;
-                <script>document.write(new Date().getFullYear())</script> Avinash Singh.
+                <script>document.write(new Date().getFullYear())</script> Avinash Singh. All rights reserved.
             </p>
         </footer>
     </div>
@@ -116,8 +168,16 @@
             const newTheme = currentTheme === "light" ? "dark" : "light";
             html.setAttribute("data-theme", newTheme);
 
-            const icon = document.getElementById("theme-toggle");
-            icon.textContent = newTheme === "light" ? "☀️" : "✨";
+            const sunIcon = document.querySelector('.sun-icon');
+            const moonIcon = document.querySelector('.moon-icon');
+
+            if (newTheme === "light") {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            } else {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            }
 
             // Save preference
             localStorage.setItem("theme", newTheme);
@@ -142,12 +202,43 @@
         // Load preference
         const savedTheme = localStorage.getItem("theme") || "light";
         document.documentElement.setAttribute("data-theme", savedTheme);
-        document.getElementById("theme-toggle").textContent = savedTheme === "light" ? "☀️" : "✨";
+
+        const sunIcon = document.querySelector('.sun-icon');
+        const moonIcon = document.querySelector('.moon-icon');
+
+        if (savedTheme === "light") {
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+        } else {
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+        }
 
         // Init experience counter
         updateExperience();
     </script>
 
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+    <script>
+        const lenis = new Lenis({
+            duration: 0.9,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+    </script>
 </body>
 
 </html>
