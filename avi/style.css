@@ -12,6 +12,8 @@
     --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.3);
     --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.03);
+    /* Premium Light Wallpaper (Silver/Air) */
+    --wallpaper-bg: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
 }
 
 [data-theme="dark"] {
@@ -23,6 +25,8 @@
     --glass-bg: rgba(30, 30, 30, 0.7);
     --glass-border: rgba(255, 255, 255, 0.1);
     --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* Premium Dark Wallpaper (Midnight/Space) */
+    --wallpaper-bg: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
 }
 
 html {
@@ -402,3 +406,336 @@ footer {
         padding-top: 5px;
     }
 }
+
+/* Boot Screen */
+#boot-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--wallpaper-bg);
+    z-index: 10000;
+    /* Topmost layer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+#boot-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.boot-logo {
+    font-family: var(--font-serif);
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--text-ink);
+    opacity: 0.8;
+    animation: pulseBoot 2s infinite ease-in-out;
+}
+
+@keyframes pulseBoot {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+        text-shadow: 0 0 30px rgba(165, 0, 52, 0.3);
+    }
+}
+
+/* Lock Screen (Themed Next-Gen Concept) */
+#lock-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--wallpaper-bg);
+    /* Opaque Wallpaper */
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 1.5s, transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: fadeInLock 1.5s ease-out backwards;
+}
+
+@keyframes fadeInLock {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#lock-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.15);
+    /* Cinematic zoom out */
+}
+
+.lock-content {
+    text-align: center;
+    color: var(--text-ink);
+    animation: fadeInDown 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Slower content entry */
+}
+
+/* Desktop Lock (macOS 26 Concept) */
+.desktop-lock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    /* Ensure full height centering if needed, though parent handles it */
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    background: var(--glass-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    font-family: var(--font-serif);
+    color: var(--text-ink);
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--glass-border);
+    animation: breathe 4s infinite ease-in-out;
+}
+
+@keyframes breathe {
+
+    0%,
+    100% {
+        box-shadow: 0 0 40px rgba(165, 0, 52, 0.1);
+        transform: scale(1);
+        border-color: var(--glass-border);
+    }
+
+    50% {
+        box-shadow: 0 0 60px rgba(165, 0, 52, 0.2);
+        transform: scale(1.02);
+        border-color: var(--accent-red);
+    }
+}
+
+.user-name {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 35px;
+    color: var(--text-ink);
+    letter-spacing: -0.02em;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 260px;
+    /* Slightly wider for better proportion */
+    display: flex;
+    align-items: center;
+}
+
+#password-input {
+    width: 100%;
+    padding: 14px 45px 14px 20px;
+    /* Right padding for arrow button */
+    border-radius: 30px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-ink);
+    font-size: 1rem;
+    outline: none;
+    text-align: center;
+    /* Keep centered text */
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Cleaner shadow */
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#password-input::placeholder {
+    color: var(--text-light);
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+#password-input:focus {
+    background: var(--glass-bg);
+    box-shadow: 0 10px 30px rgba(165, 0, 52, 0.15);
+    transform: translateY(-1px);
+    border-color: var(--accent-red);
+}
+
+.arrow-btn {
+    position: absolute;
+    right: 6px;
+    /* Tighter to the edge */
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--text-ink);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    color: var(--bg-paper);
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+    /* Prevent clicks when hidden */
+}
+
+#password-input:focus+.arrow-btn,
+#password-input:not(:placeholder-shown)+.arrow-btn {
+    opacity: 1;
+    pointer-events: auto;
+    right: 8px;
+    /* Slide in effect */
+}
+
+.arrow-btn:hover {
+    background: var(--accent-red);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 10px rgba(165, 0, 52, 0.3);
+}
+
+/* Mobile Lock (iOS 26 Concept) */
+.mobile-lock {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 100px;
+}
+
+.time-display {
+    font-size: 6.5rem;
+    font-weight: 100;
+    line-height: 1;
+    margin-bottom: 10px;
+    font-family: var(--font-sans);
+    letter-spacing: -4px;
+    color: var(--text-ink);
+    text-shadow: var(--shadow-soft);
+}
+
+.date-display {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    color: var(--accent-red);
+    opacity: 0.9;
+}
+
+.mobile-input-wrapper {
+    width: 80%;
+    max-width: 280px;
+    margin: 40px auto 0;
+}
+
+#mobile-password-input {
+    width: 100%;
+    padding: 16px;
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    color: var(--text-ink);
+    font-size: 1.1rem;
+    text-align: center;
+    outline: none;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s;
+}
+
+#mobile-password-input:focus {
+    border-color: var(--accent-red);
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(165, 0, 52, 0.1);
+}
+
+/* Shake Animation */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+    border: 1px solid var(--accent-red) !important;
+    background: rgba(165, 0, 52, 0.05) !important;
+}
+
+/* Responsive Switching */
+@media (max-width: 768px) {
+    .desktop-lock {
+        display: none;
+    }
+
+    .mobile-lock {
+        display: flex;
+    }
+
+    #lock-screen {
+        background: var(--wallpaper-bg);
+        backdrop-filter: blur(60px);
+        /* Mobile Transition Override */
+        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+    }
+
+    #lock-screen.fade-out {
+        transform: translateY(-100%);
+        opacity: 1;
+        /* Keep visible while sliding */
+        visibility: visible;
+        /* Ensure it slides out fully */
+    }
+}
+
+```

@@ -23,6 +23,30 @@
 </head>
 
 <body>
+    <!-- Boot Screen -->
+    <div id="boot-screen">
+        <div class="boot-logo">A</div>
+    </div>
+
+    <!-- Lock Screen Overlay -->
+    <div id="lock-screen">
+        <div class="lock-content desktop-lock">
+            <div class="avatar">A</div>
+            <h2 class="user-name">Avinash Singh</h2>
+            <div class="input-wrapper">
+                <input type="password" id="password-input" placeholder="Enter Password" onkeypress="handleEnter(event)">
+                <button onclick="checkPassword()" class="arrow-btn">→</button>
+            </div>
+        </div>
+        <div class="lock-content mobile-lock">
+            <div class="date-display" id="date-display">Sunday, November 23</div>
+            <div class="time-display" id="time-display">12:00</div>
+            <div class="mobile-input-wrapper">
+                <input type="password" id="mobile-password-input" placeholder="Password"
+                    onkeypress="handleEnterMobile(event)">
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <div class="top-icon" id="theme-toggle" onclick="toggleMode()" aria-label="Toggle Dark Mode">
@@ -162,6 +186,85 @@
     </div>
 
     <script>
+        // Boot Sequence Logic
+        window.addEventListener('load', () => {
+            const bootScreen = document.getElementById('boot-screen');
+            // Simulate boot time
+            setTimeout(() => {
+                bootScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    bootScreen.style.display = 'none';
+                }, 1000);
+            }, 2000);
+        });
+
+        // Lock Screen Logic
+        const lockScreen = document.getElementById('lock-screen');
+        const passwordInput = document.getElementById('password-input');
+        const mobilePasswordInput = document.getElementById('mobile-password-input');
+        const correctHash = "1358fa296d21d03a6e6bf996e429f315dd2cf9879034ba93580e3243e65669fd";
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        async function checkPassword() {
+            const entered = passwordInput.value;
+            const hash = await sha256(entered);
+            if (hash === correctHash) {
+                unlock();
+            } else {
+                shakeInput(passwordInput);
+            }
+        }
+
+        async function checkPasswordMobile() {
+            const entered = mobilePasswordInput.value;
+            const hash = await sha256(entered);
+            if (hash === correctHash) {
+                unlock();
+            } else {
+                shakeInput(mobilePasswordInput);
+            }
+        }
+
+        function unlock() {
+            lockScreen.classList.add('fade-out');
+            // sessionStorage.setItem('isUnlocked', 'true'); // Removed to enforce lock on revisit
+            setTimeout(() => {
+                lockScreen.style.display = 'none';
+            }, 1500); // Matches CSS transition duration
+        }
+
+        function shakeInput(input) {
+            input.classList.add('shake');
+            setTimeout(() => {
+                input.classList.remove('shake');
+                input.value = '';
+            }, 500);
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') checkPassword();
+        }
+
+        function handleEnterMobile(e) {
+            if (e.key === 'Enter') checkPasswordMobile();
+        }
+
+        // Time/Date for Mobile
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('time-display').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('date-display').textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
         function toggleMode() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute("data-theme");
