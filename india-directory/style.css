@@ -1,0 +1,228 @@
+:root {
+    --primary-color: #FF9933;
+    /* Saffronish */
+    --secondary-color: #138808;
+    /* Greenish */
+    --accent-blue: #000080;
+    /* Chakra Blue */
+    --bg-color: #F5F7FA;
+    --card-bg: #FFFFFF;
+    --text-main: #1A1A1A;
+    --text-light: #666666;
+    --border-color: #E0E0E0;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --font-family: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.app-container {
+    max-width: 600px;
+    /* Mobile-first focus */
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    background-color: var(--card-bg);
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.flag-icon {
+    font-size: 1.8rem;
+}
+
+.search-bar {
+    position: relative;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.search-bar input:focus {
+    border-color: var(--accent-blue);
+    background-color: #fff;
+}
+
+.search-bar svg {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+/* Zone Tabs */
+.zone-tabs {
+    display: flex;
+    overflow-x: auto;
+    padding: 15px 20px;
+    gap: 10px;
+    background-color: var(--bg-color);
+    scrollbar-width: none;
+    /* Hide scrollbar */
+}
+
+.zone-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.zone-tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: var(--text-light);
+}
+
+.zone-tab.active {
+    background-color: var(--accent-blue);
+    color: white;
+    border-color: var(--accent-blue);
+    box-shadow: 0 4px 10px rgba(0, 0, 128, 0.2);
+}
+
+/* Content Area */
+main {
+    padding: 10px 20px 40px;
+    flex: 1;
+}
+
+/* State List */
+.state-item {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s;
+}
+
+.state-header {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.state-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.chevron {
+    transition: transform 0.3s;
+    color: var(--text-light);
+}
+
+.state-item.expanded .chevron {
+    transform: rotate(180deg);
+}
+
+.contact-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: #FAFAFA;
+}
+
+.state-item.expanded .contact-list {
+    max-height: 1000px;
+    /* Arbitrary large height */
+    border-top: 1px solid var(--border-color);
+}
+
+.contact-card {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.contact-card:last-child {
+    border-bottom: none;
+}
+
+.contact-info h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.contact-number {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.call-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #E8F5E9;
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.call-btn:hover {
+    background-color: #C8E6C9;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-light);
+}
