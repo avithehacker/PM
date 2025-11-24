@@ -84,3 +84,26 @@ const directoryData = {
         ]
     }
 };
+
+const stateCities = {
+    "Delhi": ["New Delhi", "Delhi", "Noida", "Gurgaon", "Ghaziabad", "Faridabad"],
+    "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali"],
+    "Haryana": ["Gurgaon", "Gurugram", "Faridabad", "Panipat", "Ambala", "Karnal"],
+    "Uttar Pradesh": ["Lucknow", "Kanpur", "Ghaziabad", "Agra", "Varanasi", "Meerut", "Prayagraj", "Noida"],
+    "Jammu & Kashmir": ["Srinagar", "Jammu", "Anantnag"],
+    "Karnataka": ["Bangalore", "Bengaluru", "Mysore", "Mysuru", "Hubli", "Dharwad", "Mangalore", "Belgaum"],
+    "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli"],
+    "Kerala": ["Thiruvananthapuram", "Kochi", "Cochin", "Kozhikode", "Thrissur", "Kollam"],
+    "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar"],
+    "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Kurnool"],
+    "West Bengal": ["Kolkata", "Calcutta", "Howrah", "Durgapur", "Asansol", "Siliguri"],
+    "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Berhampur", "Sambalpur"],
+    "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur"],
+    "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro"],
+    "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Solapur"],
+    "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar"],
+    "Rajasthan": ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Ajmer", "Udaipur"],
+    "Goa": ["Panaji", "Margao", "Vasco da Gama", "Mapusa"],
+    "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain"],
+    "Chhattisgarh": ["Raipur", "Bhilai", "Bilaspur", "Korba"]
+};

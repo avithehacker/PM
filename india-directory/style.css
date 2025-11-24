@@ -226,3 +226,38 @@ main {
     padding: 40px 20px;
     color: var(--text-light);
 }
+
+/* City List */
+.state-cities {
+    padding: 15px 20px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    background-color: #F0F4F8;
+    border-bottom: 1px solid var(--border-color);
+    line-height: 1.5;
+}
+
+.state-cities strong {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+/* Search Result Info */
+.search-result-info {
+    padding: 0;
+    margin: 0;
+}
+
+.search-result-highlight {
+    padding: 15px 20px;
+    font-size: 0.95rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: 1px solid var(--border-color);
+    line-height: 1.6;
+}
+
+.search-result-highlight strong {
+    color: #FFD700;
+    font-weight: 600;
+}

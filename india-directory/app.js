@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function createStateItem(stateName, contacts) {
+    function createStateItem(stateName, contacts, matchedCity = null, zoneName = null) {
         const item = document.createElement('div');
         item.className = 'state-item';
 
@@ -62,6 +62,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const list = document.createElement('div');
         list.className = 'contact-list';
 
+        // Add search result info if city was matched
+        if (matchedCity && zoneName) {
+            const searchInfoDiv = document.createElement('div');
+            searchInfoDiv.className = 'search-result-info';
+            // Extract state name without zone
+            const stateOnly = stateName.replace(/\s*\([^)]*\)/, '');
+            searchInfoDiv.innerHTML = `
+                <div class="search-result-highlight">
+                    <strong>📍 ${matchedCity}</strong> is located in <strong>${stateOnly}</strong>, <strong>${zoneName}</strong>
+                </div>
+            `;
+            list.appendChild(searchInfoDiv);
+        }
+
+        // Add cities list if available
+        const stateNameOnly = stateName.replace(/\s*\([^)]*\)/, '');
+        if (typeof stateCities !== 'undefined' && stateCities[stateNameOnly]) {
+            const citiesDiv = document.createElement('div');
+            citiesDiv.className = 'state-cities';
+            citiesDiv.innerHTML = `<strong>Cities:</strong> ${stateCities[stateNameOnly].join(', ')}`;
+            list.appendChild(citiesDiv);
+        }
+
         if (contacts.length === 0) {
             list.innerHTML = '<div class="contact-card"><div class="contact-info"><h4>No contacts listed</h4></div></div>';
         } else {
@@ -70,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.className = 'contact-card';
                 card.innerHTML = `
                     <div class="contact-info">
-                        <h4>${contact.name}</h4>
                         <div class="contact-number">${contact.number}</div>
                     </div>
                     <a href="tel:${contact.number}" class="call-btn" aria-label="Call ${contact.name}">
@@ -105,17 +127,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!term) {
             renderContent(currentZone);
+            renderTabs();
             return;
         }
 
         contentArea.innerHTML = '';
         let hasResults = false;
+        let firstMatchedZone = null;
 
         // Search across ALL zones
         Object.entries(directoryData).forEach(([zoneName, states]) => {
             Object.entries(states).forEach(([stateName, contacts]) => {
                 // Check if state matches
-                const stateMatch = stateName.toLowerCase().includes(term);
+                let stateMatch = stateName.toLowerCase().includes(term);
+                let matchedCity = null;
+
+                // Check if city matches
+                if (!stateMatch && typeof stateCities !== 'undefined' && stateCities[stateName]) {
+                    const matchedCities = stateCities[stateName].filter(city =>
+                        city.toLowerCase().includes(term)
+                    );
+                    if (matchedCities.length > 0) {
+                        stateMatch = true;
+                        matchedCity = matchedCities[0]; // Use the first matched city
+                    }
+                }
 
                 // Check if any contact matches
                 const matchingContacts = contacts.filter(c =>
@@ -124,11 +160,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
 
                 if (stateMatch || matchingContacts.length > 0) {
+                    // Track the first matched zone
+                    if (!firstMatchedZone) {
+                        firstMatchedZone = zoneName;
+                    }
+
                     // If state matches, show all contacts. If only contacts match, show those.
                     const contactsToShow = stateMatch ? contacts : matchingContacts;
 
                     if (contactsToShow.length > 0 || stateMatch) {
-                        const item = createStateItem(`${stateName} (${zoneName})`, contactsToShow);
+                        const item = createStateItem(`${stateName} (${zoneName})`, contactsToShow, matchedCity, zoneName);
                         // Auto expand if searching
                         item.classList.add('expanded');
                         contentArea.appendChild(item);
@@ -137,6 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+
+        // Switch to the first matched zone and update tabs
+        if (firstMatchedZone) {
+            currentZone = firstMatchedZone;
+            renderTabs();
+        }
 
         if (!hasResults) {
             contentArea.innerHTML = '<div class="empty-state">No matching contacts found.</div>';
