@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Professional Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
         rel="stylesheet">
@@ -20,6 +19,72 @@
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", "mjjppi513f");
     </script>
+    <style>
+        /* Callout box for lessons */
+        .lesson-box {
+            border-left: 3px solid var(--accent-red);
+            background: var(--glass-bg);
+            padding: 14px 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 16px 0;
+            font-size: 1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        /* Built-section for work achievements */
+        .built-section {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 18px 0;
+        }
+
+        .built-heading {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--accent-red);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .built-section ul,
+        .struggles-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .built-section ul li,
+        .struggles-list li {
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .struggles-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .struggles-list li::before {
+            content: "— ";
+            color: var(--accent-red);
+        }
+
+        @media (max-width: 768px) {
+            .lesson-box {
+                padding: 12px 16px;
+            }
+
+            .built-section {
+                padding: 16px 18px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -50,7 +115,6 @@
 
     <div class="container">
         <div class="top-icon" id="theme-toggle" onclick="toggleMode()" aria-label="Toggle Dark Mode">
-            <!-- Sun Icon -->
             <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="5"></circle>
@@ -63,7 +127,6 @@
                 <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
-            <!-- Moon Icon -->
             <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 style="display: none;">
@@ -87,6 +150,7 @@
         </header>
 
         <div class="timeline-container">
+
             <!-- 1. Where I Started -->
             <div class="timeline-item">
                 <div class="timeline-date">1. Where I Started</div>
@@ -95,7 +159,7 @@
                 <p>Varanasi is slow. Very slow. It teaches patience without saying it.</p>
                 <p>My father had a shop near BHU Trauma Center. I used to sit there sometimes. I saw people waiting
                     outside the hospital. I saw worried faces. I saw families fully dependent on doctors.</p>
-                <p>I didn’t understand much at that time. But I think I learned something silently:<br>
+                <p>I didn't understand much at that time. But I think I learned something silently:<br>
                     Life can change anytime. Stability is not guaranteed.</p>
                 <p>Maybe that is why I want stability so badly today.</p>
             </div>
@@ -110,95 +174,137 @@
                 <p>We had fixed friends. Fixed routine. Fixed life.</p>
                 <p>Now I understand something important:<br>
                     We were happy because of pattern. Same people. Same system. No uncertainty.</p>
-                <p><strong>Lesson to remember:</strong><br>
-                    Stability makes me calm. Routine makes me happy.</p>
+                <div class="lesson-box">
+                    <strong>Lesson to remember:</strong><br>
+                    Stability makes me calm. Routine makes me happy.
+                </div>
             </div>
 
             <!-- 3. Class 11 & 12 -->
             <div class="timeline-item">
-                <div class="timeline-date">3. Class 11 & 12</div>
+                <div class="timeline-date">3. Class 11 &amp; 12</div>
                 <h3 class="timeline-title">The Break</h3>
                 <p>Everything changed. School changed. Friends changed. I got suspended. I moved to KV BHU.</p>
                 <p>Those two years were heavy. Board exams in India are not normal exams. They are generational
                     pressure. My grandfather gave them. My father gave them. Then I gave them.</p>
-                <p>I saw parents emotionally dependent on children’s marks. I didn’t like that idea. I asked myself:<br>
+                <p>I saw parents emotionally dependent on children's marks. I didn't like that idea. I asked myself:<br>
                     <em>How can you depend fully on someone else for your happiness?</em>
                 </p>
                 <p>At the same time, I also felt pressure. I passed with good marks.</p>
-                <p>But the bigger lesson was this:<br>
+                <div class="lesson-box">
+                    <strong>But the bigger lesson was this:</strong><br>
                     Dependency is risky.<br>
                     Pressure builds you if you survive it.<br>
-                    I survived it.</p>
+                    I survived it.
+                </div>
             </div>
 
             <!-- 4. College -->
             <div class="timeline-item">
-                <div class="timeline-date">4. College (BCA)</div>
+                <div class="timeline-date">4. College – BCA</div>
                 <h3 class="timeline-title">University of Lucknow</h3>
                 <p>College was better. More free. Less pressure. Only 11th and 12th were really hard phases in my life.
                     Rest has been manageable.</p>
                 <p><strong>Final year project: Prixfit</strong><br>
-                    Idea: Farmers don’t know where they get better crop prices. So build a system that shows mandi
+                    Idea: Farmers don't know where they get better crop prices. So build a system that shows mandi
                     prices and helps them decide.</p>
                 <p>I still like that thinking. I always liked solving real problems.</p>
                 <p>What college gave me? Honestly, no powerful network. No strong reference. I never had big influential
                     people around me. Everything I built, I built mostly alone.</p>
-                <p>Sometimes I feel proud of that. Sometimes I feel maybe having strong network could have made things
-                    faster.</p>
-                <p>But reality: I built without dependency.</p>
+                <div class="lesson-box">
+                    Sometimes I feel proud of that.<br>
+                    Sometimes I feel maybe having a strong network could have made things faster.<br>
+                    But reality: I built without dependency.
+                </div>
             </div>
 
             <!-- 5. Startup -->
             <div class="timeline-item">
                 <div class="timeline-date">5. Startup</div>
                 <h3 class="timeline-title">2019 to 2022</h3>
-                <p>After graduation, I started my own startup.</p>
-                <p>It was for visually impaired students. We wanted to give them seamless learning because they don’t
-                    have easy access to books.</p>
+                <p>After graduation, I started my own startup for visually impaired students. We wanted to make learning
+                    simple for them. Because books are not easily accessible. And accessibility in India is still weak.
+                </p>
                 <p>Then COVID came. Money was low. Hope was low. Exchange program cancelled. No clarity about future.
                 </p>
                 <p>We survived. Somehow.</p>
-                <p><strong>Important things I learned:</strong><br>
-                    Building from scratch is extremely hard.<br>
-                    Team handling is not easy.<br>
-                    Money flow is oxygen.<br>
-                    Motivation without growth dies.<br>
-                    Support from people matters a lot.</p>
-                <p>Here I chased money a lot. Because survival mode. But I also felt proud. We didn’t quit immediately.
-                </p>
-                <p>At some point, I realised the startup was not scaling. It was becoming like a job without growth. So
-                    I had to choose stability.</p>
-                <p><strong>Lesson:</strong> Dreams are good. But system and scale matter more.</p>
+                <div class="built-section">
+                    <div class="built-heading">What I actually built there</div>
+                    <ul>
+                        <li>Spent more than <strong>600 hours</strong> directly talking to visually impaired students —
+                            not surveys, real conversations, real pain.</li>
+                        <li>Built an educational platform based on what they actually needed.</li>
+                        <li>Created and led a team of <strong>12 people</strong>.</li>
+                        <li>Added <strong>1000+ accessible content pieces</strong> — more than <strong>7200
+                                hours</strong> of usable learning material.</li>
+                        <li>Switched from expensive licensing model to royalty-free — costs dropped by
+                            <strong>90%</strong>. That decision saved us.</li>
+                        <li>Partnered with schools and NGOs for reach, not branding.</li>
+                        <li>Within 9 months, generated revenue. More than <strong>5000 visually impaired
+                                individuals</strong> used the platform.</li>
+                    </ul>
+                </div>
+                <p>But growth was slow. Scale was unclear. At some point I realised it was becoming a job, not a
+                    scalable system.</p>
+                <div class="lesson-box">
+                    <strong>Lesson:</strong> Dreams need distribution. Impact needs a business model.
+                </div>
             </div>
 
             <!-- 6. Smartivity -->
             <div class="timeline-item">
                 <div class="timeline-date">6. Smartivity</div>
                 <h3 class="timeline-title">Learning Business Reality (2022)</h3>
-                <p>I joined Smartivity as Product Manager.</p>
-                <p>It was a small company. Smaller than my startup. But they were generating revenue. That itself was
-                    learning.</p>
-                <p>I revamped the website. Worked on CRO. Understood funnels. Studied D2C vs Amazon.</p>
-                <p><strong>Observation:</strong> Amazon performs better than D2C in many cases because trust is already
-                    built.</p>
-                <p>I also connected with investors and understood how they think.</p>
-                <p><strong>Hard part?</strong> People. Some people avoid responsibility. Some delay work to protect
-                    their job. Some carry entire revenue on their back.</p>
-                <p><strong>I learned:</strong><br>
-                    Data-driven execution is powerful.<br>
-                    People management is more complex than product building.</p>
-                <p>I left because company future didn’t look stable.</p>
-                <p><strong>Lesson:</strong> Choose trajectory, not attachment.</p>
+                <p>I joined Smartivity as Product Manager. Small company. But real revenue. That itself was a lesson.
+                </p>
+                <div class="built-section">
+                    <div class="built-heading">What I built there</div>
+                    <ul>
+                        <li>Led a team of <strong>six people</strong> — marketing, sales, customer success, agencies.
+                        </li>
+                        <li>Rebuilt the website. Reduced friction. Conversion rate increased by <strong>64%</strong>.
+                        </li>
+                        <li>Improved pricing and retention plans. Orders increased by <strong>83%</strong>.</li>
+                        <li>Ran multiple A/B experiments. Browse-to-Add-to-Cart improved by <strong>47%</strong>.</li>
+                        <li>Added trust badges properly. Cart-to-purchase increased by <strong>30%</strong>.</li>
+                        <li>Improved website speed. Performance improved by <strong>50%</strong>.</li>
+                    </ul>
+                </div>
+                <p>I learned funnels, CRO, and Amazon vs D2C trust psychology. But the bigger lesson was about people —
+                    some protect salary, some protect ego, few protect revenue.</p>
+                <div class="lesson-box">
+                    <strong>Lesson:</strong> Revenue is good. Direction is better.
+                </div>
             </div>
 
             <!-- 7. Mahindra -->
             <div class="timeline-item">
                 <div class="timeline-date">7. Current</div>
-                <h3 class="timeline-title">Mahindra</h3>
-                <p>Now I work at Mahindra as Product Manager.</p>
-                <p>Bigger organisation. More structure. More stakeholders.</p>
-                <p>Earlier I built in chaos. Now I build inside system. Both teach different things.</p>
-                <p>Right now I am focusing on learning scale and long-term thinking.</p>
+                <h3 class="timeline-title">Mahindra &amp; Mahindra</h3>
+                <p>Now I work at Mahindra as Product Manager. Bigger organisation. More stakeholders. More structure.
+                </p>
+                <p>Earlier I built in chaos. Now I build inside a system. Both teach different muscles.</p>
+                <div class="built-section">
+                    <div class="built-heading">What I am building here</div>
+                    <ul>
+                        <li>Built a <strong>seller platform from scratch</strong> — live auction tracking, price
+                            comparison, market data.</li>
+                        <li>Pushed automation across the full auction lifecycle: listing → approval → payment. Manual
+                            work reduced heavily.</li>
+                        <li>Led the full redesign of <strong>Ediig</strong> — Mobile, Desktop, Android, iOS.</li>
+                        <li>Tested Open vs Close Auctions. Measured bidder behavior. Optimised for profit and
+                            engagement.</li>
+                        <li>Implemented <strong>Redis caching</strong> — speed and stability improved significantly.
+                        </li>
+                        <li>Automated PAN and Aadhaar verification via AuthBridge — KYC time dropped from <strong>24–48
+                                hours to 10 minutes</strong>.</li>
+                        <li>Integrated <strong>SAP</strong> with the portal — manual reconciliation reduced by
+                            <strong>80%</strong>.</li>
+                        <li>Added invoicing inside the platform — <strong>100% accuracy</strong>, no manual chaos.</li>
+                        <li>Built multi-language support in the app — more accessibility, wider adoption.</li>
+                    </ul>
+                </div>
+                <p>Now I am learning scale, governance, and long-term system thinking.</p>
             </div>
 
             <!-- 8. Physical Reset -->
@@ -210,32 +316,38 @@
                     I walk around 9 km daily.<br>
                     I quit sugar.</p>
                 <p>This is not about looks. This is proof that I can redesign myself.</p>
-                <p>Discipline works.</p>
+                <div class="lesson-box">Discipline works.</div>
             </div>
 
             <!-- 9. Internal Struggles -->
             <div class="timeline-item">
                 <div class="timeline-date">9. Internal Struggles</div>
                 <h3 class="timeline-title">Improving Slowly</h3>
-                <p>I struggle with speaking in front of CEO-level people.<br>
-                    Sometimes I just read instead of presenting confidently.<br>
-                    I struggle with writing clearly even when I know the idea.<br>
-                    I overthink sometimes.<br>
-                    I want stability too much.</p>
+                <ul class="struggles-list">
+                    <li>I struggle with speaking in front of CEO-level people. Sometimes I just read instead of
+                        presenting confidently.</li>
+                    <li>I struggle with writing clearly even when I know the idea.</li>
+                    <li>I overthink sometimes.</li>
+                    <li>I want stability too much.</li>
+                </ul>
                 <p>But I am improving. Slowly.</p>
             </div>
 
             <!-- 10. Ambition -->
             <div class="timeline-item">
                 <div class="timeline-date">10. My Ambition</div>
-                <h3 class="timeline-title">(Which I Don’t Say Loudly)</h3>
+                <h3 class="timeline-title">(Which I Don't Say Loudly)</h3>
                 <p>One day, I will build again.</p>
-                <p>But this time:<br>
-                    With better system.<br>
-                    With capital awareness.<br>
-                    With distribution strategy.<br>
-                    With long-term thinking.</p>
-                <p>I don’t want to just manage features.<br>
+                <div class="built-section">
+                    <div class="built-heading">But this time:</div>
+                    <ul>
+                        <li>With better system.</li>
+                        <li>With capital awareness.</li>
+                        <li>With distribution strategy.</li>
+                        <li>With long-term thinking.</li>
+                    </ul>
+                </div>
+                <p>I don't want to just manage features.<br>
                     I want to build platforms.</p>
             </div>
 
@@ -243,22 +355,26 @@
             <div class="timeline-item">
                 <div class="timeline-date">11. Why I Am Writing This</div>
                 <h3 class="timeline-title">Because I forget.</h3>
-                <p>I forget how hard 11th was.<br>
-                    I forget how scary COVID felt.<br>
-                    I forget how proud I felt after losing weight.<br>
-                    I forget how much effort it took to reach here without big references.</p>
+                <ul class="struggles-list">
+                    <li>I forget how hard 11th was.</li>
+                    <li>I forget how scary COVID felt.</li>
+                    <li>I forget how proud I felt after losing weight.</li>
+                    <li>I forget how much effort it took to reach here without big references.</li>
+                </ul>
                 <p>So if future me is reading this:</p>
-                <p>You were not lucky.<br>
+                <div class="lesson-box">
+                    You were not lucky.<br>
                     You worked.<br>
                     You survived.<br>
                     You adapted.<br>
-                    You are still building.</p>
-                <p>And don’t forget —<br>
+                    You are still building.<br><br>
+                    And don't forget —<br>
                     <strong>Stability makes you calm.<br>
                         But growth makes you alive.<br>
                         You need both.</strong>
-                </p>
+                </div>
             </div>
+
         </div>
 
         <footer>
@@ -272,12 +388,9 @@
         // Boot Sequence Logic
         window.addEventListener('load', () => {
             const bootScreen = document.getElementById('boot-screen');
-            // Simulate boot time
             setTimeout(() => {
                 bootScreen.classList.add('fade-out');
-                setTimeout(() => {
-                    bootScreen.style.display = 'none';
-                }, 1000);
+                setTimeout(() => { bootScreen.style.display = 'none'; }, 1000);
             }, 2000);
         });
 
@@ -291,54 +404,33 @@
             const msgBuffer = new TextEncoder().encode(message);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         async function checkPassword() {
-            const entered = passwordInput.value;
-            const hash = await sha256(entered);
-            if (hash === correctHash) {
-                unlock();
-            } else {
-                shakeInput(passwordInput);
-            }
+            const hash = await sha256(passwordInput.value);
+            if (hash === correctHash) { unlock(); } else { shakeInput(passwordInput); }
         }
 
         async function checkPasswordMobile() {
-            const entered = mobilePasswordInput.value;
-            const hash = await sha256(entered);
-            if (hash === correctHash) {
-                unlock();
-            } else {
-                shakeInput(mobilePasswordInput);
-            }
+            const hash = await sha256(mobilePasswordInput.value);
+            if (hash === correctHash) { unlock(); } else { shakeInput(mobilePasswordInput); }
         }
 
         function unlock() {
             lockScreen.classList.add('fade-out');
-            setTimeout(() => {
-                lockScreen.style.display = 'none';
-            }, 1500); // Matches CSS transition duration
+            setTimeout(() => { lockScreen.style.display = 'none'; }, 1500);
         }
 
         function shakeInput(input) {
             input.classList.add('shake');
-            setTimeout(() => {
-                input.classList.remove('shake');
-                input.value = '';
-            }, 500);
+            setTimeout(() => { input.classList.remove('shake'); input.value = ''; }, 500);
         }
 
-        function handleEnter(e) {
-            if (e.key === 'Enter') checkPassword();
-        }
+        function handleEnter(e) { if (e.key === 'Enter') checkPassword(); }
+        function handleEnterMobile(e) { if (e.key === 'Enter') checkPasswordMobile(); }
 
-        function handleEnterMobile(e) {
-            if (e.key === 'Enter') checkPasswordMobile();
-        }
-
-        // Time/Date for Mobile
+        // Time/Date for Mobile lock screen
         function updateTime() {
             const now = new Date();
             document.getElementById('time-display').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -347,71 +439,40 @@
         setInterval(updateTime, 1000);
         updateTime();
 
+        // Exact age calculation from Dec 4, 1996
         function updateExactAge() {
-            const birthDate = new Date(1996, 11, 4); // December 4, 1996 (Month is 0-indexed in JS)
+            const birthDate = new Date(1996, 11, 4); // Month is 0-indexed: 11 = December
             const now = new Date();
-
             let years = now.getFullYear() - birthDate.getFullYear();
             let months = now.getMonth() - birthDate.getMonth();
             let days = now.getDate() - birthDate.getDate();
-
             if (days < 0) {
                 months--;
-                // Get the number of days in the previous month
-                let prevMonthDate = new Date(now.getFullYear(), now.getMonth(), 0);
-                days += prevMonthDate.getDate();
+                days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
             }
-            if (months < 0) {
-                years--;
-                months += 12;
-            }
-
-            const ageElement = document.getElementById('exact-age');
-            if (ageElement) {
-                let text = `${years} years, ${months} months`;
-                if (days > 0) {
-                    text += `, and ${days} days`;
-                }
-                ageElement.textContent = text;
+            if (months < 0) { years--; months += 12; }
+            const el = document.getElementById('exact-age');
+            if (el) {
+                el.textContent = `${years} years, ${months} months${days > 0 ? ` and ${days} days` : ''}`;
             }
         }
         updateExactAge();
 
+        // Dark/Light mode toggle
         function toggleMode() {
             const html = document.documentElement;
-            const currentTheme = html.getAttribute("data-theme");
-            const newTheme = currentTheme === "light" ? "dark" : "light";
+            const newTheme = html.getAttribute("data-theme") === "light" ? "dark" : "light";
             html.setAttribute("data-theme", newTheme);
-
-            const sunIcon = document.querySelector('.sun-icon');
-            const moonIcon = document.querySelector('.moon-icon');
-
-            if (newTheme === "light") {
-                sunIcon.style.display = 'block';
-                moonIcon.style.display = 'none';
-            } else {
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
-            }
-
-            // Save preference
+            document.querySelector('.sun-icon').style.display = newTheme === "light" ? 'block' : 'none';
+            document.querySelector('.moon-icon').style.display = newTheme === "dark" ? 'block' : 'none';
             localStorage.setItem("theme", newTheme);
         }
 
-        // Load preference
+        // Load saved theme preference
         const savedTheme = localStorage.getItem("theme") || "light";
         document.documentElement.setAttribute("data-theme", savedTheme);
-
-        const sunIcon = document.querySelector('.sun-icon');
-        const moonIcon = document.querySelector('.moon-icon');
-
-        if (savedTheme === "light") {
-            sunIcon.style.display = 'block';
-            moonIcon.style.display = 'none';
-        } else {
-            sunIcon.style.display = 'none';
-            moonIcon.style.display = 'block';
-        }
+        document.querySelector('.sun-icon').style.display = savedTheme === "light" ? 'block' : 'none';
+        document.querySelector('.moon-icon').style.display = savedTheme === "dark" ? 'block' : 'none';
     </script>
 
     <!-- Lenis Smooth Scroll -->
@@ -427,12 +488,7 @@
             smoothTouch: true,
             touchMultiplier: 1.5,
         });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
     </script>
 </body>
