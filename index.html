@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avinash's Portfolio</title>
+    <title>Avinash Singh — Product Manager</title>
+    <meta name="description"
+        content="Avinash Singh is a Product Manager based in Bangalore, building at Mahindra. From Varanasi.">
     <link rel="icon" type="image/png" href="https://github.com/favicon.ico">
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Professional Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap"
         rel="stylesheet">
     <script type="text/javascript">
         (function (c, l, a, r, i, t, y) {
@@ -20,225 +20,356 @@
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", "mjjppi513f");
     </script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* ─── Background ─── */
+        @keyframes kenburns {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            50% {
+                transform: scale(1.06) translate(-1%, -1%);
+            }
+
+            100% {
+                transform: scale(1) translate(0, 0);
+            }
+        }
+
+        .bg {
+            position: fixed;
+            inset: 0;
+            background-image: url('Avinash.jpg');
+            background-size: cover;
+            background-position: center center;
+            z-index: 0;
+            animation: kenburns 18s ease-in-out infinite;
+            transform-origin: center center;
+            /* Black & white on desktop */
+            filter: grayscale(1) brightness(0.9) contrast(1.08);
+        }
+
+        /* Neutral dark vignette — no warm tones */
+        .bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.15);
+            mix-blend-mode: multiply;
+        }
+
+        /* ─── Info Card ─── */
+        .info-card {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 38vw;
+            min-width: 320px;
+            max-width: 520px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 48px;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(22px) saturate(1.4);
+            -webkit-backdrop-filter: blur(22px) saturate(1.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.5);
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        /* ─── Name ─── */
+        .card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            line-height: 1.1;
+            margin-bottom: 32px;
+        }
+
+        /* ─── Roles ─── */
+        .card-roles {
+            list-style: none;
+            margin-bottom: 36px;
+            width: 100%;
+        }
+
+        .card-roles li {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #444;
+            line-height: 1;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .card-roles li:first-child {
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .card-roles a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(80, 80, 80, 0.35);
+            padding-bottom: 1px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .card-roles a:hover {
+            color: #000;
+            border-color: #000;
+        }
+
+        /* ─── Section labels ─── */
+        .card-section-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 14px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* ─── Work links ─── */
+        .card-links {
+            list-style: none;
+            margin-bottom: 36px;
+            width: 100%;
+        }
+
+        .card-links li {
+            padding: 5px 0;
+        }
+
+        .card-links a {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: #2a2a2a;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s, color 0.2s;
+            letter-spacing: 0.01em;
+        }
+
+        .card-links a:hover {
+            color: #000;
+            border-bottom-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* ─── Connect links ─── */
+        .card-connect {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card-connect a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #555;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(80, 80, 80, 0.3);
+            padding-bottom: 2px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .card-connect a:hover {
+            color: #111;
+            border-color: #111;
+        }
+
+        /* ─── Photo credit ─── */
+        .photo-credit {
+            position: fixed;
+            bottom: 18px;
+            left: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.62rem;
+            letter-spacing: 0.06em;
+            color: rgba(255, 255, 255, 0.55);
+            z-index: 5;
+        }
+
+        .photo-credit a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* ─── Mobile ─── */
+        @media (max-width: 768px) {
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            /* Photo still fills entire screen */
+            .bg {
+                position: fixed;
+                inset: 0;
+                height: 100%;
+                background-image: url('avinash-m.jpeg');
+            }
+
+            /* Card as bottom sheet */
+            .info-card {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                top: auto;
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                max-height: 72vh;
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.4);
+                border-radius: 24px 24px 0 0;
+                padding: 10px 28px 44px;
+                background: rgba(255, 255, 255, 0.50);
+                backdrop-filter: blur(24px) saturate(1.6);
+                -webkit-backdrop-filter: blur(24px) saturate(1.6);
+                overflow-y: auto;
+                justify-content: flex-start;
+                box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.18);
+            }
+
+            /* Drag handle indicator */
+            .info-card::before {
+                content: '';
+                display: block;
+                width: 40px;
+                height: 4px;
+                background: rgba(0, 0, 0, 0.18);
+                border-radius: 4px;
+                margin: 0 auto 20px;
+                flex-shrink: 0;
+            }
+
+            .card-name {
+                font-size: 1.9rem;
+                margin-bottom: 22px;
+            }
+
+            .card-roles li {
+                font-size: 0.68rem;
+                padding: 8px 0;
+            }
+
+            .card-links a {
+                font-size: 0.97rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .info-card {
+                padding: 10px 20px 40px;
+                max-height: 78vh;
+            }
+
+            .card-name {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Full-screen background -->
+    <div class="bg"></div>
 
-    <div class="container">
-        <div class="top-icon" id="theme-toggle" onclick="toggleMode()" aria-label="Toggle Dark Mode">
-            <!-- Sun Icon -->
-            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <!-- Moon Icon -->
-            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                style="display: none;">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
+    <!-- Info card -->
+    <div class="info-card">
+
+        <h1 class="card-name">Avinash Singh</h1>
+
+        <ul class="card-roles">
+            <li>Product Manager at <a href="https://www.mahindrafirstchoice.com/" target="_blank">Mahindra</a></li>
+            <li>Builder of <a href="https://dharnikafoundation.org/" target="_blank">Dharnika</a></li>
+            <li>Based in Bangalore &mdash; from Varanasi</li>
+        </ul>
+
+        <p class="card-section-label">Select Work</p>
+        <ul class="card-links">
+            <li><a href="pdf/prd/Building WhatsApp for illiterate and digitally challenged.pdf" target="_blank">WhatsApp
+                    for the Illiterate</a></li>
+            <li><a href="pdf/prd/Veeery Accessible Ebook for Visually Impaired.pdf" target="_blank">Accessible Ebook for
+                    Blind Students</a></li>
+            <li><a href="pdf/prd/Veeery Accessible Audiobook for Visually Impaired.pdf" target="_blank">Accessible
+                    Audiobook Platform</a></li>
+
+        </ul>
+
+        <p class="card-section-label">Connect</p>
+        <div class="card-connect">
+            <a href="https://www.linkedin.com/in/avithehacker/" target="_blank">LinkedIn</a>
+            <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank">Resume</a>
         </div>
 
-        <header class="intro">
-            <div class="hanko" onclick="window.location.href='avi/index.html'" title="Unlock">Avi</div>
-            <h1>Welcome to Avinash's Portfolio</h1>
-            <p>
-                Hi, I’m Avinash, a Product Manager based in Bangalore, India, with <span id="experience-counter"></span>
-                of experience in
-                startups and product management. My journey is fueled by a passion for creating impactful products.
-            </p>
-        </header>
-
-        <section class="zen-section">
-            <h2 class="vertical-heading">What Drives Me</h2>
-            <div class="zen-content">
-                <p>
-                    I’m dedicated to crafting products that are intuitive and genuinely make a difference. My approach
-                    is always user-first, ensuring that every decision is based on real needs.
-                </p>
-            </div>
-        </section>
-
-        <section class="zen-section">
-            <h2 class="vertical-heading">My Journey & Experience</h2>
-            <div class="zen-content">
-                <p>
-                    My career began at Veeery, a company focused on empowering visually impaired individuals through
-                    better learning tools. This experience shaped my understanding of product management and leadership.
-                </p>
-                <p>
-                    In 2022, I merged Veeery’s as a projects into a non-profit organization, Dharnika, which aims to
-                    make education and jobs accessible to people with disabilities.
-                </p>
-                <p>
-                    In July 2022, I embraced a new challenge at Smartivity, leading successful product launches that
-                    boosted the company’s growth. By December 2022, I moved to Mahindra, where I took on an even bigger
-                    project. At Mahindra, I completely redesigned the EDiig auction platform, modernizing the mobile and
-                    desktop sites as well as the Android and iOS apps for a more intuitive user experience.
-                </p>
-                <p>
-                    I’m proud that with every project I take on, the scope and impact grow larger, pushing me to achieve
-                    more and make a greater difference.
-                </p>
-            </div>
-        </section>
-
-        <section class="zen-section">
-            <h2 class="vertical-heading">Embracing New Challenges</h2>
-            <div class="zen-content">
-                <p>
-                    I approach every job and business as a unique project, bringing fresh perspectives and innovative
-                    solutions. My work with Dharnika, for example, reflects my commitment to social change through
-                    technology. Our focus is on inclusive education and employment for people with disabilities. <a
-                        href="https://dharnikafoundation.org/" style="color: var(--accent-red);">Learn more about
-                        Dharnika</a>
-                </p>
-            </div>
-        </section>
-
-        <section class="zen-section">
-            <h2 class="vertical-heading">Why Product Management</h2>
-            <div class="zen-content">
-                <p>Understanding user needs and solving complex problems is what I thrive on. Every project is an
-                    opportunity to make a positive impact, and that’s what keeps me going.</p>
-            </div>
-        </section>
-
-        <section class="zen-section">
-            <h2 class="vertical-heading">Explore My Work</h2>
-            <div class="zen-content">
-                <p>Here are a few of the projects I’ve worked on:</p>
-                <div class="project-grid">
-                    <div class="project-card">
-                        <span class="project-title">WhatsApp for illiterate and digitally challenged</span>
-                        <p>Bridging the digital divide for the digitally challenged.</p>
-                        <a href="pdf/prd/Building WhatsApp for illiterate and digitally challenged.pdf"
-                            class="project-link">View PRD</a>
-                    </div>
-                    <div class="project-card">
-                        <span class="project-title">Ebook for Visually Impaired</span>
-                        <p>Making reading accessible for the visually impaired.</p>
-                        <a href="pdf/prd/Veeery Accessible Ebook for Visually Impaired.pdf" class="project-link">View
-                            PRD</a>
-                    </div>
-                    <div class="project-card">
-                        <span class="project-title">Audiobook for Visually Impaired</span>
-                        <p>Audio learning solutions for inclusive education.</p>
-                        <a href="pdf/prd/Veeery Accessible Audiobook for Visually Impaired.pdf"
-                            class="project-link">View PRD</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="resume-section">
-            <h2>Resume</h2>
-            <p>Looking for a passionate Product Manager?</p>
-            <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank" class="resume-btn">See my resume</a>
-            <br><br>
-            <div style="margin-top: 30px;">
-                <h3>Connect with Me</h3>
-                <p>I know my portfolio only scratches the surface. If you’re curious to learn more about my journey,
-                    let's connect!</p>
-                <a href="https://www.linkedin.com/in/avithehacker/" target="_blank"
-                    style="color: var(--text-light); text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid var(--text-light);">LinkedIn
-                    Profile</a>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy;
-                <script>document.write(new Date().getFullYear())</script> Avinash Singh. All rights reserved.
-            </p>
-        </footer>
     </div>
 
-    <script>
-        function toggleMode() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute("data-theme");
-            const newTheme = currentTheme === "light" ? "dark" : "light";
-            html.setAttribute("data-theme", newTheme);
 
-            const sunIcon = document.querySelector('.sun-icon');
-            const moonIcon = document.querySelector('.moon-icon');
 
-            if (newTheme === "light") {
-                sunIcon.style.display = 'block';
-                moonIcon.style.display = 'none';
-            } else {
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
-            }
-
-            // Save preference
-            localStorage.setItem("theme", newTheme);
-        }
-
-        function updateExperience() {
-            const startDate = new Date('2019-04-01'); // April 2019
-            const currentDate = new Date();
-
-            let years = currentDate.getFullYear() - startDate.getFullYear();
-            let months = currentDate.getMonth() - startDate.getMonth();
-
-            if (months < 0) {
-                years--;
-                months += 12;
-            }
-
-            const experienceText = `${years} years and ${months} months`;
-            document.getElementById('experience-counter').textContent = experienceText;
-        }
-
-        // Load preference
-        const savedTheme = localStorage.getItem("theme") || "light";
-        document.documentElement.setAttribute("data-theme", savedTheme);
-
-        const sunIcon = document.querySelector('.sun-icon');
-        const moonIcon = document.querySelector('.moon-icon');
-
-        if (savedTheme === "light") {
-            sunIcon.style.display = 'block';
-            moonIcon.style.display = 'none';
-        } else {
-            sunIcon.style.display = 'none';
-            moonIcon.style.display = 'block';
-        }
-
-        // Init experience counter
-        updateExperience();
-    </script>
-
-    <!-- Lenis Smooth Scroll -->
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
-    <script>
-        const lenis = new Lenis({
-            duration: 0.9,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: true,
-            touchMultiplier: 1.5,
-        });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        requestAnimationFrame(raf);
-    </script>
 </body>
+
+<script>
+    // Desktop: press 'A' three times quickly
+    let aCount = 0, aTimer;
+    document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 'a') {
+            aCount++;
+            clearTimeout(aTimer);
+            aTimer = setTimeout(() => { aCount = 0; }, 800);
+            if (aCount >= 3) { aCount = 0; window.location.href = 'avi/index.html'; }
+        }
+    });
+
+    // Mobile: triple-tap the name within 1.2s
+    let tapCount = 0, tapTimer;
+    const nameEl = document.querySelector('.card-name');
+    if (nameEl) {
+        nameEl.addEventListener('click', () => {
+            tapCount++;
+            clearTimeout(tapTimer);
+            tapTimer = setTimeout(() => { tapCount = 0; }, 1200);
+            if (tapCount >= 3) { tapCount = 0; window.location.href = 'avi/index.html'; }
+        });
+    }
+</script>
 
 </html>
