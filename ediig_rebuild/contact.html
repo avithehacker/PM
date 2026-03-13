@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - ediig Auctions</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .contact-content {
+            margin-top: 2rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background: #eee;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .contact-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        .regional-contacts {
+            margin-bottom: 3rem;
+        }
+
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 1.2rem 1.5rem;
+            background: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .accordion-content {
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-top: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .accordion-item.active .accordion-content {
+            display: block;
+        }
+
+        .accordion-item.active .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container flex-between" style="height: 100%;">
+            <a href="index.html" class="nav-logo">
+                e<span>Diig</span>Auctions
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="auctions.html" class="nav-link">Auctions</a>
+                <a href="bids.html" class="nav-link">Bids</a>
+                <a href="calendar.html" class="nav-link">Calendar</a>
+                <a href="contact.html" class="nav-link active">Contact Us</a>
+                <a href="profile.html" class="nav-link">Profile</a>
+            </nav>
+
+            <button class="btn btn-yellow">
+                <i class="fas fa-mobile-screen-button" style="margin-right: 8px;"></i>
+                Download App
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="contact-content">
+            <h2 class="section-title">Contact Us</h2>
+
+            <div class="map-placeholder">
+                <i class="fas fa-map-location-dot" style="margin-right: 15px;"></i>
+                Interactive Map Placeholder (Mahindra First Choice, Chennai)
+            </div>
+
+            <div class="contact-info-grid">
+                <div class="contact-card">
+                    <h3>Head Office</h3>
+                    <p>
+                        <strong>Mahindra First Choice Wheels Ltd.</strong><br>
+                        TVH Beliciaa Towers, Tower II, 5th Floor,<br>
+                        No.94, MRC Nagar, Chennai - 600 028.<br>
+                        Tamil Nadu, India.
+                    </p>
+                </div>
+                <div class="contact-card">
+                    <h3>Support</h3>
+                    <p>
+                        <strong>Toll Free:</strong> 1800 123 4567<br>
+                        <strong>Email:</strong> help@ediig.com<br>
+                        <strong>Working Hours:</strong> Mon - Sat (9:30 AM to 6:30 PM)
+                    </p>
+                </div>
+            </div>
+
+            <div class="regional-contacts">
+                <h3 style="margin-bottom: 1.5rem;">Regional Offices</h3>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        East Region <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        Regional contact details for Kolkata, Patna, and Guwahati.
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        West Region <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        Regional contact details for Mumbai, Pune, and Ahmedabad.
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        North Region <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        Regional contact details for Delhi, Chandigarh, and Lucknow.
+                    </div>
+                </div>
+
+                <div class="accordion-item active">
+                    <div class="accordion-header">
+                        South Region <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        Regional contact details for Chennai, Bangalore, and Hyderabad.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container disclaimer">
+            <p><strong>Disclaimer:</strong> The website is merely a platform to facilitate sale of vehicles between
+                intended sellers and buyers. Sale is not concluded on the website. The property in the vehicle will get
+                transferred directly from the seller to the buyer</p>
+            <p style="margin-top: 1rem;">Use of this Website constitutes acceptance of eDiig's <a href="privacy.html"
+                    style="color: var(--primary-blue);">Privacy Policy</a>, and <a href="terms.html"
+                    style="color: var(--primary-blue);">User Agreement</a>.</p>
+        </div>
+        <div class="footer-bottom">
+            Copyright © 2025 <b>eDiig</b> - E-Business Division - Mahindra First Choice Wheels Ltd. All Rights Reserved
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+
+</body>
+
+</html>
