@@ -1,0 +1,251 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Auctimeter 2.0 — E2R Digital Twin</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F2F2F2;color:#1A1A1A}
+#sidebar{position:fixed;left:0;top:0;width:240px;height:100vh;background:#1F4E79;display:flex;flex-direction:column;z-index:200;transition:width .3s,transform .3s;overflow:hidden}.sb-logo{padding:20px;border-bottom:1px solid rgba(255,255,255,.15);white-space:nowrap}.sb-logo h1{color:#fff;font-size:17px;font-weight:700;letter-spacing:.3px}.sb-logo p{color:#BDD7EE;font-size:12px;margin-top:3px}.sb-nav{flex:1;padding:8px 0;overflow-y:auto}
+.ni{display:flex;align-items:center;gap:12px;padding:12px 20px;color:#BDD7EE;cursor:pointer;border-left:4px solid transparent;transition:all .2s;font-size:14px;user-select:none;white-space:nowrap}.ni:hover{background:rgba(255,255,255,.1);color:#fff}.ni.active{background:#fff;color:#2E75B6;border-left-color:#2E75B6}.ni .ico{font-size:18px;width:22px;text-align:center;flex-shrink:0}
+#header{position:fixed;top:0;left:240px;right:0;height:60px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100;transition:left .3s}#ptitle{font-size:17px;font-weight:600;color:#1F4E79}.avatar{width:36px;height:36px;background:#2E75B6;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px}.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}.hbg span{width:22px;height:2px;background:#1F4E79;border-radius:2px;display:block}
+#main{margin-left:240px;margin-top:60px;padding:24px;min-height:calc(100vh - 60px);transition:margin-left .3s}.pg{display:none}.pg.active{display:block}
+.card{background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);padding:20px;margin-bottom:16px}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}.kcard{background:#fff;border-radius:8px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.1);position:relative}.kico{position:absolute;top:14px;right:14px;font-size:24px}.kval{font-size:36px;font-weight:700;color:#1F4E79}.klbl{color:#888;font-size:13px;margin-top:6px}
+.crow{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.afeed{display:flex;flex-direction:column}.aitem{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid #F2F2F2}.adot{width:10px;height:10px;background:#2E75B6;border-radius:50%;margin-top:5px;flex-shrink:0}.atim{font-size:12px;color:#888;white-space:nowrap;min-width:110px}.atxt{font-size:14px}
+.twrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th{background:#1F4E79;color:#fff;padding:11px 14px;text-align:left;font-weight:600;white-space:nowrap}td{padding:10px 14px;border-bottom:1px solid #F2F2F2;vertical-align:middle}tr:nth-child(even) td{background:#F8F8F8}tr:hover td{background:#D5E8F0}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}.bg{background:#70AD47;color:#fff}.bb{background:#2E75B6;color:#fff}.br{background:#FF4444;color:#fff}.ba{background:#FF8C00;color:#fff}.bgr{background:#888;color:#fff}
+.btn{padding:8px 14px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:500;transition:opacity .2s}.btn:hover{opacity:.85}.bp{background:#2E75B6;color:#fff}.bs{background:#fff;color:#2E75B6;border:1px solid #2E75B6}.bd{background:#FF4444;color:#fff}.bn{background:#70AD47;color:#fff}.bsm{padding:4px 9px;font-size:12px}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.ph h2{font-size:20px;font-weight:700;color:#1F4E79}
+.s3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}.sc{background:#fff;border-radius:8px;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,.1)}.sv{font-size:26px;font-weight:700;color:#1F4E79}.sl{font-size:13px;color:#888;margin-top:4px}
+.pills{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}.pill{background:#fff;border-radius:20px;padding:5px 14px;font-size:13px;box-shadow:0 1px 4px rgba(0,0,0,.08)}.pill b{color:#1F4E79}
+.si{padding:8px 12px;border:1px solid #ccc;border-radius:6px;font-size:13px;width:260px}
+.rc{background:#fff;border-radius:8px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.1);margin-bottom:16px}.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;align-items:start}.rres{padding:16px;background:#F2F2F2;border-radius:8px;margin-top:16px;animation:sd .3s}@keyframes sd{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}.erbig{font-size:28px;font-weight:700;color:#1F4E79;margin:8px 0}.rb{padding:10px 16px;border-radius:6px;font-size:14px;font-weight:700;margin:10px 0}.rby{background:#E2EFDA;color:#375623}.rbn{background:#FFE0E0;color:#cc0000}
+.ac{background:#fff;border-radius:8px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.1);margin-bottom:16px}.as3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0;text-align:center}.asv{font-size:20px;font-weight:700}.asl{font-size:12px;color:#888}.pb{background:#F2F2F2;border-radius:4px;height:8px;overflow:hidden;margin:6px 0}.pf{height:100%;border-radius:4px}.ptag{display:inline-block;background:#BDD7EE;color:#1F4E79;border-radius:12px;padding:2px 8px;font-size:12px;font-weight:600;margin:2px}
+#ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}#ov.on{display:flex;animation:fi .2s}.mbox{background:#fff;border-radius:12px;padding:28px;max-width:560px;width:94%;max-height:90vh;overflow-y:auto;position:relative}.mbox h3{font-size:16px;font-weight:700;color:#1F4E79;margin-bottom:16px}.mx{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#888}@keyframes fi{from{opacity:0}to{opacity:1}}
+.fg{margin-bottom:13px}.fg label{display:block;font-size:12px;color:#555;margin-bottom:4px;font-weight:500}.fg input,.fg select,.fg textarea{width:100%;padding:8px 10px;border:1px solid #ccc;border-radius:6px;font-size:13px;font-family:inherit}.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:#2E75B6}.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#toasts{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px}.toast{padding:12px 18px;border-radius:8px;color:#fff;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,.2);animation:tsi .3s;max-width:320px}.tok{background:#70AD47}.ter{background:#FF4444}.twr{background:#FF8C00}@keyframes tsi{from{opacity:0;transform:translateX(80px)}to{opacity:1;transform:translateX(0)}}
+.empty{text-align:center;padding:50px 20px;color:#888}.empty .ei{font-size:44px;margin-bottom:10px}.empty h3{font-size:16px;color:#555}
+.sdn{background:#eee;color:#888;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}.sdp{background:#BDD7EE;color:#1F4E79;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}.sdc{background:#70AD47;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}
+@media(max-width:900px){#sidebar{width:60px}.sb-logo p,.ni span{display:none}.sb-logo h1{font-size:10px}#header{left:60px}#main{margin-left:60px}}
+@media(max-width:600px){#sidebar{transform:translateX(-240px);width:240px !important}#sidebar.mob{transform:translateX(0)}#sidebar.mob .sb-logo h1,#sidebar.mob .sb-logo p,#sidebar.mob .ni span{display:block !important}#header{left:0}#main{margin-left:0}.hbg{display:flex}.kgrid{grid-template-columns:1fr 1fr}.crow{grid-template-columns:1fr}.s3{grid-template-columns:1fr}.r3{grid-template-columns:1fr}.fr{grid-template-columns:1fr}}
+</style></head><body>
+<nav id="sidebar"><div class="sb-logo"><h1>Auctimeter 2.0</h1><p>E2R Digital Twin</p></div><div class="sb-nav" id="snav"></div></nav>
+<header id="header"><div style="display:flex;align-items:center;gap:12px"><div class="hbg" onclick="toggleSb()"><span></span><span></span><span></span></div><div id="ptitle">Dashboard</div></div><div style="display:flex;align-items:center;gap:14px"><span style="font-size:12px;color:#888">13-Mar-2026</span><div class="avatar">AV</div></div></header>
+<div id="main">
+<div id="pg-dashboard" class="pg"></div>
+<div id="pg-emi" class="pg"></div>
+<div id="pg-repodec" class="pg"></div>
+<div id="pg-repo" class="pg"></div>
+<div id="pg-yard" class="pg"></div>
+<div id="pg-inspect" class="pg"></div>
+<div id="pg-auction" class="pg"></div>
+<div id="pg-payments" class="pg"></div>
+<div id="pg-release" class="pg"></div>
+</div>
+<div id="ov" onclick="ovc(event)"><div class="mbox" id="mbox"><button class="mx" onclick="cM()">&#x2715;</button><div id="mbody"></div></div></div>
+<div id="toasts"></div>
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const V=[{id:'V001',n:'MH12AB1234',mk:'Honda',mo:'Activa',yr:2021,tp:'2W',loc:'Mumbai',st:'In Auction',ys:'A-12'},{id:'V002',n:'DL08CD5678',mk:'Maruti',mo:'Swift',yr:2019,tp:'4W',loc:'Delhi',st:'In Inspection',ys:'B-04'},{id:'V003',n:'KA04EF9012',mk:'Bajaj',mo:'Pulsar',yr:2020,tp:'2W',loc:'Bangalore',st:'In Yard',ys:'C-07'},{id:'V004',n:'TN09GH3456',mk:'Tata',mo:'Nexon',yr:2022,tp:'4W',loc:'Chennai',st:'Repo Ordered',ys:null},{id:'V005',n:'GJ05IJ7890',mk:'Hero',mo:'Splendor',yr:2020,tp:'2W',loc:'Ahmedabad',st:'Payment Pending',ys:'A-03'},{id:'V006',n:'RJ14KL2345',mk:'Hyundai',mo:'i20',yr:2021,tp:'4W',loc:'Jaipur',st:'EMI Default',ys:null},{id:'V007',n:'UP32MN6789',mk:'TVS',mo:'Apache',yr:2019,tp:'2W',loc:'Lucknow',st:'Released',ys:null},{id:'V008',n:'MH01OP1234',mk:'Mahindra',mo:'Scorpio',yr:2020,tp:'4W',loc:'Pune',st:'In Auction',ys:'D-02'},{id:'V009',n:'WB24QR5678',mk:'Suzuki',mo:'Access',yr:2022,tp:'2W',loc:'Kolkata',st:'EMI Default',ys:null},{id:'V010',n:'AP09ST9012',mk:'Ford',mo:'EcoSport',yr:2018,tp:'4W',loc:'Hyderabad',st:'In Inspection',ys:'B-11'}];
+let L=[{id:'L001',vi:'V001',br:'Ramesh Kumar',ct:'9876543210',la:75000,os:52000,me:4,ea:3200,ls:'Notice Sent'},{id:'L002',vi:'V002',br:'Priya Singh',ct:'9845012345',la:580000,os:420000,me:3,ea:14500,ls:'Clean'},{id:'L003',vi:'V003',br:'Arun Nair',ct:'9812234567',la:95000,os:61000,me:5,ea:4100,ls:'Notice Sent'},{id:'L004',vi:'V004',br:'Meena Patel',ct:'9823345678',la:950000,os:780000,me:6,ea:22000,ls:'Court Case Filed'},{id:'L005',vi:'V005',br:'Suresh Reddy',ct:'9834456789',la:62000,os:31000,me:3,ea:2800,ls:'Clean'},{id:'L006',vi:'V006',br:'Kavita Sharma',ct:'9845567890',la:720000,os:610000,me:2,ea:18500,ls:'Clean'},{id:'L007',vi:'V007',br:'Deepak Joshi',ct:'9856678901',la:85000,os:0,me:0,ea:3600,ls:'Closed'},{id:'L008',vi:'V008',br:'Anita Verma',ct:'9867789012',la:1200000,os:920000,me:5,ea:28000,ls:'Notice Sent'},{id:'L009',vi:'V009',br:'Rajiv Yadav',ct:'9878890123',la:70000,os:58000,me:2,ea:3000,ls:'Clean'},{id:'L010',vi:'V010',br:'Sunita Rao',ct:'9889901234',la:880000,os:650000,me:4,ea:19500,ls:'Notice Sent'}];
+let RO=[{id:'RO001',vi:'V001',vn:'Swift Repo Pvt Ltd',ad:'2026-02-10',sd:7,st:'Delivered',pu:true},{id:'RO002',vi:'V002',vn:'FastGrab Solutions',ad:'2026-02-18',sd:7,st:'Delivered',pu:true},{id:'RO003',vi:'V003',vn:'Swift Repo Pvt Ltd',ad:'2026-02-22',sd:7,st:'Delivered',pu:true},{id:'RO004',vi:'V004',vn:'RecoverX India',ad:'2026-03-05',sd:7,st:'In Progress',pu:false}];
+const Y=[{id:'Y001',vi:'V001',yl:'Mumbai Central Yard',ed:'2026-02-13',sl:'A-12',cn:'Fair',dy:28},{id:'Y002',vi:'V002',yl:'Delhi North Yard',ed:'2026-02-21',sl:'B-04',cn:'Good',dy:20},{id:'Y003',vi:'V003',yl:'Bangalore Yard',ed:'2026-02-26',sl:'C-07',cn:'Poor',dy:15},{id:'Y004',vi:'V005',yl:'Ahmedabad Yard',ed:'2026-02-01',sl:'A-03',cn:'Good',dy:40},{id:'Y005',vi:'V008',yl:'Pune East Yard',ed:'2026-02-15',sl:'D-02',cn:'Fair',dy:26}];
+let INS=[{id:'I001',vi:'V001',vn:'AutoCheck India',dt:'2026-02-16',gr:'B',ev:45000,qc:'Approved',ph:8},{id:'I002',vi:'V002',vn:'VehicleScan Pro',dt:'2026-02-24',gr:'A',ev:380000,qc:'Pending',ph:10},{id:'I003',vi:'V005',vn:'AutoCheck India',dt:'2026-02-05',gr:'A',ev:28000,qc:'Approved',ph:7},{id:'I004',vi:'V008',vn:'VehicleScan Pro',dt:'2026-02-18',gr:'B',ev:820000,qc:'Approved',ph:9}];
+let AU=[{id:'A001',vi:'V001',rp:40000,cb:47500,bc:6,st:'2026-03-08',et:'2026-03-15',status:'Active',pl:'Internal + BidCar'},{id:'A002',vi:'V005',rp:24000,cb:26000,bc:3,st:'2026-03-06',et:'2026-03-13',status:'Closed - Awaiting Payment',pl:'Internal'},{id:'A003',vi:'V008',rp:750000,cb:780000,bc:9,st:'2026-03-09',et:'2026-03-16',status:'Active',pl:'Internal + CarDekho'}];
+let PAY=[{id:'P001',ai:'A002',vi:'V005',buyer:'Suresh Dealers Pvt Ltd',ad:26000,ap:26000,mt:'Bank Transfer',st:'Paid',pd:'2026-03-12'},{id:'P002',ai:'A001',vi:'V001',buyer:'Mumbai Auto Traders',ad:47500,ap:0,mt:null,st:'Pending',pd:null}];
+let REL=[{id:'REL001',vi:'V007',buyer:'Deepak Joshi',am:72000,ps:'Paid',ns:'Complete',rc:'Complete',hv:'Complete'},{id:'REL002',vi:'V005',buyer:'Suresh Dealers Pvt Ltd',am:26000,ps:'Paid',ns:'In Progress',rc:'Not Started',hv:'Not Started'}];
+// ── UTILS ─────────────────────────────────────────────────────────────
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmt(n){if(n===null||n===undefined||n==='')return '—';return '\u20B9'+Number(n).toLocaleString('en-IN');}
+function fd(d){if(!d)return '—';const dt=new Date(d+'T00:00:00');return String(dt.getDate()).padStart(2,'0')+'-'+MN[dt.getMonth()]+'-'+dt.getFullYear();}
+function addD(d,n){const dt=new Date(d+'T00:00:00');dt.setDate(dt.getDate()+n);return dt.toISOString().split('T')[0];}
+function dAgo(d){return Math.floor((new Date('2026-03-13')-new Date(d+'T00:00:00'))/86400000);}
+function gv(id){return V.find(v=>v.id===id)||{};}
+function gl(vi){return L.find(l=>l.vi===vi)||{};}
+function bb(s){const m={'Active':'bg','Approved':'bg','Paid':'bg','Released':'bg','Delivered':'bg','Closed':'bgr','In Auction':'bb','In Inspection':'bb','In Yard':'bb','In Progress':'bb','Pending':'bb','EMI Default':'br','Rejected':'br','Closed - Awaiting Payment':'ba','Repo Ordered':'ba','Payment Pending':'ba','Notice Sent':'ba','Court Case Filed':'br'};return '<span class="badge '+(m[s]||'bgr')+'">'+s+'</span>';}
+function sbg(s){if(s==='Complete')return '<span class="sdc">\u2713 Complete</span>';if(s==='In Progress')return '<span class="sdp">\u21BB In Progress</span>';return '<span class="sdn">\u2014 Not Started</span>';}
+// ── NAV ───────────────────────────────────────────────────────────────
+const NAV=[{id:'dashboard',ico:'🏠',lbl:'Dashboard'},{id:'emi',ico:'📋',lbl:'EMI Tracking'},{id:'repodec',ico:'🔍',lbl:'Repo Decision'},{id:'repo',ico:'🚗',lbl:'Repossession'},{id:'yard',ico:'🏭',lbl:'Yard Management'},{id:'inspect',ico:'🔧',lbl:'Inspection'},{id:'auction',ico:'🏷️',lbl:'Auction'},{id:'payments',ico:'💳',lbl:'Payments'},{id:'release',ico:'📦',lbl:'Vehicle Release'}];
+let chs=[];
+function nav(pg){
+  document.querySelectorAll('.pg').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(e=>e.classList.remove('active'));
+  const pe=document.getElementById('pg-'+pg);if(pe)pe.classList.add('active');
+  const ne=document.querySelector('.ni[data-pg="'+pg+'"]');if(ne)ne.classList.add('active');
+  const n=NAV.find(x=>x.id===pg);document.getElementById('ptitle').textContent=n?n.lbl:'';
+  chs.forEach(c=>{try{c.destroy();}catch(e){}});chs=[];
+  const R={dashboard:rDash,emi:rEMI,repodec:rRepoDec,repo:rRepo,yard:rYard,inspect:rInspect,auction:rAuction,payments:rPay,release:rRelease};
+  if(R[pg])R[pg]();
+  document.getElementById('sidebar').classList.remove('mob');
+}
+function toggleSb(){document.getElementById('sidebar').classList.toggle('mob');}
+// ── TOAST ─────────────────────────────────────────────────────────────
+function toast(msg,t){t=t||'ok';const el=document.createElement('div');el.className='toast t'+t;el.textContent=msg;document.getElementById('toasts').appendChild(el);setTimeout(function(){el.style.opacity='0';el.style.transform='translateX(80px)';el.style.transition='all .3s';setTimeout(function(){el.remove();},350);},3000);}
+// ── MODAL ─────────────────────────────────────────────────────────────
+function sM(html){document.getElementById('mbody').innerHTML=html;document.getElementById('ov').classList.add('on');}
+function cM(){document.getElementById('ov').classList.remove('on');document.getElementById('mbody').innerHTML='';}
+function ovc(e){if(e.target.id==='ov')cM();}
+// ── S1: DASHBOARD ─────────────────────────────────────────────────────
+function rDash(){
+  document.getElementById('pg-dashboard').innerHTML='<div class="kgrid"><div class="kcard"><div class="kico">📁</div><div class="kval">9</div><div class="klbl">Total Active Cases</div></div><div class="kcard"><div class="kico">🏭</div><div class="kval">5</div><div class="klbl">Vehicles in Yard</div></div><div class="kcard"><div class="kico">🏷️</div><div class="kval">2</div><div class="klbl">Active Auctions</div></div><div class="kcard"><div class="kico">💳</div><div class="kval">1</div><div class="klbl">Payments Pending</div></div></div><div class="crow"><div class="card"><div style="font-size:15px;font-weight:600;color:#1F4E79;margin-bottom:10px">Pipeline by Stage</div><div style="height:240px"><canvas id="cPipe"></canvas></div></div><div class="card"><div style="font-size:15px;font-weight:600;color:#1F4E79;margin-bottom:10px">Vehicles by Location</div><div style="height:240px"><canvas id="cLoc"></canvas></div></div></div><div class="card"><div style="font-size:15px;font-weight:600;color:#1F4E79;margin-bottom:14px">Recent Activity</div><div class="afeed"><div class="aitem"><div class="adot"></div><div class="atim">Today 09:14</div><div class="atxt"><strong>V001</strong> — Bid placed '+fmt(47500)+' by Mumbai Auto Traders</div></div><div class="aitem"><div class="adot"></div><div class="atim">Today 08:55</div><div class="atxt"><strong>V008</strong> — New bid '+fmt(780000)+' on auction A003</div></div><div class="aitem"><div class="adot"></div><div class="atim">Yesterday 17:30</div><div class="atxt"><strong>V005</strong> — Payment confirmed '+fmt(26000)+'</div></div><div class="aitem"><div class="adot"></div><div class="atim">Yesterday 14:10</div><div class="atxt"><strong>V002</strong> — Inspection report submitted, pending QC</div></div><div class="aitem"><div class="adot"></div><div class="atim">2 days ago 11:00</div><div class="atxt"><strong>V004</strong> — Repossession order RO004 assigned to RecoverX India</div></div><div class="aitem" style="border:none"><div class="adot"></div><div class="atim">3 days ago 09:45</div><div class="atxt"><strong>V006</strong> — Missed EMI case created, 2 EMIs overdue</div></div></div></div>';
+  setTimeout(function(){
+    const c1=new Chart(document.getElementById('cPipe'),{type:'doughnut',data:{labels:['EMI Default','Repo Ordered','In Yard','In Inspection','In Auction','Pmt Pending','Released'],datasets:[{data:[2,1,1,2,2,1,1],backgroundColor:['#FF4444','#FF8C00','#1F4E79','#2E75B6','#70AD47','#BDD7EE','#888'],borderWidth:2}]},options:{plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:12}}},maintainAspectRatio:false}});
+    const c2=new Chart(document.getElementById('cLoc'),{type:'bar',data:{labels:['Mumbai','Delhi','Bangalore','Chennai','Ahmedabad','Jaipur','Lucknow','Pune','Kolkata','Hyderabad'],datasets:[{data:[1,1,1,1,1,1,1,1,1,1],backgroundColor:'#2E75B6',label:'Vehicles'}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}},maintainAspectRatio:false}});
+    chs.push(c1,c2);
+  },50);
+}
+// ── S2: EMI TRACKING ──────────────────────────────────────────────────
+function rEMI(){
+  document.getElementById('pg-emi').innerHTML='<div class="ph"><h2>EMI Tracking</h2><button class="btn bp" onclick="openAddEMI()">+ Add New Case</button></div><div class="pills"><div class="pill">Total Cases: <b>'+L.length+'</b></div><div class="pill">Active Defaults: <b>'+L.filter(function(l){return l.me>0&&l.ls!=='Closed';}).length+'</b></div><div class="pill">Critical (5+ EMIs): <b>'+L.filter(function(l){return l.me>=5;}).length+'</b></div></div><div style="margin-bottom:14px"><input class="si" id="esi" placeholder="Search by vehicle no. or borrower\u2026" oninput="fEMI()"></div><div class="card"><div class="twrap"><table><thead><tr><th>Case ID</th><th>Vehicle No.</th><th>Borrower</th><th>Vehicle</th><th>Missed EMIs</th><th>Outstanding (\u20B9)</th><th>Legal Status</th><th>Last Action</th><th>Status</th><th>Actions</th></tr></thead><tbody id="etb"></tbody></table></div></div>';
+  drawEMI(L);
+}
+function drawEMI(data){
+  const tb=document.getElementById('etb');if(!tb)return;
+  if(!data.length){tb.innerHTML='<tr><td colspan="10" style="text-align:center;padding:30px;color:#888">No records found</td></tr>';return;}
+  tb.innerHTML=data.map(function(l){
+    const v=gv(l.vi);const ec=l.me>=5?'br':l.me>=3?'ba':'bg';
+    const lc={'Notice Sent':'ba','Court Case Filed':'br','Closed':'bgr','Clean':'bg'}[l.ls]||'bgr';
+    return '<tr><td>'+l.id+'</td><td><b>'+(v.n||'—')+'</b></td><td>'+l.br+'</td><td>'+v.mk+' '+v.mo+' ('+v.yr+')</td><td><span class="badge '+ec+'">'+l.me+'</span></td><td>'+fmt(l.os)+'</td><td><span class="badge '+lc+'">'+l.ls+'</span></td><td style="color:#888;font-size:12px">01-Mar-2026</td><td>'+bb(v.st)+'</td><td style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn bsm bs" onclick="vwLoan(\''+l.id+'\')">View</button>'+(l.me>=2?'<button class="btn bsm bp" onclick="nav(\'repodec\')">Repo Eval</button>':'')+'</td></tr>';
+  }).join('');
+}
+function fEMI(){const q=document.getElementById('esi').value.toLowerCase();drawEMI(L.filter(function(l){const v=gv(l.vi);return(v.n||'').toLowerCase().includes(q)||l.br.toLowerCase().includes(q);}));}
+function vwLoan(id){
+  const l=L.find(function(x){return x.id===id;});const v=gv(l.vi);
+  sM('<h3>Loan Details \u2014 '+l.id+'</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:14px"><div><div style="color:#888;font-size:12px">Borrower</div><div style="font-weight:600">'+l.br+'</div></div><div><div style="color:#888;font-size:12px">Contact</div><div>'+l.ct+'</div></div><div><div style="color:#888;font-size:12px">Vehicle</div><div>'+v.n+' \u2014 '+v.mk+' '+v.mo+'</div></div><div><div style="color:#888;font-size:12px">Loan Amount</div><div>'+fmt(l.la)+'</div></div><div><div style="color:#888;font-size:12px">Outstanding</div><div style="color:#FF4444;font-weight:700">'+fmt(l.os)+'</div></div><div><div style="color:#888;font-size:12px">EMI Amount</div><div>'+fmt(l.ea)+'/mo</div></div><div><div style="color:#888;font-size:12px">Missed EMIs</div><div style="color:#FF4444;font-weight:700">'+l.me+'</div></div><div><div style="color:#888;font-size:12px">Legal Status</div><div>'+l.ls+'</div></div></div>');
+}
+function openAddEMI(){sM('<h3>Add New EMI Case</h3><div class="fr"><div class="fg"><label>Borrower Name</label><input id="a1" placeholder="Full name"></div><div class="fg"><label>Contact Number</label><input id="a2" placeholder="Mobile"></div></div><div class="fr"><div class="fg"><label>Vehicle Number</label><input id="a3" placeholder="MH12AB1234"></div><div class="fg"><label>Loan ID</label><input id="a4" placeholder="L011"></div></div><div class="fr"><div class="fg"><label>Loan Amount (\u20B9)</label><input id="a5" type="number"></div><div class="fg"><label>Outstanding (\u20B9)</label><input id="a6" type="number"></div></div><div class="fr"><div class="fg"><label>Missed EMIs</label><input id="a7" type="number"></div><div class="fg"><label>EMI Amount (\u20B9)</label><input id="a8" type="number"></div></div><div class="fg"><label>Legal Status</label><select id="a9"><option>Clean</option><option>Notice Sent</option><option>Court Case Filed</option></select></div><button class="btn bp" style="width:100%;margin-top:8px" onclick="submitEMI()">Add Case</button>');}
+function submitEMI(){L.push({id:'L'+String(L.length+1).padStart(3,'0'),vi:'V001',br:document.getElementById('a1').value||'New Borrower',ct:document.getElementById('a2').value,la:+document.getElementById('a5').value,os:+document.getElementById('a6').value,me:+document.getElementById('a7').value,ea:+document.getElementById('a8').value,ls:document.getElementById('a9').value});cM();rEMI();toast('EMI case added successfully');}
+// ── S3: REPO DECISION ─────────────────────────────────────────────────
+function rRepoDec(){
+  const elig=L.filter(function(l){return l.me>=2&&l.ls!=='Closed';});
+  document.getElementById('pg-repodec').innerHTML='<div class="ph"><h2>Repossession Decision Evaluator</h2></div><p style="color:#666;margin-bottom:20px;font-size:14px">'+elig.length+' cases eligible (\u22652 missed EMIs)</p>'+elig.map(function(l){
+    const v=gv(l.vi);const lc={'Notice Sent':'ba','Court Case Filed':'br','Clean':'bg'}[l.ls]||'bgr';
+    return '<div class="rc" id="rc-'+l.id+'"><div class="r3"><div><div style="font-size:11px;color:#888;margin-bottom:8px;font-weight:600;letter-spacing:.5px">VEHICLE</div><div style="font-weight:700;font-size:15px">'+v.n+'</div><div style="color:#555;margin-top:4px">'+v.mk+' '+v.mo+' ('+v.yr+')</div><span class="badge bgr" style="margin-top:6px;display:inline-block">'+v.tp+'</span><div style="color:#888;font-size:13px;margin-top:6px">\uD83D\uDCCD '+v.loc+'</div></div><div><div style="font-size:11px;color:#888;margin-bottom:8px;font-weight:600;letter-spacing:.5px">LOAN SUMMARY</div><div style="font-size:13px">Outstanding: <b style="color:#FF4444">'+fmt(l.os)+'</b></div><div style="font-size:13px;margin-top:6px">Missed EMIs: <b>'+l.me+'</b></div><div style="margin-top:8px"><span class="badge '+lc+'">'+l.ls+'</span></div><div style="color:#888;font-size:13px;margin-top:6px">'+l.br+'</div></div><div><div style="font-size:11px;color:#888;margin-bottom:8px;font-weight:600;letter-spacing:.5px">DECISION</div><div id="rd-'+l.id+'"><button class="btn bp" onclick="calcERV(\''+l.id+'\')">&#x26A1; Calculate ERV</button></div></div></div><div id="erv-'+l.id+'" style="display:none"></div></div>';
+  }).join('');
+}
+function calcERV(lid){
+  const l=L.find(function(x){return x.id===lid;});const erv=Math.round(l.os*0.72);const rec=erv>=l.os*0.6;
+  const el=document.getElementById('erv-'+lid);el.style.display='block';
+  el.innerHTML='<div class="rres"><div style="font-size:12px;color:#888">Estimated Recovery Value (ERV)</div><div class="erbig">'+fmt(erv)+'</div><div class="rb '+(rec?'rby':'rbn')+'">'+(rec?'\u2705 RECOMMEND REPOSSESSION':'\u274C DO NOT RECOMMEND')+'</div><div style="font-size:13px;color:#666;margin-bottom:12px">ERV = '+((erv/l.os)*100).toFixed(0)+'% of outstanding</div><table style="width:100%;font-size:13px;border-collapse:collapse;margin-bottom:14px"><thead><tr><th style="background:#1F4E79;color:#fff;padding:8px;text-align:left">Component</th><th style="background:#1F4E79;color:#fff;padding:8px">Value</th><th style="background:#1F4E79;color:#fff;padding:8px">Factor</th></tr></thead><tbody><tr><td style="padding:8px">Historical Market Price</td><td style="padding:8px">'+fmt(Math.round(erv*0.5))+'</td><td style="padding:8px">Base</td></tr><tr style="background:#f8f8f8"><td style="padding:8px">Condition Adjustment</td><td style="padding:8px">+10%</td><td style="padding:8px">Fair grade</td></tr><tr><td style="padding:8px">Location Factor</td><td style="padding:8px">+5%</td><td style="padding:8px">Urban</td></tr><tr style="background:#f8f8f8"><td style="padding:8px">Outstanding Buffer</td><td style="padding:8px">-15%</td><td style="padding:8px">Risk adj.</td></tr></tbody></table><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn bn" onclick="approveRepo(\''+lid+'\')">&#x2705; Approve &amp; Create Repo Order</button><button class="btn bd" onclick="rejectRepo(\''+lid+'\')">&#x274C; Override / Reject</button></div><div id="rej-'+lid+'" style="display:none;margin-top:10px"><textarea id="rejt-'+lid+'" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;font-size:13px" placeholder="Reason for rejection\u2026" rows="2"></textarea><button class="btn bd bsm" style="margin-top:6px" onclick="confirmRej(\''+lid+'\')">Confirm Rejection</button></div></div>';
+}
+function approveRepo(lid){RO.push({id:'RO00'+String(RO.length+1),vi:'V006',vn:'Swift Repo Pvt Ltd',ad:'2026-03-13',sd:7,st:'Assigned',pu:false});document.getElementById('rd-'+lid).innerHTML='<span class="badge bg">\u2713 Order Created</span>';document.getElementById('erv-'+lid).style.display='none';toast('Repo Order Created Successfully');}
+function rejectRepo(lid){document.getElementById('rej-'+lid).style.display='block';}
+function confirmRej(lid){document.getElementById('rej-'+lid).style.display='none';document.getElementById('erv-'+lid).style.display='none';document.getElementById('rd-'+lid).innerHTML='<span class="badge br">Rejected</span>';toast('Case marked as not recommended','wr');}
+// ── S4: REPOSSESSION ──────────────────────────────────────────────────
+function rRepo(){
+  document.getElementById('pg-repo').innerHTML='<div class="ph"><h2>Repossession Orders</h2><button class="btn bp" onclick="openCreateRepo()">+ Create Order</button></div><div style="margin-bottom:14px"><input class="si" id="rsi" placeholder="Search by vehicle no. or vendor\u2026" oninput="fRepo()"></div><div class="card"><div class="twrap"><table><thead><tr><th>Order ID</th><th>Vehicle No.</th><th>Borrower</th><th>Vendor</th><th>Assigned Date</th><th>SLA Deadline</th><th>SLA Status</th><th>Status</th><th>Proof</th><th>Actions</th></tr></thead><tbody id="rtb"></tbody></table></div></div>';
+  drawRepo(RO);
+}
+function drawRepo(data){
+  const tb=document.getElementById('rtb');if(!tb)return;
+  tb.innerHTML=data.map(function(r){
+    const v=gv(r.vi);const l=gl(r.vi);const sla=addD(r.ad,r.sd);const el=dAgo(r.ad);
+    const si=el>7?'<span style="color:#FF4444;font-weight:600">\uD83D\uDD34 SLA Breached ('+el+'d)</span>':el>5?'<span style="color:#FF8C00;font-weight:600">\uD83D\uDFE1 At Risk ('+el+'d)</span>':'<span style="color:#70AD47;font-weight:600">\uD83D\uDFE2 On Track ('+el+'d)</span>';
+    const sc={'Delivered':'bg','In Progress':'bb','Assigned':'ba','Vehicle Collected':'bb'}[r.st]||'bgr';
+    return '<tr><td><b>'+r.id+'</b></td><td>'+(v.n||'—')+'</td><td>'+(l.br||'—')+'</td><td>'+r.vn+'</td><td>'+fd(r.ad)+'</td><td>'+fd(sla)+'</td><td>'+si+'</td><td><span class="badge '+sc+'">'+r.st+'</span></td><td>'+(r.pu?'<span class="badge bg">\u2713 Uploaded</span>':'<span class="badge br">Pending</span>')+'</td><td style="display:flex;gap:4px;flex-wrap:wrap"><select onchange="updRO(\''+r.id+'\',this)" style="padding:4px 6px;border:1px solid #ccc;border-radius:4px;font-size:12px"><option value="">Update Status</option><option>Assigned</option><option>In Progress</option><option>Vehicle Collected</option><option>Delivered to Yard</option></select><button class="btn bsm bs" onclick="upProof(\''+r.id+'\')">Upload Proof</button></td></tr>';
+  }).join('');
+}
+function fRepo(){const q=document.getElementById('rsi').value.toLowerCase();drawRepo(RO.filter(function(r){const v=gv(r.vi);return(v.n||'').toLowerCase().includes(q)||r.vn.toLowerCase().includes(q);}));}
+function updRO(id,sel){const v=sel.value;if(!v)return;const r=RO.find(function(x){return x.id===id;});if(r)r.st=v==='Delivered to Yard'?'Delivered':v;drawRepo(RO);toast('Status updated to: '+v);}
+function upProof(id){const r=RO.find(function(x){return x.id===id;});if(r)r.pu=true;drawRepo(RO);toast('Proof Uploaded Successfully');}
+function openCreateRepo(){sM('<h3>Create Repo Order</h3><div class="fr"><div class="fg"><label>Vehicle No.</label><input id="cr1" placeholder="e.g. TN09GH3456"></div><div class="fg"><label>Borrower Name</label><input id="cr2" placeholder="Name"></div></div><div class="fg"><label>Assign Vendor</label><select id="cr3"><option>Swift Repo Pvt Ltd</option><option>FastGrab Solutions</option><option>RecoverX India</option></select></div><div class="fg"><label>Assigned Date</label><input id="cr4" type="date" value="2026-03-13"></div><button class="btn bp" style="width:100%;margin-top:8px" onclick="submitRepo()">Create Order</button>');}
+function submitRepo(){RO.push({id:'RO00'+String(RO.length+1),vi:'V006',vn:document.getElementById('cr3').value,ad:document.getElementById('cr4').value,sd:7,st:'Assigned',pu:false});cM();rRepo();toast('Repo Order Created');}
+// ── S5: YARD MANAGEMENT ───────────────────────────────────────────────
+function rYard(){
+  const avg=(Y.reduce(function(s,y){return s+y.dy;},0)/Y.length).toFixed(1);
+  const al=Y.filter(function(y){return y.dy>30;}).length;
+  document.getElementById('pg-yard').innerHTML='<div class="ph"><h2>Yard Inventory</h2><button class="btn bp" onclick="openCI()">+ Check In Vehicle</button></div><div class="s3"><div class="sc"><div class="sv">'+Y.length+'</div><div class="sl">Total in Yard</div></div><div class="sc"><div class="sv">'+avg+'</div><div class="sl">Avg Days in Yard</div></div><div class="sc"><div class="sv" style="color:#FF4444">'+al+'</div><div class="sl">Ageing Alert (&gt;30 days)</div></div></div><div class="card"><div class="twrap"><table><thead><tr><th>Yard ID</th><th>Vehicle No.</th><th>Make &amp; Model</th><th>Location</th><th>Entry Date</th><th>Days in Yard</th><th>Slot</th><th>Condition</th><th>Status</th><th>Actions</th></tr></thead><tbody>'+Y.map(function(y){const v=gv(y.vi);const dc=y.dy>30?'#FF4444':y.dy>15?'#FF8C00':'#70AD47';return '<tr><td>'+y.id+'</td><td><b>'+(v.n||'—')+'</b></td><td>'+v.mk+' '+v.mo+'</td><td>'+y.yl+'</td><td>'+fd(y.ed)+'</td><td><b style="color:'+dc+'">'+y.dy+'</b></td><td>'+y.sl+'</td><td>'+y.cn+'</td><td>'+bb(v.st)+'</td><td><button class="btn bsm bs" onclick="toast(\''+y.id+' details viewed\')">Details</button></td></tr>';}).join('')+'</tbody></table></div></div><div class="card"><div style="font-size:15px;font-weight:600;color:#1F4E79;margin-bottom:12px">Yard Ageing</div><div style="height:220px"><canvas id="cYard"></canvas></div></div>';
+  setTimeout(function(){
+    const cols=Y.map(function(y){return y.dy>30?'#FF4444':y.dy>15?'#FF8C00':'#70AD47';});
+    const c=new Chart(document.getElementById('cYard'),{type:'bar',data:{labels:Y.map(function(y){return gv(y.vi).n||y.id;}),datasets:[{data:Y.map(function(y){return y.dy;}),backgroundColor:cols,label:'Days in Yard'}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,title:{display:true,text:'Days in Yard'}}},maintainAspectRatio:false}});
+    chs.push(c);
+  },50);
+}
+function openCI(){sM('<h3>Check In Vehicle</h3><div class="fg"><label>Vehicle Number</label><input id="ci1" placeholder="e.g. MH12AB1234"></div><div class="fg"><label>Yard Location</label><input id="ci2" placeholder="e.g. Mumbai Central Yard"></div><div class="fg"><label>Slot Number</label><input id="ci3" placeholder="e.g. E-01"></div><div class="fg"><label>Condition on Arrival</label><select id="ci4"><option>Good</option><option>Fair</option><option>Poor</option></select></div><button class="btn bp" style="width:100%;margin-top:8px" onclick="cM();rYard();toast(\'Vehicle checked in successfully\')">Check In</button>');}
+
+// ── S6: INSPECTION ────────────────────────────────────────────────────
+function rInspect(){
+  document.getElementById('pg-inspect').innerHTML='<div class="ph"><h2>Inspection Management</h2><button class="btn bp" onclick="openCreateInsp()">+ Create Inspection Request</button></div><div class="pills"><div class="pill">Total: <b>'+INS.length+'</b></div><div class="pill">Pending QC: <b>'+INS.filter(function(i){return i.qc==='Pending';}).length+'</b></div><div class="pill">Approved: <b>'+INS.filter(function(i){return i.qc==='Approved';}).length+'</b></div><div class="pill">Rejected: <b>'+INS.filter(function(i){return i.qc==='Rejected';}).length+'</b></div></div><div class="card"><div class="twrap"><table><thead><tr><th>Insp. ID</th><th>Vehicle No.</th><th>Vendor</th><th>Date</th><th>Grade</th><th>Est. Value (\u20B9)</th><th>Photos</th><th>QC Status</th><th>Actions</th></tr></thead><tbody id="itb"></tbody></table></div></div>';
+  drawInsp();
+}
+function drawInsp(){
+  const tb=document.getElementById('itb');if(!tb)return;
+  tb.innerHTML=INS.map(function(i){
+    const v=gv(i.vi);const qc={'Approved':'bg','Pending':'bb','Rejected':'br'}[i.qc]||'bgr';
+    let acts='<button class="btn bsm bs" onclick="vwInspDetail(\''+i.id+'\')">View</button>';
+    if(i.qc==='Pending')acts+=' <button class="btn bsm bn" onclick="appInsp(\''+i.id+'\')">&#x2705; Approve</button><button class="btn bsm bd" style="margin-left:4px" onclick="rejInsp(\''+i.id+'\')">&#x274C; Reject</button>';
+    return '<tr id="itr-'+i.id+'"><td>'+i.id+'</td><td><b>'+(v.n||'—')+'</b></td><td>'+i.vn+'</td><td>'+fd(i.dt)+'</td><td><b>'+i.gr+'</b></td><td>'+fmt(i.ev)+'</td><td>'+i.ph+'</td><td><span class="badge '+qc+'">'+i.qc+'</span></td><td style="display:flex;gap:4px;flex-wrap:wrap">'+acts+'</td></tr>';
+  }).join('');
+}
+function appInsp(id){const i=INS.find(function(x){return x.id===id;});if(i)i.qc='Approved';drawInsp();toast('Inspection approved successfully');}
+function rejInsp(id){
+  const tr=document.getElementById('itr-'+id);if(!tr)return;
+  const lastTd=tr.querySelector('td:last-child');
+  lastTd.innerHTML='<div style="display:flex;flex-direction:column;gap:4px"><textarea id="rt-'+id+'" style="width:180px;font-size:12px;padding:4px;border:1px solid #ccc;border-radius:4px" rows="2" placeholder="Rejection reason\u2026"></textarea><button class="btn bsm bd" onclick="confirmRejInsp(\''+id+'\')">Confirm</button></div>';
+}
+function confirmRejInsp(id){const i=INS.find(function(x){return x.id===id;});if(i)i.qc='Rejected';drawInsp();toast('Inspection rejected','wr');}
+function vwInspDetail(id){const i=INS.find(function(x){return x.id===id;});const v=gv(i.vi);sM('<h3>Inspection '+i.id+'</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:14px"><div><div style="color:#888;font-size:12px">Vehicle</div><div style="font-weight:600">'+v.n+'</div></div><div><div style="color:#888;font-size:12px">Vendor</div><div>'+i.vn+'</div></div><div><div style="color:#888;font-size:12px">Date</div><div>'+fd(i.dt)+'</div></div><div><div style="color:#888;font-size:12px">Grade</div><div style="font-weight:700;font-size:20px">'+i.gr+'</div></div><div><div style="color:#888;font-size:12px">Est. Value</div><div style="font-weight:700;color:#1F4E79">'+fmt(i.ev)+'</div></div><div><div style="color:#888;font-size:12px">Photos</div><div>'+i.ph+' uploaded</div></div><div><div style="color:#888;font-size:12px">QC Status</div><div>'+i.qc+'</div></div></div>');}
+function openCreateInsp(){sM('<h3>Create Inspection Request</h3><div class="fg"><label>Vehicle (Yard Vehicles)</label><select id="iv"><option value="V001">MH12AB1234 — Honda Activa</option><option value="V002">DL08CD5678 — Maruti Swift</option><option value="V005">GJ05IJ7890 — Hero Splendor</option><option value="V008">MH01OP1234 — Mahindra Scorpio</option></select></div><div class="fg"><label>Assign Vendor</label><select id="ivn"><option>AutoCheck India</option><option>VehicleScan Pro</option><option>DriveAssure</option></select></div><div class="fg"><label>Notes</label><textarea id="inotes" rows="3" placeholder="Any special instructions\u2026"></textarea></div><button class="btn bp" style="width:100%;margin-top:8px" onclick="submitInsp()">Create Request</button>');}
+function submitInsp(){INS.push({id:'I00'+String(INS.length+1),vi:document.getElementById('iv').value,vn:document.getElementById('ivn').value,dt:'2026-03-13',gr:'—',ev:0,qc:'Pending',ph:0});cM();rInspect();toast('Inspection request created');}
+// ── S7: AUCTION ───────────────────────────────────────────────────────
+function rAuction(){
+  document.getElementById('pg-auction').innerHTML='<div class="ph"><h2>Auction Management</h2><button class="btn bp" onclick="openCreateList()">+ Create Listing</button></div><div class="s3"><div class="sc"><div class="sv">'+AU.filter(function(a){return a.status==='Active';}).length+'</div><div class="sl">Active Auctions</div></div><div class="sc"><div class="sv">4</div><div class="sl">Total Bids Today</div></div><div class="sc"><div class="sv">'+fmt(780000)+'</div><div class="sl">Highest Bid</div></div></div>'+AU.map(buildAucCard).join('');
+}
+function buildAucCard(a){
+  const v=gv(a.vi);const isAbove=a.cb>=a.rp;
+  const plats=a.pl.split('+').map(function(p){return '<span class="ptag">'+p.trim()+'</span>';}).join('');
+  const now=new Date('2026-03-13');const st=new Date(a.st+'T00:00:00');const et=new Date(a.et+'T00:00:00');
+  const total=et-st;const elapsed=Math.max(0,now-st);const pct=Math.min(100,Math.round((elapsed/total)*100));
+  const sc={'Active':'bg','Closed - Awaiting Payment':'ba','Closed':'bgr'}[a.status]||'bgr';
+  return '<div class="ac"><div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px"><div><div style="font-weight:700;font-size:16px">'+v.n+' <span style="font-weight:400;color:#555;font-size:14px">'+v.mk+' '+v.mo+'</span></div><div style="margin-top:6px">'+plats+'</div></div><span class="badge '+sc+'">'+a.status+'</span></div><div class="as3"><div class="auction-stat"><div class="asl">Reserve Price</div><div class="asv">'+fmt(a.rp)+'</div></div><div class="auction-stat"><div class="asl">Current Bid</div><div class="asv" style="color:'+(isAbove?'#70AD47':'#FF4444')+'">'+fmt(a.cb)+'</div></div><div class="auction-stat"><div class="asl">Bid Count</div><div class="asv">'+a.bc+'</div></div></div><div style="font-size:12px;color:#888">'+fd(a.st)+' — '+fd(a.et)+'</div><div class="pb"><div class="pf" style="width:'+pct+'%;background:#2E75B6"></div></div><div style="font-size:12px;color:#888;margin-bottom:14px">'+pct+'% of auction duration elapsed</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn bp bsm" onclick="viewBids(\''+a.id+'\')">View Bids</button><button class="btn bs bsm" onclick="toast(\'Auction extended to '+fd(a.et)+'\')">Extend Auction</button>'+(a.status==='Active'?'<button class="btn bd bsm" onclick="closeAucConf(\''+a.id+'\')">Close Auction</button>':'')+'</div></div>';
+}
+function viewBids(aid){
+  const a=AU.find(function(x){return x.id===aid;});const v=gv(a.vi);
+  const bids=aid==='A001'?[{b:'Raj Motors',am:41000,t:'08-Mar 10:22',s:'Outbid'},{b:'City Autos',am:42500,t:'09-Mar 14:05',s:'Outbid'},{b:'Mumbai Auto Traders',am:43000,t:'10-Mar 09:30',s:'Outbid'},{b:'City Autos',am:44500,t:'11-Mar 11:15',s:'Outbid'},{b:'Raj Motors',am:46000,t:'12-Mar 16:40',s:'Outbid'},{b:'Mumbai Auto Traders',am:47500,t:'13-Mar 09:14',s:'Highest'}]:[{b:'Local Dealer',am:a.rp,t:fd(a.st),s:'Bid'}];
+  sM('<h3>Bid History \u2014 '+a.id+' ('+v.n+')</h3><div class="twrap"><table><thead><tr><th>Bidder</th><th>Amount</th><th>Time</th><th>Status</th></tr></thead><tbody>'+bids.map(function(b){const bc=b.s==='Highest'?'bg':b.s==='Outbid'?'br':'bb';return '<tr><td>'+b.b+'</td><td><b>'+fmt(b.am)+'</b></td><td style="color:#888;font-size:13px">'+b.t+'</td><td><span class="badge '+bc+'">'+b.s+'</span></td></tr>';}).join('')+'</tbody></table></div>');
+}
+function closeAucConf(aid){
+  sM('<h3>Close Auction</h3><p style="color:#555;margin-bottom:20px">Are you sure you want to close this auction? This action cannot be undone.</p><div style="display:flex;gap:10px"><button class="btn bs" onclick="cM()">Cancel</button><button class="btn bd" onclick="closeAuc(\''+aid+'\')">Confirm Close</button></div>');
+}
+function closeAuc(aid){const a=AU.find(function(x){return x.id===aid;});if(a)a.status='Closed';cM();rAuction();toast('Auction closed successfully','wr');}
+function openCreateList(){
+  sM('<h3>Create Auction Listing</h3><div class="fg"><label>Vehicle (Inspected &amp; Approved)</label><select id="lv"><option value="V001">MH12AB1234 — Honda Activa (ERV: '+fmt(45000)+')</option><option value="V005">GJ05IJ7890 — Hero Splendor (ERV: '+fmt(28000)+')</option><option value="V008">MH01OP1234 — Mahindra Scorpio (ERV: '+fmt(820000)+')</option></select></div><div class="fg"><label>Reserve Price (\u20B9)</label><input id="lrp" type="number" placeholder="Auto-suggested: ERV \xd7 0.9"></div><div class="fr"><div class="fg"><label>Auction Start</label><input id="lst" type="date" value="2026-03-14"></div><div class="fg"><label>Auction End</label><input id="let" type="date" value="2026-03-21"></div></div><div class="fg"><label>Platform</label><div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:6px"><label style="display:flex;align-items:center;gap:6px"><input type="checkbox" checked> Internal</label><label style="display:flex;align-items:center;gap:6px"><input type="checkbox"> BidCar</label><label style="display:flex;align-items:center;gap:6px"><input type="checkbox"> CarDekho</label><label style="display:flex;align-items:center;gap:6px"><input type="checkbox"> OLX Autos</label></div></div><button class="btn bp" style="width:100%;margin-top:8px" onclick="submitList()">Create Listing</button>');
+}
+function submitList(){cM();toast('Auction listing created successfully');}
+// ── S8: PAYMENTS ──────────────────────────────────────────────────────
+function rPay(){
+  document.getElementById('pg-payments').innerHTML='<div class="ph"><h2>Payment Collection</h2><button class="btn bp" onclick="openOfflinePay()">Record Offline Payment</button></div><div class="s3"><div class="sc"><div class="sv">'+fmt(26000)+'</div><div class="sl">Total Collected</div></div><div class="sc"><div class="sv" style="color:#FF8C00">'+fmt(47500)+'</div><div class="sl">Pending Collection</div></div><div class="sc"><div class="sv">'+fmt(0)+'</div><div class="sl">Overdue</div></div></div><div class="card"><div class="twrap"><table><thead><tr><th>Payment ID</th><th>Vehicle No.</th><th>Buyer</th><th>Amount Due (\u20B9)</th><th>Amount Paid (\u20B9)</th><th>Method</th><th>Status</th><th>Due Date</th><th>Actions</th></tr></thead><tbody>'+PAY.map(function(p){
+    const v=gv(p.vi);const sc=p.st==='Paid'?'bg':'bb';
+    let acts=p.st==='Paid'?'<button class="btn bsm bs" onclick="toast(\'Receipt generated\')">&#x1F9FE; Download Receipt</button>':'<button class="btn bsm bp" onclick="toast(\'Payment link sent to buyer\')">&#x1F4E4; Send Link</button> <button class="btn bsm bs" onclick="toast(\'Reminder SMS sent\')">&#x1F4AC; Reminder</button>';
+    return '<tr><td><b>'+p.id+'</b></td><td>'+(v.n||'—')+'</td><td>'+p.buyer+'</td><td>'+fmt(p.ad)+'</td><td>'+fmt(p.ap)+'</td><td>'+(p.mt||'—')+'</td><td><span class="badge '+sc+'">'+p.st+'</span></td><td>'+fd(p.pd)+'</td><td style="display:flex;gap:4px;flex-wrap:wrap">'+acts+'</td></tr>';
+  }).join('')+'</tbody></table></div></div>';
+}
+function openOfflinePay(){sM('<h3>Record Offline Payment</h3><div class="fr"><div class="fg"><label>Payment ID</label><input id="op1" placeholder="P003"></div><div class="fg"><label>Amount (\u20B9)</label><input id="op2" type="number"></div></div><div class="fg"><label>Payment Method</label><select id="op3"><option>Bank Transfer</option><option>Cheque</option><option>Cash</option></select></div><div class="fr"><div class="fg"><label>Reference Number</label><input id="op4" placeholder="UTR / Cheque No."></div><div class="fg"><label>Date</label><input id="op5" type="date" value="2026-03-13"></div></div><button class="btn bp" style="width:100%;margin-top:8px" onclick="cM();toast(\'Offline payment recorded\')">Record Payment</button>');}
+// ── S9: VEHICLE RELEASE ───────────────────────────────────────────────
+function rRelease(){
+  document.getElementById('pg-release').innerHTML='<div class="ph"><h2>Vehicle Release &amp; Handover</h2></div><div class="card"><div class="twrap"><table><thead><tr><th>Release ID</th><th>Vehicle No.</th><th>Buyer</th><th>Sale Amount (\u20B9)</th><th>Payment</th><th>NOC Status</th><th>RC Transfer</th><th>Handover</th><th>Actions</th></tr></thead><tbody>'+REL.map(function(r){
+    const v=gv(r.vi);
+    let acts='';
+    if(r.hv==='Not Started'&&r.id==='REL002'){acts='<button class="btn bsm bp" id="gro-btn" onclick="genRO(\''+r.id+'\')">Generate Release Order</button>';}
+    else if(r.hv==='In Progress'&&r.id==='REL002'){acts='<button class="btn bsm bn" onclick="hvConf(\''+r.id+'\')">Mark Handed Over</button>';}
+    else if(r.hv==='Complete'){acts='<button class="btn bsm bs" onclick="toast(\'Release documents downloaded\')">&#x1F4C4; Documents</button>';}
+    return '<tr id="rel-'+r.id+'"><td><b>'+r.id+'</b></td><td>'+(v.n||'—')+'</td><td>'+r.buyer+'</td><td><b>'+fmt(r.am)+'</b></td><td>'+sbg(r.ps==='Paid'?'Complete':'Not Started')+'</td><td>'+sbg(r.ns)+'</td><td>'+sbg(r.rc)+'</td><td>'+sbg(r.hv)+'</td><td>'+acts+'</td></tr>';
+  }).join('')+'</tbody></table></div></div>';
+}
+function genRO(rid){
+  const r=REL.find(function(x){return x.id===rid;});if(r){r.ns='Complete';r.hv='In Progress';}
+  rRelease();toast('Release Order Generated Successfully');
+}
+function hvConf(rid){
+  sM('<h3>Confirm Handover</h3><p style="color:#555;margin-bottom:16px">Please confirm the handover details.</p><div class="fr"><div class="fg"><label>Operator Name</label><input id="hv1" placeholder="Your name"></div><div class="fg"><label>Handover Date</label><input id="hv2" type="date" value="2026-03-13"></div></div><button class="btn bn" style="width:100%;margin-top:8px" onclick="markHV(\''+rid+'\')">Confirm Handover</button>');
+}
+function markHV(rid){
+  const r=REL.find(function(x){return x.id===rid;});if(r){r.rc='Complete';r.hv='Complete';}
+  cM();rRelease();toast('Vehicle Handover Completed!');
+}
+// ── INIT ──────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',function(){
+  const snav=document.getElementById('snav');
+  snav.innerHTML=NAV.map(function(n){return '<div class="ni" data-pg="'+n.id+'" onclick="nav(\''+n.id+'\')"><span class="ico">'+n.ico+'</span><span>'+n.lbl+'</span></div>';}).join('');
+  nav('dashboard');
+});
+</script></body></html>
