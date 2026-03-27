@@ -97,6 +97,15 @@
     }
     .float-dot { animation: floatUp 1s ease-out forwards; }
 
+    /* Dot Pulse */
+    @keyframes dotPulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      30% { transform: scale(1.6); opacity: 1; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+    .dot-success { animation: dotPulse 0.5s ease-out forwards; }
+    .grid-dot { transition: all 0.2s ease-out; }
+
     /* Chip selected border anim */
     .chip-selected {
       transform: scale(1.05);
@@ -138,7 +147,7 @@
   /* ── CONSTANTS ── */
   const TRACK_HEIGHT      = 220;   // shorter track = less distance to swipe
   const THUMB_SIZE        = 58;
-  const MAX_DRAG          = TRACK_HEIGHT - THUMB_SIZE; // ~162px effective drag
+  const MAX_DRAG          = TRACK_HEIGHT - THUMB_SIZE - 16; // ~146px effective drag (8px padding top/bottom)
   const SUCCESS_THRESHOLD = 0.65;  // trigger at 65% (was 80%) — snappier
   const RESISTANCE        = 0.88;  // near-linear movement (was 0.70) — feels direct
   const API_DELAY         = 900;   // faster mock API (was 1800ms)
@@ -189,23 +198,23 @@
   );
   const IconArrowUp = () => (
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <path d="M11 17V5M11 5l-5 5M11 5l5 5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M11 17V5M11 5l-5 5M11 5l5 5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
   const IconCheck = () => (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <path className="check-path" d="M6 14l5.5 5.5L22 9" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+      <path className="check-path" d="M6 14l5.5 5.5L22 9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
   const IconSpinner = () => (
     <svg className="spinner" width="24" height="24" viewBox="0 0 24 24" fill="none">
       <circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.25)" strokeWidth="3"/>
-      <path d="M12 3 A9 9 0 0 1 21 12" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+      <path d="M12 3 A9 9 0 0 1 21 12" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
     </svg>
   );
   const IconAlert = () => (
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <path d="M11 7v5M11 15h.01" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+      <path d="M11 7v5M11 15h.01" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
     </svg>
   );
 
@@ -319,19 +328,19 @@
     const thumbBot  = Math.round(progress * MAX_DRAG);
 
     const trackCls = [
-      'relative rounded-3xl border-2 overflow-hidden cursor-pointer select-none transition-all duration-300',
-      isSuccess ? 'border-copart-green bg-green-50 track-success'
-      : atThresh ? 'border-copart-green bg-green-50 track-active'
-      : 'border-copart-border bg-white',
+      'relative rounded-3xl border-2 overflow-hidden cursor-pointer select-none transition-all duration-300 w-full',
+      isSuccess ? 'border-copart-green track-success'
+      : atThresh ? 'border-copart-green track-active'
+      : 'border-copart-green/80',
     ].join(' ');
 
-    const thumbBg = isSuccess  ? 'bg-copart-green'
-      : isError    ? 'bg-red-600'
-      : atThresh   ? 'bg-copart-greenlt'
-      : 'shimmer-green';
+    const thumbBg = isSuccess  ? 'bg-white text-copart-green'
+      : isError    ? 'bg-white text-red-600'
+      : atThresh   ? 'bg-white text-copart-greenlt'
+      : 'bg-white text-copart-green';
 
     return (
-      <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center gap-3 w-full px-2">
         {/* Microcopy */}
         <AnimatePresence mode="wait">
           <motion.p
@@ -357,82 +366,91 @@
         <div
           id="swipe-track"
           className={trackCls}
-          style={{ width: 68, height: TRACK_HEIGHT }}
+          style={{ height: TRACK_HEIGHT, background: 'linear-gradient(to top, #1B7F3B, #34c963)' }}
           onPointerDown={onPointerDown}
           onTouchStart={(e) => { e.preventDefault(); onPointerDown(e.touches[0]); }}
         >
-          {/* Fill bar */}
+          {/* Dotted Grid Background */}
+          <div className="absolute inset-x-0 inset-y-6 px-10 flex flex-col justify-between pointer-events-none z-0">
+            {Array.from({ length: 9 }).map((_, r) => {
+              const rowProgress = 1 - (r / 8); 
+              const size = 3 + (8 - r) * 1.5; 
+              
+              return (
+                <div key={r} className="flex justify-between w-full items-center" style={{ height: size }}>
+                  {Array.from({ length: 11 }).map((_, c) => {
+                    let scale = 1;
+                    let opacity = 0.2;
+                    let dotClass = 'grid-dot';
+                    let delay = 0;
+                    
+                    if (isSuccess) {
+                      dotClass += ' dot-success';
+                      delay = (r * 0.02) + (c * 0.01);
+                    } else if (progress > rowProgress - 0.1) {
+                      opacity = Math.min(1, 0.4 + (progress - rowProgress) * 2); 
+                      scale = 1 + Math.max(0, (progress - rowProgress) * 1.5);
+                    }
+
+                    return (
+                      <div 
+                        key={c} 
+                        className={dotClass}
+                        style={{
+                          width: size, 
+                          height: size, 
+                          borderRadius: '50%', 
+                          backgroundColor: 'white',
+                          opacity: isSuccess ? 1 : opacity,
+                          transform: `scale(${isSuccess ? 1 : scale})`,
+                          animationDelay: isSuccess ? `${delay}s` : '0s'
+                        }} 
+                      />
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Fill bar overlay (gives a subtle white wash tracking the thumb) */}
           <div
-            className="absolute bottom-0 left-0 right-0 transition-all"
+            className="absolute bottom-0 left-0 right-0 transition-all pointer-events-none z-0"
             style={{
               height: `${fillPct}%`,
-              background: isSuccess
-                ? 'linear-gradient(to top, #1B7F3B, #34c963)'
-                : 'linear-gradient(to top, #0033A0, #5B8FE8)',
-              opacity: 0.15 + progress * 0.35,
+              background: 'white',
+              opacity: 0.1 + progress * 0.15,
               borderRadius: '1.5rem',
               transition: 'height 0.04s linear',
             }}
           />
 
-          {/* Tick marks at 25%, 50%, 75% */}
-          {[25, 50, 75].map(p => (
-            <div key={p} className="absolute left-2.5 right-2.5"
-              style={{ bottom: `${p}%`, height: 1, background: 'rgba(0,0,0,0.06)' }}
-            />
-          ))}
-
-          {/* Percentage badge */}
-          {progress > 0.05 && !isSuccess && !isLoading && (
-            <div className="absolute top-3 left-0 right-0 flex justify-center">
-              <span className="text-[10px] font-bold text-copart-navy bg-white/80 px-1.5 py-0.5 rounded-full">
-                {fillPct}%
-              </span>
-            </div>
-          )}
-
-          {/* Floating success dots */}
-          <AnimatePresence>
-            {isSuccess && dots.map(d => (
-              <motion.div key={d.id} exit={{ opacity: 0 }}
-                className="float-dot absolute bottom-20 w-2 h-2 rounded-full bg-green-400"
-                style={{ left: `calc(50% + ${d.x}px)` }}
-              />
-            ))}
-          </AnimatePresence>
-
-          {/* Success ripple */}
-          {isSuccess && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="ripple-anim w-10 h-10 rounded-full bg-green-400/30" />
-            </div>
-          )}
-
           {/* ── THUMB ── */}
           <motion.div
             id="swipe-thumb"
-            className="absolute left-0 right-0 mx-auto"
-            style={{ bottom: thumbBot, height: THUMB_SIZE, width: THUMB_SIZE - 6 }}
-            animate={isSuccess ? { scale: [1, 1.2, 1] } : {}}
+            className="absolute left-2 right-2 z-10"
+            style={{ bottom: thumbBot + 8, height: THUMB_SIZE }}
+            animate={isSuccess ? { scale: [1, 1.02, 1] } : {}}
             transition={{ duration: 0.35 }}
           >
             {/* Pulse ring (idle) */}
             {state === 'idle' && (
-              <div className="pulse-ring absolute inset-0 rounded-2xl border-2 border-copart-green/40"
+              <div className="pulse-ring absolute inset-0 rounded-2xl border-2 border-white/60"
                 style={{ margin: -5 }} />
             )}
             <div
-              className={`absolute inset-0 rounded-2xl flex items-center justify-center shadow-md ${thumbBg}`}
+              className={`absolute inset-0 rounded-xl flex items-center justify-center shadow-md ${thumbBg}`}
               style={{
                 boxShadow: isSuccess
-                  ? '0 4px 16px rgba(27,127,59,0.45)'
-                  : '0 4px 16px rgba(0,51,160,0.30)',
+                  ? '0 4px 16px rgba(255,255,255,0.45)'
+                  : '0 4px 16px rgba(0,0,0,0.15)',
               }}
             >
-              {/* Thumb icon: ✓ on success, ! on error, ↑ otherwise (no spinner) */}
               {isSuccess  ? <IconCheck /> :
                isError    ? <IconAlert /> :
-               <IconArrowUp />}
+               <div className="flex items-center gap-2">
+                 <IconArrowUp />
+               </div>}
             </div>
           </motion.div>
         </div>
