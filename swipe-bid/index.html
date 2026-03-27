@@ -104,7 +104,7 @@
       100% { transform: scale(0); opacity: 0; }
     }
     .dot-success { animation: dotPulse 0.5s ease-out forwards; }
-    .grid-dot { transition: all 0.2s ease-out; }
+    /* Removed transition from .grid-dot to prevent fighting with react state making it jerky */
 
     /* Chip selected border anim */
     .chip-selected {
@@ -324,43 +324,45 @@
     const atThresh  = progress >= SUCCESS_THRESHOLD;
 
     const microcopy = getMicrocopy(state, progress, bidAmt);
-    const fillPct   = Math.round(progress * 100);
-    const thumbBot  = Math.round(progress * MAX_DRAG);
+    const fillPct   = progress * 100;
+    const thumbBot  = progress * MAX_DRAG;
 
     const trackCls = [
       'relative rounded-3xl border-2 overflow-hidden cursor-pointer select-none transition-all duration-300 w-full',
-      isSuccess ? 'border-green-300 bg-green-50 track-success'
-      : atThresh ? 'border-green-300 bg-green-50 track-active'
-      : 'border-green-300 bg-green-50', // light green border, light green bg
+      isSuccess ? 'border-blue-300 bg-blue-50 track-success'
+      : atThresh ? 'border-blue-300 bg-blue-50 track-active'
+      : 'border-blue-300 bg-blue-50', // light blue border, light blue bg
     ].join(' ');
 
-    const thumbBg = isSuccess  ? 'bg-gradient-to-r from-[#1B7F3B] to-[#34c963] text-white'
+    const thumbBg = isSuccess  ? 'bg-gradient-to-r from-copart-navy to-copart-blue text-white'
       : isError    ? 'bg-red-600 text-white'
-      : atThresh   ? 'bg-gradient-to-r from-[#155d27] to-[#1B7F3B] text-white'
-      : 'bg-gradient-to-r from-[#1B7F3B] to-[#34c963] text-white'; // inside button green gradient
+      : atThresh   ? 'bg-gradient-to-r from-[#00257A] to-copart-navy text-white'
+      : 'bg-gradient-to-r from-copart-navy to-copart-blue text-white'; // inside button blue gradient
 
     return (
       <div className="flex flex-col items-center gap-3 w-full px-2">
-        {/* Microcopy */}
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={microcopy}
-            initial={{ opacity: 0, y: 3 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -3 }}
-            transition={{ duration: 0.18 }}
-            className={[
-              'text-xs font-semibold text-center tracking-wide',
-              isSuccess  ? 'text-copart-green'
-              : isError  ? 'text-red-600'
-              : isLoading? 'text-copart-muted'
-              : atThresh ? 'text-copart-green'
-              : 'text-copart-muted',
-            ].join(' ')}
-          >
-            {microcopy}
-          </motion.p>
-        </AnimatePresence>
+        {/* Microcopy (wrapped in fixed height to prevent layout shift) */}
+        <div className="h-4 flex items-end justify-center w-full">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={microcopy}
+              initial={{ opacity: 0, y: 3 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -3 }}
+              transition={{ duration: 0.18 }}
+              className={[
+                'text-xs font-semibold text-center tracking-wide',
+                isSuccess  ? 'text-copart-navy'
+                : isError  ? 'text-red-600'
+                : isLoading? 'text-copart-muted'
+                : atThresh ? 'text-copart-blue'
+                : 'text-copart-muted',
+              ].join(' ')}
+            >
+              {microcopy}
+            </motion.p>
+          </AnimatePresence>
+        </div>
 
         {/* Track */}
         <div
@@ -397,7 +399,7 @@
                           width: size, 
                           height: size, 
                           borderRadius: '50%', 
-                          backgroundColor: '#4ade80', // light green dots
+                          backgroundColor: '#60a5fa', // light blue dots
                           opacity: isSuccess ? 1 : opacity,
                           transform: `scale(${isSuccess ? 1 : scale})`,
                           animationDelay: isSuccess ? `${delay}s` : '0s'
@@ -410,15 +412,14 @@
             })}
           </div>
 
-          {/* Fill bar overlay (gives a subtle white wash tracking the thumb) */}
+          {/* Fill bar overlay (gives a subtle wash tracking the thumb) */}
           <div
-            className="absolute bottom-0 left-0 right-0 transition-all pointer-events-none z-0"
+            className="absolute bottom-0 left-0 right-0 pointer-events-none z-0"
             style={{
               height: `${fillPct}%`,
-              background: '#1B7F3B', // dark green wash
+              background: '#0033A0', // navy wash
               opacity: 0.1 + progress * 0.15,
               borderRadius: '1.5rem',
-              transition: 'height 0.04s linear',
             }}
           />
 
@@ -430,16 +431,12 @@
             animate={isSuccess ? { scale: [1, 1.02, 1] } : {}}
             transition={{ duration: 0.35 }}
           >
-            {/* Pulse ring (idle) */}
-            {state === 'idle' && (
-              <div className="pulse-ring absolute inset-0 rounded-2xl border-2 border-copart-green/60"
-                style={{ margin: -5 }} />
-            )}
+            {/* Pulse ring removed for absolute stability while waiting */}
             <div
-              className={`absolute inset-0 rounded-xl flex items-center justify-center shadow-md border border-green-200 ${thumbBg}`}
+              className={`absolute inset-0 rounded-xl flex items-center justify-center shadow-md border border-blue-200 ${thumbBg}`}
               style={{
                 boxShadow: isSuccess
-                  ? '0 4px 16px rgba(27,127,59,0.45)'
+                  ? '0 4px 16px rgba(21,101,192,0.45)'
                   : '0 4px 16px rgba(0,0,0,0.15)',
               }}
             >
@@ -605,17 +602,13 @@
           onPointerDown={onPointerDown}
           dots={dots}
         />
-        <AnimatePresence>
-          {(state === 'idle' || state === 'error') && (
-            <motion.button
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={handleTap}
-              className="text-[11px] text-copart-muted underline underline-offset-2 hover:text-copart-navy transition-colors mt-1"
-            >
-              {state === 'error' ? 'Tap to Retry' : 'Tap to Bid Instead'}
-            </motion.button>
-          )}
-        </AnimatePresence>
+        <button
+          onClick={handleTap}
+          disabled={state !== 'idle' && state !== 'error'}
+          className="text-[11px] underline underline-offset-2 mt-1 text-copart-muted hover:text-copart-navy transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {state === 'error' ? 'Tap to Retry' : 'Tap to Bid Instead'}
+        </button>
       </div>
     ) : (
       <TapBidButton state={state} bidAmt={nextBidTotal} onTap={handleTap} />
