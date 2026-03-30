@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SwipeBid - The Modern Auction</title>
+    <title>Copart x Spotify - Gesture Auction</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,593 +11,692 @@
             theme: {
                 extend: {
                     colors: {
-                        dark: '#0a0a0d',
-                        surface: '#18181c',
-                        accent: '#2563eb',
-                        success: '#10b981',
-                        danger: '#f43f5e'
+                        base: '#121212',
+                        surface: '#181818',
+                        elevated: '#282828',
+                        highlight: '#3E3E3E',
+                        brand: '#1DB954',
+                        brandHover: '#1ed760',
+                        urgent: '#f59e0b',
+                        danger: '#ef4444'
                     },
                     fontFamily: {
-                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
-                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+                        sans: ['Inter', '-apple-system', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, sans-serif; background-color: #0a0a0d; color: white; margin: 0; padding: 0; overflow: hidden; overscroll-behavior-y: none; touch-action: none; }
-        
-        /* Utility */
-        .glass-panel { background: rgba(24, 24, 28, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+        body { background-color: #121212; color: #fff; overflow: hidden; font-family: 'Inter', sans-serif; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
+        * { user-select: none; -webkit-user-select: none; }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Screens */
-        .app-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; overflow: hidden; background: #0a0a0d; z-index: 10; padding-bottom: 85px; }
-        .app-screen.active { display: flex; animation: fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Home Stack */
-        .stack-container { position: relative; width: 100%; height: 68vh; margin-top: 10vh; perspective: 1000px; display: flex; justify-content: center; z-index: 10; }
-        .swipe-card { position: absolute; width: 92%; height: 100%; border-radius: 24px; background: #18181c; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8); overflow: hidden; transform-origin: center bottom; will-change: transform; border: 1px solid rgba(255,255,255,0.1); }
-        .card-img-wrapper { position: relative; width: 100%; height: 60%; }
-        .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        .card-img-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, #18181c 0%, transparent 100%); }
-        .card-details { position: absolute; bottom: 0; width: 100%; height: 45%; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
         
-        .badge { position: absolute; top: 30px; padding: 8px 16px; border-radius: 8px; font-weight: 900; font-size: 24px; letter-spacing: 1px; border: 4px solid; z-index: 100; opacity: 0; text-transform: uppercase; }
-        .badge.like { right: 30px; color: #10b981; border-color: #10b981; transform: rotate(15deg); }
-        .badge.nope { left: 30px; color: #f43f5e; border-color: #f43f5e; transform: rotate(-15deg); }
-        .badge.superlike { top: auto; bottom: 45%; left: 50%; transform: translateX(-50%); color: #38bdf8; border-color: #38bdf8; }
-
-        /* List Items */
-        .list-row { background: #18181c; border-radius: 20px; margin-bottom: 12px; display: flex; align-items: center; position: relative; border: 1px solid rgba(255,255,255,0.05); }
-        .list-row-fg { background: #18181c; border-radius: 20px; width: 100%; display: flex; padding: 12px; gap: 16px; position: relative; z-index: 2; touch-action: pan-y; }
-        .list-row-bg { position: absolute; inset: 0; border-radius: 20px; display: flex; align-items: center; padding: 0 24px; font-weight: 800; font-size: 18px; z-index: 1; }
-        .list-enter { color: #10b981; margin-right: auto; display: none; }
-        .list-remove { color: #f43f5e; margin-left: auto; display: none; }
-        .list-row-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; }
-
-        /* Auction Room */
-        .auction-room { background: #000; padding: 0; }
-        .auction-hero { height: 45vh; position: absolute; top:0; width: 100%; z-index: 0;}
-        .auction-hero img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; mask-image: linear-gradient(to bottom, black 50%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
-        .auction-main { position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; padding: 20px; justify-content: flex-end; }
+        /* Utility for dragging */
+        .touch-none { touch-action: none !important; }
         
-        .bid-feed { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 20px; overflow: hidden; pointer-events: none; }
-        .feed-item { margin-top: 8px; animation: slideIn 0.3s ease forwards; transform: translateY(10px); opacity: 0; font-weight: 600; display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; border-radius: 12px; background: rgba(255,255,255,0.05); backdrop-filter: blur(5px); }
-        .feed-item.me { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; }
-        @keyframes slideIn { to { transform: translateY(0); opacity: 1; } }
-
-        .bid-pad { background: rgba(24, 24, 28, 0.9); backdrop-filter: blur(20px); border-radius: 32px; padding: 32px 24px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; box-shadow: 0 -10px 40px rgba(0,0,0,0.5); position: relative; z-index: 20; touch-action: none; }
-        .bid-cta { width: 110px; height: 110px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4); text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: white; position: relative; will-change: transform; transition: transform 0.1s; }
-        .bid-cta::before { content: ''; position: absolute; inset: -10px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.2); animation: spin 10s linear infinite; pointer-events: none;}
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        .swipe-up-arrows i { animation: fadeUpArrows 1.5s infinite; }
-        .swipe-up-arrows i:nth-child(2) { animation-delay: 0.2s; }
-        .swipe-up-arrows i:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes fadeUpArrows { 0% { opacity: 0.2; transform: translateY(2px); } 50% { opacity: 1; transform: translateY(-2px); } 100% { opacity: 0.2; transform: translateY(2px); } }
-
-        .haptic-flash { position: fixed; inset: 0; background: #10b981; opacity: 0; pointer-events: none; z-index: 9999; }
-        .flash-active { animation: hapticPulse 0.4s cubic-bezier(0.1, 0.8, 0.3, 1); }
-        @keyframes hapticPulse { 0% { opacity: 0.5; } 100% { opacity: 0; } }
-
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; padding-bottom: env(safe-area-inset-bottom); z-index: 50; padding-top: 12px; padding-bottom: 24px; border-radius: 30px 30px 0 0; }
-        .nav-link { color: #64748b; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; font-size: 10px; font-weight: 600; gap: 4px; position: relative; }
-        .nav-link.active { color: #fff; }
-        .nav-link.active i { color: #3b82f6; transform: translateY(-2px) scale(1.1); }
-        .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: #3b82f6; position: absolute; bottom: -8px; opacity: 0; transition: 0.2s; }
-        .nav-link.active .nav-dot { opacity: 1; }
-
+        /* Surge mode pulse */
+        @keyframes surgePulse {
+            0% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(29, 185, 84, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0); }
+        }
+        .surge-active { animation: surgePulse 1s infinite; }
     </style>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "react": "https://esm.sh/react@18.2.0",
+            "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+            "framer-motion": "https://esm.sh/framer-motion@10.16.4?deps=react@18.2.0",
+            "zustand": "https://esm.sh/zustand@4.4.1?deps=react@18.2.0",
+            "@use-gesture/react": "https://esm.sh/@use-gesture/react@10.3.0?deps=react@18.2.0",
+            "lucide-react": "https://esm.sh/lucide-react@0.292.0?deps=react@18.2.0"
+        }
+    }
+    </script>
 </head>
-<body>
+<body class="bg-base text-white h-screen w-screen overflow-hidden flex flex-col">
+    <div id="root" class="h-full w-full"></div>
 
-    <div id="app">
-        <!-- HEADER -->
-        <header class="fixed top-0 w-full z-40 px-6 pt-12 pb-4 flex justify-between items-center bg-gradient-to-b from-dark to-transparent pointer-events-none">
-            <div class="text-xl font-black tracking-tighter" id="global-title">DISCOVER</div>
-            <div class="flex items-center gap-2 pointer-events-auto glass-panel px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">
-                <div class="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-                <span>4.2K LIVE</span>
-            </div>
-        </header>
+    <script type="text/babel" data-type="module">
+        import React, { useState, useEffect, useRef, useMemo } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import { motion, AnimatePresence, useAnimation, useMotionValue, useTransform } from 'framer-motion';
+        import { useDrag } from '@use-gesture/react';
+        import { create } from 'zustand';
+        import { Home, Search, Library, Heart, X, Zap, ArrowUp, ChevronDown, ChevronUp, Clock, ShieldAlert, SkipForward, SkipBack, PlayCircle, Loader2, Car } from 'lucide-react';
 
-        <!-- DISCOVER SCREEN -->
-        <main id="screen-home" class="app-screen active">
-            <div class="stack-container" id="card-stack"></div>
-            <div class="flex justify-center items-center gap-8 mt-6 z-20">
-                <button class="w-14 h-14 rounded-full bg-surface border border-white/10 text-danger text-2xl shadow-lg hover:scale-105 active:scale-95 transition" onclick="btnSwipe('left')">
-                    <i class="fas fa-times"></i>
-                </button>
-                <button class="w-12 h-12 rounded-full bg-surface border border-white/10 text-sky-400 text-xl shadow-lg hover:scale-105 active:scale-95 transition" onclick="btnSwipe('up')">
-                    <i class="fas fa-star"></i>
-                </button>
-                <button class="w-14 h-14 rounded-full bg-surface border border-white/10 text-success text-2xl shadow-lg hover:scale-105 active:scale-95 transition" onclick="btnSwipe('right')">
-                    <i class="fas fa-heart"></i>
-                </button>
-            </div>
-        </main>
-
-        <!-- BID LIST SCREEN -->
-        <main id="screen-bids" class="app-screen pt-28 px-6">
-            <p class="text-slate-400 text-sm font-medium mb-6">Swipe right to bid. Swipe left to remove.</p>
-            <div id="bid-list-ctr" class="overflow-y-auto h-full hide-scroll pb-20 space-y-3">
-                <div class="text-center text-slate-500 mt-20" id="empty-state">
-                    <i class="fas fa-box-open text-4xl mb-4 opacity-50"></i>
-                    <p class="font-medium">Your bid list is empty</p>
-                </div>
-            </div>
-        </main>
-
-        <!-- AUCTION ROOM -->
-        <main id="screen-auction" class="app-screen auction-room z-50">
-            <div class="auction-hero"><img id="auc-img" src=""></div>
-            
-            <button class="absolute top-12 right-6 z-50 w-10 h-10 rounded-full glass-panel flex items-center justify-center text-white" onclick="closeAuction()">
-                <i class="fas fa-arrow-down"></i>
-            </button>
-
-            <div class="absolute top-12 left-6 z-50">
-                <div class="bg-danger text-white text-[10px] uppercase font-black px-2 py-1 rounded border border-danger shadow-[0_0_10px_rgba(244,63,94,0.5)] animate-pulse inline-block mb-2">LIVE NOW</div>
-                <div class="text-xl font-bold" id="auc-title">Vehicle Title</div>
-                <div class="text-sm text-slate-300 mt-1"><i class="fas fa-eye text-sky-400 mr-1"></i> <span id="auc-watchers">0</span> watching</div>
-            </div>
-
-            <div class="auction-main">
-                <div class="bid-feed" id="auc-feed"></div>
-
-                <div class="bid-pad" id="bid-area">
-                    <div class="text-center mb-6">
-                        <div class="text-xs font-bold text-slate-400 tracking-widest uppercase mb-1">Current Highest Bid</div>
-                        <div class="text-5xl font-black tracking-tighter text-success flex justify-center items-start gap-1">
-                            <span class="text-2xl mt-1">$</span><span id="auc-price">0</span>
-                        </div>
-                        <div class="mt-4 text-sm font-bold text-danger flex items-center justify-center gap-2" id="auc-timer">
-                            <i class="fas fa-stopwatch animate-bounce"></i> Going Once...
-                        </div>
-                    </div>
-
-                    <div class="relative w-full max-w-[200px] mx-auto z-20">
-                        <div class="bid-cta" id="swipe-bid-btn">
-                            <div class="flex flex-col items-center">
-                                <div class="flex flex-col -space-y-2 mb-1 swipe-up-arrows">
-                                    <i class="fas fa-chevron-up text-[10px]"></i>
-                                    <i class="fas fa-chevron-up text-xs"></i>
-                                    <i class="fas fa-chevron-up text-sm"></i>
-                                </div>
-                                <span>BID</span>
-                                <span class="text-[10px] mt-1 text-white/70 tracking-normal" id="auc-next-step">+$100</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="cancel-hint" class="absolute bottom-4 left-0 w-full text-center text-[10px] text-slate-500 font-bold uppercase tracking-wider opacity-0 transition-opacity flex items-center justify-center gap-2">
-                        <i class="fas fa-arrow-down"></i> Swipe down to cancel bid
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- BOTTOM NAV -->
-        <nav class="bottom-nav glass-panel" id="nav-bar">
-            <div class="flex justify-around items-center px-4">
-                <div class="nav-link active" onclick="navTo('home')" data-tab="home">
-                    <i class="fas fa-layer-group text-xl"></i>
-                    <span>Discover</span>
-                    <div class="nav-dot"></div>
-                </div>
-                <div class="nav-link relative" onclick="navTo('bids')" data-tab="bids">
-                    <i class="fas fa-gavel text-xl"></i>
-                    <span>Bids</span>
-                    <div class="absolute -top-1 right-2 bg-success text-white w-4 h-4 text-[9px] font-black rounded-full flex items-center justify-center hidden" id="bid-badge">0</div>
-                    <div class="nav-dot"></div>
-                </div>
-                <div class="nav-link" onclick="navTo('wishlist')" data-tab="wishlist">
-                    <i class="fas fa-star text-xl"></i>
-                    <span>Values</span>
-                    <div class="nav-dot"></div>
-                </div>
-                <div class="nav-link" onclick="navTo('profile')" data-tab="profile">
-                    <i class="fas fa-user-circle text-xl"></i>
-                    <span>Profile</span>
-                    <div class="nav-dot"></div>
-                </div>
-            </div>
-        </nav>
-
-        <div id="haptic-overlay" class="haptic-flash"></div>
-    </div>
-
-    <script>
-        const MOCK_DATA = [
-            { id: 1, title: '2023 Tesla Model 3', loc: 'CA - SAN JOSE', price: 28500, img: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?q=80&w=800&auto=format&fit=crop', odo: '12K mi', damage: 'Low Water' },
-            { id: 2, title: '2021 Ford Mustang GT', loc: 'TX - DALLAS', price: 18000, img: 'https://images.unsplash.com/photo-1584345604476-8cc5e3e505ad?q=80&w=800&auto=format&fit=crop', odo: '34K mi', damage: 'Rear End' },
-            { id: 3, title: '2020 Porsche 911', loc: 'FL - MIAMI', price: 65000, img: 'https://images.unsplash.com/photo-1503376710356-6e8690e8ba3b?q=80&w=800&auto=format&fit=crop', odo: '8K mi', damage: 'Flood' },
-            { id: 4, title: '2022 Rivian R1T', loc: 'CO - DENVER', price: 42000, img: 'https://images.unsplash.com/photo-1692257256561-6dff61cbdb19?q=80&w=800&auto=format&fit=crop', odo: '15K mi', damage: 'Front End' },
-            { id: 5, title: '2019 Jeep Wrangler', loc: 'AZ - PHOENIX', price: 15500, img: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=800&auto=format&fit=crop', odo: '55K mi', damage: 'Rollover' }
+        // --- MOCK DATA ---
+        const CAR_IMAGES = [
+            'https://images.unsplash.com/photo-1560958089-b8a1929cea89?q=80&w=800&auto=format&fit=crop', // Tesla
+            'https://images.unsplash.com/photo-1584345604476-8cc5e3e505ad?q=80&w=800&auto=format&fit=crop', // Mustang
+            'https://images.unsplash.com/photo-1503376710356-6e8690e8ba3b?q=80&w=800&auto=format&fit=crop', // Porsche
+            'https://images.unsplash.com/photo-1692257256561-6dff61cbdb19?q=80&w=800&auto=format&fit=crop', // Rivian
+            'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=800&auto=format&fit=crop', // Jeep
+            'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=800&auto=format&fit=crop', // Corvette
+            'https://images.unsplash.com/photo-1616423640778-28d1b53229bd?q=80&w=800&auto=format&fit=crop', // Tacoma
+            'https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?q=80&w=800&auto=format&fit=crop'  // G-Wagon
         ];
 
-        let deck = [...MOCK_DATA].reverse();
-        let domCards = [];
-        let shortlist = [];
+        const generateMocks = (count=20) => {
+            return Array.from({length: count}).map((_, i) => ({
+                id: `lot-${1000 + i}`,
+                title: `${[2019, 2020, 2021, 2022, 2023][Math.floor(Math.random()*5)]} ${['Tesla Model 3', 'Ford Mustang', 'Porsche 911', 'Rivian R1T', 'Jeep Wrangler', 'Chevy Corvette', 'Toyota Tacoma', 'MB G-Class'][i%8]}`,
+                img: CAR_IMAGES[i%8],
+                loc: ['CA-LOS ANGELES','TX-DALLAS','FL-MIAMI','NY-NEWBURGH'][Math.floor(Math.random()*4)],
+                damage: ['Front End', 'Rear End', 'Water/Flood', 'Hail', 'Normal Wear'][Math.floor(Math.random()*5)],
+                odo: Math.floor(Math.random() * 80000 + 1000) + ' mi',
+                vin: '1G1RC6E4XG' + Math.floor(Math.random()*1000000),
+                basePrice: Math.floor(Math.random() * 50000) + 5000,
+                currentBid: 0,
+                timeLeft: Math.floor(Math.random() * 600) + 30, // seconds
+                bids: []
+            })).map(c => ({...c, currentBid: c.basePrice}));
+        };
 
-        // DOM Setup
-        const cardStack = document.getElementById('card-stack');
-        const hapticEl = document.getElementById('haptic-overlay');
+        // --- STORE ---
+        const initialVehicles = generateMocks(24);
+        const useStore = create((set, get) => ({
+            vehicles: initialVehicles,
+            activeLotId: initialVehicles[0].id,
+            isSheetExpanded: false,
+            watchlist: [],
+            dismissed: [],
+            toasts: [],
+            surgeMode: false,
+            view: 'home',
 
-        function initDeck() {
-            cardStack.innerHTML = '';
-            domCards = [];
-            deck.forEach((car, i) => {
-                const el = document.createElement('div');
-                el.className = 'swipe-card';
-                el.dataset.id = car.id;
+            setView: (view) => set({ view, isSheetExpanded: false }),
+            setActiveLot: (id) => set({ activeLotId: id }),
+            setSheetExpanded: (val) => set({ isSheetExpanded: val }),
+            addToWatchlist: (id) => {
+                const { watchlist, vehicles } = get();
+                if(!watchlist.find(v => v.id === id)) {
+                    const v = vehicles.find(v => v.id === id);
+                    if(v) set({ watchlist: [v, ...watchlist] });
+                    get().addToast(`Added ${v.title} to Watchlist`, 'success');
+                }
+            },
+            dismissLot: (id) => set(state => ({ dismissed: [...state.dismissed, id] })),
+            
+            placeBid: (id, amount) => set(state => {
+                const vehicles = state.vehicles.map(v => {
+                    if(v.id === id) {
+                        return { 
+                            ...v, 
+                            currentBid: v.currentBid + amount,
+                            bids: [{ amount: v.currentBid + amount, time: new Date(), by: 'YOU' }, ...v.bids]
+                        };
+                    }
+                    return v;
+                });
+                return { vehicles };
+            }),
+
+            addToast: (msg, type='info') => {
+                const id = Date.now();
+                set(state => ({ toasts: [...state.toasts, {id, msg, type}] }));
+                setTimeout(() => {
+                    set(state => ({ toasts: state.toasts.filter(t => t.id !== id) }));
+                }, 3000);
+            },
+
+            // Navigation Helpers
+            nextLot: () => {
+                const { activeLotId, vehicles } = get();
+                if(!activeLotId) return;
+                const idx = vehicles.findIndex(v => v.id === activeLotId);
+                if (idx < vehicles.length - 1) set({ activeLotId: vehicles[idx+1].id });
+            },
+            prevLot: () => {
+                const { activeLotId, vehicles } = get();
+                if(!activeLotId) return;
+                const idx = vehicles.findIndex(v => v.id === activeLotId);
+                if (idx > 0) set({ activeLotId: vehicles[idx-1].id });
+            },
+
+            tick: () => set(state => {
+                let surgeDetected = false;
+                const updated = state.vehicles.map(v => {
+                    if (v.timeLeft <= 0) return v;
+                    let newTime = v.timeLeft - 1;
+                    let newBid = v.currentBid;
+                    let newBids = v.bids;
+                    
+                    if(Math.random() < 0.05 || (newTime < 60 && Math.random() < 0.15)) {
+                        newBid += [50, 100, 200][Math.floor(Math.random()*3)];
+                        newBids = [{ amount: newBid, time: new Date(), by: 'Dealer_' + Math.floor(Math.random()*1000) }, ...newBids];
+                        if(state.activeLotId === v.id) surgeDetected = true;
+                    }
+
+                    return { ...v, timeLeft: newTime, currentBid: newBid, bids: newBids };
+                });
+
+                return { vehicles: updated, surgeMode: surgeDetected };
+            })
+        }));
+
+        window.store = useStore;
+
+        // --- COMPONENTS ---
+
+        // App Wrapper
+        const App = () => {
+            useEffect(() => {
+                const timer = setInterval(() => useStore.getState().tick(), 1000);
                 
-                const isTop = (i === deck.length - 1);
-                const fromTop = (deck.length - 1) - i;
-                
-                el.style.transform = `translateY(${fromTop * 15}px) scale(${1 - fromTop * 0.05})`;
-                el.style.zIndex = 100 - fromTop;
-                el.style.opacity = fromTop > 2 ? 0 : 1;
+                // Keyboard Shortcuts
+                const handleKeyDown = (e) => {
+                    // Ignore if typing in input
+                    if(e.target.tagName === 'INPUT') return;
+                    
+                    const state = useStore.getState();
+                    if(e.code === 'Space') {
+                        e.preventDefault();
+                        if(state.activeLotId) {
+                            state.placeBid(state.activeLotId, 100);
+                            state.addToast('Bid placed (Shortcut)!', 'success');
+                        }
+                    } else if (e.code === 'ArrowRight') {
+                        state.nextLot();
+                    } else if (e.key === 'l' || e.key === 'L') {
+                        if(state.activeLotId) {
+                            state.addToWatchlist(state.activeLotId);
+                        }
+                    }
+                };
+                window.addEventListener('keydown', handleKeyDown);
+                return () => {
+                    clearInterval(timer);
+                    window.removeEventListener('keydown', handleKeyDown);
+                };
+            }, []);
 
-                el.innerHTML = `
-                    <div class="badge like">BID LIST</div>
-                    <div class="badge nope">PASS</div>
-                    <div class="badge superlike">WISHLIST</div>
-                    <div class="card-img-wrapper">
-                        <img src="${car.img}">
-                        <div class="card-img-gradient"></div>
+            return (
+                <div className="h-full w-full flex bg-base text-white">
+                    <Sidebar />
+                    <div className="flex-1 flex flex-col relative h-full">
+                        <MainContent />
+                        <BottomPlayer />
+                        <ToastContainer />
                     </div>
-                    <div class="card-details">
-                        <div>
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="text-2xl font-black leading-tight w-2/3">${car.title}</h3>
-                                <div class="text-right">
-                                    <div class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Current</div>
-                                    <div class="text-xl font-mono text-success font-black">$${car.price.toLocaleString()}</div>
+                </div>
+            );
+        };
+
+        const ToastContainer = () => {
+            const toasts = useStore(s => s.toasts);
+            return (
+                <div className="fixed top-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
+                    <AnimatePresence>
+                        {toasts.map(t => (
+                            <motion.div key={t.id}
+                                initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                                className={`px-4 py-3 rounded-md shadow-2xl font-bold text-sm flex items-center gap-2 ${t.type==='success'?'bg-brand text-black':'bg-surface text-white border border-elevated'}`}
+                            >
+                                {t.type==='success' ? <Heart size={16}/> : <Zap size={16} className="text-brand"/>}
+                                {t.msg}
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </div>
+            );
+        };
+
+        const Sidebar = () => {
+            const { view, setView } = useStore();
+            return (
+                <div className="hidden md:flex flex-col w-64 bg-black p-4 gap-6 z-10">
+                    <div className="text-xl font-black tracking-tighter mt-2 mb-4 px-2 flex items-center gap-2">
+                        <Zap className="text-brand" /> SWIPEBID
+                    </div>
+                    
+                    <nav className="flex flex-col gap-2">
+                        <NavItem icon={<Home size={24}/>} label="Home" active={view==='home'} onClick={()=>setView('home')} />
+                        <NavItem icon={<Search size={24}/>} label="Search" active={view==='search'} onClick={()=>setView('search')} />
+                    </nav>
+
+                    <div className="bg-surface rounded-lg mt-2 flex-1 p-2 flex flex-col">
+                        <NavItem icon={<Library size={24}/>} label="Your Watchlist" active={view==='watchlist'} onClick={()=>setView('watchlist')} />
+                        
+                        <div className="mt-4 px-2 overflow-y-auto hide-scroll text-sm font-medium text-gray-400 gap-3 flex flex-col">
+                            <span className="hover:text-white cursor-pointer transition">Salvage Titles</span>
+                            <span className="hover:text-white cursor-pointer transition">Clean Title SUVs</span>
+                            <span className="hover:text-white cursor-pointer transition">EVs & Hybrids</span>
+                            <span className="hover:text-white cursor-pointer transition">Classic Muscle</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const NavItem = ({ icon, label, active, onClick }) => (
+            <div onClick={onClick} className={`flex items-center gap-4 px-2 py-3 cursor-pointer rounded-md transition font-bold ${active ? 'text-white' : 'text-gray-400 hover:text-white'}`}>
+                {icon}
+                <span>{label}</span>
+            </div>
+        );
+
+        const MainContent = () => {
+            const view = useStore(s => s.view);
+            return (
+                <div className="flex-1 overflow-y-auto hide-scroll pb-24 relative bg-gradient-to-b from-elevated/40 to-base">
+                    {/* Header bg blur */}
+                    <div className="absolute top-0 w-full h-48 bg-gradient-to-b from-[#2E2E2E] to-transparent pointer-events-none opacity-40"></div>
+                    
+                    <div className="relative z-10 p-4 md:p-8 h-full">
+                        {view === 'home' && <HomeFeed />}
+                        {view === 'watchlist' && <WatchlistView />}
+                        {view === 'search' && <SearchView />}
+                    </div>
+                </div>
+            );
+        };
+
+        const HomeFeed = () => {
+            const { vehicles, dismissed, activeLotId } = useStore();
+            const [refreshing, setRefreshing] = useState(false);
+            
+            const handleRefresh = () => {
+                setRefreshing(true);
+                setTimeout(() => setRefreshing(false), 1500);
+            };
+
+            const displayVehicles = useMemo(() => {
+                return vehicles.filter(v => !dismissed.includes(v.id));
+            }, [vehicles, dismissed]);
+
+            // Simple pull to refresh logic wrapper can be added, but let's stick to gestures on cards.
+            return (
+                <div className="h-full flex flex-col relative">
+                    <div className="flex justify-between flex-wrap gap-4 items-end mb-6">
+                        <h1 className="text-3xl md:text-5xl font-black tracking-tighter">Live Auctions</h1>
+                        <div className="flex gap-2 text-sm font-bold">
+                            <span className="px-3 py-1 bg-surface rounded-full text-brand border border-brand/20">All</span>
+                            <span className="px-3 py-1 bg-surface rounded-full hover:bg-elevated cursor-pointer">Sedans</span>
+                            <span className="px-3 py-1 bg-surface rounded-full hover:bg-elevated cursor-pointer">SUVs</span>
+                        </div>
+                    </div>
+                    
+                    {refreshing && <div className="text-center w-full py-4 text-brand"><Loader2 className="animate-spin mx-auto"/></div>}
+
+                    {/* Desktop Masonry / Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <AnimatePresence mode="popLayout">
+                            {displayVehicles.map(v => (
+                                <VehicleCard key={v.id} vehicle={v} />
+                            ))}
+                        </AnimatePresence>
+                    </div>
+                </div>
+            );
+        };
+
+        const WatchlistView = () => {
+            const watchlist = useStore(s => s.watchlist);
+            return (
+                <div>
+                    <h1 className="text-5xl font-black tracking-tighter mb-6">Watchlist</h1>
+                    {watchlist.length === 0 ? (
+                        <div className="text-center text-gray-500 mt-20">
+                            <Heart size={48} className="mx-auto mb-4 opacity-20" />
+                            <p className="font-bold">No vehicles saved yet.</p>
+                            <p className="text-sm">Swipe right on a vehicle to add it here.</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {watchlist.map(v => <VehicleCard key={v.id} vehicle={v} />)}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const SearchView = () => {
+            return (
+                <div>
+                    <h1 className="text-5xl font-black tracking-tighter mb-6">Search</h1>
+                    <div className="relative">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-black" size={24}/>
+                        <input type="text" placeholder="What vehicle are you looking for?" className="w-full bg-white text-black font-bold py-4 pl-12 pr-4 rounded-full outline-none focus:ring-4 ring-brand/50 text-xl" />
+                    </div>
+                    
+                    <h2 className="text-xl font-bold mt-10 mb-4">Trending Combos</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {['Clean Titles', 'Tesla Models', 'Flood Vehicles', 'Under $5000'].map(t => (
+                            <div key={t} className="aspect-video bg-gradient-to-br from-brand/80 to-blue-600 rounded-xl p-4 font-bold text-lg flex items-end cursor-pointer hover:scale-105 transition-transform">
+                                {t}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // The Gesture Card
+        const VehicleCard = ({ vehicle }) => {
+            const { addToWatchlist, dismissLot, setActiveLot, placeBid, activeLotId } = useStore();
+            const isActive = activeLotId === vehicle.id;
+            
+            // Framer motion values for gestures
+            const x = useMotionValue(0);
+            const y = useMotionValue(0);
+            const rotate = useTransform(x, [-200, 200], [-10, 10]);
+            
+            const [isZoomed, setZoomed] = useState(false);
+
+            // Time formatting
+            const mins = Math.floor(vehicle.timeLeft / 60);
+            const secs = vehicle.timeLeft % 60;
+            const timeStr = `${mins}:${secs.toString().padStart(2, '0')}`;
+            const isUrgent = vehicle.timeLeft < 60;
+
+            const bind = useDrag(({ movement: [mx, my], down, direction: [dx, dy], velocity: [vx, vy], memo = [x.get(), y.get()] }) => {
+                if (isZoomed) return memo; // Don't swipe if zoomed
+                
+                if (down) {
+                    x.set(mx);
+                    y.set(my);
+                } else {
+                    // Gesture release logic
+                    if (mx > 100 && vx > 0.5) { // Swipe Right
+                        addToWatchlist(vehicle.id);
+                        x.set(0); y.set(0);
+                    } else if (mx < -100 && vx < -0.5) { // Swipe Left
+                        dismissLot(vehicle.id);
+                    } else if (my < -100 && vy < -0.5) { // Swipe Up (Bid)
+                        placeBid(vehicle.id, 100);
+                        useStore.getState().addToast(`Bid placed on ${vehicle.title}!`, 'success');
+                        x.set(0); y.set(0);
+                    } else if (my > 100 && vy > 0.5) { // Swipe Down (Expand/Select)
+                        setActiveLot(vehicle.id);
+                        useStore.getState().setSheetExpanded(true);
+                        x.set(0); y.set(0);
+                    } else {
+                        // Snap back
+                        x.set(0); y.set(0);
+                    }
+                }
+                return memo;
+            });
+
+            return (
+                <motion.div 
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1, x, y, rotate }}
+                    exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+                    whileDrag={{ cursor: 'grabbing', zIndex: 50, scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    {...bind()}
+                    className={`relative bg-surface rounded-xl overflow-hidden cursor-grab touch-none ${isActive ? 'ring-2 ring-brand ring-offset-2 ring-offset-base' : ''} shadow-lg`}
+                    onClick={() => setActiveLot(vehicle.id)}
+                    onDoubleClick={() => setZoomed(!isZoomed)}
+                >
+                    {/* Urgency Badge */}
+                    <div className={`absolute top-2 right-2 z-10 px-2 py-1 rounded bg-black/60 backdrop-blur-md text-xs font-black flex items-center gap-1 ${isUrgent ? 'text-danger animate-pulse' : 'text-white'}`}>
+                        <Clock size={12}/> {timeStr}
+                    </div>
+
+                    <div className="relative h-48 sm:h-56 w-full overflow-hidden">
+                        <motion.img 
+                            animate={{ scale: isZoomed ? 1.5 : 1 }}
+                            src={vehicle.img} 
+                            alt={vehicle.title} 
+                            className="w-full h-full object-cover select-none pointer-events-none" 
+                            draggable="false"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-surface to-transparent pointer-events-none"></div>
+                        
+                        {/* Play button icon overlay to hint clicking / active */}
+                        {isActive && (
+                            <div className="absolute inset-0 bg-black/20 flex items-center justify-center pointer-events-none">
+                                <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2 }}>
+                                    <div className="bg-brand/80 backdrop-blur rounded-full p-3 shadow-[0_0_15px_#1DB954]">
+                                        <Zap size={24} className="text-black" />
+                                    </div>
+                                </motion.div>
+                            </div>
+                        )}
+                    </div>
+                    
+                    <div className="p-4 flex flex-col gap-2 pointer-events-none">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h3 className="font-bold text-lg truncate w-40 sm:w-48 leading-tight">{vehicle.title}</h3>
+                                <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{vehicle.loc}</p>
+                            </div>
+                            <div className="text-right">
+                                <div className="text-[10px] text-gray-500 font-bold uppercase">Current Bid</div>
+                                <div className="text-brand font-mono font-black text-xl">${vehicle.currentBid.toLocaleString()}</div>
+                            </div>
+                        </div>
+                        
+                        <div className="flex gap-2 flex-wrap text-[10px] font-bold mt-2">
+                            <span className="px-2 py-0.5 bg-elevated rounded text-gray-300 border border-gray-600">Lot #{vehicle.id.split('-')[1]}</span>
+                            <span className="px-2 py-0.5 bg-danger/20 text-danger rounded border border-danger/30">{vehicle.damage}</span>
+                            <span className="px-2 py-0.5 bg-brand/20 text-brand rounded border border-brand/30">{vehicle.odo}</span>
+                        </div>
+                    </div>
+                    
+                    {/* Gesture Hints Overlay (reveals on drag) */}
+                    <motion.div style={{ opacity: useTransform(x, [0, 100], [0, 1]) }} className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-brand/90 to-transparent flex items-center justify-end pr-6 pointer-events-none">
+                        <Heart size={32} className="text-white"/>
+                    </motion.div>
+                    <motion.div style={{ opacity: useTransform(x, [0, -100], [0, 1]) }} className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-danger/90 to-transparent flex items-center justify-start pl-6 pointer-events-none">
+                        <X size={32} className="text-white"/>
+                    </motion.div>
+                    <motion.div style={{ opacity: useTransform(y, [0, -100], [0, 1]) }} className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-blue-500/90 to-transparent flex items-start justify-center pt-6 pointer-events-none">
+                        <ArrowUp size={32} className="text-white"/>
+                        <span className="absolute top-16 font-black uppercase tracking-wider">Place Bid</span>
+                    </motion.div>
+                </motion.div>
+            );
+        };
+
+        const BottomPlayer = () => {
+            const { activeLotId, vehicles, surgeMode, placeBid, setActiveLot, isSheetExpanded, setSheetExpanded } = useStore();
+            const activeCar = vehicles.find(v => v.id === activeLotId);
+            
+            // If no car is selected, don't show the player on mobile, but maybe show a hint
+            if (!activeCar) return null;
+
+            const isUrgent = activeCar.timeLeft < 60;
+            const timeStr = `${Math.floor(activeCar.timeLeft/60)}:${(activeCar.timeLeft%60).toString().padStart(2,'0')}`;
+
+            // Handle horizontal swipes for next/prev car
+            const handleNext = () => {
+                const idx = vehicles.findIndex(v => v.id === activeLotId);
+                if (idx < vehicles.length - 1) setActiveLot(vehicles[idx+1].id);
+            };
+            
+            const handlePrev = () => {
+                const idx = vehicles.findIndex(v => v.id === activeLotId);
+                if (idx > 0) setActiveLot(vehicles[idx-1].id);
+            };
+
+            const bindSwipe = useDrag(({ movement: [mx, my], direction: [dx, dy], velocity: [vx, vy], down }) => {
+                if(down) return;
+                // Horizontal Swipe = Next / Prev
+                if (mx > 50 && vx > 0.5) handlePrev();
+                else if (mx < -50 && vx < -0.5) handleNext();
+                // Vertical Swipe = Expand / Collapse
+                else if (my < -50 && vy < -0.5 && !isSheetExpanded) setSheetExpanded(true);
+                else if (my > 50 && vy > 0.5 && isSheetExpanded) setSheetExpanded(false);
+            });
+
+            return (
+                <div className="absolute inset-x-0 bottom-0 z-50 flex flex-col justify-end pointer-events-none">
+                    <AnimatePresence>
+                        {isSheetExpanded && (
+                            <VehicleDetailSheet car={activeCar} close={() => setSheetExpanded(false)} handleNext={handleNext} handlePrev={handlePrev} />
+                        )}
+                    </AnimatePresence>
+
+                    {/* The Bar */}
+                    <div className="p-2 pointer-events-none">
+                        <motion.div 
+                            {...bindSwipe()}
+                            layoutId="playerArea"
+                            className={`bg-elevated w-full rounded-lg overflow-hidden flex flex-col pointer-events-auto touch-none cursor-grab active:cursor-grabbing border border-white/5 ${surgeMode ? 'surge-active' : ''}`}
+                            onClick={() => !isSheetExpanded && setSheetExpanded(true)}
+                        >
+                            {/* Progress bar (Time left) */}
+                            <div className="h-1 bg-[#4D4D4D] w-full">
+                                <motion.div 
+                                    className={`h-full ${isUrgent ? 'bg-danger' : 'bg-brand'}`} 
+                                    style={{ width: `${Math.max(0, Math.min(100, (activeCar.timeLeft / 600) * 100))}%` }} 
+                                />
+                            </div>
+
+                            <div className="flex items-center p-2 gap-3">
+                                <div className="relative h-12 w-12 sm:h-14 sm:w-14 shrink-0 rounded overflow-hidden group">
+                                    <img src={activeCar.img} className="w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <ChevronUp size={20} className="text-white"/>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex-1 min-w-0">
+                                    <h4 className="font-bold text-sm sm:text-base truncate hover:underline cursor-pointer">{activeCar.title}</h4>
+                                    <div className="text-xs text-brand font-mono font-bold">${activeCar.currentBid.toLocaleString()}</div>
+                                </div>
+                                
+                                {/* Controls */}
+                                <div className="flex items-center gap-4 text-gray-300 pr-2">
+                                    <Heart size={20} className="hover:text-white cursor-pointer transition hidden sm:block" onClick={(e)=>{e.stopPropagation(); useStore.getState().addToWatchlist(activeCar.id);}}/>
+                                    
+                                    <div className="flex items-center gap-1 font-mono text-sm font-bold w-12 justify-center">
+                                        {timeStr}
+                                    </div>
+                                    
+                                    <button 
+                                        className="bg-brand text-black font-black uppercase text-xs px-4 py-2 rounded-full hover:bg-brandHover hover:scale-105 active:scale-95 transition flex items-center gap-1 shadow-[0_4px_10px_rgba(29,185,84,0.3)]"
+                                        onClick={(e)=>{ e.stopPropagation(); placeBid(activeCar.id, 100); useStore.getState().addToast('Bid placed!', 'success'); }}
+                                    >
+                                        Bid
+                                    </button>
                                 </div>
                             </div>
-                            <p class="text-slate-400 text-sm font-medium"><i class="fas fa-map-marker-alt text-sky-500 w-4"></i> ${car.loc}</p>
+                        </motion.div>
+                    </div>
+                </div>
+            );
+        };
+
+        const VehicleDetailSheet = ({ car, close, handleNext, handlePrev }) => {
+            const placeBid = useStore(s => s.placeBid);
+            
+            const bind = useDrag(({ movement: [mx, my], direction: [dx, dy], velocity: [vx, vy], down }) => {
+                if(my > 100 && vy > 0.5) close();
+            });
+
+            return (
+                <motion.div 
+                    initial={{ y: '100%' }}
+                    animate={{ y: 0 }}
+                    exit={{ y: '100%' }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className="absolute inset-0 bg-base z-[60] flex flex-col pointer-events-auto overflow-hidden touch-none"
+                    {...bind()}
+                >
+                    {/* Header Nav */}
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-b from-black/50 to-transparent sticky top-0 z-20">
+                        <button onClick={close} className="p-2 bg-black/50 backdrop-blur rounded-full hover:scale-105 active:scale-95 transition"><ChevronDown size={24}/></button>
+                        <div className="flex gap-4">
+                            <h2 className="font-black text-sm uppercase tracking-widest text-gray-400">LOT #{car.id.split('-')[1]}</h2>
                         </div>
-                        <div class="flex gap-2 flex-wrap mb-2">
-                            <span class="tag bg-danger/10 text-danger border border-danger/20"><i class="fas fa-car-crash mr-1"></i> ${car.damage}</span>
-                            <span class="tag bg-white/5 text-white"><i class="fas fa-tachometer-alt mr-1"></i> ${car.odo}</span>
-                            <span class="tag bg-success/10 text-success border border-success/20"><i class="fas fa-fire mr-1"></i> LIVE ROW</span>
+                        <div className="flex gap-2">
+                            <button onClick={handlePrev} className="p-2 bg-black/50 backdrop-blur rounded-full hover:scale-105 active:scale-95 transition"><SkipBack size={20}/></button>
+                            <button onClick={handleNext} className="p-2 bg-black/50 backdrop-blur rounded-full hover:scale-105 active:scale-95 transition"><SkipForward size={20}/></button>
                         </div>
                     </div>
-                `;
-                if(isTop) attachSwipe(el);
-                cardStack.appendChild(el);
-                domCards.push(el);
-            });
-        }
 
-        function attachSwipe(el) {
-            let startX, startY, currentX = 0, currentY = 0, isDragging = false;
-            const w = cardStack.clientWidth;
-            const likeB = el.querySelector('.like'), nopeB = el.querySelector('.nope'), superB = el.querySelector('.superlike');
-
-            const start = (e) => {
-                isDragging = true; el.style.transition = 'none';
-                startX = e.touches ? e.touches[0].clientX : e.clientX;
-                startY = e.touches ? e.touches[0].clientY : e.clientY;
-            };
-
-            const move = (e) => {
-                if(!isDragging) return;
-                const x = e.touches ? e.touches[0].clientX : e.clientX;
-                const y = e.touches ? e.touches[0].clientY : e.clientY;
-                currentX = x - startX; currentY = y - startY;
-                
-                el.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${currentX * 0.05}deg)`;
-                
-                likeB.style.opacity = nopeB.style.opacity = superB.style.opacity = 0;
-                if (Math.abs(currentX) > Math.abs(currentY)) {
-                    if (currentX > 0) likeB.style.opacity = Math.min(currentX / 100, 1);
-                    else nopeB.style.opacity = Math.min(Math.abs(currentX) / 100, 1);
-                } else if (currentY < -50) {
-                    superB.style.opacity = Math.min(Math.abs(currentY) / 100, 1);
-                }
-            };
-
-            const end = () => {
-                if(!isDragging) return; isDragging = false;
-                el.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                const ax = Math.abs(currentX), ay = Math.abs(currentY);
-                const car = MOCK_DATA.find(c => c.id == el.dataset.id);
-
-                if (ax > w/3 && ax > ay) {
-                    const dir = currentX > 0 ? 1 : -1;
-                    el.style.transform = `translate(${w*1.5*dir}px, ${currentY}px) rotate(${dir*30}deg)`;
-                    if(dir > 0) handleLike(car);
-                    setTimeout(() => completeSwipe(), 300);
-                } else if (currentY < -100 && ay > ax) {
-                    el.style.transform = `translate(${currentX}px, -1000px)`;
-                    fireHaptic('#38bdf8');
-                    setTimeout(() => completeSwipe(), 300);
-                } else {
-                    el.style.transform = `translate(0,0) rotate(0deg)`;
-                    likeB.style.opacity = nopeB.style.opacity = superB.style.opacity = 0;
-                }
-                currentX = currentY = 0;
-            };
-
-            el.addEventListener('touchstart', start, {passive:true});
-            window.addEventListener('touchmove', move, {passive:true});
-            window.addEventListener('touchend', end);
-            el.addEventListener('mousedown', start, {passive:true});
-            window.addEventListener('mousemove', move, {passive:true});
-            window.addEventListener('mouseup', end);
-        }
-
-        function btnSwipe(dir) {
-            if(!domCards.length) return;
-            const topEl = domCards[domCards.length-1];
-            const car = MOCK_DATA.find(c => c.id == topEl.dataset.id);
-            topEl.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            const w = cardStack.clientWidth;
-
-            if(dir === 'right') {
-                topEl.querySelector('.like').style.opacity = 1;
-                topEl.style.transform = `translate(${w*1.5}px, -50px) rotate(30deg)`;
-                handleLike(car);
-            } else if(dir === 'left') {
-                topEl.querySelector('.nope').style.opacity = 1;
-                topEl.style.transform = `translate(-${w*1.5}px, -50px) rotate(-30deg)`;
-            } else if(dir === 'up') {
-                topEl.querySelector('.superlike').style.opacity = 1;
-                topEl.style.transform = `translate(0, -1000px)`;
-                fireHaptic('#38bdf8');
-            }
-            setTimeout(() => completeSwipe(), 300);
-        }
-
-        function completeSwipe() {
-            domCards.pop().remove();
-            deck.pop();
-            domCards.forEach((c, i) => {
-                const ft = (domCards.length - 1) - i;
-                c.style.transform = `translateY(${ft * 15}px) scale(${1 - ft * 0.05})`;
-                c.style.opacity = ft > 2 ? 0 : 1;
-                if(i === domCards.length - 1) attachSwipe(c);
-            });
-            if(!deck.length) {
-                cardStack.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-slate-500 font-bold"><i class="fas fa-check-circle text-5xl mb-4 text-surface border border-slate-700 rounded-full"></i>You're all caught up!</div>`;
-            }
-        }
-
-        function handleLike(car) {
-            fireHaptic('#10b981');
-            if(!shortlist.find(c => c.id === car.id)) {
-                shortlist.push(car);
-                renderBids();
-            }
-        }
-
-        function fireHaptic(color) {
-            if(navigator.vibrate) navigator.vibrate(40);
-            hapticEl.style.background = color;
-            hapticEl.classList.remove('flash-active');
-            void hapticEl.offsetWidth;
-            hapticEl.classList.add('flash-active');
-        }
-
-        // Bids List
-        function renderBids() {
-            const badge = document.getElementById('bid-badge');
-            if(shortlist.length > 0) { badge.textContent = shortlist.length; badge.classList.remove('hidden'); }
-            else badge.classList.add('hidden');
-
-            const ctr = document.getElementById('bid-list-ctr');
-            document.getElementById('empty-state').style.display = shortlist.length ? 'none' : 'block';
-            ctr.querySelectorAll('.list-row').forEach(e => e.remove());
-
-            shortlist.forEach(car => {
-                const row = document.createElement('div');
-                row.className = 'list-row';
-                row.innerHTML = `
-                    <div class="list-row-bg">
-                        <div class="list-enter"><i class="fas fa-gavel mr-2"></i> ENTER</div>
-                        <div class="list-remove">REMOVE <i class="fas fa-trash ml-2"></i></div>
-                    </div>
-                    <div class="list-row-fg">
-                        <img class="list-row-img" src="${car.img}">
-                        <div class="flex-1 min-w-0 flex flex-col justify-center">
-                            <div class="font-bold text-lg truncate">${car.title}</div>
-                            <div class="text-xs text-danger font-bold my-1"><i class="fas fa-fire"></i> LIVE NOW</div>
-                            <div class="text-success font-mono font-bold">$${car.price.toLocaleString()}</div>
+                    <div className="flex-1 overflow-y-auto hide-scroll pb-24 touch-pan-y">
+                        {/* Img Gallery Carousel (just an image for now) */}
+                        <div className="w-full h-80 relative bg-black shrink-0 -mt-20">
+                            <img src={car.img} className="w-full h-full object-cover opacity-80" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-base to-transparent"></div>
                         </div>
-                        <div class="text-slate-600"><i class="fas fa-chevron-right"></i></div>
+                        
+                        <div className="p-6 -mt-10 relative z-10 w-full max-w-4xl mx-auto flex flex-col md:flex-row gap-8">
+                            
+                            {/* Left Col: Details */}
+                            <div className="flex-1">
+                                <h1 className="text-4xl sm:text-5xl font-black tracking-tighter mb-2 leading-tight">{car.title}</h1>
+                                <p className="text-brand font-mono text-2xl font-black bg-brand/10 inline-block px-3 py-1 rounded mb-6">${car.currentBid.toLocaleString()}</p>
+                                
+                                <h3 className="text-xl font-bold mb-4">Vehicle Info</h3>
+                                <div className="bg-surface rounded-lg p-4 grid grid-cols-2 gap-4 text-sm mb-6">
+                                    <div><span className="text-gray-400 block mb-1">VIN</span><span className="font-mono font-bold">{car.vin}</span></div>
+                                    <div><span className="text-gray-400 block mb-1">Odometer</span><span className="font-bold">{car.odo}</span></div>
+                                    <div><span className="text-gray-400 block mb-1">Primary Damage</span><span className="font-bold text-danger">{car.damage}</span></div>
+                                    <div><span className="text-gray-400 block mb-1">Location</span><span className="font-bold">{car.loc}</span></div>
+                                </div>
+
+                                <div className="text-gray-400 text-sm leading-relaxed mb-6">
+                                    Vehicle is sold "AS-IS". The damage shown is the primary damage reported but may not cover all existing damages. Please perform all necessary diligence prior to placing a bid.
+                                </div>
+                            </div>
+                            
+                            {/* Right Col: Bidding & Timeline */}
+                            <div className="md:w-80 flex flex-col gap-4">
+                                <div className="bg-surface rounded-lg p-6 flex flex-col items-center shadow-lg border border-brand/20 relative overflow-hidden">
+                                    {/* Pulse bg */}
+                                    <div className="absolute inset-0 bg-brand/5 animate-pulse pointer-events-none"></div>
+                                    
+                                    <div className="text-danger font-black text-sm uppercase flex items-center gap-1 mb-2">
+                                        <Clock size={16} /> {Math.floor(car.timeLeft/60)}:{(car.timeLeft%60).toString().padStart(2,'0')} Remaining
+                                    </div>
+                                    
+                                    <button 
+                                        className="w-full bg-brand text-black font-black text-xl py-4 rounded-full hover:scale-105 active:scale-95 transition mt-4 mb-2 shadow-[0_0_20px_rgba(29,185,84,0.4)] relative"
+                                        onClick={(e) => { e.stopPropagation(); placeBid(car.id, 100); useStore.getState().addToast('Bid placed!', 'success'); }}
+                                    >
+                                        BID +$100
+                                    </button>
+                                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Swipe down to close</p>
+                                </div>
+                                
+                                {/* Bid History */}
+                                <div className="bg-surface rounded-lg p-4 flex-1">
+                                    <h4 className="font-bold text-sm text-gray-400 uppercase tracking-widest mb-4">Live Bids</h4>
+                                    <div className="flex flex-col gap-3">
+                                        <AnimatePresence>
+                                            {car.bids.slice(0, 5).map((b, i) => (
+                                                <motion.div 
+                                                    key={`${i}-${b.amount}`}
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    className="flex justify-between items-center text-sm font-bold bg-elevated px-3 py-2 rounded"
+                                                >
+                                                    <span className={b.by === 'YOU' ? 'text-brand' : 'text-gray-300'}>{b.by}</span>
+                                                    <span className="font-mono text-white">${b.amount.toLocaleString()}</span>
+                                                </motion.div>
+                                            ))}
+                                            {car.bids.length === 0 && (
+                                                <div className="text-gray-500 italic text-sm text-center py-4">No bids placed yet. Be the first!</div>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                `;
-                ctr.appendChild(row);
-                attachListSwipe(row.querySelector('.list-row-fg'), car);
-            });
-        }
+                </motion.div>
+            );
+        };
 
-        function attachListSwipe(el, car) {
-            let startX, currentX = 0;
-            const bg = el.previousElementSibling;
-            const enter = bg.querySelector('.list-enter');
-            const rem = bg.querySelector('.list-remove');
-
-            const st = (e) => { el.style.transition = 'none'; startX = e.touches[0].clientX; };
-            const mv = (e) => {
-                if(startX === undefined) return;
-                currentX = e.touches[0].clientX - startX;
-                if(currentX > 0) {
-                    enter.style.display = 'block'; rem.style.display = 'none';
-                    bg.style.background = 'rgba(16, 185, 129, 0.2)';
-                } else {
-                    enter.style.display = 'none'; rem.style.display = 'block';
-                    bg.style.background = 'rgba(244, 63, 94, 0.2)';
-                }
-                el.style.transform = `translateX(${currentX}px)`;
-            };
-            const en = () => {
-                if(startX === undefined) return;
-                el.style.transition = 'transform 0.3s ease';
-                if(currentX > 80) {
-                    el.style.transform = `translateX(${window.innerWidth}px)`;
-                    setTimeout(() => openAuction(car), 300);
-                } else if(currentX < -80) {
-                    el.style.transform = `translateX(-${window.innerWidth}px)`;
-                    setTimeout(() => {
-                        shortlist = shortlist.filter(c => c.id !== car.id);
-                        fireHaptic('#f43f5e');
-                        renderBids();
-                    }, 300);
-                } else {
-                    el.style.transform = 'translateX(0)';
-                    bg.style.background = 'transparent';
-                }
-                startX = undefined; currentX = 0;
-            };
-
-            el.addEventListener('touchstart', st, {passive:true});
-            el.addEventListener('touchmove', mv, {passive:true});
-            el.addEventListener('touchend', en);
-        }
-
-        // Nav
-        function navTo(tab) {
-            document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(`screen-${tab}`).classList.add('active');
-            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-            
-            const titles = { home: 'DISCOVER', bids: 'MY BIDS', wishlist: 'WISHLIST', profile: 'PROFILE' };
-            document.getElementById('global-title').textContent = titles[tab] || 'SWIPEBID';
-        }
-
-        // Auction
-        let aucInterval, aucBid = 0, activeCar = null, placedBid = false;
-
-        function openAuction(car) {
-            activeCar = car; aucBid = car.price;
-            document.getElementById('auc-img').src = car.img;
-            document.getElementById('auc-title').textContent = car.title;
-            updateAucPrice();
-            
-            document.getElementById('auc-feed').innerHTML = '';
-            document.getElementById('nav-bar').style.transform = 'translateY(150%)';
-            document.getElementById('screen-auction').classList.add('active');
-            
-            attachBidSwipe();
-            runFakeAuction();
-        }
-
-        function closeAuction() {
-            clearInterval(aucInterval); activeCar = null;
-            document.getElementById('screen-auction').classList.remove('active');
-            document.getElementById('nav-bar').style.transform = 'translateY(0)';
-            document.getElementById('swipe-bid-btn').style.transform = 'none';
-        }
-
-        function updateAucPrice() {
-            document.getElementById('auc-price').textContent = aucBid.toLocaleString();
-        }
-
-        function feedMsg(name, amt, me=false) {
-            const f = document.getElementById('auc-feed');
-            const item = document.createElement('div');
-            item.className = `feed-item ${me ? 'me' : ''}`;
-            item.innerHTML = `<span><i class="${me ? 'fas fa-user-circle' : 'fas fa-gavel'} mr-2"></i> ${name}</span><span class="font-mono">$${amt.toLocaleString()}</span>`;
-            f.appendChild(item);
-            if(f.children.length > 4) f.firstChild.remove();
-        }
-
-        function runFakeAuction() {
-            const bots = ['TX_Dealer', 'CA_Motors', 'NY_Buyer', 'FL_Auto'];
-            let ticks = 30;
-            document.getElementById('auc-watchers').textContent = Math.floor(Math.random()*20 + 30);
-            feedMsg('Starting Bid', aucBid);
-            
-            aucInterval = setInterval(() => {
-                if(Math.random() > 0.6) {
-                    aucBid += 100; updateAucPrice();
-                    feedMsg(bots[Math.floor(Math.random()*bots.length)], aucBid);
-                    document.getElementById('bid-area').style.borderColor = '#f43f5e';
-                    setTimeout(()=>document.getElementById('bid-area').style.borderColor = 'rgba(255,255,255,0.1)', 200);
-                    if(navigator.vibrate) navigator.vibrate(20);
-                    ticks = 10;
-                }
-                ticks--;
-                const tEl = document.getElementById('auc-timer');
-                if(ticks > 5) tEl.innerHTML = `<i class="fas fa-circle text-[8px] animate-pulse rounded-full text-success"></i> LIVE Bidding`;
-                else if(ticks > 0) tEl.innerHTML = `<i class="fas fa-stopwatch animate-bounce"></i> Going Once... ${ticks}s`;
-                else { tEl.textContent = "SOLD!"; clearInterval(aucInterval); setTimeout(closeAuction, 2000); }
-            }, 1000);
-        }
-
-        function attachBidSwipe() {
-            const btn = document.getElementById('swipe-bid-btn');
-            const area = document.getElementById('bid-area');
-            const hint = document.getElementById('cancel-hint');
-            let startY, currentY = 0, dragging = false;
-
-            // Area cancel logic
-            area.ontouchstart = e => { if(placedBid) startY = e.touches[0].clientY; };
-            area.ontouchmove = e => {
-                if(!placedBid || startY === undefined) return;
-                if(e.touches[0].clientY - startY > 40) {
-                    placedBid = false; hint.style.opacity = 0;
-                    btn.style.transform = 'translateY(0) scale(1)';
-                    btn.style.background = 'linear-gradient(135deg, #2563eb, #1d4ed8)';
-                    aucBid -= 100; updateAucPrice();
-                    fireHaptic('#f43f5e');
-                    const feed = document.getElementById('auc-feed');
-                    if(feed.lastChild && feed.lastChild.classList.contains('me')) feed.lastChild.remove();
-                }
-            };
-
-            // Button drag logic
-            const st = e => { if(placedBid) return; dragging = true; btn.style.transition='none'; startY = e.touches[0].clientY; };
-            const mv = e => {
-                if(!dragging) return;
-                currentY = e.touches[0].clientY - startY;
-                if(currentY < 0) {
-                    btn.style.transform = `translateY(${currentY}px)`;
-                    const p = Math.min(Math.abs(currentY)/80, 1);
-                    btn.style.boxShadow = `0 ${10+p*20}px ${30+p*30}px rgba(16, 185, 129, ${0.4+p*0.4})`;
-                }
-            };
-            const en = () => {
-                if(!dragging) return; dragging = false;
-                btn.style.transition = 'all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1.2)';
-                if(currentY < -60) {
-                    fireHaptic('#10b981'); if(navigator.vibrate) navigator.vibrate([40,40,40]);
-                    aucBid += 100; updateAucPrice(); feedMsg('YOU', aucBid, true);
-                    btn.style.transform = 'translateY(-30px) scale(0.9)';
-                    btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-                    placedBid = true; hint.style.opacity = 1;
-                    
-                    setTimeout(() => {
-                        if(placedBid) {
-                            placedBid = false; hint.style.opacity = 0;
-                            btn.style.transform = 'translateY(0) scale(1)';
-                            btn.style.background = 'linear-gradient(135deg, #2563eb, #1d4ed8)';
-                        }
-                    }, 3500);
-                } else {
-                    btn.style.transform = 'translateY(0)';
-                    btn.style.boxShadow = '0 10px 30px rgba(37, 99, 235, 0.4)';
-                }
-                currentY = 0;
-            };
-
-            btn.addEventListener('touchstart', st, {passive:true});
-            window.addEventListener('touchmove', mv, {passive:true});
-            window.addEventListener('touchend', en);
-        }
-
-        initDeck();
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>

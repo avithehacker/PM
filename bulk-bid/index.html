@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AutoBid Pro — Vehicle Auction Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;--blue-m:#1a6fc4;
+  --green:#1a8a3c;--green-l:#e6f5eb;
+  --red:#c0392b;--red-l:#fdecea;
+  --amber:#d97706;--amber-l:#fffbeb;
+  --g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;--g400:#9ca3af;
+  --g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --white:#fff;--gold:#b45309;
+  --hh:56px;--nh:48px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.1);
+  --shadow-md:0 4px 14px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 30px rgba(0,0,0,.16);
+  --r:4px;--rm:6px;
+}
+html{font-family:'Barlow',sans-serif;background:var(--g100);color:var(--g900);font-size:14px}
+body{min-height:100vh;display:flex;flex-direction:column}
+button{cursor:pointer;font-family:'Barlow',sans-serif}
+input,select{font-family:'Barlow',sans-serif}
+a{text-decoration:none}
+
+/* ══ HEADER ══ */
+.hdr{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.hdr-logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap}
+.hdr-logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:15px}
+.hdr-logo span{color:#f0c040}
+.hdr-divider{width:1px;height:28px;background:rgba(255,255,255,.2)}
+/* NAV TABS */
+.hdr-nav{display:flex;gap:4px}
+.nav-tab{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r);border:none;background:transparent;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;transition:all .15s;position:relative}
+.nav-tab:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-tab.active{background:rgba(255,255,255,.15);color:#fff}
+.nav-tab.active::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:24px;height:2px;background:#f0c040;border-radius:2px}
+.nav-badge{background:var(--red);color:#fff;border-radius:2px;font-size:10px;font-weight:700;padding:1px 5px;min-width:16px;text-align:center}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.live-pill{background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:1px;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+.hdr-user{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.8);font-size:12px;font-weight:600}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--blue-m);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:700}
+
+/* ══ SCREENS ══ */
+.screen{display:none;flex:1;flex-direction:column}
+.screen.active{display:flex}
+
+/* ══ SCREEN 1 — AUCTION LISTINGS ══ */
+.listing-hero{background:linear-gradient(135deg,var(--blue-d) 0%,var(--blue-m) 100%);padding:28px 24px 24px;color:#fff}
+.listing-hero h1{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;letter-spacing:.3px;margin-bottom:4px}
+.listing-hero p{color:rgba(255,255,255,.7);font-size:13px}
+.listing-filters{background:var(--white);border-bottom:1px solid var(--g200);padding:12px 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-chip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:3px;border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
+.filter-chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+.filter-chip.on{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+.filter-chip .fc-dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+select.filter-select{padding:6px 28px 6px 10px;border-radius:var(--r);border:1.5px solid var(--g300);font-size:12px;font-weight:600;color:var(--g600);background:var(--white);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;cursor:pointer}
+select.filter-select:focus{outline:none;border-color:var(--blue)}
+.listings-grid{padding:20px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;flex:1}
+/* Auction Card */
+.auction-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,transform .2s;cursor:pointer}
+.auction-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--g300)}
+.ac-header{padding:14px 16px 12px;border-bottom:1px solid var(--g200);display:flex;align-items:flex-start;gap:12px}
+.ac-bank-logo{width:44px;height:44px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ac-info{flex:1;min-width:0}
+.ac-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--g900);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac-sub{font-size:11px;color:var(--g500);font-weight:500}
+.ac-status{flex-shrink:0}
+.status-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:.3px}
+.status-live{background:#fee2e2;color:#b91c1c}
+.status-upcoming{background:#fef3c7;color:#92400e}
+.status-closed{background:var(--g200);color:var(--g500)}
+.ac-meta{padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ac-meta-item{display:flex;flex-direction:column;gap:2px}
+.ac-meta-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400)}
+.ac-meta-val{font-size:13px;font-weight:600;color:var(--g800)}
+.ac-meta-val.highlight{color:var(--blue);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800}
+.ac-categories{padding:0 16px 12px;display:flex;gap:6px;flex-wrap:wrap}
+.cat-tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:2px}
+.ac-footer{padding:12px 16px;border-top:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between}
+.ac-footer-info{font-size:11px;color:var(--g500)}
+.btn-view{display:flex;align-items:center;gap:6px;padding:7px 16px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:700;transition:background .15s}
+.btn-view:hover{background:var(--blue-m)}
+
+/* ══ SCREEN 2 — VEHICLES INSIDE AUCTION ══ */
+.breadcrumb{background:var(--white);border-bottom:1px solid var(--g200);padding:10px 24px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g500)}
+.breadcrumb a{color:var(--blue);font-weight:600;cursor:pointer}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb-sep{color:var(--g300)}
+.auction-detail-bar{background:var(--blue-d);padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.adb-bank{display:flex;align-items:center;gap:10px}
+.adb-logo{width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:18px}
+.adb-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff}
+.adb-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:1px}
+.adb-sep{width:1px;height:32px;background:rgba(255,255,255,.2)}
+.adb-stat{text-align:center}
+.adb-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#fff}
+.adb-stat-lbl{font-size:10px;color:rgba(255,255,255,.55);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.adb-right{margin-left:auto;display:flex;gap:8px}
+/* Vehicles toolbar */
+.vehicles-toolbar{background:var(--white);border-bottom:2px solid var(--g200);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.vt-filter-tabs{display:flex;gap:4px}
+.vt-tab{padding:5px 12px;border-radius:var(--r);border:1.5px solid transparent;font-size:12px;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
+.vt-tab:hover{background:var(--g100)}
+.vt-tab.on{background:var(--g900);color:#fff;border-color:var(--g900)}
+.vt-tab .tcount{background:rgba(255,255,255,.2);border-radius:2px;padding:1px 5px;font-size:10px;margin-left:4px}
+.vt-tab:not(.on) .tcount{background:var(--g200);color:var(--g600)}
+.vt-sep{width:1px;height:22px;background:var(--g300)}
+.vt-group-sel{display:flex;align-items:center;gap:8px;margin-left:auto}
+.vt-group-label{font-size:12px;font-weight:600;color:var(--g500)}
+/* Group selector chips row */
+.group-row{background:var(--g100);border-bottom:1px solid var(--g200);padding:8px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:40px}
+.gr-chip{display:flex;align-items:center;gap:6px;padding:4px 10px 4px 12px;border-radius:3px;border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:600;color:var(--g700);cursor:pointer;transition:all .15s}
+.gr-chip:hover{border-color:var(--blue);color:var(--blue)}
+.gr-chip.sel{border-color:var(--blue);background:var(--blue-l);color:var(--blue)}
+.gr-chip .gc-count{background:var(--blue);color:#fff;border-radius:2px;font-size:10px;font-weight:700;padding:1px 5px}
+.gr-chip:not(.sel) .gc-count{background:var(--g400)}
+.gr-chip .gc-del{opacity:.45;font-size:13px;padding:0 2px;transition:opacity .15s}
+.gr-chip .gc-del:hover{opacity:1;color:var(--red)}
+.gr-new{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:3px;border:1.5px dashed var(--g300);background:transparent;font-size:12px;font-weight:600;color:var(--g400);cursor:pointer;transition:all .15s}
+.gr-new:hover{border-color:var(--blue);color:var(--blue)}
+/* Vehicles grid */
+.v2-grid{padding:16px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px;flex:1;align-content:start}
+/* Vehicle card v2 */
+.vc2{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,border-color .2s;position:relative}
+.vc2:hover{box-shadow:var(--shadow-md)}
+.vc2.grouped{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
+.vc2-img{height:148px;display:flex;align-items:center;justify-content:center;position:relative;font-size:50px}
+.vc2-lot{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:2px}
+.vc2-type{position:absolute;top:8px;right:8px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:.3px}
+.vc2-type.fw{background:#1565c0;color:#fff}
+.vc2-type.tw{background:#6a1b9a;color:#fff}
+.vc2-grp-tag{position:absolute;bottom:8px;left:8px;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;display:none}
+.vc2.grouped .vc2-grp-tag{display:block}
+.vc2-body{padding:11px 13px}
+.vc2-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--g900);margin-bottom:5px;line-height:1.2}
+.vc2-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+.vc2-pill{background:var(--g100);color:var(--g600);font-size:10px;font-weight:600;padding:2px 7px;border-radius:2px}
+.vc2-bid-row{background:var(--g100);border-radius:var(--r);padding:8px 10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.vc2-bid-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400)}
+.vc2-bid-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--blue-d)}
+.vc2-bid-val.up{color:var(--green)}
+.vc2-bid-base{font-size:11px;color:var(--g400);font-weight:500}
+/* stepper */
+.vc2-stepper{display:flex;align-items:center;border:1.5px solid var(--g300);border-radius:var(--r);overflow:hidden;margin-bottom:9px}
+.vc2-stepper button{background:var(--g100);border:none;width:32px;height:30px;font-size:16px;font-weight:700;color:var(--g700);transition:background .1s;flex-shrink:0}
+.vc2-stepper button:hover:not(:disabled){background:var(--g200)}
+.vc2-stepper button:disabled{opacity:.4;cursor:not-allowed}
+.vc2-stepper .sv{flex:1;text-align:center;font-size:11px;font-weight:600;color:var(--g600);background:#fff;border-left:1px solid var(--g300);border-right:1px solid var(--g300);padding:5px 2px;min-width:0}
+/* card actions */
+.vc2-actions{display:flex;gap:6px}
+.vc2-actions .btn{flex:1;justify-content:center;padding:6px 8px;font-size:12px}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--r);border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blue-d)}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#156a2e}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#a52d20}
+.btn-ghost{background:#fff;color:var(--g600);border:1.5px solid var(--g300)}.btn-ghost:hover{border-color:var(--g500);color:var(--g800)}
+.btn-outline-blue{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline-blue:hover{background:var(--blue-l)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-xs{padding:3px 8px;font-size:11px}
+.btn:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+
+/* ══ SCREEN 3 — MY BIDS ══ */
+.mybids-layout{display:grid;grid-template-columns:300px 1fr;flex:1;min-height:0}
+/* Left: Group List */
+.mybids-sidebar{background:var(--white);border-right:1px solid var(--g200);display:flex;flex-direction:column;overflow-y:auto}
+.mbs-header{padding:14px 16px;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between}
+.mbs-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--g900)}
+.mbs-count{background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:700;padding:2px 8px;border-radius:2px}
+.mbs-group{padding:12px 16px;border-bottom:1px solid var(--g200);cursor:pointer;transition:background .15s}
+.mbs-group:hover{background:var(--g100)}
+.mbs-group.sel{background:var(--blue-l);border-left:3px solid var(--blue)}
+.mbs-group:not(.sel){border-left:3px solid transparent}
+.mbs-g-name{font-weight:700;color:var(--g900);font-size:13px;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
+.mbs-g-meta{font-size:11px;color:var(--g500);display:flex;gap:8px}
+.mbs-g-total{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--blue-d);margin-top:4px}
+.mbs-g-status{font-size:10px;font-weight:700;padding:2px 6px;border-radius:2px}
+.mbs-g-status.placed{background:var(--green-l);color:var(--green)}
+.mbs-g-status.active{background:var(--blue-l);color:var(--blue)}
+/* Right: Group detail */
+.mybids-detail{display:flex;flex-direction:column;overflow:hidden}
+.mbd-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--g400)}
+.mbd-empty-icon{font-size:56px;margin-bottom:12px}
+.mbd-empty-txt{font-size:15px;font-weight:500}
+.mbd-header{background:var(--white);border-bottom:1px solid var(--g200);padding:16px 22px;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.mbd-group-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--g900)}
+.mbd-stats{display:flex;gap:16px;margin-left:auto;align-items:center}
+.mbd-stat{text-align:right}
+.mbd-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--blue-d)}
+.mbd-stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--g400)}
+/* Bulk controls bar */
+.bulk-ctrl{background:var(--g900);padding:10px 22px;display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap}
+.bulk-ctrl-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)}
+.bulk-amount-ctrl{display:flex;align-items:center;border:1px solid rgba(255,255,255,.2);border-radius:var(--r);overflow:hidden}
+.bac-btn{background:rgba(255,255,255,.1);border:none;width:28px;height:32px;font-size:15px;font-weight:700;color:#fff;transition:background .1s}
+.bac-btn:hover{background:rgba(255,255,255,.2)}
+.bac-val{padding:0 12px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#fff;background:rgba(255,255,255,.05);border-left:1px solid rgba(255,255,255,.15);border-right:1px solid rgba(255,255,255,.15);height:32px;display:flex;align-items:center}
+.bulk-up-btn{height:32px;padding:0 12px;background:rgba(26,138,60,.8);border:none;border-radius:var(--r);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:background .15s}
+.bulk-up-btn:hover{background:var(--green)}
+.bulk-dn-btn{height:32px;padding:0 12px;background:rgba(192,57,43,.7);border:none;border-radius:var(--r);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:background .15s}
+.bulk-dn-btn:hover{background:var(--red)}
+.bulk-sep{width:1px;height:28px;background:rgba(255,255,255,.15)}
+.place-bulk-btn{height:36px;padding:0 20px;background:var(--blue);border:none;border-radius:var(--r);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:.4px;cursor:pointer;transition:all .15s;text-transform:uppercase;margin-left:auto}
+.place-bulk-btn:hover{background:var(--blue-m);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,87,168,.4)}
+.continue-bid-btn{height:36px;padding:0 16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:var(--r);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.continue-bid-btn:hover{background:rgba(255,255,255,.2)}
+/* Vehicle rows in detail */
+.mbd-vehicles{flex:1;overflow-y:auto;padding:16px 22px;display:flex;flex-direction:column;gap:10px}
+.mbd-vrow{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;display:flex;gap:0;transition:border-color .2s}
+.mbd-vrow.locked-row{background:var(--g100);border-color:var(--g300)}
+.mbd-vrow-img{width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0}
+.mbd-vrow-body{flex:1;padding:10px 14px;min-width:0;border-left:1px solid var(--g200)}
+.mbd-vrow-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--g900);margin-bottom:3px}
+.mbd-vrow-meta{font-size:11px;color:var(--g500);margin-bottom:6px;display:flex;gap:8px}
+.mbd-vrow-controls{display:flex;align-items:center;gap:8px}
+.mini-stepper{display:flex;align-items:center;border:1.5px solid var(--g300);border-radius:var(--r);overflow:hidden}
+.mini-stepper button{background:var(--g100);border:none;width:26px;height:26px;font-size:13px;font-weight:700;color:var(--g700);transition:background .1s}
+.mini-stepper button:hover:not(:disabled){background:var(--g200)}
+.mini-stepper button:disabled{opacity:.4;cursor:not-allowed}
+.mini-stepper .msv{background:#fff;border-left:1px solid var(--g300);border-right:1px solid var(--g300);padding:0 8px;font-size:11px;font-weight:600;color:var(--g600);height:26px;display:flex;align-items:center}
+.mbd-vrow-right{padding:10px 14px;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex-shrink:0;min-width:120px;border-left:1px solid var(--g200)}
+.mbd-vrow-bid{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:var(--blue-d)}
+.mbd-vrow-bid.up{color:var(--green)}
+.mbd-vrow-base{font-size:10px;color:var(--g400);font-weight:500}
+/* placed badge */
+.placed-badge{display:inline-flex;align-items:center;gap:4px;background:var(--green-l);color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px}
+/* ══ MODALS ══ */
+.modal-ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:var(--rm);width:500px;max-width:calc(100vw - 32px);max-height:86vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);transform:translateY(10px);transition:transform .2s}
+.modal-ov.open .modal{transform:translateY(0)}
+.modal-hdr{background:var(--blue-d);color:#fff;padding:15px 18px;border-radius:var(--rm) var(--rm) 0 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
+.modal-close{background:rgba(255,255,255,.15);border:none;color:#fff;width:26px;height:26px;border-radius:var(--r);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.modal-close:hover{background:rgba(255,255,255,.3)}
+.modal-body{padding:18px;overflow-y:auto;flex:1}
+.modal-footer{padding:12px 18px;border-top:1px solid var(--g200);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
+.form-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g700);margin-bottom:5px}
+.form-input{width:100%;padding:8px 11px;border:1.5px solid var(--g300);border-radius:var(--r);font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,87,168,.1)}
+/* Confirm list */
+.confirm-row{display:flex;align-items:center;justify-content:space-between;background:var(--g100);border-radius:var(--r);padding:9px 12px;border-left:3px solid var(--blue);margin-bottom:7px}
+.cr-name{font-weight:700;font-size:13px}
+.cr-id{font-size:11px;color:var(--g500);margin-top:2px}
+.cr-bid{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--blue-d)}
+.confirm-total{margin-top:12px;background:var(--blue-d);border-radius:var(--r);padding:13px 16px;display:flex;justify-content:space-between;align-items:center}
+.ct-lbl{font-weight:700;color:rgba(255,255,255,.8);font-size:12px;text-transform:uppercase}
+.ct-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#fff}
+/* ══ TOAST ══ */
+.toasts{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:7px;pointer-events:none}
+.toast{background:#fff;border-radius:var(--rm);box-shadow:var(--shadow-lg);padding:11px 15px;max-width:300px;display:flex;align-items:center;gap:9px;pointer-events:all;animation:tin .25s ease;border-left:4px solid var(--blue)}
+@keyframes tin{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.toast.out{animation:tout .25s ease forwards}
+@keyframes tout{to{opacity:0;transform:translateX(16px)}}
+.toast.success{border-left-color:var(--green)}
+.toast.warning{border-left-color:var(--amber)}
+.toast.error{border-left-color:var(--red)}
+.toast-msg{font-size:12px;font-weight:600;color:var(--g800);line-height:1.4;flex:1}
+/* ══ MISC ══ */
+.empty-g{grid-column:1/-1;padding:48px 20px;text-align:center;color:var(--g400)}
+.empty-g-icon{font-size:44px;margin-bottom:10px}
+.empty-g-txt{font-size:14px;font-weight:500}
+@media(max-width:700px){
+  .mybids-layout{grid-template-columns:1fr}
+  .mybids-sidebar{max-height:240px}
+  .listings-grid{grid-template-columns:1fr}
+  .hdr-user{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="hdr">
+  <div class="hdr-logo"><div class="hdr-logo-icon">🔨</div>Auto<span>Bid</span>Pro</div>
+  <div class="hdr-divider"></div>
+  <nav class="hdr-nav">
+    <button class="nav-tab active" onclick="goScreen('s1',this)" id="tab-s1">🏛️ Auction Listings</button>
+    <button class="nav-tab" onclick="goScreen('s2',this)" id="tab-s2" id="tab-s2">📋 Vehicles</button>
+    <button class="nav-tab" onclick="goScreen('s3',this)" id="tab-s3">📂 My Bids <span class="nav-badge" id="mybids-badge">0</span></button>
+  </nav>
+  <div class="hdr-right">
+    <div class="live-pill">● LIVE</div>
+    <div class="hdr-user"><div class="avatar">R</div>Rahul M.</div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 1 — AUCTION LISTINGS
+══════════════════════════════════════════ -->
+<div class="screen active" id="s1">
+  <div class="listing-hero">
+    <h1>🏛️ Live & Upcoming Auctions</h1>
+    <p>Browse bank-authorized vehicle auctions across India — select a sale to view lots and place bids</p>
+  </div>
+  <div class="listing-filters">
+    <span style="font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.5px">Filter:</span>
+    <div class="filter-chip on" onclick="toggleChip(this,'all')"><div class="fc-dot"></div>All Auctions</div>
+    <div class="filter-chip" onclick="toggleChip(this,'live')"><div class="fc-dot" style="color:#b91c1c"></div>Live</div>
+    <div class="filter-chip" onclick="toggleChip(this,'upcoming')"><div class="fc-dot" style="color:#92400e"></div>Upcoming</div>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <select class="filter-select" onchange="filterByBank(this.value)">
+        <option value="">All Banks</option>
+        <option>SBI</option><option>HDFC Bank</option><option>ICICI Bank</option>
+        <option>Axis Bank</option><option>Bank of Baroda</option>
+      </select>
+      <select class="filter-select" onchange="filterByCity(this.value)">
+        <option value="">All Cities</option>
+        <option>Bengaluru</option><option>Mumbai</option><option>Delhi</option>
+        <option>Chennai</option><option>Hyderabad</option><option>Pune</option>
+      </select>
+    </div>
+  </div>
+  <div class="listings-grid" id="listingsGrid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 2 — VEHICLES IN AUCTION
+══════════════════════════════════════════ -->
+<div class="screen" id="s2">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a onclick="goScreen('s1',document.getElementById('tab-s1'))">Auction Listings</a>
+    <span class="breadcrumb-sep">›</span>
+    <span id="bc-auction-name">—</span>
+  </div>
+  <!-- Auction Detail Bar -->
+  <div class="auction-detail-bar">
+    <div class="adb-bank">
+      <div class="adb-logo" id="adb-logo">🏦</div>
+      <div><div class="adb-name" id="adb-name">—</div><div class="adb-sub" id="adb-sub">—</div></div>
+    </div>
+    <div class="adb-sep"></div>
+    <div class="adb-stat"><div class="adb-stat-val" id="adb-lots">—</div><div class="adb-stat-lbl">Total Lots</div></div>
+    <div class="adb-sep"></div>
+    <div class="adb-stat"><div class="adb-stat-val" id="adb-city">—</div><div class="adb-stat-lbl">Location</div></div>
+    <div class="adb-sep"></div>
+    <div class="adb-stat"><div class="adb-stat-val" id="adb-date">—</div><div class="adb-stat-lbl">Sale Date</div></div>
+    <div class="adb-right">
+      <button class="btn btn-ghost btn-sm" onclick="goScreen('s3',document.getElementById('tab-s3'))">📂 My Bids</button>
+    </div>
+  </div>
+  <!-- Group Row -->
+  <div class="group-row" id="groupRow">
+    <span style="font-size:11px;font-weight:600;color:var(--g400)">Groups:</span>
+    <div id="groupChipsS2"></div>
+    <button class="gr-new" onclick="openNewGroup()">＋ New Group</button>
+  </div>
+  <!-- Vehicles Toolbar -->
+  <div class="vehicles-toolbar">
+    <div class="vt-filter-tabs">
+      <div class="vt-tab on" onclick="filterVeh('all',this)">All <span class="tcount" id="tc-all">0</span></div>
+      <div class="vt-tab" onclick="filterVeh('4w',this)">🚗 4-Wheeler <span class="tcount" id="tc-4w">0</span></div>
+      <div class="vt-tab" onclick="filterVeh('2w',this)">🏍️ 2-Wheeler <span class="tcount" id="tc-2w">0</span></div>
+      <div class="vt-tab" onclick="filterVeh('grouped',this)">📦 Grouped <span class="tcount" id="tc-gr">0</span></div>
+    </div>
+    <div class="vt-sep"></div>
+    <span style="font-size:12px;color:var(--g500);font-weight:500">Active Group:</span>
+    <span style="font-size:12px;font-weight:700;color:var(--blue)" id="activeGrpLabel">None selected</span>
+  </div>
+  <div class="v2-grid" id="vehiclesGrid2" style="overflow-y:auto"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 3 — MY BIDS
+══════════════════════════════════════════ -->
+<div class="screen" id="s3">
+  <div class="mybids-layout">
+    <!-- Sidebar: Groups list -->
+    <div class="mybids-sidebar">
+      <div class="mbs-header">
+        <span class="mbs-title">📂 My Bid Groups</span>
+        <span class="mbs-count" id="mbs-count">0</span>
+      </div>
+      <div id="mbsSidebar"></div>
+      <div style="padding:14px 16px;border-top:1px solid var(--g200);margin-top:auto">
+        <button class="btn btn-outline-blue btn-sm" style="width:100%;justify-content:center" onclick="openNewGroup()">＋ Create New Group</button>
+      </div>
+    </div>
+    <!-- Detail panel -->
+    <div class="mybids-detail" id="mybidsDetail">
+      <div class="mbd-empty">
+        <div class="mbd-empty-icon">📋</div>
+        <div class="mbd-empty-txt">Select a group to view vehicles & place bulk bids</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Create Group ══ -->
+<div class="modal-ov" id="modalNewGroup">
+  <div class="modal">
+    <div class="modal-hdr"><span class="modal-title">📁 Create New Group</span><button class="modal-close" onclick="closeModal('modalNewGroup')">✕</button></div>
+    <div class="modal-body">
+      <div style="margin-bottom:14px"><label class="form-label">Group Name</label><input class="form-input" id="newGroupName" placeholder="e.g. Premium Lot, Budget Fleet…" maxlength="30" onkeydown="if(event.key==='Enter')confirmNewGroup()"/></div>
+      <p style="font-size:12px;color:var(--g500);line-height:1.55">Groups let you select multiple vehicles and place a single bulk bid. Add vehicles from the vehicle listing screen.</p>
+    </div>
+    <div class="modal-footer"><button class="btn btn-ghost btn-sm" onclick="closeModal('modalNewGroup')">Cancel</button><button class="btn btn-blue btn-sm" onclick="confirmNewGroup()">✓ Create Group</button></div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Bulk Bid Confirm ══ -->
+<div class="modal-ov" id="modalConfirm">
+  <div class="modal">
+    <div class="modal-hdr"><span class="modal-title">🔨 Confirm Bulk Bid</span><button class="modal-close" onclick="closeModal('modalConfirm')">✕</button></div>
+    <div class="modal-body">
+      <p style="font-size:12px;color:var(--g500);margin-bottom:12px">Review vehicles and bids before confirming. Placed bids are locked.</p>
+      <div id="confirmList"></div>
+      <div class="confirm-total" id="confirmTotal"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('modalConfirm')">Cancel</button>
+      <button class="btn btn-green btn-sm" style="font-size:14px;padding:8px 20px" onclick="executeBulkBid()">✓ Confirm &amp; Place Bulk Bid</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOASTS ══ -->
+<div class="toasts" id="toasts"></div>
+
+<script>
+// ─────────────────────────────────────────────
+//  AUCTION DATA
+// ─────────────────────────────────────────────
+const AUCTIONS = [
+  { id:'A001', bank:'SBI', logo:'🏦', name:'SBI Repossessed Vehicle Sale', location:'Bengaluru', city:'Bengaluru', date:'Apr 5, 2025', status:'live',     lots:24, categories:['Cars','SUVs','Bikes'],    contact:'1800-425-3800', ref:'SBI/REC/BLR/2025/04' },
+  { id:'A002', bank:'HDFC Bank', logo:'🏧', name:'HDFC Auto Asset Auction',    location:'Mumbai',    city:'Mumbai',    date:'Apr 8, 2025', status:'upcoming', lots:18, categories:['Cars','Trucks'],          contact:'1800-202-6161', ref:'HDFC/MUM/AUC/2025/04' },
+  { id:'A003', bank:'ICICI Bank', logo:'💳', name:'ICICI Seized Vehicle Lot',  location:'Delhi',     city:'Delhi',     date:'Apr 3, 2025', status:'live',     lots:31, categories:['Cars','Bikes','SUVs'],    contact:'1800-102-4242', ref:'ICICI/DEL/2025/03' },
+  { id:'A004', bank:'Axis Bank', logo:'🏛️', name:'Axis Bank Vehicle Recovery', location:'Chennai',   city:'Chennai',   date:'Apr 12, 2025',status:'upcoming', lots:14, categories:['Bikes','Scooters'],      contact:'1800-419-5555', ref:'AXIS/CHN/2025/04' },
+  { id:'A005', bank:'Bank of Baroda', logo:'🏪', name:'BoB Repossession Auction', location:'Hyderabad', city:'Hyderabad', date:'Apr 2, 2025', status:'live',   lots:22, categories:['Cars','SUVs','Trucks'],  contact:'1800-102-4455', ref:'BOB/HYD/2025/04' },
+  { id:'A006', bank:'SBI', logo:'🏦', name:'SBI Priority Vehicle Sale',       location:'Pune',      city:'Pune',      date:'Apr 15, 2025',status:'upcoming', lots:11, categories:['Cars','Bikes'],           contact:'1800-425-3800', ref:'SBI/PUN/2025/04' },
+];
+
+// ─────────────────────────────────────────────
+//  VEHICLE DATA  (per auction)
+// ─────────────────────────────────────────────
+const VEHICLES_BY_AUCTION = {
+  A001:[
+    {id:'V001',name:'Toyota Fortuner',year:'2021',type:'4w',base:1800000,color:'#c8e6c9',emoji:'🚙',fuel:'Diesel',km:'42,000',city:'Bengaluru'},
+    {id:'V002',name:'Honda City',year:'2020',type:'4w',base:850000,color:'#bbdefb',emoji:'🚗',fuel:'Petrol',km:'28,500',city:'Bengaluru'},
+    {id:'V003',name:'Hyundai Creta',year:'2022',type:'4w',base:1200000,color:'#ffe0b2',emoji:'🚘',fuel:'Petrol',km:'15,200',city:'Bengaluru'},
+    {id:'V004',name:'Maruti Swift',year:'2019',type:'4w',base:550000,color:'#f8bbd0',emoji:'🚗',fuel:'CNG',km:'61,000',city:'Bengaluru'},
+    {id:'V005',name:'Royal Enfield Classic 350',year:'2022',type:'2w',base:180000,color:'#e1bee7',emoji:'🏍️',fuel:'Petrol',km:'9,400',city:'Bengaluru'},
+    {id:'V006',name:'Honda Activa 6G',year:'2021',type:'2w',base:75000,color:'#dcedc8',emoji:'🛵',fuel:'Petrol',km:'22,100',city:'Bengaluru'},
+  ],
+  A002:[
+    {id:'V007',name:'BMW 3 Series',year:'2020',type:'4w',base:2800000,color:'#cfd8dc',emoji:'🚗',fuel:'Petrol',km:'31,000',city:'Mumbai'},
+    {id:'V008',name:'Tata Nexon EV',year:'2022',type:'4w',base:1450000,color:'#b2dfdb',emoji:'🚙',fuel:'Electric',km:'18,400',city:'Mumbai'},
+    {id:'V009',name:'Bajaj Pulsar NS200',year:'2023',type:'2w',base:145000,color:'#b2ebf2',emoji:'🏍️',fuel:'Petrol',km:'4,800',city:'Mumbai'},
+    {id:'V010',name:'Yamaha FZ-S V3',year:'2022',type:'2w',base:95000,color:'#ffe082',emoji:'🏍️',fuel:'Petrol',km:'12,300',city:'Mumbai'},
+  ],
+  A003:[
+    {id:'V011',name:'Mahindra Scorpio',year:'2020',type:'4w',base:1100000,color:'#d7ccc8',emoji:'🚙',fuel:'Diesel',km:'55,000',city:'Delhi'},
+    {id:'V012',name:'Maruti Baleno',year:'2021',type:'4w',base:720000,color:'#c5cae9',emoji:'🚗',fuel:'Petrol',km:'33,000',city:'Delhi'},
+    {id:'V013',name:'KTM Duke 390',year:'2022',type:'2w',base:225000,color:'#ffccbc',emoji:'🏍️',fuel:'Petrol',km:'7,200',city:'Delhi'},
+    {id:'V014',name:'Hero Splendor Plus',year:'2020',type:'2w',base:48000,color:'#dcedc8',emoji:'🛵',fuel:'Petrol',km:'44,000',city:'Delhi'},
+    {id:'V015',name:'Ford EcoSport',year:'2019',type:'4w',base:680000,color:'#f0f4c3',emoji:'🚘',fuel:'Petrol',km:'67,000',city:'Delhi'},
+  ],
+  A004:[
+    {id:'V016',name:'Suzuki Access 125',year:'2022',type:'2w',base:68000,color:'#e1bee7',emoji:'🛵',fuel:'Petrol',km:'8,500',city:'Chennai'},
+    {id:'V017',name:'TVS Apache RTR 200',year:'2021',type:'2w',base:118000,color:'#b2ebf2',emoji:'🏍️',fuel:'Petrol',km:'19,600',city:'Chennai'},
+    {id:'V018',name:'Honda Dio',year:'2023',type:'2w',base:72000,color:'#ffe0b2',emoji:'🛵',fuel:'Petrol',km:'3,100',city:'Chennai'},
+  ],
+  A005:[
+    {id:'V019',name:'Tata Safari',year:'2022',type:'4w',base:1650000,color:'#d1c4e9',emoji:'🚙',fuel:'Diesel',km:'22,000',city:'Hyderabad'},
+    {id:'V020',name:'Kia Seltos',year:'2021',type:'4w',base:1350000,color:'#b2dfdb',emoji:'🚘',fuel:'Petrol',km:'29,000',city:'Hyderabad'},
+    {id:'V021',name:'MG Hector',year:'2020',type:'4w',base:1150000,color:'#c8e6c9',emoji:'🚗',fuel:'Petrol',km:'41,500',city:'Hyderabad'},
+    {id:'V022',name:'Royal Enfield Meteor 350',year:'2022',type:'2w',base:195000,color:'#ffccbc',emoji:'🏍️',fuel:'Petrol',km:'6,800',city:'Hyderabad'},
+  ],
+  A006:[
+    {id:'V023',name:'Honda Jazz',year:'2021',type:'4w',base:790000,color:'#f8bbd0',emoji:'🚗',fuel:'Petrol',km:'24,000',city:'Pune'},
+    {id:'V024',name:'Suzuki Burgman Street',year:'2022',type:'2w',base:85000,color:'#dcedc8',emoji:'🛵',fuel:'Petrol',km:'11,200',city:'Pune'},
+  ],
+};
+
+const INC = {'4w':1000,'2w':500};
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let currentAuctionId = null;   // which auction is open in S2
+let vehFilter = 'all';         // S2 vehicle filter tab
+let groups = {};               // { gid: { name, vehicles: Map<vid, {auctionId}>, locked } }
+let vehicleGroup = {};         // vid → gid
+let bids = {};                 // vid → currentBid
+let activeGroupId = null;      // currently selected group (S2)
+let selectedGroupS3 = null;    // selected group in S3 sidebar
+let bulkAmounts = {};          // gid → bulkAmount
+
+// Init bids
+Object.values(VEHICLES_BY_AUCTION).flat().forEach(v => { bids[v.id] = v.base; });
+
+// ─────────────────────────────────────────────
+//  NAVIGATION
+// ─────────────────────────────────────────────
+function goScreen(id, tabEl) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (tabEl) tabEl.classList.add('active');
+  if (id === 's1') renderListings();
+  if (id === 's2') renderS2();
+  if (id === 's3') renderS3();
+}
+
+// ─────────────────────────────────────────────
+//  SCREEN 1 — LISTINGS
+// ─────────────────────────────────────────────
+function renderListings() {
+  const grid = document.getElementById('listingsGrid');
+  const cats = {'Cars':'#dbeafe','SUVs':'#dcfce7','Bikes':'#fef3c7','Trucks':'#fce7f3','Scooters':'#ede9fe','Trucks':'#fce7f3'};
+  grid.innerHTML = AUCTIONS.map(a => `
+  <div class="auction-card" onclick="openAuction('${a.id}')">
+    <div class="ac-header">
+      <div class="ac-bank-logo" style="background:${a.status==='live'?'#fee2e2':a.status==='upcoming'?'#fef3c7':'var(--g100)'}">${a.logo}</div>
+      <div class="ac-info">
+        <div class="ac-title">${a.name}</div>
+        <div class="ac-sub">Ref: ${a.ref}</div>
+      </div>
+      <div class="ac-status"><span class="status-pill ${a.status==='live'?'status-live':a.status==='upcoming'?'status-upcoming':'status-closed'}">${a.status==='live'?'● LIVE':a.status==='upcoming'?'⏳ UPCOMING':'CLOSED'}</span></div>
+    </div>
+    <div class="ac-meta">
+      <div class="ac-meta-item"><div class="ac-meta-label">Bank</div><div class="ac-meta-val">${a.bank}</div></div>
+      <div class="ac-meta-item"><div class="ac-meta-label">Location</div><div class="ac-meta-val">📍 ${a.location}</div></div>
+      <div class="ac-meta-item"><div class="ac-meta-label">Sale Date</div><div class="ac-meta-val">📅 ${a.date}</div></div>
+      <div class="ac-meta-item"><div class="ac-meta-label">Total Lots</div><div class="ac-meta-val highlight">${a.lots} Vehicles</div></div>
+    </div>
+    <div class="ac-categories">
+      ${a.categories.map(c=>`<span class="cat-tag" style="background:${cats[c]||'#f3f4f6'};color:var(--g700)">${c}</span>`).join('')}
+    </div>
+    <div class="ac-footer">
+      <span class="ac-footer-info">Contact: ${a.contact}</span>
+      <button class="btn-view" onclick="event.stopPropagation();openAuction('${a.id}')">View Lots →</button>
+    </div>
+  </div>`).join('');
+}
+
+function openAuction(aid) {
+  currentAuctionId = aid;
+  const a = AUCTIONS.find(x => x.id === aid);
+  // fill detail bar
+  document.getElementById('bc-auction-name').textContent = a.name;
+  document.getElementById('adb-logo').textContent = a.logo;
+  document.getElementById('adb-name').textContent = a.bank + ' — ' + a.name;
+  document.getElementById('adb-sub').textContent = 'Ref: ' + a.ref;
+  document.getElementById('adb-lots').textContent = (VEHICLES_BY_AUCTION[aid]||[]).length;
+  document.getElementById('adb-city').textContent = a.city;
+  document.getElementById('adb-date').textContent = a.date;
+  goScreen('s2', document.getElementById('tab-s2'));
+}
+
+function toggleChip(el, type) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+}
+function filterByBank() {} // placeholder for future
+function filterByCity() {}
+
+// ─────────────────────────────────────────────
+//  SCREEN 2 — VEHICLES
+// ─────────────────────────────────────────────
+function renderS2() {
+  renderGroupChipsS2();
+  renderVehicleGrid();
+  updateActiveGroupLabel();
+}
+
+function renderGroupChipsS2() {
+  const el = document.getElementById('groupChipsS2');
+  const gids = Object.keys(groups);
+  if (!gids.length) { el.innerHTML = '<span style="font-size:11px;color:var(--g400);font-style:italic">No groups yet</span>'; return; }
+  el.innerHTML = gids.map(gid => {
+    const g = groups[gid];
+    return `<div class="gr-chip ${activeGroupId===gid?'sel':''}" onclick="selectGroup('${gid}')">
+      📦 ${g.name} <span class="gc-count">${g.vehicles.size}</span>
+      <span class="gc-del" onclick="event.stopPropagation();deleteGroup('${gid}')">✕</span>
+    </div>`;
+  }).join('');
+}
+
+function renderVehicleGrid() {
+  const grid = document.getElementById('vehiclesGrid2');
+  const vehicles = VEHICLES_BY_AUCTION[currentAuctionId] || [];
+  const filtered = vehicles.filter(v => {
+    if (vehFilter === '4w') return v.type === '4w';
+    if (vehFilter === '2w') return v.type === '2w';
+    if (vehFilter === 'grouped') return !!vehicleGroup[v.id];
+    return true;
+  });
+
+  // update tab counts
+  document.getElementById('tc-all').textContent = vehicles.length;
+  document.getElementById('tc-4w').textContent = vehicles.filter(v=>v.type==='4w').length;
+  document.getElementById('tc-2w').textContent = vehicles.filter(v=>v.type==='2w').length;
+  document.getElementById('tc-gr').textContent = vehicles.filter(v=>!!vehicleGroup[v.id]).length;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-g"><div class="empty-g-icon">🔍</div><div class="empty-g-txt">No vehicles match this filter</div></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(v => buildVehicleCard(v)).join('');
+}
+
+function buildVehicleCard(v) {
+  const inGrp = !!vehicleGroup[v.id];
+  const gName = inGrp ? groups[vehicleGroup[v.id]].name : '';
+  const bid = bids[v.id];
+  const changed = bid !== v.base;
+  const inc = INC[v.type];
+  const locked = inGrp && groups[vehicleGroup[v.id]].locked;
+  const hasGroups = Object.keys(groups).length > 0;
+
+  return `<div class="vc2 ${inGrp?'grouped':''}" id="vc2-${v.id}">
+    <div class="vc2-img" style="background:${v.color}">
+      ${v.emoji}
+      <div class="vc2-lot">LOT #${v.id}</div>
+      <div class="vc2-type ${v.type==='4w'?'fw':'tw'}">${v.type==='4w'?'🚗 4W':'🏍️ 2W'}</div>
+      <div class="vc2-grp-tag">📦 ${gName}</div>
+    </div>
+    <div class="vc2-body">
+      <div class="vc2-name">${v.year} ${v.name}</div>
+      <div class="vc2-pills">
+        <span class="vc2-pill">⛽ ${v.fuel}</span>
+        <span class="vc2-pill">🛣️ ${v.km} km</span>
+        <span class="vc2-pill">📍 ${v.city}</span>
+        <span class="vc2-pill">Incr: ${fmt(inc)}</span>
+      </div>
+      <div class="vc2-bid-row">
+        <div>
+          <div class="vc2-bid-lbl">Current Bid</div>
+          <div class="vc2-bid-val ${changed?'up':''}" id="v2bid-${v.id}">${fmt(bid)}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="vc2-bid-lbl">Base Bid</div>
+          <div class="vc2-bid-base">${fmt(v.base)}</div>
+        </div>
+      </div>
+      <div class="vc2-stepper">
+        <button onclick="adjBid('${v.id}',-1)" ${locked?'disabled':''}>−</button>
+        <div class="sv">${fmt(inc)} / step</div>
+        <button onclick="adjBid('${v.id}',1)" ${locked?'disabled':''}>＋</button>
+      </div>
+      <div class="vc2-actions">
+        ${!inGrp
+          ? `<select style="flex:1;padding:5px 24px 5px 10px;border-radius:4px;border:1.5px solid ${hasGroups?'var(--blue)':'var(--g300)'};font-family:Barlow,sans-serif;font-size:12px;font-weight:600;color:${hasGroups?'var(--blue)':'var(--g400)'};background:${hasGroups?'var(--blue-l)':'var(--g100)'};cursor:pointer;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5'%3E%3Cpath d='M0 0l4.5 5L9 0z' fill='%230057a8'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 8px center;" onchange="addToGroup('${v.id}',this.value,this)" ${!hasGroups?'disabled':''}>
+              <option value="">+ Add to Group</option>
+              ${Object.keys(groups).map(gid=>`<option value="${gid}">${groups[gid].name}</option>`).join('')}
+            </select>`
+          : `<button class="btn btn-ghost" style="flex:1;font-size:11px;padding:5px 8px" onclick="removeFromGroup('${v.id}')" ${locked?'disabled':''}>✕ Remove</button>`
+        }
+        <button class="btn btn-blue" style="flex:1;font-size:12px;padding:5px 8px" onclick="placeSingleBid('${v.id}')" ${locked?'disabled':''}>🏷️ Bid</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function updateActiveGroupLabel() {
+  const el = document.getElementById('activeGrpLabel');
+  if (activeGroupId && groups[activeGroupId]) {
+    el.textContent = groups[activeGroupId].name + ' (' + groups[activeGroupId].vehicles.size + ' vehicles)';
+  } else {
+    el.textContent = 'None selected';
+  }
+}
+
+function filterVeh(type, el) {
+  vehFilter = type;
+  document.querySelectorAll('.vt-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  renderVehicleGrid();
+}
+
+// ─────────────────────────────────────────────
+//  GROUP ACTIONS
+// ─────────────────────────────────────────────
+function openNewGroup() {
+  document.getElementById('newGroupName').value = '';
+  openModal('modalNewGroup');
+  setTimeout(() => document.getElementById('newGroupName').focus(), 200);
+}
+
+function confirmNewGroup() {
+  const name = document.getElementById('newGroupName').value.trim();
+  if (!name) { toast('Enter a group name', 'warning'); return; }
+  const gid = 'g' + Date.now();
+  groups[gid] = { name, vehicles: new Map(), locked: false };
+  bulkAmounts[gid] = 1000;
+  activeGroupId = gid;
+  closeModal('modalNewGroup');
+  toast(`Group "${name}" created`, 'success');
+  updateBadge();
+  if (document.getElementById('s2').classList.contains('active')) renderS2();
+  if (document.getElementById('s3').classList.contains('active')) renderS3();
+}
+
+function deleteGroup(gid) {
+  const g = groups[gid];
+  [...g.vehicles.keys()].forEach(vid => delete vehicleGroup[vid]);
+  delete groups[gid];
+  delete bulkAmounts[gid];
+  if (activeGroupId === gid) activeGroupId = Object.keys(groups)[0] || null;
+  if (selectedGroupS3 === gid) selectedGroupS3 = null;
+  toast(`Group "${g.name}" deleted`, 'warning');
+  updateBadge();
+  if (document.getElementById('s2').classList.contains('active')) renderS2();
+  if (document.getElementById('s3').classList.contains('active')) renderS3();
+}
+
+function selectGroup(gid) {
+  activeGroupId = activeGroupId === gid ? null : gid;
+  renderGroupChipsS2();
+  updateActiveGroupLabel();
+}
+
+function addToGroup(vid, gid, selectEl) {
+  if (!gid) return;
+  if (!groups[gid]) { toast('Please create a group first', 'warning'); return; }
+  if (vehicleGroup[vid]) { toast('Vehicle already in a group', 'warning'); selectEl.value=''; return; }
+  groups[gid].vehicles.set(vid, { auctionId: currentAuctionId });
+  vehicleGroup[vid] = gid;
+  activeGroupId = gid;
+  const v = allVehicles().find(x => x.id === vid);
+  toast(`${v.name} added to "${groups[gid].name}"`, 'success');
+  updateBadge();
+  renderS2();
+}
+
+function removeFromGroup(vid) {
+  const gid = vehicleGroup[vid];
+  if (!gid) return;
+  const gName = groups[gid].name;
+  groups[gid].vehicles.delete(vid);
+  delete vehicleGroup[vid];
+  bids[vid] = allVehicles().find(v => v.id === vid).base;
+  toast(`Removed from "${gName}" — bid reset`, 'warning');
+  updateBadge();
+  renderS2();
+}
+
+// ─────────────────────────────────────────────
+//  BID ACTIONS
+// ─────────────────────────────────────────────
+function adjBid(vid, dir) {
+  const v = allVehicles().find(x => x.id === vid);
+  if (!v) return;
+  if (vehicleGroup[vid] && groups[vehicleGroup[vid]].locked) return;
+  const newBid = bids[vid] + dir * INC[v.type];
+  if (newBid < v.base) { toast(`Cannot go below base bid of ${fmt(v.base)}`, 'error'); return; }
+  bids[vid] = newBid;
+  // update DOM directly for speed
+  const el = document.getElementById('v2bid-' + vid);
+  if (el) { el.textContent = fmt(newBid); el.className = 'vc2-bid-val' + (newBid !== v.base ? ' up' : ''); }
+  const mrow = document.getElementById('mbd-bid-' + vid);
+  if (mrow) { mrow.textContent = fmt(newBid); mrow.className = 'mbd-vrow-bid' + (newBid !== v.base ? ' up' : ''); }
+  refreshGroupStats();
+}
+
+function placeSingleBid(vid) {
+  const v = allVehicles().find(x => x.id === vid);
+  toast(`🏷️ Bid placed: ${v.name} @ ${fmt(bids[vid])}`, 'success');
+}
+
+// ─────────────────────────────────────────────
+//  SCREEN 3 — MY BIDS
+// ─────────────────────────────────────────────
+function renderS3() {
+  const gids = Object.keys(groups);
+  document.getElementById('mbs-count').textContent = gids.length;
+
+  // Sidebar
+  const sb = document.getElementById('mbsSidebar');
+  if (!gids.length) {
+    sb.innerHTML = '<div style="padding:32px 16px;text-align:center;color:var(--g400)"><div style="font-size:36px;margin-bottom:8px">📋</div><div style="font-size:13px;font-weight:500">No groups yet</div></div>';
+  } else {
+    sb.innerHTML = gids.map(gid => {
+      const g = groups[gid];
+      const total = [...g.vehicles.keys()].reduce((s,vid) => s+bids[vid], 0);
+      const cnt = g.vehicles.size;
+      return `<div class="mbs-group ${selectedGroupS3===gid?'sel':''}" onclick="selectGroupS3('${gid}')">
+        <div class="mbs-g-name">
+          📦 ${g.name}
+          <span class="mbs-g-status ${g.locked?'placed':'active'}">${g.locked?'✅ PLACED':'⏳ ACTIVE'}</span>
+        </div>
+        <div class="mbs-g-meta"><span>${cnt} vehicle${cnt!==1?'s':''}</span><span>•</span><span>${g.locked?'Bid Placed':'Bidding Open'}</span></div>
+        <div class="mbs-g-total">${fmt(total)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Detail
+  if (selectedGroupS3 && groups[selectedGroupS3]) {
+    renderGroupDetail(selectedGroupS3);
+  } else {
+    document.getElementById('mybidsDetail').innerHTML = `
+      <div class="mbd-empty">
+        <div class="mbd-empty-icon">📂</div>
+        <div class="mbd-empty-txt">Select a group to view details &amp; place bulk bid</div>
+      </div>`;
+  }
+}
+
+function selectGroupS3(gid) {
+  selectedGroupS3 = gid;
+  renderS3();
+}
+
+function renderGroupDetail(gid) {
+  const g = groups[gid];
+  const vids = [...g.vehicles.keys()];
+  const total = vids.reduce((s,vid) => s+bids[vid], 0);
+  const locked = g.locked;
+  const ba = bulkAmounts[gid] || 1000;
+
+  const detail = document.getElementById('mybidsDetail');
+  detail.innerHTML = `
+    <div class="mbd-header">
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:3px">Active Group</div>
+        <div class="mbd-group-name">📦 ${g.name}</div>
+      </div>
+      <div class="mbd-stats">
+        <div class="mbd-stat"><div class="mbd-stat-val">${vids.length}</div><div class="mbd-stat-lbl">Vehicles</div></div>
+        <div class="mbd-stat"><div class="mbd-stat-val" id="s3-total">${fmt(total)}</div><div class="mbd-stat-lbl">Total Bid</div></div>
+      </div>
+      ${locked ? `<button class="btn btn-ghost btn-sm" onclick="resetGroup('${gid}')">🔄 Reset</button>` : ''}
+    </div>
+
+    <div class="bulk-ctrl" id="bulkCtrl-${gid}" ${locked?'style="opacity:.5;pointer-events:none"':''}>
+      <span class="bulk-ctrl-label">Bulk Amount:</span>
+      <div class="bulk-amount-ctrl">
+        <button class="bac-btn" onclick="changeBulkAmt('${gid}',-500)">−</button>
+        <div class="bac-val" id="ba-val-${gid}">${fmt(ba)}</div>
+        <button class="bac-btn" onclick="changeBulkAmt('${gid}',500)">＋</button>
+      </div>
+      <button class="bulk-dn-btn" onclick="bulkAdj('${gid}','dn')">⬇ Decrease All</button>
+      <button class="bulk-up-btn" onclick="bulkAdj('${gid}','up')">⬆ Increase All</button>
+      <div class="bulk-sep"></div>
+      <button class="continue-bid-btn" onclick="goToBidScreen('${gid}')">📋 Continue Bidding</button>
+      <button class="place-bulk-btn" onclick="openBulkConfirm('${gid}')">🔨 PLACE BULK BID</button>
+    </div>
+
+    ${locked ? `<div style="background:var(--green-l);border-bottom:2px solid var(--green);padding:10px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+      <span style="font-size:13px;font-weight:700;color:var(--green)">✅ Bulk bid placed — all bids locked</span>
+      <button class="btn btn-ghost btn-sm" onclick="resetGroup('${gid}')">🔄 Reset Group</button>
+    </div>` : ''}
+
+    <div class="mbd-vehicles" id="mbd-vehicles-${gid}">
+      ${!vids.length
+        ? `<div style="padding:40px;text-align:center;color:var(--g400)"><div style="font-size:40px;margin-bottom:10px">🚗</div><div style="font-size:14px;font-weight:500">No vehicles in this group yet</div><button class="btn btn-outline-blue btn-sm" style="margin-top:12px" onclick="goScreen('s2',document.getElementById('tab-s2'))">Browse Auction Listings</button></div>`
+        : vids.map(vid => buildMbdRow(vid, locked)).join('')
+      }
+    </div>`;
+}
+
+function buildMbdRow(vid, locked) {
+  const v = allVehicles().find(x => x.id === vid);
+  if (!v) return '';
+  const bid = bids[vid];
+  const changed = bid !== v.base;
+  const inc = INC[v.type];
+  const aid = groups[vehicleGroup[vid]]?.vehicles.get(vid)?.auctionId || '';
+  const a = AUCTIONS.find(x => x.id === aid);
+  return `<div class="mbd-vrow ${locked?'locked-row':''}" id="mbd-row-${vid}">
+    <div class="mbd-vrow-img" style="background:${v.color}">${v.emoji}</div>
+    <div class="mbd-vrow-body">
+      <div class="mbd-vrow-name">${v.year} ${v.name}</div>
+      <div class="mbd-vrow-meta">
+        <span>LOT #${v.id}</span><span>•</span>
+        <span>${v.type==='4w'?'4-Wheeler':'2-Wheeler'}</span><span>•</span>
+        <span>⛽ ${v.fuel}</span><span>•</span>
+        <span>${a ? a.bank : ''}</span>
+      </div>
+      ${!locked ? `<div class="mbd-vrow-controls">
+        <div class="mini-stepper">
+          <button onclick="adjBid('${vid}',-1)">−</button>
+          <div class="msv">${fmt(inc)}</div>
+          <button onclick="adjBid('${vid}',1)">＋</button>
+        </div>
+        <button class="btn btn-ghost" style="font-size:11px;padding:4px 8px" onclick="removeFromGroup('${vid}');renderS3()">✕ Remove</button>
+        <button class="btn btn-blue" style="font-size:11px;padding:4px 10px" onclick="placeSingleBid('${vid}')">🏷️ Bid</button>
+      </div>` : `<div><span class="placed-badge">✅ Bid Locked</span></div>`}
+    </div>
+    <div class="mbd-vrow-right">
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:2px">Your Bid</div>
+        <div class="mbd-vrow-bid ${changed?'up':''}" id="mbd-bid-${vid}">${fmt(bid)}</div>
+        <div class="mbd-vrow-base">Base: ${fmt(v.base)}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function goToBidScreen(gid) {
+  // find the auction that has the most vehicles from this group
+  const vids = [...groups[gid].vehicles.keys()];
+  if (!vids.length) { toast('No vehicles in group', 'warning'); return; }
+  const aids = vids.map(vid => groups[gid].vehicles.get(vid)?.auctionId).filter(Boolean);
+  const aid = [...new Set(aids)][0];
+  if (aid) {
+    openAuction(aid);
+    activeGroupId = gid;
+  }
+}
+
+function changeBulkAmt(gid, delta) {
+  bulkAmounts[gid] = Math.max(500, (bulkAmounts[gid] || 1000) + delta);
+  const el = document.getElementById('ba-val-' + gid);
+  if (el) el.textContent = fmt(bulkAmounts[gid]);
+}
+
+function bulkAdj(gid, dir) {
+  const g = groups[gid];
+  if (!g || g.locked) return;
+  const vids = [...g.vehicles.keys()];
+  if (!vids.length) { toast('No vehicles in group', 'warning'); return; }
+  const ba = bulkAmounts[gid] || 1000;
+  let anyBlocked = false;
+  vids.forEach(vid => {
+    const v = allVehicles().find(x => x.id === vid);
+    const newBid = bids[vid] + (dir==='up'?1:-1) * ba;
+    if (newBid < v.base) { anyBlocked = true; return; }
+    bids[vid] = newBid;
+    const el = document.getElementById('mbd-bid-' + vid);
+    if (el) { el.textContent = fmt(bids[vid]); el.className = 'mbd-vrow-bid' + (bids[vid]!==v.base?' up':''); }
+  });
+  if (anyBlocked) toast('Some vehicles hit base bid floor', 'warning');
+  refreshGroupStats();
+}
+
+function openBulkConfirm(gid) {
+  const g = groups[gid];
+  const vids = [...g.vehicles.keys()];
+  if (!vids.length) { toast('Add vehicles to the group first', 'warning'); return; }
+  const total = vids.reduce((s,vid) => s+bids[vid], 0);
+  const vehicles = vids.map(vid => allVehicles().find(v => v.id === vid)).filter(Boolean);
+
+  document.getElementById('confirmList').innerHTML = vehicles.map(v => `
+    <div class="confirm-row">
+      <div>
+        <div class="cr-name">${v.year} ${v.name}</div>
+        <div class="cr-id">LOT #${v.id} · ${v.type==='4w'?'4-Wheeler':'2-Wheeler'}</div>
+      </div>
+      <div class="cr-bid">${fmt(bids[v.id])}</div>
+    </div>`).join('');
+
+  document.getElementById('confirmTotal').innerHTML = `
+    <div class="ct-lbl">Grand Total (${vehicles.length} vehicle${vehicles.length!==1?'s':''})</div>
+    <div class="ct-val">${fmt(total)}</div>`;
+
+  document.getElementById('modalConfirm').dataset.gid = gid;
+  openModal('modalConfirm');
+}
+
+function executeBulkBid() {
+  const gid = document.getElementById('modalConfirm').dataset.gid;
+  const g = groups[gid];
+  const vids = [...g.vehicles.keys()];
+  const total = vids.reduce((s,vid) => s+bids[vid], 0);
+  g.locked = true;
+  closeModal('modalConfirm');
+  toast(`🔨 Bulk bid placed — ${vids.length} vehicles, Total ${fmt(total)}`, 'success');
+  updateBadge();
+  renderS3();
+}
+
+function resetGroup(gid) {
+  const g = groups[gid];
+  g.locked = false;
+  [...g.vehicles.keys()].forEach(vid => { bids[vid] = allVehicles().find(v=>v.id===vid).base; });
+  toast('Group reset — bids cleared', 'warning');
+  renderS3();
+  renderS2();
+}
+
+function refreshGroupStats() {
+  if (!selectedGroupS3 || !groups[selectedGroupS3]) return;
+  const vids = [...groups[selectedGroupS3].vehicles.keys()];
+  const total = vids.reduce((s,vid) => s+bids[vid], 0);
+  const el = document.getElementById('s3-total');
+  if (el) el.textContent = fmt(total);
+}
+
+// ─────────────────────────────────────────────
+//  HELPERS
+// ─────────────────────────────────────────────
+function allVehicles() { return Object.values(VEHICLES_BY_AUCTION).flat(); }
+
+function fmt(n) {
+  if (n >= 10000000) return '₹' + (n/10000000).toFixed(2).replace(/\.?0+$/,'') + ' Cr';
+  if (n >= 100000)   return '₹' + (n/100000).toFixed(n%100000===0?0:1).replace(/\.?0+$/,'') + ' L';
+  if (n >= 1000)     return '₹' + (n/1000).toFixed(n%1000===0?0:1).replace(/\.?0+$/,'') + 'K';
+  return '₹' + n.toLocaleString('en-IN');
+}
+
+function updateBadge() {
+  document.getElementById('mybids-badge').textContent = Object.keys(groups).length;
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-ov').forEach(mo => {
+  mo.addEventListener('click', e => { if (e.target===mo) mo.classList.remove('open'); });
+});
+
+const TICONS = {success:'✅',warning:'⚠️',error:'❌',info:'ℹ️'};
+function toast(msg, type='success') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${TICONS[type]||''}</span><span class="toast-msg">${msg}</span>`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, 3200);
+}
+
+// ─── INIT ───
+renderListings();
+updateBadge();
+</script>
+</body>
+</html>
