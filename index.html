@@ -34,6 +34,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            background: #f7f7f7;
         }
 
         /* ─── Background ─── */
@@ -53,22 +54,16 @@
 
         .bg {
             position: fixed;
-            inset: 0;
+            top: 0;
+            right: 0;
+            width: 50vw;
+            height: 100vh;
             background-image: url('avinash-m.jpeg');
-            background-size: cover;
+            background-size: contain;
             background-position: center center;
+            background-repeat: no-repeat;
+            background-color: #f7f7f7;
             z-index: 0;
-            animation: kenburns 18s ease-in-out infinite;
-            transform-origin: center center;
-        }
-
-        /* Neutral dark vignette — no warm tones */
-        .bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.15);
-            mix-blend-mode: multiply;
         }
 
         /* ─── Info Card ─── */
@@ -76,20 +71,15 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 38vw;
-            min-width: 320px;
-            max-width: 520px;
+            width: 50vw;
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 60px 48px;
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(22px) saturate(1.4);
-            -webkit-backdrop-filter: blur(22px) saturate(1.4);
-            border-right: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 60px 80px;
+            background: #ffffff;
             z-index: 10;
             overflow-y: auto;
         }
@@ -232,76 +222,69 @@
             html,
             body {
                 width: 100%;
-                height: 100%;
-                overflow: hidden;
-            }
-
-            /* Photo still fills entire screen */
-            .bg {
-                position: fixed;
-                inset: 0;
-                height: 100%;
-                background-image: url('avinash-m.jpeg');
-            }
-
-            /* Card as bottom sheet */
-            .info-card {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                top: auto;
-                width: 100%;
-                max-width: 100%;
                 height: auto;
-                max-height: 72vh;
-                border-right: none;
-                border-top: 1px solid rgba(255, 255, 255, 0.4);
-                border-radius: 24px 24px 0 0;
-                padding: 10px 28px 44px;
-                background: rgba(255, 255, 255, 0.50);
-                backdrop-filter: blur(24px) saturate(1.6);
-                -webkit-backdrop-filter: blur(24px) saturate(1.6);
-                overflow-y: auto;
-                justify-content: flex-start;
-                box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.18);
+                overflow: visible;
             }
 
-            /* Drag handle indicator */
-            .info-card::before {
-                content: '';
+            /* Stack image at the top */
+            .bg {
+                position: relative;
+                inset: auto;
+                width: 100vw;
+                height: auto;
+                aspect-ratio: 3/4;
+                background-image: url('avinash-m.jpeg');
+                background-size: contain;
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-color: #f7f7f7;
+                z-index: 1;
+            }
+
+            /* Card below the image */
+            .info-card {
+                position: relative;
+                inset: auto;
+                width: 100%;
+                height: auto;
+                max-height: none;
+                border-right: none;
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
+                border-radius: 0;
+                padding: 40px 24px 60px;
+                background: #ffffff;
+                z-index: 10;
+                overflow-y: visible;
                 display: block;
-                width: 40px;
-                height: 4px;
-                background: rgba(0, 0, 0, 0.18);
-                border-radius: 4px;
-                margin: 0 auto 20px;
-                flex-shrink: 0;
+            }
+
+            /* Remove drag handle indicator for standard scroll */
+            .info-card::before {
+                display: none;
             }
 
             .card-name {
-                font-size: 1.9rem;
-                margin-bottom: 22px;
+                font-size: 2.1rem;
+                margin-bottom: 24px;
             }
 
             .card-roles li {
-                font-size: 0.68rem;
-                padding: 8px 0;
+                font-size: 0.72rem;
+                padding: 10px 0;
             }
 
             .card-links a {
-                font-size: 0.97rem;
+                font-size: 1.05rem;
             }
         }
 
         @media (max-width: 420px) {
             .info-card {
-                padding: 10px 20px 40px;
-                max-height: 78vh;
+                padding: 36px 20px 50px;
             }
 
             .card-name {
-                font-size: 1.7rem;
+                font-size: 1.9rem;
             }
         }
     </style>
@@ -322,15 +305,14 @@
             <li>Based in Bangalore &mdash; from Varanasi</li>
         </ul>
 
-        <p class="card-section-label">Select Work</p>
+        <p class="card-section-label">Featured Work</p>
         <ul class="card-links">
-            <li><a href="pdf/prd/Building WhatsApp for illiterate and digitally challenged.pdf" target="_blank">WhatsApp
-                    for the Illiterate</a></li>
-            <li><a href="pdf/prd/Veeery Accessible Ebook for Visually Impaired.pdf" target="_blank">Accessible Ebook for
-                    Blind Students</a></li>
-            <li><a href="pdf/prd/Veeery Accessible Audiobook for Visually Impaired.pdf" target="_blank">Accessible
-                    Audiobook Platform</a></li>
-
+            <li>
+                <a href="drafts.html" style="font-size: 1.3rem; font-weight: 400; border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; margin-bottom: 8px;">First Draft</a>
+                <p style="font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #777; font-weight: 300; line-height: 1.5; max-width: 320px; margin: 0 auto;">
+                    A curated collection of early-stage product prototypes, gesture-driven interfaces, and accessibility-first design documents.
+                </p>
+            </li>
         </ul>
 
         <p class="card-section-label">Connect</p>
