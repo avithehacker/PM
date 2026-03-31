@@ -37,41 +37,16 @@
             background: #f7f7f7;
         }
 
-        /* ─── Background ─── */
-        @keyframes kenburns {
-            0% {
-                transform: scale(1) translate(0, 0);
-            }
-
-            50% {
-                transform: scale(1.06) translate(-1%, -1%);
-            }
-
-            100% {
-                transform: scale(1) translate(0, 0);
-            }
-        }
-
-        .bg {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 50vw;
+        /* ─── Layout ─── */
+        .layout {
+            display: flex;
+            width: 100%;
             height: 100vh;
-            background-image: url('avinash-m.jpeg');
-            background-size: contain;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-color: #f7f7f7;
-            z-index: 0;
         }
 
-        /* ─── Info Card ─── */
+        /* ─── Left: Info Card ─── */
         .info-card {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 50vw;
+            width: 50%;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -80,14 +55,29 @@
             text-align: center;
             padding: 60px 80px;
             background: #ffffff;
-            z-index: 10;
             overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        /* ─── Right: Canvas panel ─── */
+        .particle-panel {
+            width: 50%;
+            height: 100vh;
+            position: relative;
+            background: #f7f7f7;
+            flex-shrink: 0;
+        }
+
+        #particle-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         /* ─── Name ─── */
         .card-name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+            font-size: clamp(1.9rem, 2.8vw, 3rem);
             font-weight: 400;
             letter-spacing: 0.12em;
             text-transform: uppercase;
@@ -198,158 +188,205 @@
             border-color: #111;
         }
 
-        /* ─── Photo credit ─── */
-        .photo-credit {
-            position: fixed;
-            bottom: 18px;
-            right: 20px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.62rem;
-            letter-spacing: 0.06em;
-            color: rgba(255, 255, 255, 0.55);
-            z-index: 5;
-        }
-
-        .photo-credit a {
-            color: inherit;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
         /* ─── Mobile ─── */
         @media (max-width: 768px) {
 
             html,
             body {
-                width: 100%;
-                height: auto;
                 overflow: visible;
-            }
-
-            /* Stack image at the top */
-            .bg {
-                position: relative;
-                inset: auto;
-                width: 100vw;
                 height: auto;
-                aspect-ratio: 3/4;
-                background-image: url('avinash-m.jpeg');
-                background-size: contain;
-                background-position: center center;
-                background-repeat: no-repeat;
-                background-color: #f7f7f7;
-                z-index: 1;
             }
 
-            /* Card below the image */
+            .layout {
+                flex-direction: column;
+                height: auto;
+            }
+
             .info-card {
-                position: relative;
-                inset: auto;
                 width: 100%;
                 height: auto;
-                max-height: none;
-                border-right: none;
-                border-top: 1px solid rgba(0, 0, 0, 0.05);
-                border-radius: 0;
-                padding: 40px 24px 60px;
-                background: #ffffff;
-                z-index: 10;
+                padding: 48px 28px 52px;
                 overflow-y: visible;
-                display: block;
             }
 
-            /* Remove drag handle indicator for standard scroll */
-            .info-card::before {
+            .particle-panel {
                 display: none;
-            }
-
-            .card-name {
-                font-size: 2.1rem;
-                margin-bottom: 24px;
-            }
-
-            .card-roles li {
-                font-size: 0.72rem;
-                padding: 10px 0;
-            }
-
-            .card-links a {
-                font-size: 1.05rem;
-            }
-        }
-
-        @media (max-width: 420px) {
-            .info-card {
-                padding: 36px 20px 50px;
-            }
-
-            .card-name {
-                font-size: 1.9rem;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Full-screen background -->
-    <div class="bg"></div>
 
-    <!-- Info card -->
-    <div class="info-card">
+    <div class="layout">
 
-        <h1 class="card-name">Avinash Singh</h1>
+        <!-- Left: Info card -->
+        <div class="info-card">
+            <h1 class="card-name">Avinash Singh</h1>
 
-        <ul class="card-roles">
-            <li>Product Manager at <a href="https://www.mahindrafirstchoice.com/" target="_blank">Mahindra</a></li>
-            <li>Builder of <a href="https://dharnikafoundation.org/" target="_blank">Dharnika</a></li>
-            <li>Based in Bangalore &mdash; from Varanasi</li>
-        </ul>
+            <ul class="card-roles">
+                <li>Product Manager at <a href="https://www.mahindrafirstchoice.com/" target="_blank">Mahindra</a></li>
+                <li>Founder of <a href="https://dharnikafoundation.org/" target="_blank">Dharnika</a></li>
+                <li>Based in Bangalore &mdash; from Varanasi</li>
+            </ul>
 
-        <p class="card-section-label">Featured Work</p>
-        <ul class="card-links">
-            <li>
-                <a href="drafts.html" style="font-size: 1.3rem; font-weight: 400; border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; margin-bottom: 8px;">First Draft</a>
-                <p style="font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #777; font-weight: 300; line-height: 1.5; max-width: 320px; margin: 0 auto;">
-                    A curated collection of early-stage product prototypes, gesture-driven interfaces, and accessibility-first design documents.
-                </p>
-            </li>
-        </ul>
+            <p class="card-section-label">Featured Work</p>
+            <ul class="card-links">
+                <li>
+                    <a href="drafts.html"
+                        style="font-size: 1.3rem; font-weight: 400; border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; margin-bottom: 8px;">First
+                        Draft</a>
+                    <p
+                        style="font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #777; font-weight: 300; line-height: 1.5; max-width: 320px; margin: 0 auto;">
+                        A curated collection of early-stage product prototypes and design documents.
+                    </p>
+                </li>
+            </ul>
 
-        <p class="card-section-label">Connect</p>
-        <div class="card-connect">
-            <a href="https://www.linkedin.com/in/avithehacker/" target="_blank">LinkedIn</a>
-            <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank">Resume</a>
+            <p class="card-section-label">Connect</p>
+            <div class="card-connect">
+                <a href="https://www.linkedin.com/in/avithehacker/" target="_blank">LinkedIn</a>
+                <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank">Resume</a>
+            </div>
+        </div>
+
+        <!-- Right: Particle canvas -->
+        <div class="particle-panel">
+            <canvas id="particle-canvas"></canvas>
         </div>
 
     </div>
 
+    <script>
+        // ─── Particle field ───────────────────────────────────────────
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
 
+        let W, H, particles = [], mouse = { x: -999, y: -999 };
+        const COUNT = 90;
+        const CONNECTION_DIST = 110;
+        const MOUSE_DIST = 130;
+
+        function resize() {
+            const panel = canvas.parentElement;
+            W = canvas.width = panel.offsetWidth;
+            H = canvas.height = panel.offsetHeight;
+        }
+
+        function rand(min, max) { return Math.random() * (max - min) + min; }
+
+        function createParticle() {
+            return {
+                x: rand(0, W),
+                y: rand(0, H),
+                vx: rand(-0.18, 0.18),
+                vy: rand(-0.18, 0.18),
+                r: rand(1.2, 2.2),
+                alpha: rand(0.25, 0.55)
+            };
+        }
+
+        function init() {
+            resize();
+            particles = Array.from({ length: COUNT }, createParticle);
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+
+            // Update positions
+            for (const p of particles) {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0) p.x = W;
+                if (p.x > W) p.x = 0;
+                if (p.y < 0) p.y = H;
+                if (p.y > H) p.y = 0;
+            }
+
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const a = particles[i], b = particles[j];
+                    const dx = a.x - b.x, dy = a.y - b.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < CONNECTION_DIST) {
+                        const opacity = (1 - dist / CONNECTION_DIST) * 0.18;
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(40,40,40,${opacity})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.stroke();
+                    }
+                }
+
+                // Mouse connections
+                const p = particles[i];
+                const mdx = p.x - mouse.x, mdy = p.y - mouse.y;
+                const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                if (mdist < MOUSE_DIST) {
+                    const opacity = (1 - mdist / MOUSE_DIST) * 0.35;
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(40,40,40,${opacity})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+            }
+
+            // Draw dots
+            for (const p of particles) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(40,40,40,${p.alpha})`;
+                ctx.fill();
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        // Mouse tracking (relative to canvas)
+        canvas.parentElement.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        canvas.parentElement.addEventListener('mouseleave', () => {
+            mouse.x = -999;
+            mouse.y = -999;
+        });
+
+        window.addEventListener('resize', () => { resize(); });
+
+        init();
+        draw();
+
+        // ─── Easter egg ───────────────────────────────────────────────
+        let aCount = 0, aTimer;
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'a') {
+                aCount++;
+                clearTimeout(aTimer);
+                aTimer = setTimeout(() => { aCount = 0; }, 800);
+                if (aCount >= 3) { aCount = 0; window.location.href = 'avi/index.html'; }
+            }
+        });
+
+        let tapCount = 0, tapTimer;
+        const nameEl = document.querySelector('.card-name');
+        if (nameEl) {
+            nameEl.addEventListener('click', () => {
+                tapCount++;
+                clearTimeout(tapTimer);
+                tapTimer = setTimeout(() => { tapCount = 0; }, 1200);
+                if (tapCount >= 3) { tapCount = 0; window.location.href = 'avi/index.html'; }
+            });
+        }
+    </script>
 
 </body>
-
-<script>
-    // Desktop: press 'A' three times quickly
-    let aCount = 0, aTimer;
-    document.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() === 'a') {
-            aCount++;
-            clearTimeout(aTimer);
-            aTimer = setTimeout(() => { aCount = 0; }, 800);
-            if (aCount >= 3) { aCount = 0; window.location.href = 'avi/index.html'; }
-        }
-    });
-
-    // Mobile: triple-tap the name within 1.2s
-    let tapCount = 0, tapTimer;
-    const nameEl = document.querySelector('.card-name');
-    if (nameEl) {
-        nameEl.addEventListener('click', () => {
-            tapCount++;
-            clearTimeout(tapTimer);
-            tapTimer = setTimeout(() => { tapCount = 0; }, 1200);
-            if (tapCount >= 3) { tapCount = 0; window.location.href = 'avi/index.html'; }
-        });
-    }
-</script>
 
 </html>
