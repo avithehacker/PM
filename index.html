@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <script type="text/javascript">
         (function (c, l, a, r, i, t, y) {
@@ -29,342 +29,219 @@
             padding: 0;
         }
 
-        html,
         body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #f7f7f7;
-        }
-
-        /* ─── Layout ─── */
-        .layout {
-            display: flex;
-            width: 100%;
-            height: 100vh;
-        }
-
-        /* ─── Left: Info Card ─── */
-        .info-card {
-            width: 50%;
-            height: 100vh;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 80px 40px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 60px 80px;
-            background: #ffffff;
-            overflow-y: auto;
-            flex-shrink: 0;
+            min-height: 100vh;
         }
 
-        /* ─── Right: Canvas panel ─── */
-        .particle-panel {
-            width: 50%;
-            height: 100vh;
-            position: relative;
-            background: #f7f7f7;
-            flex-shrink: 0;
-        }
-
-        #particle-canvas {
+        .container {
             width: 100%;
-            height: 100%;
-            display: block;
+            max-width: 600px;
         }
 
-        /* ─── Name ─── */
-        .card-name {
+        header {
+            margin-bottom: 60px;
+        }
+
+        h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.9rem, 2.8vw, 3rem);
+            font-size: 2.8rem;
             font-weight: 400;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
             text-transform: uppercase;
+        }
+
+        .roles {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .roles p {
+            font-size: 0.88rem;
             color: #1a1a1a;
-            line-height: 1.1;
-            margin-bottom: 32px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            line-height: 1.6;
         }
 
-        /* ─── Roles ─── */
-        .card-roles {
-            list-style: none;
-            margin-bottom: 36px;
-            width: 100%;
+        /* inline links — Mahindra, Dharnika */
+        .roles a {
+            color: #111;
+            text-decoration: underline;
+            text-decoration-color: rgba(0,0,0,0.3);
+            text-underline-offset: 3px;
+            transition: text-decoration-color 0.2s;
         }
 
-        .card-roles li {
+        .roles a:hover {
+            text-decoration-color: #111;
+        }
+
+        section {
+            margin-bottom: 48px;
+        }
+
+        h2 {
             font-family: 'Inter', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 500;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: #444;
-            line-height: 1;
-            padding: 9px 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-        }
-
-        .card-roles li:first-child {
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-        }
-
-        .card-roles a {
-            color: inherit;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(80, 80, 80, 0.35);
-            padding-bottom: 1px;
-            transition: border-color 0.2s, color 0.2s;
-        }
-
-        .card-roles a:hover {
-            color: #000;
-            border-color: #000;
-        }
-
-        /* ─── Section labels ─── */
-        .card-section-label {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #888;
-            margin-bottom: 14px;
-            width: 100%;
+            color: #777;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 8px;
+        }
+
+        ul.links {
+            list-style: none;
+        }
+
+        ul.links li {
+            margin-bottom: 20px;
+        }
+
+        /* clickable item links — First Draft */
+        .link-item {
+            display: block;
+            text-decoration: none;
+            color: #111;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .link-item:hover {
+            color: #000;
+        }
+
+        .link-item:hover .link-title {
+            text-decoration: underline;
+            text-decoration-color: #111;
+            text-underline-offset: 3px;
+        }
+
+        .link-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            display: block;
+            margin-bottom: 4px;
+            text-decoration: underline;
+            text-decoration-color: rgba(0,0,0,0.25);
+            text-underline-offset: 3px;
+        }
+
+        /* connect links — LinkedIn, Resume */
+        .connect-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .connect-links .link-item {
+            display: inline-block;
+        }
+
+        .connect-links .link-item .link-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #111;
+            text-decoration: underline;
+            text-decoration-color: rgba(0,0,0,0.3);
+            text-underline-offset: 3px;
+            transition: text-decoration-color 0.2s;
+        }
+
+        .connect-links .link-item:hover .link-title {
+            text-decoration-color: #111;
+        }
+
+        .connect-links .link-item:hover {
+            color: #000;
+        }
+
+        .link-desc {
+            font-size: 0.8rem;
+            color: #555;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            font-size: 0.75rem;
+            color: #999;
             text-align: center;
         }
 
-        /* ─── Work links ─── */
-        .card-links {
-            list-style: none;
-            margin-bottom: 36px;
-            width: 100%;
-        }
-
-        .card-links li {
-            padding: 5px 0;
-        }
-
-        .card-links a {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.05rem;
-            font-weight: 300;
-            color: #2a2a2a;
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s, color 0.2s;
-            letter-spacing: 0.01em;
-        }
-
-        .card-links a:hover {
-            color: #000;
-            border-bottom-color: rgba(0, 0, 0, 0.4);
-        }
-
-        /* ─── Connect links ─── */
-        .card-connect {
-            display: flex;
-            gap: 24px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .card-connect a {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 500;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: #555;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(80, 80, 80, 0.3);
-            padding-bottom: 2px;
-            transition: color 0.2s, border-color 0.2s;
-        }
-
-        .card-connect a:hover {
-            color: #111;
-            border-color: #111;
-        }
-
-        /* ─── Mobile ─── */
-        @media (max-width: 768px) {
-
-            html,
+        @media (max-width: 600px) {
             body {
-                overflow: visible;
-                height: auto;
+                padding: 60px 24px;
             }
 
-            .layout {
-                flex-direction: column;
-                height: auto;
+            h1 {
+                font-size: 2.2rem;
             }
-
-            .info-card {
-                width: 100%;
-                height: auto;
-                padding: 48px 28px 52px;
-                overflow-y: visible;
-            }
-
-            .particle-panel {
-                display: none;
+            
+            .container {
+                margin-top: 0;
             }
         }
     </style>
 </head>
 
 <body>
+    <div class="container">
+        <header>
+            <h1 id="name-header">Avinash Singh</h1>
+            <div class="roles">
+                <p>Product Manager at <a href="https://www.mahindrafirstchoice.com/" target="_blank">Mahindra</a></p>
+                <p>Founder of <a href="https://dharnikafoundation.org/" target="_blank">Dharnika</a></p>
+                <p>Based in Bangalore &mdash; from Varanasi</p>
+            </div>
+        </header>
 
-    <div class="layout">
-
-        <!-- Left: Info card -->
-        <div class="info-card">
-            <h1 class="card-name">Avinash Singh</h1>
-
-            <ul class="card-roles">
-                <li>Product Manager at <a href="https://www.mahindrafirstchoice.com/" target="_blank">Mahindra</a></li>
-                <li>Founder of <a href="https://dharnikafoundation.org/" target="_blank">Dharnika</a></li>
-                <li>Based in Bangalore &mdash; from Varanasi</li>
-            </ul>
-
-            <p class="card-section-label">Featured Work</p>
-            <ul class="card-links">
+        <section>
+            <h2>Featured Work</h2>
+            <ul class="links">
                 <li>
-                    <a href="drafts.html"
-                        style="font-size: 1.3rem; font-weight: 400; border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; margin-bottom: 8px;">First
-                        Draft</a>
-                    <p
-                        style="font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #777; font-weight: 300; line-height: 1.5; max-width: 320px; margin: 0 auto;">
-                        A curated collection of early-stage product prototypes and design documents.
-                    </p>
+                    <a href="drafts.html" class="link-item">
+                        <span class="link-title">First Draft</span>
+                        <span class="link-desc">A curated collection of early-stage product prototypes and design documents.</span>
+                    </a>
                 </li>
             </ul>
+        </section>
 
-            <p class="card-section-label">Connect</p>
-            <div class="card-connect">
-                <a href="https://www.linkedin.com/in/avithehacker/" target="_blank">LinkedIn</a>
-                <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank">Resume</a>
+        <section>
+            <h2>Connect</h2>
+            <div class="connect-links">
+                <a href="https://www.linkedin.com/in/avithehacker/" target="_blank" class="link-item">
+                    <span class="link-title">LinkedIn</span>
+                </a>
+                <a href="pdf/resume/Avinash-Singh-Resume.pdf" target="_blank" class="link-item">
+                    <span class="link-title">Resume</span>
+                </a>
             </div>
-        </div>
+        </section>
 
-        <!-- Right: Particle canvas -->
-        <div class="particle-panel">
-            <canvas id="particle-canvas"></canvas>
-        </div>
-
+        <footer>
+            &copy; 2026 Avinash Singh
+        </footer>
     </div>
-
+    
     <script>
-        // ─── Particle field ───────────────────────────────────────────
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let W, H, particles = [], mouse = { x: -999, y: -999 };
-        const COUNT = 90;
-        const CONNECTION_DIST = 110;
-        const MOUSE_DIST = 130;
-
-        function resize() {
-            const panel = canvas.parentElement;
-            W = canvas.width = panel.offsetWidth;
-            H = canvas.height = panel.offsetHeight;
-        }
-
-        function rand(min, max) { return Math.random() * (max - min) + min; }
-
-        function createParticle() {
-            return {
-                x: rand(0, W),
-                y: rand(0, H),
-                vx: rand(-0.18, 0.18),
-                vy: rand(-0.18, 0.18),
-                r: rand(1.2, 2.2),
-                alpha: rand(0.25, 0.55)
-            };
-        }
-
-        function init() {
-            resize();
-            particles = Array.from({ length: COUNT }, createParticle);
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, W, H);
-
-            // Update positions
-            for (const p of particles) {
-                p.x += p.vx;
-                p.y += p.vy;
-                if (p.x < 0) p.x = W;
-                if (p.x > W) p.x = 0;
-                if (p.y < 0) p.y = H;
-                if (p.y > H) p.y = 0;
-            }
-
-            // Draw connections
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const a = particles[i], b = particles[j];
-                    const dx = a.x - b.x, dy = a.y - b.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < CONNECTION_DIST) {
-                        const opacity = (1 - dist / CONNECTION_DIST) * 0.18;
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(40,40,40,${opacity})`;
-                        ctx.lineWidth = 0.6;
-                        ctx.moveTo(a.x, a.y);
-                        ctx.lineTo(b.x, b.y);
-                        ctx.stroke();
-                    }
-                }
-
-                // Mouse connections
-                const p = particles[i];
-                const mdx = p.x - mouse.x, mdy = p.y - mouse.y;
-                const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-                if (mdist < MOUSE_DIST) {
-                    const opacity = (1 - mdist / MOUSE_DIST) * 0.35;
-                    ctx.beginPath();
-                    ctx.strokeStyle = `rgba(40,40,40,${opacity})`;
-                    ctx.lineWidth = 0.8;
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(mouse.x, mouse.y);
-                    ctx.stroke();
-                }
-            }
-
-            // Draw dots
-            for (const p of particles) {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(40,40,40,${p.alpha})`;
-                ctx.fill();
-            }
-
-            requestAnimationFrame(draw);
-        }
-
-        // Mouse tracking (relative to canvas)
-        canvas.parentElement.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
-        });
-
-        canvas.parentElement.addEventListener('mouseleave', () => {
-            mouse.x = -999;
-            mouse.y = -999;
-        });
-
-        window.addEventListener('resize', () => { resize(); });
-
-        init();
-        draw();
-
-        // ─── Easter egg ───────────────────────────────────────────────
+        // Easter egg
         let aCount = 0, aTimer;
         document.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'a') {
@@ -376,7 +253,7 @@
         });
 
         let tapCount = 0, tapTimer;
-        const nameEl = document.querySelector('.card-name');
+        const nameEl = document.getElementById('name-header');
         if (nameEl) {
             nameEl.addEventListener('click', () => {
                 tapCount++;
@@ -386,7 +263,6 @@
             });
         }
     </script>
-
 </body>
 
 </html>
