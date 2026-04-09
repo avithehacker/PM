@@ -40,7 +40,12 @@ a{text-decoration:none}
 .nav-tab.active{background:rgba(255,255,255,.15);color:#fff}
 .nav-tab.active::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:24px;height:2px;background:#f0c040;border-radius:2px}
 .nav-badge{background:var(--red);color:#fff;border-radius:2px;font-size:10px;font-weight:700;padding:1px 5px;min-width:16px;text-align:center}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.app-switcher{margin-left:auto;display:flex;align-items:center;gap:3px}
+.app-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r);color:rgba(255,255,255,.6);font-size:12px;font-weight:600;text-decoration:none;transition:all .15s;white-space:nowrap;position:relative}
+.app-link:hover{background:rgba(255,255,255,.1);color:#fff}
+.app-link.current{background:rgba(255,255,255,.15);color:#fff}
+.app-link.current::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:#f0c040;border-radius:2px}
+.hdr-right{display:flex;align-items:center;gap:10px}
 .live-pill{background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:1px;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
 .hdr-user{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.8);font-size:12px;font-weight:600}
@@ -271,6 +276,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
   .mybids-sidebar{max-height:220px;border-right:none;border-bottom:2px solid var(--g200)}
   .listings-grid{grid-template-columns:1fr}
   .hdr-user{display:none}
+  .app-switcher{display:none}
   .hdr{padding:0 12px;gap:8px}
   .hdr-nav{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .nav-tab{white-space:nowrap;padding:6px 10px}
@@ -303,6 +309,12 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
     <button class="nav-tab active" onclick="goScreen('s1',this)" id="tab-s1">🏛️ Auction Listings</button>
     <button class="nav-tab" onclick="goScreen('s2',this)" id="tab-s2" id="tab-s2">📋 Vehicles</button>
     <button class="nav-tab" onclick="goScreen('s3',this)" id="tab-s3">📂 My Bids <span class="nav-badge" id="mybids-badge">0</span></button>
+  </nav>
+  <nav class="app-switcher">
+    <span class="app-link current" style="cursor:default">🏛 Auctions</span>
+    <a href="../search/index.html" class="app-link">🔍 Search</a>
+    <a href="../auto-bid/index.html" class="app-link">⚡ Auto Bid</a>
+    <a href="../swipe-bid/index.html" class="app-link">👆 Swipe</a>
   </nav>
   <div class="hdr-right">
     <div class="live-pill">● LIVE</div>

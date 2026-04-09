@@ -68,6 +68,12 @@
     .car-title mark{background:rgba(240,192,64,.4);color:inherit;border-radius:2px;padding:0 2px;font-style:normal}
     .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--g400);font-size:14px;pointer-events:none}
     .header-actions{display:flex;align-items:center;gap:10px;margin-left:auto}
+    .app-switcher{display:flex;align-items:center;gap:3px}
+    .app-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r);color:rgba(255,255,255,.6);font-size:12px;font-weight:600;text-decoration:none;transition:all .15s;white-space:nowrap}
+    .app-link:hover{background:rgba(255,255,255,.1);color:#fff}
+    .app-link.current{background:rgba(255,255,255,.15);color:#fff;cursor:default}
+    .app-link.current::after{content:'';display:block;position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:#f0c040;border-radius:2px}
+    .app-link{position:relative}
     .location-select{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 10px;border-radius:var(--r);outline:none;cursor:pointer;font-family:'Barlow',sans-serif;font-size:12px;font-weight:600}
     .location-select option{color:var(--g900);background:#fff}
     .btn-login{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:6px 14px;border-radius:var(--r);cursor:pointer;font-weight:600;font-size:12px;font-family:'Barlow',sans-serif;transition:all .15s}
@@ -158,6 +164,7 @@
       header{padding:0 14px;gap:10px;height:52px;--hh:52px}
       .hdr-divider{display:none}
       .header-actions{display:none}
+      .app-switcher{display:none}
       .listing-hero{padding:16px 16px 14px}
       .listing-hero h1{font-size:20px}
       .listing-hero p{font-size:12px}
@@ -187,7 +194,14 @@
 <body>
 
   <header>
-    <a href="#" class="logo"><div class="logo-icon">🔨</div>Auto<span>Bid</span>Pro</a>
+    <span class="logo"><div class="logo-icon">🔨</div>Auto<span>Bid</span>Pro</span>
+    <div class="hdr-divider"></div>
+    <nav class="app-switcher">
+      <a href="../bulk-bid/index.html" class="app-link">🏛 Auctions</a>
+      <span class="app-link current" style="cursor:default">🔍 Search</span>
+      <a href="../auto-bid/index.html" class="app-link">⚡ Auto Bid</a>
+      <a href="../swipe-bid/index.html" class="app-link">👆 Swipe</a>
+    </nav>
     <div class="hdr-divider"></div>
     <div class="search-container">
       <span class="search-icon">🔍</span>
