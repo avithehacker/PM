@@ -122,8 +122,9 @@
     /* ══ CARDS ══ */
     .card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,transform .2s,border-color .2s;display:flex;flex-direction:column}
     .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--g300)}
-    .card-img-wrapper{position:relative;height:160px;background:var(--g100);display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .card-img{width:100%;height:100%;object-fit:cover}
+    .card-img-wrapper{position:relative;height:148px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .card-emoji{font-size:56px;line-height:1;user-select:none}
+    .card-type-tag{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.45);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:.4px}
     .badges{position:absolute;top:8px;left:8px;display:flex;gap:4px;flex-wrap:wrap}
     .badge{background:var(--blue);color:#fff;padding:2px 7px;border-radius:2px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
     .badge-premium{background:var(--blue-d)}
@@ -284,40 +285,20 @@
   </div>
 
   <script>
-    // --- INLINE SVG CARTOON GENERATOR ---
-    const generateCartoonCar = (type, color) => {
-      let body = '';
-      if (type === 'SUV') {
-        body = `<path d="M 50 160 L 50 80 L 220 80 L 270 120 L 350 120 Q 360 120 360 160 Z" fill="${color}"/><path d="M 65 90 L 145 90 L 145 130 L 65 130 Z" fill="rgba(255,255,255,0.4)" rx="5"/><path d="M 155 90 L 210 90 L 240 130 L 155 130 Z" fill="rgba(255,255,255,0.4)" rx="5"/>`;
-      } else if (type === 'Hatchback') {
-        body = `<path d="M 60 160 Q 60 100 100 90 L 180 90 Q 230 90 260 120 L 330 140 Q 350 140 350 160 Z" fill="${color}"/><path d="M 105 100 L 170 100 L 170 135 L 80 135 Z" fill="rgba(255,255,255,0.4)"/><path d="M 180 100 L 225 105 L 245 135 L 180 135 Z" fill="rgba(255,255,255,0.4)"/>`;
-      } else {
-        body = `<path d="M 40 160 Q 40 130 90 130 L 130 90 L 250 90 L 300 130 L 360 130 Q 370 130 370 160 Z" fill="${color}"/><path d="M 135 100 L 190 100 L 190 135 L 100 135 Z" fill="rgba(255,255,255,0.4)"/><path d="M 200 100 L 240 100 L 280 135 L 200 135 Z" fill="rgba(255,255,255,0.4)"/>`;
-      }
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="100%" height="100%" style="background:#f5f6f8;">
-        <g transform="translate(0, 30)">
-          ${body}
-          <circle cx="110" cy="160" r="32" fill="#2d3436"/>
-          <circle cx="280" cy="160" r="32" fill="#2d3436"/>
-          <circle cx="110" cy="160" r="14" fill="#dfe6e9"/>
-          <circle cx="280" cy="160" r="14" fill="#dfe6e9"/>
-          <rect x="340" y="135" width="20" height="10" fill="#fdcb6e" rx="3"/>
-          <rect x="40" y="135" width="15" height="10" fill="#ff7675" rx="3"/>
-        </g>
-      </svg>`;
-      return `data:image/svg+xml;utf8,${encodeURIComponent(svg.trim())}`;
-    };
-
     // --- MOCK DATA ---
     const baseModels = [
-      { make: "Maruti Suzuki", model: "Swift",    type: "Hatchback", priceBase: 500000,  img: generateCartoonCar("Hatchback", "#ff4757") },
-      { make: "Mahindra",      model: "Thar",     type: "SUV",       priceBase: 1400000, img: generateCartoonCar("SUV",       "#2ed573") },
-      { make: "Hyundai",       model: "Creta",    type: "SUV",       priceBase: 1100000, img: generateCartoonCar("SUV",       "#1e90ff") },
-      { make: "Tata",          model: "Nexon",    type: "SUV",       priceBase: 900000,  img: generateCartoonCar("SUV",       "#ffa502") },
-      { make: "Honda",         model: "City",     type: "Sedan",     priceBase: 1000000, img: generateCartoonCar("Sedan",     "#9c88ff") },
-      { make: "Toyota",        model: "Fortuner", type: "SUV",       priceBase: 3500000, img: generateCartoonCar("SUV",       "#57606f") },
-      { make: "Kia",           model: "Seltos",   type: "SUV",       priceBase: 1200000, img: generateCartoonCar("SUV",       "#ff6348") },
-      { make: "Maruti Suzuki", model: "Baleno",   type: "Hatchback", priceBase: 700000,  img: generateCartoonCar("Hatchback", "#3742fa") }
+      { make: "Maruti Suzuki", model: "Swift",       type: "Hatchback",   priceBase: 520000,  emoji: "🚗", color: "#fce4ec", fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Mahindra",      model: "Thar",         type: "SUV",         priceBase: 1500000, emoji: "🚙", color: "#e8f5e9", fuels: ["Diesel", "Petrol"], transmissions: ["Manual", "Automatic"] },
+      { make: "Hyundai",       model: "Creta",        type: "Compact SUV", priceBase: 1150000, emoji: "🚙", color: "#e3f2fd", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Tata",          model: "Nexon",        type: "Compact SUV", priceBase: 900000,  emoji: "🚙", color: "#fff3e0", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Honda",         model: "City",         type: "Sedan",       priceBase: 1050000, emoji: "🚗", color: "#f3e5f5", fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Toyota",        model: "Fortuner",     type: "SUV",         priceBase: 3600000, emoji: "🚙", color: "#eceff1", fuels: ["Diesel"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Kia",           model: "Seltos",       type: "Compact SUV", priceBase: 1200000, emoji: "🚙", color: "#fbe9e7", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Maruti Suzuki", model: "Baleno",       type: "Hatchback",   priceBase: 700000,  emoji: "🚗", color: "#e8eaf6", fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Tata",          model: "Harrier",      type: "SUV",         priceBase: 1650000, emoji: "🚙", color: "#ede7f6", fuels: ["Diesel"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Hyundai",       model: "i20",          type: "Hatchback",   priceBase: 750000,  emoji: "🚗", color: "#e8f5e9", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Honda",         model: "Amaze",        type: "Sedan",       priceBase: 750000,  emoji: "🚗", color: "#e1f5fe", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Mahindra",      model: "XUV700",       type: "SUV",         priceBase: 2000000, emoji: "🚙", color: "#f9fbe7", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] }
     ];
 
     const locations = ["Delhi", "Mumbai", "Bangalore", "Chennai"];
@@ -347,9 +328,9 @@
           type: base.type, price: currentPrice,
           marketValue: Math.floor(currentPrice * 1.25),
           location: locations[Math.floor(Math.random() * locations.length)],
-          fuel: base.model === "Fortuner" ? "Diesel" : fuels[Math.floor(Math.random() * fuels.length)],
-          transmission: transmissions[Math.floor(Math.random() * transmissions.length)],
-          condition, image: base.img,
+          fuel: base.fuels[Math.floor(Math.random() * base.fuels.length)],
+          transmission: base.transmissions[Math.floor(Math.random() * base.transmissions.length)],
+          condition, emoji: base.emoji, bgColor: base.color,
           bids: Math.floor(Math.random() * 45) + 1,
           timeLeft, tags: tags.slice(0, 2)
         });
@@ -364,7 +345,7 @@
 
     // --- SUGGESTION CONSTANTS ---
     const MAKES = ['Maruti Suzuki','Mahindra','Hyundai','Tata','Honda','Toyota','Kia'];
-    const MODEL_LIST = ['Swift','Thar','Creta','Nexon','City','Fortuner','Seltos','Baleno'];
+    const MODEL_LIST = ['Swift','Thar','Creta','Nexon','City','Fortuner','Seltos','Baleno','Harrier','i20','Amaze','XUV700'];
     const PRESET_QUERIES = [
       'SUV under 10 lakh','Diesel SUV in Mumbai','Automatic sedan',
       'Tata Nexon diesel','Toyota Fortuner','Hyundai Creta automatic',
@@ -672,10 +653,11 @@
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <div class="card-img-wrapper">
+          <div class="card-img-wrapper" style="background:${car.bgColor}">
             <div class="badges">${badgesHtml}</div>
             <div class="timer-badge ${isUrgent?'urgent':''}" id="timer-${car.id}">⏱ ${formatTime(car.timeLeft)}</div>
-            <img src="${car.image}" alt="${car.title}" class="card-img">
+            <span class="card-emoji">${car.emoji}</span>
+            <span class="card-type-tag">${car.type}</span>
           </div>
           <div class="card-body">
             <div class="car-title">${hlText(car.title, keywords)}</div>
@@ -734,26 +716,37 @@
     };
 
     // --- MAIN CONTROLLER ---
+    let initialLoadDone = false;
+
+    const doRender = (query, sort) => {
+      let { results, isFallback, intent } = getSearchResults(query);
+      renderIntentPills(query ? intent : null);
+      if (sort === 'price-low')       results.sort((a, b) => a.price - b.price);
+      else if (sort === 'price-high') results.sort((a, b) => b.price - a.price);
+      else if (sort === 'ending')     results.sort((a, b) => a.timeLeft - b.timeLeft);
+      else if (sort === 'bids')       results.sort((a, b) => b.bids - a.bids);
+      const hasFilters = query || document.querySelectorAll('aside input:checked').length > 0;
+      document.getElementById('resultsCount').innerText = hasFilters
+        ? `${results.length} vehicle${results.length !== 1 ? 's' : ''} found`
+        : `Showing all ${results.length} vehicles`;
+      document.getElementById('resultsFallback').innerText =
+        isFallback ? '⚠️ No exact match — showing nearest results.' : '';
+      renderCards(results, query ? intent.keywords : []);
+      initialLoadDone = true;
+    };
+
     const handleSearch = () => {
       const query = document.getElementById('searchInput').value;
       const sort  = document.getElementById('sortSelect').value;
-      renderSkeletons();
       document.getElementById('suggestionsBox').classList.remove('open');
-      setTimeout(() => {
-        let { results, isFallback, intent } = getSearchResults(query);
-        renderIntentPills(query ? intent : null);
-        if (sort === 'price-low')       results.sort((a, b) => a.price - b.price);
-        else if (sort === 'price-high') results.sort((a, b) => b.price - a.price);
-        else if (sort === 'ending')     results.sort((a, b) => a.timeLeft - b.timeLeft);
-        else if (sort === 'bids')       results.sort((a, b) => b.bids - a.bids);
-        const hasFilters = query || document.querySelectorAll('aside input:checked').length > 0;
-        document.getElementById('resultsCount').innerText = hasFilters
-          ? `${results.length} vehicle${results.length !== 1 ? 's' : ''} found`
-          : `Showing all ${results.length} vehicles`;
-        document.getElementById('resultsFallback').innerText =
-          isFallback ? '⚠️ No exact match — showing nearest results.' : '';
-        renderCards(results, query ? intent.keywords : []);
-      }, 300);
+      if (!initialLoadDone) {
+        // First load only: show skeletons briefly to simulate live data fetch
+        renderSkeletons();
+        setTimeout(() => doRender(query, sort), 300);
+      } else {
+        // All subsequent searches/filters/sorts: instant render, no flash
+        doRender(query, sort);
+      }
     };
 
     window.clearFilters = () => {
