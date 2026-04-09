@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hammerly — Vehicle Auctions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #0057a8;
+      --blue-d: #003d7a;
+      --blue-l: #e8f1fb;
+      --blue-m: #1a6fc4;
+      --green: #1a8a3c;
+      --green-l: #e6f5eb;
+      --red: #c0392b;
+      --red-l: #fdecea;
+      --amber: #d97706;
+      --amber-l: #fffbeb;
+      --teal: #0d9488;
+      --teal-l: #e6faf9;
+      --gold: #f0c040;
+      --g100: #f5f6f8;
+      --g200: #eaecf0;
+      --g300: #d1d5db;
+      --g400: #9ca3af;
+      --g500: #6b7280;
+      --g600: #4b5563;
+      --g700: #374151;
+      --g900: #111827;
+      --white: #fff;
+      --hh: 56px;
+      --r: 4px;
+      --rm: 6px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.1);
+      --shadow-md: 0 4px 14px rgba(0,0,0,.12);
+      --shadow-lg: 0 8px 30px rgba(0,0,0,.16);
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--g100);
+      color: var(--g900);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HEADER ── */
+    .hdr {
+      height: var(--hh);
+      background: var(--blue-d);
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,.3);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 21px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: .3px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 30px; height: 30px;
+      background: var(--blue-m);
+      border-radius: var(--r);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .logo span { color: var(--gold); }
+
+    .hdr-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 8px;
+    }
+    .nav-link {
+      padding: 6px 14px;
+      border-radius: var(--r);
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,.65);
+      transition: all .15s;
+      text-decoration: none;
+    }
+    .nav-link:hover { color: #fff; background: rgba(255,255,255,.1); }
+    .nav-link.active {
+      color: #fff;
+      background: rgba(255,255,255,.15);
+      box-shadow: inset 0 -2px 0 var(--gold);
+    }
+
+    .hdr-r { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 16px;
+      border-radius: var(--r);
+      border: none;
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-blue { background: var(--blue); color: #fff; }
+    .btn-blue:hover { background: var(--blue-m); }
+    .btn-ghost {
+      background: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.9);
+      border: 1.5px solid rgba(255,255,255,.2);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.2); color: #fff; }
+    .btn-outline {
+      background: var(--white);
+      color: var(--blue);
+      border: 1.5px solid var(--blue);
+    }
+    .btn-outline:hover { background: var(--blue-l); }
+    .btn-sm { padding: 5px 12px; font-size: 12px; }
+    .btn-lg { padding: 10px 24px; font-size: 15px; font-weight: 700; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--blue-d);
+      background-image: radial-gradient(ellipse at 70% 50%, rgba(26,111,196,.35) 0%, transparent 65%),
+                        radial-gradient(ellipse at 10% 80%, rgba(13,148,136,.15) 0%, transparent 55%);
+      padding: 72px 28px 80px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow::before { content: '●'; font-size: 8px; color: var(--green); }
+
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(40px, 6vw, 64px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.05;
+      letter-spacing: .5px;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--gold); }
+
+    .hero p {
+      font-size: 16px;
+      color: rgba(255,255,255,.7);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .hero-search {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: #fff;
+      border-radius: var(--rm);
+      overflow: hidden;
+      max-width: 520px;
+      margin: 0 auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .hero-search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 13px 18px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--g900);
+      background: transparent;
+    }
+    .hero-search input::placeholder { color: var(--g400); }
+    .hero-search button {
+      padding: 13px 22px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .hero-search button:hover { background: var(--blue-m); }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--g200);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+    }
+    .stat-item {
+      flex: 1;
+      max-width: 220px;
+      text-align: center;
+      padding: 22px 16px;
+      border-right: 1px solid var(--g200);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-n {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--blue-d);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-l {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--g500);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 48px 28px; max-width: 1160px; margin: 0 auto; }
+
+    .section-hdr {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--g900);
+      letter-spacing: .3px;
+    }
+    .section-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: .3px;
+    }
+    .section-link:hover { color: var(--blue-m); text-decoration: underline; }
+
+    /* ── VEHICLE CARDS ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .v-card {
+      background: var(--white);
+      border: 1.5px solid var(--g200);
+      border-radius: var(--rm);
+      overflow: hidden;
+      transition: box-shadow .2s, border-color .2s, transform .2s;
+      cursor: pointer;
+    }
+    .v-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--g300);
+      transform: translateY(-2px);
+    }
+
+    .v-card-img {
+      background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue-m) 100%);
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      position: relative;
+    }
+    .v-card-badge {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .badge-live { background: #fee2e2; color: #b91c1c; }
+    .badge-upcoming { background: #fef3c7; color: #92400e; }
+    .badge-closed { background: var(--g200); color: var(--g500); }
+
+    .v-card-cls {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 2px;
+      background: rgba(255,255,255,.15);
+      color: rgba(255,255,255,.9);
+      border: 1px solid rgba(255,255,255,.2);
+    }
+
+    .v-card-body { padding: 14px 16px 16px; }
+
+    .v-card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--g900);
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .v-card-sub {
+      font-size: 11px;
+      color: var(--g500);
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    .v-card-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--g200);
+    }
+    .meta-item {}
+    .meta-label { font-size: 10px; font-weight: 700; color: var(--g400); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 2px; }
+    .meta-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--g900);
+    }
+    .meta-value.green { color: var(--green); }
+    .meta-value.red { color: var(--red); }
+    .meta-value.amber { color: var(--amber); }
+
+    .v-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .v-card-info { font-size: 11px; color: var(--g500); font-weight: 500; }
+    .v-card-info strong { color: var(--g700); }
+
+    /* ── CATEGORY CARDS ── */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .cat-card {
+      background: var(--white);
+      border: 1.5px solid var(--g200);
+      border-radius: var(--rm);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .cat-card:hover {
+      border-color: var(--blue-m);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .cat-emoji {
+      font-size: 44px;
+      line-height: 1;
+    }
+    .cat-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--g900);
+    }
+    .cat-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--g500);
+    }
+    .cat-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 2px;
+      background: var(--blue-l);
+      color: var(--blue);
+    }
+
+    /* ── MODULES SECTION ── */
+    .modules-bg { background: var(--blue-d); }
+    .modules-section { padding: 52px 28px; max-width: 1160px; margin: 0 auto; }
+
+    .modules-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .modules-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,.55);
+      margin-bottom: 28px;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .mod-card {
+      background: rgba(255,255,255,.08);
+      border: 1.5px solid rgba(255,255,255,.12);
+      border-radius: var(--rm);
+      padding: 20px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-decoration: none;
+      color: #fff;
+      transition: all .2s;
+    }
+    .mod-card:hover {
+      background: rgba(255,255,255,.14);
+      border-color: rgba(255,255,255,.25);
+      transform: translateY(-2px);
+    }
+    .mod-icon {
+      font-size: 26px;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .mod-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: .2px;
+    }
+    .mod-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      line-height: 1.5;
+    }
+    .mod-arrow {
+      font-size: 11px;
+      color: var(--gold);
+      font-weight: 700;
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .step-card {
+      background: var(--white);
+      border: 1.5px solid var(--g200);
+      border-radius: var(--rm);
+      padding: 24px 20px;
+    }
+    .step-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--g200);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .step-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--g900);
+      margin-bottom: 6px;
+    }
+    .step-desc { font-size: 12px; color: var(--g500); line-height: 1.6; }
+
+    /* ── BANKS STRIP ── */
+    .banks-strip {
+      background: var(--white);
+      border-top: 1px solid var(--g200);
+      border-bottom: 1px solid var(--g200);
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .banks-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--g400);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-right: 8px;
+    }
+    .bank-chip {
+      padding: 5px 12px;
+      background: var(--g100);
+      border: 1.5px solid var(--g200);
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--g600);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--g900);
+      color: rgba(255,255,255,.45);
+      padding: 28px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+    }
+    .footer-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: rgba(255,255,255,.7);
+    }
+    .footer-logo span { color: var(--gold); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,.45); text-decoration: none; font-size: 12px; font-weight: 500; }
+    .footer-links a:hover { color: rgba(255,255,255,.8); }
+
+    @media (max-width: 700px) {
+      .stats-bar { flex-wrap: wrap; }
+      .stat-item { max-width: 50%; border-bottom: 1px solid var(--g200); }
+      .cat-grid { grid-template-columns: 1fr; }
+      .hero { padding: 52px 20px 60px; }
+      .section { padding: 36px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="hdr">
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🏛</div>
+    Hammer<span>ly</span>
+  </a>
+  <nav class="hdr-nav">
+    <a href="index.html" class="nav-link active">Home</a>
+    <a href="listings.html" class="nav-link">Listings</a>
+    <a href="../drafts.html" class="nav-link">All Prototypes</a>
+  </nav>
+  <div class="hdr-r">
+    <a href="listings.html" class="btn btn-ghost btn-sm">Browse Auctions</a>
+    <a href="listings.html" class="btn btn-blue btn-sm">Sign In</a>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-eyebrow">247 auctions live right now</div>
+  <h1>Bid. Win. <span>Drive.</span></h1>
+  <p>India's trusted platform for bank-repossessed vehicle auctions. Transparent bidding, verified stock, delivered fast.</p>
+  <div class="hero-actions">
+    <a href="listings.html" class="btn btn-blue btn-lg">Browse Live Auctions →</a>
+    <a href="#how-it-works" class="btn btn-ghost btn-lg">How it works</a>
+  </div>
+  <div class="hero-search">
+    <input type="text" placeholder="Search by make, model, city or lot number…">
+    <button>Search</button>
+  </div>
+</section>
+
+<!-- ── STATS BAR ── -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-n">247</div>
+    <div class="stat-l">Live Auctions</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-n">1,430</div>
+    <div class="stat-l">Bids Today</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-n">28</div>
+    <div class="stat-l">Cities</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-n">12</div>
+    <div class="stat-l">Partner Banks</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-n">₹4.2Cr</div>
+    <div class="stat-l">Settled Today</div>
+  </div>
+</div>
+
+<!-- ── BANKS STRIP ── -->
+<div class="banks-strip">
+  <span class="banks-label">Partner Banks</span>
+  <span class="bank-chip">SBI</span>
+  <span class="bank-chip">HDFC Bank</span>
+  <span class="bank-chip">ICICI Bank</span>
+  <span class="bank-chip">Axis Bank</span>
+  <span class="bank-chip">Kotak Mahindra</span>
+  <span class="bank-chip">Bank of Baroda</span>
+  <span class="bank-chip">PNB</span>
+  <span class="bank-chip">Union Bank</span>
+</div>
+
+<!-- ── FEATURED AUCTIONS ── -->
+<div style="background: var(--g100); padding: 8px 0;">
+  <div class="section">
+    <div class="section-hdr">
+      <span class="section-title">🔴 Live Right Now</span>
+      <a href="listings.html" class="section-link">View all auctions →</a>
+    </div>
+    <div class="cards-grid">
+
+      <a href="listings.html" class="v-card" style="text-decoration:none;color:inherit;">
+        <div class="v-card-img">
+          🏍️
+          <span class="v-card-badge badge-live">● Live</span>
+          <span class="v-card-cls">2W</span>
+        </div>
+        <div class="v-card-body">
+          <div class="v-card-title">Royal Enfield Classic 350</div>
+          <div class="v-card-sub">2022 · Petrol · Manual · 28,500 km · Signals Green</div>
+          <div class="v-card-meta">
+            <div class="meta-item">
+              <div class="meta-label">Current Bid</div>
+              <div class="meta-value green">₹1,38,000</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Time Left</div>
+              <div class="meta-value amber">3h 20m</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Reserve</div>
+              <div class="meta-value">₹1,45,000</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Bids</div>
+              <div class="meta-value">5</div>
+            </div>
+          </div>
+          <div class="v-card-footer">
+            <div class="v-card-info"><strong>Axis Bank</strong> · Bangalore</div>
+            <span class="btn btn-blue btn-sm">Bid Now</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="listings.html" class="v-card" style="text-decoration:none;color:inherit;">
+        <div class="v-card-img" style="background: linear-gradient(135deg,#1a3a5c 0%,#0d9488 100%);">
+          🚙
+          <span class="v-card-badge badge-live">● Live</span>
+          <span class="v-card-cls">4W</span>
+        </div>
+        <div class="v-card-body">
+          <div class="v-card-title">Toyota Fortuner</div>
+          <div class="v-card-sub">2021 · Diesel · Automatic · 62,000 km · White Pearl</div>
+          <div class="v-card-meta">
+            <div class="meta-item">
+              <div class="meta-label">Current Bid</div>
+              <div class="meta-value green">₹26,50,000</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Time Left</div>
+              <div class="meta-value amber">2h 45m</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Reserve</div>
+              <div class="meta-value">₹28,00,000</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Bids</div>
+              <div class="meta-value">8</div>
+            </div>
+          </div>
+          <div class="v-card-footer">
+            <div class="v-card-info"><strong>HDFC Bank</strong> · Mumbai</div>
+            <span class="btn btn-blue btn-sm">Bid Now</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="listings.html" class="v-card" style="text-decoration:none;color:inherit;">
+        <div class="v-card-img" style="background: linear-gradient(135deg,#1c3a2a 0%,#1a8a3c 100%);">
+          🛺
+          <span class="v-card-badge badge-live">● Live</span>
+          <span class="v-card-cls">3W</span>
+        </div>
+        <div class="v-card-body">
+          <div class="v-card-title">Bajaj RE Compact</div>
+          <div class="v-card-sub">2020 · CNG · Manual · 41,000 km · Yellow / Black</div>
+          <div class="v-card-meta">
+            <div class="meta-item">
+              <div class="meta-label">Current Bid</div>
+              <div class="meta-value green">₹1,55,000</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Time Left</div>
+              <div class="meta-value amber">4h 00m</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Reserve</div>
+              <div class="meta-value">₹1,62,000</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Bids</div>
+              <div class="meta-value">3</div>
+            </div>
+          </div>
+          <div class="v-card-footer">
+            <div class="v-card-info"><strong>SBI</strong> · Delhi</div>
+            <span class="btn btn-blue btn-sm">Bid Now</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── BROWSE BY TYPE ── -->
+<div style="background: var(--white); border-top: 1px solid var(--g200); border-bottom: 1px solid var(--g200);">
+  <div class="section">
+    <div class="section-hdr">
+      <span class="section-title">Browse by Vehicle Type</span>
+    </div>
+    <div class="cat-grid">
+      <a href="listings.html?cls=2w" class="cat-card">
+        <div class="cat-emoji">🏍️</div>
+        <div class="cat-title">Two-Wheelers</div>
+        <div class="cat-count">84 vehicles available</div>
+        <div class="cat-tag">Bikes & Scooters</div>
+      </a>
+      <a href="listings.html?cls=3w" class="cat-card">
+        <div class="cat-emoji">🛺</div>
+        <div class="cat-title">Three-Wheelers</div>
+        <div class="cat-count">31 vehicles available</div>
+        <div class="cat-tag">Autos & Tempo</div>
+      </a>
+      <a href="listings.html?cls=4w" class="cat-card">
+        <div class="cat-emoji">🚗</div>
+        <div class="cat-title">Four-Wheelers</div>
+        <div class="cat-count">132 vehicles available</div>
+        <div class="cat-tag">Cars & SUVs</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<div id="how-it-works" style="background: var(--g100);">
+  <div class="section">
+    <div class="section-hdr">
+      <span class="section-title">How Hammerly Works</span>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-title">Register & KYC</div>
+        <div class="step-desc">Complete your KYC in under 5 minutes. One-time verification for all auctions.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-title">Browse & Shortlist</div>
+        <div class="step-desc">Filter by vehicle type, city, bank, and price range. Inspect reports included.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-title">Place Your Bid</div>
+        <div class="step-desc">Bid manually, use Auto-Bid to respond automatically, or bulk-bid on multiple lots.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <div class="step-title">Win & Pay</div>
+        <div class="step-desc">Highest bid wins. Complete payment within 48 hours via secure bank transfer.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">05</div>
+        <div class="step-title">Take Delivery</div>
+        <div class="step-desc">Collect from bank branch or opt for doorstep delivery. RC transfer assisted.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PLATFORM MODULES ── -->
+<div class="modules-bg">
+  <div class="modules-section">
+    <div class="modules-title">Platform Modules</div>
+    <div class="modules-sub">Explore individual feature prototypes built for Hammerly</div>
+    <div class="modules-grid">
+
+      <a href="../auto-bid/index.html" class="mod-card">
+        <div class="mod-icon">⚡</div>
+        <div class="mod-title">Smart Auto Bid</div>
+        <div class="mod-desc">Automated bidding engine with rival simulation and live session tracking.</div>
+        <div class="mod-arrow">Open prototype →</div>
+      </a>
+
+      <a href="../bulk-bid/index.html" class="mod-card">
+        <div class="mod-icon">📦</div>
+        <div class="mod-title">Bulk Bidding</div>
+        <div class="mod-desc">Optimized tool for placing bids across multiple lots simultaneously.</div>
+        <div class="mod-arrow">Open prototype →</div>
+      </a>
+
+      <a href="../search/index.html" class="mod-card">
+        <div class="mod-icon">🔍</div>
+        <div class="mod-title">Smart Search</div>
+        <div class="mod-desc">Intelligent fuzzy search with dynamic filters and instant results.</div>
+        <div class="mod-arrow">Open prototype →</div>
+      </a>
+
+      <a href="../e2r/index.html" class="mod-card">
+        <div class="mod-icon">🗂️</div>
+        <div class="mod-title">E2R Collections Twin</div>
+        <div class="mod-desc">Vehicle collections lifecycle management and digital twin platform.</div>
+        <div class="mod-arrow">Open prototype →</div>
+      </a>
+
+      <a href="../swipe-bid/index.html" class="mod-card">
+        <div class="mod-icon">👆</div>
+        <div class="mod-title">Swipe-Bid</div>
+        <div class="mod-desc">Initial prototype for gesture-based bidding on mobile devices.</div>
+        <div class="mod-arrow">Open prototype →</div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Hammer<span>ly</span></div>
+  <div class="footer-links">
+    <a href="listings.html">Browse Auctions</a>
+    <a href="../auto-bid/index.html">Auto Bid</a>
+    <a href="../bulk-bid/index.html">Bulk Bid</a>
+    <a href="../search/index.html">Smart Search</a>
+    <a href="../e2r/index.html">E2R Twin</a>
+    <a href="../drafts.html">All Prototypes</a>
+  </div>
+  <div>© 2026 Hammerly · Prototype</div>
+</footer>
+
+</body>
+</html>
