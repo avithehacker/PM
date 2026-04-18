@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hammerly — Smart Search</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;--blue-m:#1a6fc4;
+      --green:#1a8a3c;--green-l:#e6f5eb;
+      --red:#c0392b;--red-l:#fdecea;
+      --amber:#d97706;
+      --g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;--g400:#9ca3af;
+      --g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+      --white:#fff;
+      --hh:56px;
+      --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+      --shadow-md:0 4px 14px rgba(0,0,0,.12);
+      --shadow-lg:0 8px 30px rgba(0,0,0,.16);
+      --r:4px;--rm:6px;
+    }
+    html{font-family:'Barlow',sans-serif;background:var(--g100);color:var(--g900);font-size:14px}
+    body{min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+    button{cursor:pointer;font-family:'Barlow',sans-serif}
+    input,select{font-family:'Barlow',sans-serif}
+    a{text-decoration:none}
+
+    /* ══ HEADER ══ */
+    header{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:14px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+    .logo{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap}
+    .logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+    .logo span{color:#f0c040}
+    .hdr-divider{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
+    .search-container{flex:1;position:relative}
+    .search-bar{width:100%;padding:8px 34px 8px 36px;border-radius:var(--r);border:none;outline:none;font-size:13px;font-family:'Barlow',sans-serif;font-weight:500;background:rgba(255,255,255,.95);color:var(--g900);box-shadow:0 2px 8px rgba(0,0,0,.25);transition:box-shadow .15s}
+    .search-bar::placeholder{color:var(--g400)}
+    .search-bar:focus{box-shadow:0 4px 16px rgba(0,0,0,.35)}
+    .search-clear{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:var(--g200);border:none;color:var(--g600);cursor:pointer;font-size:13px;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;line-height:1;transition:background .15s}
+    .search-clear:hover{background:var(--g300);color:var(--g900)}
+    /* ══ AUTOCOMPLETE ══ */
+    .suggestions-box{position:absolute;top:calc(100% + 5px);left:0;right:0;background:#fff;border:1.5px solid var(--g200);border-radius:var(--rm);box-shadow:0 8px 32px rgba(0,0,0,.18);z-index:400;display:none;overflow:hidden;transform-origin:top center}
+    .suggestions-box.open{display:block;animation:sugg-in .13s ease}
+    @keyframes sugg-in{from{opacity:0;transform:translateY(-6px) scaleY(.97)}to{opacity:1;transform:none}}
+    .sugg-section{border-top:1px solid var(--g200)}
+    .sugg-section:first-child{border-top:none}
+    .sugg-lbl{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--g400)}
+    .sugg-clear-all{background:none;border:none;font-size:11px;font-weight:600;color:var(--blue);cursor:pointer;text-transform:none;letter-spacing:0;padding:0;font-family:'Barlow',sans-serif}
+    .sugg-clear-all:hover{text-decoration:underline}
+    .sugg-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:500;color:var(--g900);transition:background .08s;position:relative}
+    .sugg-item:hover,.sugg-item.focused{background:var(--g100)}
+    .sugg-icon{font-size:15px;width:22px;text-align:center;flex-shrink:0;color:var(--g500)}
+    .sugg-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .sugg-text b{color:var(--blue);font-weight:700}
+    .sugg-fill{opacity:0;background:none;border:none;cursor:pointer;font-size:16px;padding:2px 6px;border-radius:var(--r);transition:opacity .1s,background .1s;flex-shrink:0;line-height:1;color:var(--g400);transform:rotate(-45deg);display:inline-block}
+    .sugg-fill:hover{background:var(--g200);color:var(--blue)}
+    .sugg-item:hover .sugg-fill,.sugg-item.focused .sugg-fill{opacity:1}
+    .sugg-remove{opacity:0;background:none;border:none;cursor:pointer;font-size:11px;padding:3px 7px;border-radius:var(--r);transition:opacity .1s,background .1s;flex-shrink:0;line-height:1;color:var(--g400);font-family:sans-serif}
+    .sugg-remove:hover{background:var(--red-l);color:var(--red)}
+    .sugg-item:hover .sugg-remove,.sugg-item.focused .sugg-remove{opacity:1}
+    .sugg-footer{padding:8px 14px;border-top:1px solid var(--g200);font-size:11px;color:var(--g400);text-align:center}
+    /* ══ INTENT PILLS ══ */
+    .intent-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .intent-row:empty{display:none}
+    .intent-pill{display:inline-flex;align-items:center;gap:3px;background:var(--blue-l);border:1px solid rgba(0,87,168,.2);color:var(--blue-d);padding:3px 9px;border-radius:2px;font-size:11px;font-weight:700}
+    /* Highlight matched text in card titles */
+    .car-title mark{background:rgba(240,192,64,.4);color:inherit;border-radius:2px;padding:0 2px;font-style:normal}
+    .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--g400);font-size:14px;pointer-events:none}
+    .header-actions{display:flex;align-items:center;gap:10px;margin-left:auto}
+    .app-switcher{display:flex;align-items:center;gap:3px}
+    .app-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r);color:rgba(255,255,255,.6);font-size:12px;font-weight:600;text-decoration:none;transition:all .15s;white-space:nowrap}
+    .app-link:hover{background:rgba(255,255,255,.1);color:#fff}
+    .app-link.current{background:rgba(255,255,255,.15);color:#fff;cursor:default}
+    .app-link.current::after{content:'';display:block;position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:#f0c040;border-radius:2px}
+    .app-link{position:relative}
+    .location-select{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 10px;border-radius:var(--r);outline:none;cursor:pointer;font-family:'Barlow',sans-serif;font-size:12px;font-weight:600}
+    .location-select option{color:var(--g900);background:#fff}
+    .btn-login{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:6px 14px;border-radius:var(--r);cursor:pointer;font-weight:600;font-size:12px;font-family:'Barlow',sans-serif;transition:all .15s}
+    .btn-login:hover{background:rgba(255,255,255,.15)}
+    .live-pill{background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:1px;animation:blink 2s infinite;white-space:nowrap}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+
+    /* ══ HERO ══ */
+    .listing-hero{background:linear-gradient(135deg,var(--blue-d) 0%,var(--blue-m) 100%);padding:26px 28px 22px;color:#fff;border-bottom:1px solid rgba(0,0,0,.12)}
+    .listing-hero h1{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;letter-spacing:.3px;margin-bottom:4px}
+    .listing-hero p{color:rgba(255,255,255,.7);font-size:13px}
+
+    /* ══ LAYOUT ══ */
+    .container{display:flex;width:100%;padding:20px 24px;gap:20px;align-items:flex-start}
+
+    /* ══ SIDEBAR ══ */
+    .sidebar{width:230px;flex-shrink:0;background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;box-shadow:var(--shadow-sm);position:sticky;top:calc(var(--hh) + 16px)}
+    .sidebar-hdr{background:var(--g900);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+    .sidebar-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:.4px}
+    .clear-btn{background:transparent;border:none;color:rgba(255,255,255,.55);font-size:11px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;padding:0;transition:color .15s}
+    .clear-btn:hover{color:#fff}
+    .filter-body{padding:14px}
+    .filter-group{margin-bottom:14px;border-bottom:1px solid var(--g200);padding-bottom:14px}
+    .filter-group:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+    .filter-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:8px;font-size:12px;text-transform:uppercase;color:var(--g500);letter-spacing:.6px}
+    .filter-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--g700);line-height:1;padding:2px 0;min-height:28px}
+    .filter-label:last-child{margin-bottom:0}
+    .filter-label input{accent-color:var(--blue);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+
+    /* ══ MAIN CONTENT ══ */
+    .main-content{flex:1;min-width:0}
+    .results-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;background:var(--white);padding:10px 16px;border-radius:var(--rm);border:1.5px solid var(--g200);box-shadow:var(--shadow-sm)}
+    .results-bar-left{display:flex;align-items:center;gap:10px}
+    .results-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--g900)}
+    .results-fallback{color:var(--amber);font-size:11px;margin-top:2px;font-weight:600}
+    .sort-select{padding:7px 28px 7px 10px;border-radius:var(--r);border:1.5px solid var(--g300);font-size:12px;font-weight:600;color:var(--g600);background:var(--white);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;cursor:pointer}
+    .sort-select:focus{outline:none;border-color:var(--blue)}
+    /* filter toggle — mobile only */
+    .filter-toggle-btn{display:none;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:700;color:var(--g700);cursor:pointer;font-family:'Barlow',sans-serif;white-space:nowrap;transition:all .15s}
+    .filter-toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
+    .filter-toggle-btn.active{background:var(--g900);border-color:var(--g900);color:#fff}
+
+    /* ══ GRID ══ */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+
+    /* ══ CARDS ══ */
+    .card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,transform .2s,border-color .2s;display:flex;flex-direction:column}
+    .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--g300)}
+    .card-img-wrapper{position:relative;height:148px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .card-emoji{font-size:56px;line-height:1;user-select:none}
+    .card-type-tag{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.45);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:.4px}
+    .badges{position:absolute;top:8px;left:8px;display:flex;gap:4px;flex-wrap:wrap}
+    .badge{background:var(--blue);color:#fff;padding:2px 7px;border-radius:2px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+    .badge-premium{background:var(--blue-d)}
+    .badge-hot{background:var(--red)}
+    .badge-cond{background:var(--g700)}
+    .timer-badge{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.72);color:#fff;padding:3px 8px;border-radius:2px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px}
+    .timer-badge.urgent{background:var(--red);animation:pulse 1s infinite}
+    .card-body{padding:13px 14px 14px;display:flex;flex-direction:column;flex:1}
+    .car-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;margin-bottom:6px;color:var(--g900);line-height:1.2}
+    .car-details{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:11px}
+    .car-details span{background:var(--g100);color:var(--g600);padding:3px 8px;border-radius:2px;font-size:11px;font-weight:600}
+    /* bid box */
+    .bid-box{background:var(--g100);border-radius:var(--r);padding:10px 12px;margin-top:auto;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+    .price-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:2px}
+    .current-bid{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--blue-d);line-height:1;transition:color .3s ease}
+    .current-bid.flash-green{color:var(--green)}
+    .bid-box-right{text-align:right}
+    .est-label{font-size:10px;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+    .market-value{font-size:13px;font-weight:600;color:var(--g400);text-decoration:line-through}
+    .bid-btn{background:var(--blue);color:#fff;border:none;padding:9px 16px;border-radius:var(--r);font-weight:700;cursor:pointer;width:100%;transition:background .15s;font-size:13px;font-family:'Barlow',sans-serif;letter-spacing:.2px}
+    .bid-btn:hover{background:var(--blue-d)}
+
+    /* ══ SKELETON ══ */
+    .skeleton{background:linear-gradient(110deg,var(--g200) 8%,var(--g100) 18%,var(--g200) 33%);border-radius:var(--r);background-size:200% 100%;animation:1.5s shine linear infinite}
+    @keyframes shine{to{background-position-x:-200%}}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+    /* ══ RESPONSIVE ══ */
+
+    /* Tablet: hide sidebar controls, keep sidebar pinned */
+    @media(max-width:1024px){
+      .container{padding:16px 16px}
+      .listing-hero{padding:22px 20px 18px}
+    }
+
+    /* Mobile: collapse sidebar, show filter toggle */
+    @media(max-width:768px){
+      header{padding:0 14px;gap:10px;height:52px;--hh:52px}
+      .hdr-divider{display:none}
+      .header-actions{display:none}
+      .app-switcher{display:none}
+      .listing-hero{padding:16px 16px 14px}
+      .listing-hero h1{font-size:20px}
+      .listing-hero p{font-size:12px}
+      .container{flex-direction:column;padding:12px 12px;gap:12px}
+      /* sidebar hidden by default on mobile */
+      .sidebar{display:none;width:100%;position:static}
+      .sidebar.open{display:block}
+      /* filter-body horizontal on mobile */
+      .filter-body{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:0}
+      .filter-group{margin-bottom:10px;padding-bottom:10px}
+      /* show filter toggle button */
+      .filter-toggle-btn{display:flex}
+      .results-bar{padding:8px 12px}
+      .grid{gap:10px}
+    }
+
+    /* Small mobile: single column, bigger tap targets */
+    @media(max-width:480px){
+      .grid{grid-template-columns:1fr}
+      .filter-body{grid-template-columns:1fr}
+      .card-img-wrapper{height:180px}
+      .bid-btn{padding:12px 16px;font-size:14px}
+      .sort-select{font-size:13px;padding:8px 28px 8px 10px}
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="logo"><div class="logo-icon">🏛</div>Hammer<span>ly</span></span>
+    <div class="hdr-divider"></div>
+    <nav class="app-switcher">
+      <a href="listings.html" class="app-link">🏛 Auctions</a>
+      <span class="app-link current" style="cursor:default">🔍 Search</span>
+      <a href="auto-bid.html" class="app-link">⚡ Auto Bid</a>
+      <a href="swipe-bid.html" class="app-link">👆 Swipe</a>
+    </nav>
+    <div class="hdr-divider"></div>
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-bar"
+        placeholder="e.g. 'diesel SUV Mumbai' or 'Nexon under 8 lakh'..." autocomplete="off">
+      <button id="searchClear" class="search-clear" onclick="clearSearch()">✕</button>
+      <div class="suggestions-box" id="suggestionsBox"></div>
+    </div>
+    <div class="header-actions">
+      <select class="location-select" id="headerLocation">
+        <option value="All">All India</option>
+        <option value="Delhi">Delhi NCR</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Bangalore">Bangalore</option>
+        <option value="Chennai">Chennai</option>
+      </select>
+      <div class="live-pill">● LIVE</div>
+      <button class="btn-login">Sign In</button>
+    </div>
+  </header>
+
+  <div class="listing-hero">
+    <h1>🔍 Live Vehicle Auctions</h1>
+    <p>Search and filter bank-authorized vehicles across India — bid live, track timers, instant results</p>
+  </div>
+
+  <div class="container">
+    <aside class="sidebar" id="filterSidebar">
+      <div class="sidebar-hdr">
+        <span class="sidebar-title">⚙ Filters</span>
+        <button class="clear-btn" onclick="clearFilters()">Clear All</button>
+      </div>
+      <div class="filter-body">
+        <div class="filter-group">
+          <div class="filter-title">Vehicle Type</div>
+          <label class="filter-label"><input type="checkbox" class="filter-type" value="SUV"> SUV</label>
+          <label class="filter-label"><input type="checkbox" class="filter-type" value="Sedan"> Sedan</label>
+          <label class="filter-label"><input type="checkbox" class="filter-type" value="Hatchback"> Hatchback</label>
+        </div>
+        <div class="filter-group">
+          <div class="filter-title">Fuel Type</div>
+          <label class="filter-label"><input type="checkbox" class="filter-fuel" value="Petrol"> Petrol</label>
+          <label class="filter-label"><input type="checkbox" class="filter-fuel" value="Diesel"> Diesel</label>
+          <label class="filter-label"><input type="checkbox" class="filter-fuel" value="CNG"> CNG</label>
+        </div>
+        <div class="filter-group">
+          <div class="filter-title">Transmission</div>
+          <label class="filter-label"><input type="checkbox" class="filter-trans" value="Automatic"> Automatic</label>
+          <label class="filter-label"><input type="checkbox" class="filter-trans" value="Manual"> Manual</label>
+        </div>
+        <div class="filter-group">
+          <div class="filter-title">Condition</div>
+          <label class="filter-label"><input type="checkbox" class="filter-cond" value="Clean Title"> Clean Title</label>
+          <label class="filter-label"><input type="checkbox" class="filter-cond" value="Minor Dents"> Minor Dents</label>
+          <label class="filter-label"><input type="checkbox" class="filter-cond" value="Accidental"> Accidental</label>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="results-bar">
+        <div class="results-bar-left">
+          <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilters()">⚙ Filters</button>
+          <div>
+            <div class="results-title" id="resultsCount">Loading inventory...</div>
+            <div class="results-fallback" id="resultsFallback"></div>
+          </div>
+        </div>
+        <select class="sort-select" id="sortSelect">
+          <option value="ending">Ending Soonest</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="bids">Most Active Bids</option>
+        </select>
+      </div>
+
+      <div class="intent-row" id="intentPills"></div>
+      <div class="grid" id="resultsGrid"></div>
+    </main>
+  </div>
+
+  <script>
+    // --- MOCK DATA ---
+    const baseModels = [
+      { make: "Maruti Suzuki", model: "Swift",       type: "Hatchback",   priceBase: 520000,  emoji: "🚗", color: "#fce4ec", fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Mahindra",      model: "Thar",         type: "SUV",         priceBase: 1500000, emoji: "🚙", color: "#e8f5e9", fuels: ["Diesel", "Petrol"], transmissions: ["Manual", "Automatic"] },
+      { make: "Hyundai",       model: "Creta",        type: "Compact SUV", priceBase: 1150000, emoji: "🚙", color: "#e3f2fd", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Tata",          model: "Nexon",        type: "Compact SUV", priceBase: 900000,  emoji: "🚙", color: "#fff3e0", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Honda",         model: "City",         type: "Sedan",       priceBase: 1050000, emoji: "🚗", color: "#f3e5f5", fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Toyota",        model: "Fortuner",     type: "SUV",         priceBase: 3600000, emoji: "🚙", color: "#eceff1", fuels: ["Diesel"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Kia",           model: "Seltos",       type: "Compact SUV", priceBase: 1200000, emoji: "🚙", color: "#fbe9e7", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Maruti Suzuki", model: "Baleno",       type: "Hatchback",   priceBase: 700000,  emoji: "🚗", color: "#e8eaf6", fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Tata",          model: "Harrier",      type: "SUV",         priceBase: 1650000, emoji: "🚙", color: "#ede7f6", fuels: ["Diesel"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Hyundai",       model: "i20",          type: "Hatchback",   priceBase: 750000,  emoji: "🚗", color: "#e8f5e9", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Honda",         model: "Amaze",        type: "Sedan",       priceBase: 750000,  emoji: "🚗", color: "#e1f5fe", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Mahindra",      model: "XUV700",       type: "SUV",         priceBase: 2000000, emoji: "🚙", color: "#f9fbe7", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] }
+    ];
+
+    const locations = ["Delhi", "Mumbai", "Bangalore", "Chennai"];
+    const fuels = ["Petrol", "Diesel", "CNG"];
+    const transmissions = ["Automatic", "Manual"];
+    const conditions = ["Clean Title", "Minor Dents", "Accidental"];
+
+    const generateMockData = (count) => {
+      const data = [];
+      for (let i = 1; i <= count; i++) {
+        const base = baseModels[Math.floor(Math.random() * baseModels.length)];
+        const year = 2016 + Math.floor(Math.random() * 8);
+        const ageDepreciation = (2024 - year) * 0.05;
+        let currentPrice = Math.floor(base.priceBase * (1 - ageDepreciation) * (0.8 + Math.random() * 0.3));
+        currentPrice = Math.floor(currentPrice / 1000) * 1000;
+        const condition = conditions[Math.floor(Math.random() * conditions.length)];
+        if (condition === "Accidental") currentPrice = Math.floor(currentPrice * 0.6);
+        let tags = [];
+        if (currentPrice < 500000) tags.push("Low Price");
+        if (currentPrice > 2000000) tags.push("Premium");
+        let timeLeft = Math.floor(Math.random() * 7200) + 30;
+        if (timeLeft < 300) tags.push("Hot");
+        data.push({
+          id: `VHL-${1000 + i}`,
+          year, title: `${year} ${base.make} ${base.model}`,
+          make: base.make.toLowerCase(), model: base.model.toLowerCase(),
+          type: base.type, price: currentPrice,
+          marketValue: Math.floor(currentPrice * 1.25),
+          location: locations[Math.floor(Math.random() * locations.length)],
+          fuel: base.fuels[Math.floor(Math.random() * base.fuels.length)],
+          transmission: base.transmissions[Math.floor(Math.random() * base.transmissions.length)],
+          condition, emoji: base.emoji, bgColor: base.color,
+          bids: Math.floor(Math.random() * 45) + 1,
+          timeLeft, tags: tags.slice(0, 2)
+        });
+      }
+      return data;
+    };
+
+    const allCars = generateMockData(40);
+    let activeTimerInterval;
+    let activeSuggestion = -1;
+    let savedInputValue = '';
+
+    // --- SUGGESTION CONSTANTS ---
+    const MAKES = ['Maruti Suzuki','Mahindra','Hyundai','Tata','Honda','Toyota','Kia'];
+    const MODEL_LIST = ['Swift','Thar','Creta','Nexon','City','Fortuner','Seltos','Baleno','Harrier','i20','Amaze','XUV700'];
+    const PRESET_QUERIES = [
+      'SUV under 10 lakh','Diesel SUV in Mumbai','Automatic sedan',
+      'Tata Nexon diesel','Toyota Fortuner','Hyundai Creta automatic',
+      'Budget hatchback under 5 lakh','Clean title in Bangalore',
+      'Between 5 and 10 lakh','Maruti Swift manual',
+      'Honda City petrol','Above 20 lakh SUV'
+    ];
+    const TRENDING = [
+      'SUV under 10 lakh','Tata Nexon diesel','Automatic sedan in Mumbai',
+      'Toyota Fortuner','Maruti Swift manual','Hyundai Creta petrol'
+    ];
+    const RECENT_KEY = 'abp_recent';
+    const getRecent = () => { try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); } catch { return []; } };
+    const addRecent = (q) => {
+      if (!q || q.trim().length < 2) return;
+      const list = getRecent().filter(r => r.toLowerCase() !== q.toLowerCase());
+      list.unshift(q.trim());
+      try { localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 8))); } catch {}
+    };
+    window.removeRecent = (q) => {
+      try { localStorage.setItem(RECENT_KEY, JSON.stringify(getRecent().filter(r => r !== q))); } catch {}
+      showSuggestions(document.getElementById('searchInput').value);
+    };
+    window.clearAllRecent = () => {
+      try { localStorage.removeItem(RECENT_KEY); } catch {}
+      showSuggestions(document.getElementById('searchInput').value);
+    };
+    window.fillSearch = (q) => {
+      const inp = document.getElementById('searchInput');
+      inp.value = q;
+      inp.focus();
+      updateClearBtn();
+      showSuggestions(q);
+    };
+
+    // --- UTILS ---
+    const formatCurrency = (num) => new Intl.NumberFormat('en-IN', { style:'currency', currency:'INR', maximumFractionDigits:0 }).format(num);
+    const formatTime = (seconds) => {
+      if (seconds <= 0) return "Ended";
+      const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = seconds%60;
+      return h > 0 ? `${h}h ${m}m ${s}s` : `${m}m ${s}s`;
+    };
+    const getSelectedFilters = (cls) => [...document.querySelectorAll(cls+':checked')].map(cb => cb.value);
+    const hlText = (str, terms) => {
+      if (!terms || !terms.length) return str;
+      const safe = terms.filter(Boolean).map(t => t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|');
+      if (!safe) return str;
+      return str.replace(new RegExp(`(${safe})`, 'gi'), '<mark>$1</mark>');
+    };
+
+    // --- EXTENDED QUERY PARSER ---
+    const parseQuery = (rawQuery) => {
+      let q = rawQuery.toLowerCase().trim();
+      const intent = { priceMax:Infinity, priceMin:0, location:null, type:null, fuel:null, transmission:null, year:null, keywords:[], raw:rawQuery };
+      if (!q) return intent;
+
+      // Normalize common aliases
+      q = q
+        .replace(/\bbengaluru\b|\bblr\b/g, 'bangalore')
+        .replace(/\bbombay\b|\bmum\b/g, 'mumbai')
+        .replace(/\bncr\b|\bnew delhi\b/g, 'delhi')
+        .replace(/\bmadras\b/g, 'chennai')
+        .replace(/\b(ms|suzuki)\b(?=\s|$)/g, 'maruti suzuki')
+        .replace(/\b(amt|auto)\b/g, 'automatic')
+        .replace(/\bcheap\b/g, 'under 5 lakh')
+        .replace(/\bbudget\b/g, 'under 7 lakh')
+        .replace(/\b(luxury|premium)\b/g, 'above 20 lakh');
+
+      // Location
+      ['Delhi','Mumbai','Bangalore','Chennai'].forEach(loc => {
+        if (q.includes(loc.toLowerCase())) intent.location = loc;
+      });
+
+      // Vehicle type
+      if (/\bsuv\b/.test(q)) intent.type = 'SUV';
+      else if (/\bsedan\b/.test(q)) intent.type = 'Sedan';
+      else if (/\bhatchback\b/.test(q)) intent.type = 'Hatchback';
+
+      // Fuel type — now parsed from query text
+      if (/\bdiesel\b/.test(q)) intent.fuel = 'Diesel';
+      else if (/\bpetrol\b/.test(q)) intent.fuel = 'Petrol';
+      else if (/\bcng\b/.test(q)) intent.fuel = 'CNG';
+
+      // Transmission — now parsed from query text
+      if (/\bautomatic\b/.test(q)) intent.transmission = 'Automatic';
+      else if (/\bmanual\b/.test(q)) intent.transmission = 'Manual';
+
+      // Year (2016–2024)
+      const yearM = q.match(/\b(201[6-9]|202[0-4])\b/);
+      if (yearM) intent.year = parseInt(yearM[1]);
+
+      // Price: between X and Y lakh
+      const betweenM = q.match(/between\s+(\d+(?:\.\d+)?)\s*(?:and|to|-)\s*(\d+(?:\.\d+)?)\s*(?:lakh|lac|l\b)/);
+      if (betweenM) {
+        intent.priceMin = parseFloat(betweenM[1]) * 100000;
+        intent.priceMax = parseFloat(betweenM[2]) * 100000;
+      } else {
+        const aboveM = q.match(/(?:above|over|more than)\s*(\d+(?:\.\d+)?)\s*(?:lakh|lac|l\b)/);
+        const underM = q.match(/(?:under|below|less than|upto|up to)\s*(\d+(?:\.\d+)?)\s*(?:lakh|lac|l\b)/);
+        if (aboveM) intent.priceMin = parseFloat(aboveM[1]) * 100000;
+        if (underM) intent.priceMax = parseFloat(underM[1]) * 100000;
+        if (!aboveM && !underM) {
+          // plain "10 lakh" → treat as under
+          const lakhM = q.match(/(\d+(?:\.\d+)?)\s*(?:lakh|lac)\b/);
+          if (lakhM) intent.priceMax = parseFloat(lakhM[1]) * 100000;
+        }
+        const dirUnder = q.match(/<\s*(\d+)/), dirOver = q.match(/>\s*(\d+)/);
+        if (dirUnder) intent.priceMax = parseInt(dirUnder[1]);
+        if (dirOver)  intent.priceMin = parseInt(dirOver[1]);
+      }
+
+      // Remaining keywords — remove parsed stop words
+      const stop = new Set(['under','below','above','over','less','than','more','between','and','to',
+        'in','lakh','lac','for','cars','car','suv','sedan','hatchback','diesel','petrol','cng',
+        'automatic','manual','delhi','mumbai','bangalore','chennai','upto','up','from','find',
+        'clean','title','the','a','an','with','or','at','is','show','get','buy','only','just']);
+      intent.keywords = q.split(/\s+/).filter(w => w.length > 1 && !stop.has(w) && isNaN(w) && !/^\d{4}$/.test(w));
+      return intent;
+    };
+
+    // --- SEARCH & FILTER ---
+    const getSearchResults = (query) => {
+      const intent = parseQuery(query);
+      const selTypes = getSelectedFilters('.filter-type');
+      const selFuels = getSelectedFilters('.filter-fuel');
+      const selTrans  = getSelectedFilters('.filter-trans');
+      const selConds  = getSelectedFilters('.filter-cond');
+
+      let results = allCars.filter(car => {
+        // Hard sidebar filters
+        if (selTypes.length && !selTypes.includes(car.type)) return false;
+        if (selFuels.length && !selFuels.includes(car.fuel)) return false;
+        if (selTrans.length  && !selTrans.includes(car.transmission)) return false;
+        if (selConds.length  && !selConds.includes(car.condition)) return false;
+        // Parsed intent filters
+        if (intent.location      && car.location      !== intent.location)     return false;
+        if (intent.type          && car.type          !== intent.type)         return false;
+        if (intent.fuel          && car.fuel          !== intent.fuel)         return false;
+        if (intent.transmission  && car.transmission  !== intent.transmission) return false;
+        if (intent.year          && car.year          !== intent.year)         return false;
+        if (car.price > intent.priceMax || car.price < intent.priceMin)        return false;
+        // Keyword match against ALL fields — not just make+model
+        if (intent.keywords.length) {
+          const hay = `${car.make} ${car.model} ${car.type} ${car.fuel} ${car.transmission} ${car.condition} ${car.location} ${car.year}`.toLowerCase();
+          if (!intent.keywords.some(kw => hay.includes(kw))) return false;
+        }
+        return true;
+      });
+
+      let isFallback = false;
+      if (results.length === 0 && selTypes.length === 0 && selFuels.length === 0) {
+        isFallback = true;
+        results = allCars.filter(c => c.price <= intent.priceMax * 1.2);
+        if (results.length < 2) results = [...allCars].sort(() => 0.5 - Math.random()).slice(0, 6);
+      }
+      return { results, isFallback, intent };
+    };
+
+    // --- INTENT PILLS ---
+    const renderIntentPills = (intent) => {
+      const row = document.getElementById('intentPills');
+      if (!intent || !intent.raw) { row.innerHTML = ''; return; }
+      const pills = [];
+      if (intent.type)         pills.push(`🚗 ${intent.type}`);
+      if (intent.fuel)         pills.push(`⛽ ${intent.fuel}`);
+      if (intent.transmission) pills.push(`⚙️ ${intent.transmission}`);
+      if (intent.location)     pills.push(`📍 ${intent.location}`);
+      if (intent.year)         pills.push(`📅 ${intent.year}`);
+      if (intent.priceMin > 0 && intent.priceMax < Infinity)
+        pills.push(`💰 ₹${intent.priceMin/100000}L – ₹${intent.priceMax/100000}L`);
+      else if (intent.priceMax < Infinity)
+        pills.push(`💰 Under ₹${intent.priceMax/100000}L`);
+      else if (intent.priceMin > 0)
+        pills.push(`💰 Above ₹${intent.priceMin/100000}L`);
+      row.innerHTML = pills.map(p => `<span class="intent-pill">${p}</span>`).join('');
+    };
+
+    // --- AUTOCOMPLETE SUGGESTIONS ---
+    const hlSugg = (str, q) => {
+      if (!q) return str;
+      return str.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'), '<b>$1</b>');
+    };
+
+    const mkItem = (s, icon, q, showFill, showRemove) => {
+      const esc = s.replace(/"/g,'&quot;').replace(/'/g,"\\'");
+      return `<div class="sugg-item" data-query="${s.replace(/"/g,'&quot;')}" onmousedown="applySuggestion(this.dataset.query)">
+        <span class="sugg-icon">${icon}</span>
+        <span class="sugg-text">${q ? hlSugg(s, q) : s}</span>
+        ${showFill   ? `<button class="sugg-fill"   onmousedown="event.stopPropagation();fillSearch('${esc}')"   title="Fill without searching">↗</button>` : ''}
+        ${showRemove ? `<button class="sugg-remove" onmousedown="event.stopPropagation();removeRecent('${esc}')" title="Remove">✕</button>` : ''}
+      </div>`;
+    };
+
+    const showSuggestions = (q) => {
+      const box = document.getElementById('suggestionsBox');
+      const ql  = (q || '').toLowerCase().trim();
+      activeSuggestion = -1;
+      let html = '';
+
+      if (!ql) {
+        // Empty input: show recent + trending
+        const recent = getRecent();
+        if (recent.length) {
+          html += `<div class="sugg-section">
+            <div class="sugg-lbl">Recent searches <button class="sugg-clear-all" onmousedown="event.preventDefault();clearAllRecent()">Clear all</button></div>
+            ${recent.map(s => mkItem(s, '🕐', null, true, true)).join('')}
+          </div>`;
+        }
+        html += `<div class="sugg-section">
+          <div class="sugg-lbl">Trending</div>
+          ${TRENDING.map(s => mkItem(s, '📈', null, true, false)).join('')}
+        </div>`;
+      } else {
+        // Typing: show recent matches first, then vehicles, then queries
+        const recentHits  = getRecent().filter(r => r.toLowerCase().includes(ql));
+        const carHits     = MAKES.concat(MODEL_LIST).filter(m => m.toLowerCase().includes(ql));
+        const presetHits  = PRESET_QUERIES
+          .filter(pq => pq.toLowerCase().startsWith(ql))
+          .concat(PRESET_QUERIES.filter(pq => pq.toLowerCase().includes(ql) && !pq.toLowerCase().startsWith(ql)));
+        const uniquePreset = presetHits.filter(p => !carHits.includes(p));
+
+        if (!recentHits.length && !carHits.length && !uniquePreset.length) {
+          box.classList.remove('open'); return;
+        }
+        if (recentHits.length) {
+          html += `<div class="sugg-section">
+            ${recentHits.slice(0,3).map(s => mkItem(s, '🕐', q, true, true)).join('')}
+          </div>`;
+        }
+        if (carHits.length) {
+          html += `<div class="sugg-section">
+            ${recentHits.length ? '<div class="sugg-lbl">Vehicles</div>' : ''}
+            ${carHits.slice(0,4).map(s => mkItem(s, '🚘', q, true, false)).join('')}
+          </div>`;
+        }
+        if (uniquePreset.length) {
+          html += `<div class="sugg-section">
+            ${(recentHits.length || carHits.length) ? '<div class="sugg-lbl">Searches</div>' : ''}
+            ${uniquePreset.slice(0,4).map(s => mkItem(s, '🔍', q, true, false)).join('')}
+          </div>`;
+        }
+      }
+
+      box.innerHTML = html;
+      box.classList.add('open');
+    };
+
+    window.applySuggestion = (q) => {
+      document.getElementById('searchInput').value = q;
+      addRecent(q);
+      document.getElementById('suggestionsBox').classList.remove('open');
+      activeSuggestion = -1;
+      updateClearBtn();
+      handleSearch();
+    };
+
+    // --- CLEAR BUTTON ---
+    const updateClearBtn = () => {
+      const btn = document.getElementById('searchClear');
+      btn.style.display = document.getElementById('searchInput').value ? 'flex' : 'none';
+    };
+
+    window.clearSearch = () => {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('suggestionsBox').classList.remove('open');
+      document.getElementById('intentPills').innerHTML = '';
+      activeSuggestion = -1;
+      savedInputValue = '';
+      updateClearBtn();
+      handleSearch();
+    };
+
+    // --- RENDERING ---
+    const renderSkeletons = () => {
+      document.getElementById('resultsGrid').innerHTML = Array(8).fill(`
+        <div class="card" style="height:370px;">
+          <div class="skeleton" style="height:160px;width:100%;border-radius:0;"></div>
+          <div class="card-body">
+            <div class="skeleton" style="height:20px;width:65%;margin-bottom:10px;"></div>
+            <div style="display:flex;gap:5px;margin-bottom:12px;">
+              <div class="skeleton" style="height:22px;width:60px;"></div>
+              <div class="skeleton" style="height:22px;width:52px;"></div>
+              <div class="skeleton" style="height:22px;width:70px;"></div>
+            </div>
+            <div class="skeleton" style="height:60px;width:100%;margin-top:auto;margin-bottom:10px;border-radius:var(--r);"></div>
+            <div class="skeleton" style="height:36px;width:100%;border-radius:var(--r);"></div>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    const renderCards = (data, keywords) => {
+      const grid = document.getElementById('resultsGrid');
+      grid.innerHTML = '';
+      if (data.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--g400);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;">No vehicles match. Try adjusting your search or filters.</div>`;
+        return;
+      }
+      data.forEach(car => {
+        const isUrgent = car.timeLeft > 0 && car.timeLeft < 120;
+        let badgesHtml = car.tags.map(tag =>
+          `<span class="badge ${tag==='Premium'?'badge-premium':tag==='Hot'?'badge-hot':''}">${tag}</span>`
+        ).join('');
+        if (car.condition === "Accidental") badgesHtml += `<span class="badge badge-cond">Accidental</span>`;
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-img-wrapper" style="background:${car.bgColor}">
+            <div class="badges">${badgesHtml}</div>
+            <div class="timer-badge ${isUrgent?'urgent':''}" id="timer-${car.id}">⏱ ${formatTime(car.timeLeft)}</div>
+            <span class="card-emoji">${car.emoji}</span>
+            <span class="card-type-tag">${car.type}</span>
+          </div>
+          <div class="card-body">
+            <div class="car-title">${hlText(car.title, keywords)}</div>
+            <div class="car-details">
+              <span>📍 ${car.location}</span>
+              <span>${car.fuel}</span>
+              <span>${car.transmission}</span>
+              <span>${car.condition}</span>
+            </div>
+            <div class="bid-box">
+              <div class="bid-box-left">
+                <div class="price-label">Current Bid (${car.bids} Bids)</div>
+                <div class="current-bid" id="price-${car.id}">${formatCurrency(car.price)}</div>
+              </div>
+              <div class="bid-box-right">
+                <div class="est-label">Est. Value</div>
+                <div class="market-value">${formatCurrency(car.marketValue)}</div>
+              </div>
+            </div>
+            <button class="bid-btn" onclick="placeBid('${car.id}')">Bid Now</button>
+          </div>`;
+        grid.appendChild(card);
+      });
+      startTimers(data);
+    };
+
+    const startTimers = (data) => {
+      if (activeTimerInterval) clearInterval(activeTimerInterval);
+      activeTimerInterval = setInterval(() => {
+        data.forEach(car => {
+          if (car.timeLeft > 0) {
+            car.timeLeft--;
+            const el = document.getElementById(`timer-${car.id}`);
+            if (el) {
+              el.innerHTML = `⏱ ${formatTime(car.timeLeft)}`;
+              if (car.timeLeft < 120 && !el.classList.contains('urgent')) el.classList.add('urgent');
+            }
+          }
+        });
+      }, 1000);
+    };
+
+    window.placeBid = (id) => {
+      const car = allCars.find(c => c.id === id);
+      if (!car || car.timeLeft <= 0) return;
+      car.price += car.price > 1000000 ? 50000 : 10000;
+      car.bids  += 1;
+      const priceEl = document.getElementById(`price-${id}`);
+      if (priceEl) {
+        priceEl.innerText = formatCurrency(car.price);
+        priceEl.classList.add('flash-green');
+        setTimeout(() => priceEl.classList.remove('flash-green'), 400);
+        const labelEl = priceEl.previousElementSibling;
+        if (labelEl) labelEl.innerText = `Current Bid (${car.bids} Bids)`;
+      }
+    };
+
+    // --- MAIN CONTROLLER ---
+    let initialLoadDone = false;
+
+    const doRender = (query, sort) => {
+      let { results, isFallback, intent } = getSearchResults(query);
+      renderIntentPills(query ? intent : null);
+      if (sort === 'price-low')       results.sort((a, b) => a.price - b.price);
+      else if (sort === 'price-high') results.sort((a, b) => b.price - a.price);
+      else if (sort === 'ending')     results.sort((a, b) => a.timeLeft - b.timeLeft);
+      else if (sort === 'bids')       results.sort((a, b) => b.bids - a.bids);
+      const hasFilters = query || document.querySelectorAll('aside input:checked').length > 0;
+      document.getElementById('resultsCount').innerText = hasFilters
+        ? `${results.length} vehicle${results.length !== 1 ? 's' : ''} found`
+        : `Showing all ${results.length} vehicles`;
+      document.getElementById('resultsFallback').innerText =
+        isFallback ? '⚠️ No exact match — showing nearest results.' : '';
+      renderCards(results, query ? intent.keywords : []);
+      initialLoadDone = true;
+    };
+
+    const handleSearch = () => {
+      const query = document.getElementById('searchInput').value;
+      const sort  = document.getElementById('sortSelect').value;
+      document.getElementById('suggestionsBox').classList.remove('open');
+      if (!initialLoadDone) {
+        // First load only: show skeletons briefly to simulate live data fetch
+        renderSkeletons();
+        setTimeout(() => doRender(query, sort), 300);
+      } else {
+        // All subsequent searches/filters/sorts: instant render, no flash
+        doRender(query, sort);
+      }
+    };
+
+    window.clearFilters = () => {
+      document.querySelectorAll('#filterSidebar input[type="checkbox"]').forEach(cb => cb.checked = false);
+      handleSearch();
+    };
+
+    window.toggleFilters = () => {
+      const sidebar = document.getElementById('filterSidebar');
+      const btn = document.getElementById('filterToggleBtn');
+      const isOpen = sidebar.classList.toggle('open');
+      btn.textContent = isOpen ? '✕ Hide Filters' : '⚙ Filters';
+      btn.classList.toggle('active', isOpen);
+    };
+
+    // --- EVENT LISTENERS ---
+    const searchInput = document.getElementById('searchInput');
+
+    searchInput.addEventListener('keydown', e => {
+      const box   = document.getElementById('suggestionsBox');
+      const items = [...box.querySelectorAll('.sugg-item')];
+      const isOpen = box.classList.contains('open');
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!isOpen) { savedInputValue = searchInput.value; showSuggestions(searchInput.value); return; }
+        if (activeSuggestion === -1) savedInputValue = searchInput.value;
+        activeSuggestion = Math.min(activeSuggestion + 1, items.length - 1);
+        items.forEach((el, i) => el.classList.toggle('focused', i === activeSuggestion));
+        if (items[activeSuggestion]) searchInput.value = items[activeSuggestion].dataset.query;
+        updateClearBtn();
+
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activeSuggestion = Math.max(activeSuggestion - 1, -1);
+        items.forEach((el, i) => el.classList.toggle('focused', i === activeSuggestion));
+        searchInput.value = activeSuggestion >= 0 && items[activeSuggestion]
+          ? items[activeSuggestion].dataset.query : savedInputValue;
+        updateClearBtn();
+
+      } else if (e.key === 'Enter') {
+        if (activeSuggestion >= 0 && items[activeSuggestion]) {
+          e.preventDefault();
+          applySuggestion(items[activeSuggestion].dataset.query);
+        } else {
+          box.classList.remove('open');
+          activeSuggestion = -1;
+          if (searchInput.value.trim()) addRecent(searchInput.value.trim());
+          handleSearch();
+        }
+
+      } else if (e.key === 'Escape') {
+        box.classList.remove('open');
+        searchInput.value = savedInputValue;
+        activeSuggestion = -1;
+        updateClearBtn();
+      }
+    });
+
+    let debounceTimer;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      activeSuggestion = -1;
+      updateClearBtn();
+      showSuggestions(searchInput.value);
+      debounceTimer = setTimeout(handleSearch, 400);
+    });
+
+    searchInput.addEventListener('focus', () => {
+      savedInputValue = searchInput.value;
+      showSuggestions(searchInput.value); // shows trending+recent when empty
+    });
+    searchInput.addEventListener('blur', () => {
+      setTimeout(() => document.getElementById('suggestionsBox').classList.remove('open'), 220);
+    });
+
+    document.getElementById('sortSelect').addEventListener('change', handleSearch);
+    document.getElementById('headerLocation').addEventListener('change', e => {
+      const val = e.target.value;
+      if (val !== "All" && !searchInput.value.toLowerCase().includes(val.toLowerCase())) {
+        searchInput.value = `${searchInput.value} in ${val}`.trim();
+        updateClearBtn();
+      }
+      handleSearch();
+    });
+    document.querySelectorAll('#filterSidebar input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', handleSearch);
+    });
+
+    window.onload = handleSearch;
+  </script>
+</body>
+</html>

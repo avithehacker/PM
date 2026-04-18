@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Hammerly — Smart Auto Bidding</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;--blue-m:#1a6fc4;
+  --green:#1a8a3c;--green-l:#e6f5eb;
+  --red:#c0392b;--red-l:#fdecea;
+  --amber:#d97706;--amber-l:#fffbeb;
+  --teal:#0d9488;--teal-l:#e6faf9;
+  --purple:#7c3aed;--purple-l:#f3f0ff;
+  --g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;--g400:#9ca3af;
+  --g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --white:#fff;
+  --hh:56px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.1);
+  --shadow-md:0 4px 14px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 30px rgba(0,0,0,.16);
+  --r:4px;--rm:6px;
+}
+html{font-family:'Barlow',sans-serif;background:var(--g100);color:var(--g900);font-size:14px}
+body{min-height:100vh;display:flex;flex-direction:column}
+button{cursor:pointer;font-family:'Barlow',sans-serif;border:none;outline:none}
+input,select{font-family:'Barlow',sans-serif}
+
+/* ══ HEADER ══ */
+.hdr{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap}
+.logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo span{color:#f0c040}
+.hdr-div{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
+.hdr-nav{display:flex;gap:4px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r);background:transparent;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;transition:all .15s;position:relative}
+.nav-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-btn.on{background:rgba(255,255,255,.15);color:#fff}
+.nav-btn.on::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:24px;height:2px;background:#f0c040;border-radius:2px}
+.nav-badge{background:var(--red);color:#fff;border-radius:2px;font-size:10px;font-weight:700;padding:1px 5px;min-width:16px;text-align:center;line-height:16px}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.live-pill{background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:1px;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--blue-m);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700}
+
+/* ══ HERO ══ */
+.hero{background:linear-gradient(135deg,var(--blue-d) 0%,var(--blue-m) 100%);padding:28px 24px 24px;color:#fff}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:27px;font-weight:800;letter-spacing:.3px;margin-bottom:4px}
+.hero p{color:rgba(255,255,255,.7);font-size:13px;margin-bottom:16px}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap}
+.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#f0c040;display:block}
+.hero-stat-lbl{font-size:11px;color:rgba(255,255,255,.6);font-weight:500;letter-spacing:.3px}
+
+/* ══ FILTERS ══ */
+.filters{background:var(--white);border-bottom:1px solid var(--g200);padding:12px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:3px;border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+.chip.on{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+.chip-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.filter-count{margin-left:auto;font-size:12px;color:var(--g500);font-weight:500}
+
+/* ══ CARDS GRID ══ */
+.grid{padding:20px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+
+/* ══ AUCTION CARD ══ */
+.ac{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,border-color .2s}
+.ac:hover{box-shadow:var(--shadow-md)}
+.ac.expanded{border-color:var(--blue-m);box-shadow:var(--shadow-md)}
+.ac-head{padding:14px 16px 12px;border-bottom:1px solid var(--g200);display:flex;align-items:flex-start;gap:12px;cursor:pointer;user-select:none}
+.ac-head:hover{background:var(--g100)}
+.ac-emoji{width:48px;height:48px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.ac-info{flex:1;min-width:0}
+.ac-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--g900);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac-sub{font-size:11px;color:var(--g400);font-weight:500}
+.badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:.3px;white-space:nowrap}
+.badge-live{background:#fee2e2;color:#b91c1c}
+.badge-upcoming{background:#fef3c7;color:#92400e}
+.badge-closed{background:var(--g200);color:var(--g500)}
+.ac-body{padding:12px 16px}
+.ac-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.ac-field{display:flex;flex-direction:column;gap:2px}
+.ac-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400)}
+.ac-val{font-size:13px;font-weight:600;color:var(--g700)}
+.bid-box{background:var(--g100);border-radius:var(--r);padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.bid-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:2px}
+.bid-current{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--blue-d)}
+.bid-step{font-size:11px;font-weight:600;color:var(--g500);margin-top:1px}
+.ac-cta{width:100%;padding:9px 16px;border-radius:var(--r);background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s}
+.ac-cta:hover{background:var(--blue-m)}
+.ac-cta.st-active{background:var(--teal)}
+.ac-cta.st-active:hover{background:#0a8075}
+.ac-cta.st-paused{background:var(--amber)}
+.ac-cta.st-stopped{background:var(--g400);cursor:default}
+
+/* ══ BID PANEL ══ */
+.bid-panel{border-top:1px solid var(--g200);padding:14px 16px;background:#fafbfd}
+.bp-hd{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g500);display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.bp-hd-line{flex:1;height:1px;background:var(--g200)}
+
+/* max bid */
+.mb-row{display:flex;gap:8px;align-items:stretch;margin-bottom:4px}
+.mb-wrap{position:relative;flex:1}
+.mb-prefix{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--g400);pointer-events:none}
+.mb-inp{width:100%;padding:8px 12px 8px 28px;border:1.5px solid var(--g300);border-radius:var(--r);font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--g900);background:var(--white)}
+.mb-inp:focus{outline:none;border-color:var(--blue)}
+.mb-inp.valid{border-color:var(--green)}
+.mb-inp.invalid{border-color:var(--red)}
+.info-btn{width:34px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);color:var(--g500);font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s}
+.info-btn:hover{border-color:var(--blue);color:var(--blue)}
+.mb-hint{font-size:11px;font-weight:600;margin-bottom:10px}
+
+/* sliders */
+.sl-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+.sl-row{display:flex;flex-direction:column;gap:5px}
+.sl-top{display:flex;justify-content:space-between;align-items:baseline}
+.sl-name{font-size:12px;font-weight:600;color:var(--g700)}
+.sl-sub{font-size:10px;color:var(--g400);font-weight:500}
+.sl-val{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800}
+.sl-denom{font-size:11px;font-weight:500;color:var(--g400)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;outline:none;cursor:pointer}
+input[type=range].blue-r{background:linear-gradient(to right,var(--purple) var(--fill,50%),var(--g200) var(--fill,50%))}
+input[type=range].amber-r{background:linear-gradient(to right,var(--blue) var(--fill,50%),var(--g200) var(--fill,50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;border:2px solid var(--white);box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}
+input[type=range].blue-r::-webkit-slider-thumb{background:var(--purple)}
+input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
+.total-bar{background:var(--blue-l);border-radius:var(--r);padding:8px 10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.total-bar.warn{background:var(--amber-l)}
+.total-bar-lbl{font-size:11px;font-weight:600;color:var(--blue-d)}
+.total-bar.warn .total-bar-lbl{color:var(--amber)}
+.total-bar-val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--blue-d)}
+.total-bar.warn .total-bar-val{color:var(--amber)}
+.enable-btn{width:100%;padding:10px;border-radius:var(--r);background:var(--teal);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.enable-btn:hover:not(:disabled){background:#0a8075}
+.enable-btn:disabled{background:var(--g300);color:var(--g500);cursor:not-allowed}
+
+/* ══ STATUS BAR ══ */
+.st-bar{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--r);border:1.5px solid transparent;margin-bottom:10px}
+.st-bar.active{background:var(--teal-l);border-color:rgba(13,148,136,.2)}
+.st-bar.paused{background:var(--amber-l);border-color:rgba(217,119,6,.2)}
+.st-bar.stopped{background:var(--red-l);border-color:rgba(192,57,43,.2)}
+.st-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.st-dot.active{background:var(--teal);animation:pulse 2s infinite}
+.st-dot.paused{background:var(--amber)}
+.st-dot.stopped{background:var(--red)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(13,148,136,.4)}50%{box-shadow:0 0 0 5px rgba(13,148,136,0)}}
+.st-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.st-label.active{color:var(--teal)}
+.st-label.paused{color:var(--amber)}
+.st-label.stopped{color:var(--red)}
+.st-detail{margin-left:auto;font-size:11px;color:var(--g500);font-weight:500}
+
+/* usage cards */
+.usage-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.ucard{background:var(--white);border:1px solid var(--g200);border-radius:var(--r);padding:8px 10px;text-align:center}
+.ucard-num{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800}
+.ucard-denom{font-size:12px;font-weight:500;color:var(--g400)}
+.ucard-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--g400);margin-top:2px}
+
+/* action buttons */
+.act-row{display:flex;gap:7px;margin-bottom:12px}
+.act-btn{flex:1;padding:8px 6px;border-radius:var(--r);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;border:1.5px solid transparent;transition:all .15s;white-space:nowrap}
+.act-btn.pause{background:var(--amber-l);color:var(--amber);border-color:rgba(217,119,6,.3)}
+.act-btn.pause:hover{background:var(--amber);color:#fff}
+.act-btn.resume{background:var(--teal-l);color:var(--teal);border-color:rgba(13,148,136,.3)}
+.act-btn.resume:hover{background:var(--teal);color:#fff}
+.act-btn.stop{background:var(--red-l);color:var(--red);border-color:rgba(192,57,43,.3)}
+.act-btn.stop:hover{background:var(--red);color:#fff}
+.act-btn.manual{background:var(--blue-l);color:var(--blue);border-color:rgba(0,87,168,.3)}
+.act-btn.manual:hover:not(:disabled){background:var(--blue);color:#fff}
+.act-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* mini history */
+.mini-hist{max-height:160px;overflow-y:auto}
+.hist-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--g200)}
+.hist-row:last-child{border-bottom:none}
+.htag{font-size:9px;font-weight:700;padding:2px 5px;border-radius:2px;letter-spacing:.3px;width:48px;text-align:center;flex-shrink:0}
+.htag.auto{background:var(--purple-l);color:var(--purple)}
+.htag.manual{background:var(--blue-l);color:var(--blue)}
+.htag.comp{background:var(--g200);color:var(--g600)}
+.htag.sys{background:var(--amber-l);color:var(--amber)}
+.htime{font-size:10px;color:var(--g400);width:38px;flex-shrink:0}
+.hdesc{flex:1;font-size:11px;color:var(--g700);font-weight:500}
+.hamt{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;flex-shrink:0}
+.hamt.auto{color:var(--purple)}
+.hamt.manual{color:var(--blue)}
+.hamt.comp{color:var(--g600)}
+
+/* ══ TOAST STACK ══ */
+.toast-stack{position:fixed;top:68px;right:18px;z-index:1000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--white);border-radius:var(--rm);box-shadow:var(--shadow-lg);padding:11px 14px;display:flex;align-items:flex-start;gap:9px;min-width:270px;max-width:340px;pointer-events:auto;border-left:3px solid transparent;animation:t-in .22s ease;font-size:13px}
+@keyframes t-in{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.toast.success{border-left-color:var(--green)}
+.toast.warning{border-left-color:var(--amber)}
+.toast.error{border-left-color:var(--red)}
+.toast.info{border-left-color:var(--blue)}
+.toast.auto-bid{border-left-color:var(--purple)}
+.t-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.t-body{flex:1}
+.t-title{font-weight:700;color:var(--g900);margin-bottom:2px;font-size:13px}
+.t-msg{font-size:11px;color:var(--g500)}
+.t-close{color:var(--g400);font-size:17px;cursor:pointer;line-height:1;padding:0 2px;align-self:center}
+.t-close:hover{color:var(--g700)}
+
+/* ══ MODAL ══ */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadein .18s}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal{background:var(--white);border-radius:var(--rm);width:100%;max-width:480px;max-height:82vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:slidein .2s ease}
+@keyframes slidein{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+.modal-hd{padding:16px 20px 14px;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white)}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--g900)}
+.modal-close{width:28px;height:28px;border-radius:var(--r);background:var(--g100);color:var(--g600);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.modal-close:hover{background:var(--g200)}
+.modal-body{padding:16px 20px}
+.rule-row{display:flex;gap:11px;margin-bottom:13px}
+.rule-num{width:24px;height:24px;border-radius:50%;background:var(--blue-l);color:var(--blue);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rule-text{font-size:13px;color:var(--g700);line-height:1.55}
+.rule-text strong{color:var(--g900)}
+.rule-note{background:var(--amber-l);border:1px solid rgba(217,119,6,.25);border-radius:var(--r);padding:10px 12px;margin-top:10px;font-size:12px;color:var(--amber);font-weight:600;line-height:1.5}
+
+/* ══ MY BIDS TAB ══ */
+.tab-wrap{padding:20px 24px}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--g900);margin-bottom:14px}
+
+/* battle row = one vehicle session */
+.battle-row{margin-bottom:20px}
+.battle-hdr{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm) var(--rm) 0 0;border-bottom:none;padding:11px 16px;display:flex;align-items:center;gap:12px}
+.battle-emoji{width:36px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.battle-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--g900);flex:1}
+.battle-sub{font-size:11px;color:var(--g400);font-weight:500;margin-top:1px}
+.battle-status-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:2px;letter-spacing:.4px;white-space:nowrap}
+
+.battle-cards{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1.5px solid var(--g200);border-radius:0 0 var(--rm) var(--rm);overflow:hidden}
+
+/* individual bidder card */
+.bidder-card{background:var(--white);padding:14px 15px;position:relative;transition:background .25s}
+.bidder-card + .bidder-card{border-left:1.5px solid var(--g200)}
+.bidder-card.winning{background:linear-gradient(160deg,rgba(13,148,136,.04) 0%,rgba(13,148,136,.01) 100%)}
+.bidder-card.outbid{background:linear-gradient(160deg,rgba(192,57,43,.04) 0%,rgba(192,57,43,.01) 100%)}
+
+/* bidder label row */
+.bidder-name-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.bidder-name{font-size:13px;font-weight:800;color:var(--g900);display:flex;align-items:center;gap:6px}
+.bidder-you{font-size:9px;font-weight:700;padding:2px 5px;border-radius:2px;background:var(--blue-l);color:var(--blue);vertical-align:middle}
+.bid-status-badge{font-size:10px;font-weight:800;padding:3px 8px;border-radius:2px;letter-spacing:.5px;white-space:nowrap}
+.bid-status-badge.winning{background:#d1fae5;color:#065f46}
+.bid-status-badge.outbid{background:var(--red-l);color:var(--red)}
+.bid-status-badge.leading{background:#fde8e8;color:var(--red)}
+.bid-status-badge.idle{background:var(--g200);color:var(--g500)}
+
+/* amount display */
+.bidder-amount{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;line-height:1;margin-bottom:3px}
+.bidder-amount.winning{color:var(--teal)}
+.bidder-amount.outbid{color:var(--red)}
+.bidder-amount.leading{color:var(--red)}
+.bidder-amount.idle{color:var(--g400)}
+.bidder-amount.you{color:var(--blue-d)}
+.bidder-sub{font-size:10px;font-weight:600;color:var(--g400);margin-bottom:10px}
+
+/* avinash stats */
+.bidder-stats{display:flex;gap:10px;margin-bottom:10px}
+.bstat{text-align:center}
+.bstat-n{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;display:block}
+.bstat-l{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--g400);display:block}
+
+/* action buttons */
+.bidder-acts{display:flex;flex-direction:column;gap:5px}
+.bact-row{display:flex;gap:5px}
+.bact{flex:1;padding:6px 4px;border-radius:var(--r);font-size:11px;font-weight:700;border:1.5px solid transparent;display:flex;align-items:center;justify-content:center;gap:3px;transition:all .15s;white-space:nowrap}
+.bact.pause{background:var(--amber-l);color:var(--amber);border-color:rgba(217,119,6,.25)}
+.bact.pause:hover{background:var(--amber);color:#fff}
+.bact.resume{background:var(--teal-l);color:var(--teal);border-color:rgba(13,148,136,.25)}
+.bact.resume:hover{background:var(--teal);color:#fff}
+.bact.stop{background:var(--red-l);color:var(--red);border-color:rgba(192,57,43,.25)}
+.bact.stop:hover{background:var(--red);color:#fff}
+.bact.manual{background:var(--blue-l);color:var(--blue);border-color:rgba(0,87,168,.25)}
+.bact.manual:hover:not(:disabled){background:var(--blue);color:#fff}
+.bact:disabled{opacity:.35;cursor:not-allowed}
+
+/* rival card */
+.rival-fire-btn{width:100%;padding:10px;border-radius:var(--r);background:var(--red-l);border:1.5px solid rgba(192,57,43,.3);color:var(--red);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;margin-top:auto}
+.rival-fire-btn:hover:not(:disabled){background:var(--red);color:#fff;border-color:var(--red);transform:translateY(-1px);box-shadow:0 3px 10px rgba(192,57,43,.25)}
+.rival-fire-btn:disabled{opacity:.35;cursor:not-allowed}
+.rival-fire-btn.firing{animation:rival-flash .4s ease}
+@keyframes rival-flash{0%{transform:scale(1)}30%{transform:scale(.97);background:#fecaca}70%{transform:scale(1.01)}100%{transform:scale(1)}}
+.rival-bid-count{font-size:10px;color:var(--g400);font-weight:600;margin-bottom:8px}
+
+/* bid history */
+.sess-stats{display:flex;gap:14px;margin-bottom:12px}
+.sess-bid-row{background:var(--g100);border-radius:var(--r);padding:7px 10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.sess-bid-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--g400)}
+.sess-bid-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--blue-d)}
+.sstat-num{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;display:block}
+.sstat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--g400)}
+.hist-table{background:var(--white);border:1px solid var(--g200);border-radius:var(--rm);overflow:hidden}
+.ht-hd{display:grid;grid-template-columns:44px 1fr 110px 60px 90px;padding:9px 14px;background:var(--g100);border-bottom:1px solid var(--g200);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g500);gap:8px}
+.ht-row{display:grid;grid-template-columns:44px 1fr 110px 60px 90px;padding:9px 14px;border-bottom:1px solid var(--g200);font-size:12px;align-items:center;gap:8px}
+.ht-row:last-child{border-bottom:none}
+.ht-row:hover{background:var(--g100)}
+
+/* ══ SIMULATOR TAB ══ */
+.sim-wrap{padding:20px 24px;display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:flex-start}
+.sim-feed-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;display:flex;flex-direction:column}
+.sim-feed-hd{padding:12px 16px;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.sim-feed-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--g900);display:flex;align-items:center;gap:6px}
+.sim-live-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 2s infinite}
+.sim-feed-sub{font-size:11px;color:var(--g400);font-weight:500}
+.sim-msgs{height:360px;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:5px}
+.sim-msg{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:var(--r);animation:msg-in .2s ease}
+@keyframes msg-in{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+.sim-msg.comp{background:var(--g100)}
+.sim-msg.you-auto{background:var(--purple-l)}
+.sim-msg.you-manual{background:var(--blue-l)}
+.sim-msg.system{background:var(--amber-l)}
+.sim-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px;letter-spacing:.3px;width:52px;text-align:center;flex-shrink:0}
+.sim-tag.comp{background:var(--g200);color:var(--g600)}
+.sim-tag.you-auto{background:var(--purple-l);color:var(--purple);border:1px solid rgba(124,58,237,.25)}
+.sim-tag.you-manual{background:var(--blue-l);color:var(--blue);border:1px solid rgba(0,87,168,.25)}
+.sim-tag.system{background:var(--amber-l);color:var(--amber);border:1px solid rgba(217,119,6,.25)}
+.sim-t{font-size:10px;color:var(--g400);font-weight:500;width:40px;flex-shrink:0}
+.sim-text{flex:1;font-size:12px;color:var(--g700);font-weight:500}
+.sim-amt{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;flex-shrink:0}
+.sim-amt.comp{color:var(--g700)}
+.sim-amt.you-auto{color:var(--purple)}
+.sim-amt.you-manual{color:var(--blue)}
+.sim-footer{padding:9px 14px;border-top:1px solid var(--g200);background:var(--g100);display:flex;justify-content:space-between;flex-shrink:0}
+.sim-footer-item{font-size:11px;color:var(--g500);font-weight:600}
+.sim-ctrl-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden}
+.sim-ctrl-hd{padding:13px 16px;border-bottom:1px solid var(--g200)}
+.sim-ctrl-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--g900);margin-bottom:2px}
+.sim-ctrl-sub{font-size:11px;color:var(--g500)}
+.sim-ctrl-body{padding:14px 16px}
+.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g500);display:block;margin-bottom:5px}
+.vehicle-sel{width:100%;padding:8px 10px;border:1.5px solid var(--g300);border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;color:var(--g700);background:var(--white);margin-bottom:12px}
+.vehicle-sel:focus{outline:none;border-color:var(--blue)}
+.speed-row{display:flex;gap:6px;margin-bottom:12px}
+.speed-btn{flex:1;padding:6px 4px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:700;color:var(--g600);transition:all .15s}
+.speed-btn.on{border-color:var(--blue);background:var(--blue-l);color:var(--blue)}
+.speed-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.speed-btn:disabled{opacity:.5;cursor:not-allowed}
+.sim-info-box{background:var(--g100);border-radius:var(--r);padding:10px 11px;margin-bottom:12px}
+.sim-info-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.sim-info-row:last-child{margin-bottom:0}
+.sim-info-lbl{font-size:11px;color:var(--g500);font-weight:600}
+.sim-info-val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800}
+.sim-start-btn{width:100%;padding:10px;border-radius:var(--r);background:var(--teal);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;margin-bottom:8px}
+.sim-start-btn:hover{background:#0a8075}
+.sim-start-btn.stop-mode{background:var(--red)}
+.sim-start-btn.stop-mode:hover{background:#a83020}
+.sim-manual-btn{width:100%;padding:8px;border-radius:var(--r);border:1.5px solid var(--blue);background:var(--blue-l);color:var(--blue);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px;transition:all .15s}
+.sim-manual-btn:hover:not(:disabled){background:var(--blue);color:#fff}
+.sim-manual-btn:disabled{opacity:.4;cursor:not-allowed}
+.sim-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sstat{background:var(--g100);border-radius:var(--r);padding:8px 10px;text-align:center}
+.sstat-n{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800}
+.sstat-l{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--g400);margin-top:2px}
+
+/* ══ EMPTY ══ */
+.empty{text-align:center;padding:48px 20px;color:var(--g400)}
+.empty-icon{font-size:38px;margin-bottom:10px}
+.empty-txt{font-size:13px;font-weight:500;line-height:1.5}
+
+/* ══ APP SWITCHER ══ */
+.app-sw{margin-left:auto;display:flex;align-items:center;gap:3px}
+.app-sw a{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r);color:rgba(255,255,255,.6);font-size:12px;font-weight:600;text-decoration:none;transition:all .15s;white-space:nowrap;position:relative}
+.app-sw a:hover{background:rgba(255,255,255,.1);color:#fff}
+.app-sw a.cur{background:rgba(255,255,255,.15);color:#fff}
+.app-sw a.cur::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:#f0c040;border-radius:2px}
+
+/* ══ OPEN BID ══ */
+.mode-tabs{display:flex;border:1.5px solid var(--g300);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.mode-tab{flex:1;padding:8px 10px;font-size:12px;font-weight:700;background:var(--white);color:var(--g500);border:none;transition:all .15s;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.mode-tab:first-child{border-right:1.5px solid var(--g300)}
+.mode-tab.auto.on{background:var(--blue-l);color:var(--blue)}
+.mode-tab.open.on{background:var(--green-l);color:var(--green)}
+.ob-info-box{background:var(--g100);border-radius:var(--r);padding:10px 12px;margin-bottom:12px}
+.ob-info-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0}
+.ob-info-lbl{font-size:11px;color:var(--g500);font-weight:600}
+.ob-info-val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--g700)}
+.place-bid-btn{width:100%;padding:12px 16px;border-radius:var(--r);background:var(--green);color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;margin-bottom:8px;letter-spacing:.2px}
+.place-bid-btn:hover:not(:disabled){background:#146830}
+.place-bid-btn:disabled{background:var(--g300);color:var(--g500);cursor:not-allowed}
+.ob-start-btn{width:100%;padding:10px;border-radius:var(--r);background:var(--green);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.ob-start-btn:hover:not(:disabled){background:#146830}
+.ob-start-btn:disabled{background:var(--g300);color:var(--g500);cursor:not-allowed}
+.ac-cta.st-open{background:var(--green)}
+.ac-cta.st-open:hover{background:#146830}
+/* auction type badges on card */
+.badge-open-auction{background:var(--green-l);color:var(--green)}
+.badge-closed-auction{background:var(--g200);color:var(--g600)}
+/* sealed bid display */
+.bid-sealed-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--g400);letter-spacing:3px}
+.sealed-pill{display:inline-flex;align-items:center;gap:4px;background:var(--g200);color:var(--g500);font-size:10px;font-weight:700;padding:3px 7px;border-radius:2px;letter-spacing:.5px;margin-top:2px}
+.nirav-sealed{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--g400);letter-spacing:4px}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:900px){
+  .sim-wrap{grid-template-columns:1fr}
+  .sim-ctrl-card{order:-1}
+}
+@media(max-width:640px){
+  .grid{grid-template-columns:1fr;padding:14px 16px}
+  .hero{padding:20px 16px}
+  .hero-stats{gap:18px}
+  .filters,.tab-wrap{padding:10px 16px}
+  .nav-btn .nav-label{display:none}
+  .hdr-nav{gap:2px}
+  .nav-btn{padding:6px 10px}
+  .sim-wrap{padding:14px 16px}
+  .app-sw{display:none}
+  .battle-cards{grid-template-columns:1fr}
+  .bidder-card+.bidder-card{border-left:none;border-top:1.5px solid var(--g200)}
+}
+@media(max-width:480px){
+  .usage-grid{gap:6px}
+  .act-row{flex-wrap:wrap}
+  .act-btn{min-width:calc(50% - 4px)}
+  .ht-hd,.ht-row{grid-template-columns:40px 1fr 100px 55px;gap:6px}
+  .ht-hd>*:nth-child(5),.ht-row>*:nth-child(5){display:none}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState, useEffect, useRef, useCallback} = React;
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const VEHICLES = [
+  {id:1,cls:'2w',label:'Two-Wheeler',auctionType:'open', make:'Royal Enfield',model:'Classic 350',year:2022,fuel:'Petrol',tx:'Manual',km:'28,500',color:'Signals Green',reserve:145000,current:138000,step:500,img:'🏍️',bank:'Axis Bank',lot:'AXS-881',loc:'Bangalore',timeLeft:'3h 20m',status:'live',bids:5,condition:'Good'},
+  {id:2,cls:'2w',label:'Two-Wheeler',auctionType:'closed',make:'Honda',model:'CB200R',year:2021,fuel:'Petrol',tx:'Manual',km:'19,200',color:'Mat Sangria Red',reserve:118000,current:110000,step:500,img:'🏍️',bank:'ICICI Bank',lot:'ICI-442',loc:'Chennai',timeLeft:'1h 10m',status:'live',bids:9,condition:'Excellent'},
+  {id:3,cls:'3w',label:'Three-Wheeler',auctionType:'open', make:'Bajaj',model:'RE Compact',year:2020,fuel:'CNG',tx:'Manual',km:'41,000',color:'Yellow / Black',reserve:162000,current:155000,step:1000,img:'🛺',bank:'SBI',lot:'SBI-203',loc:'Delhi',timeLeft:'4h 00m',status:'live',bids:3,condition:'Fair'},
+  {id:4,cls:'3w',label:'Three-Wheeler',auctionType:'closed',make:'Piaggio',model:'Ape City Plus',year:2022,fuel:'LPG',tx:'Manual',km:'33,600',color:'White',reserve:210000,current:198000,step:1000,img:'🛺',bank:'Bank of Baroda',lot:'BOB-119',loc:'Hyderabad',timeLeft:'6h 30m',status:'upcoming',bids:0,condition:'Good'},
+  {id:5,cls:'4w',label:'Four-Wheeler',auctionType:'closed',make:'Toyota',model:'Fortuner',year:2021,fuel:'Diesel',tx:'Automatic',km:'62,000',color:'White Pearl',reserve:2800000,current:2650000,step:2000,img:'🚙',bank:'HDFC Bank',lot:'HDF-2401',loc:'Mumbai',timeLeft:'2h 45m',status:'live',bids:8,condition:'Good'},
+  {id:6,cls:'4w',label:'Four-Wheeler',auctionType:'open', make:'Hyundai',model:'Creta',year:2022,fuel:'Petrol',tx:'Automatic',km:'24,500',color:'Phantom Black',reserve:1480000,current:1380000,step:2000,img:'🚗',bank:'Kotak Mahindra',lot:'KOT-667',loc:'Pune',timeLeft:'22h 15m',status:'upcoming',bids:0,condition:'Good'},
+];
+
+const MAX_TOTAL = 20;
+const MAX_AUTO  = 15;
+const MIN_MAN   = 5;
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+const fmt = n => '₹' + n.toLocaleString('en-IN');
+const fmtShort = n => {
+  if (n >= 10000000) return `₹${(n/10000000).toFixed(2)}Cr`;
+  if (n >= 100000) return `₹${(n/100000).toFixed(1)}L`;
+  return fmt(n);
+};
+const ts = () => new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+
+const mkSession = v => ({
+  status:'idle', mode: v.auctionType === 'open' ? 'open' : 'auto',
+  maxBid:'', autoPool:12, manualReserve:5,
+  autoBidsUsed:0, manualBidsUsed:0, currentBid:v.current,
+  avinashBid:v.current, niravBid:0, niravBidCount:0, history:[],
+  openMaxBid:'', openBidsPlaced:0,
+  rivalLeading: false,   // explicit flag: true = Nirav last bid, false = Avinash last bid (or no bids yet)
+});
+
+// ─── TOAST HOOK ───────────────────────────────────────────────────────────────
+let _tid = 0;
+function useToasts() {
+  const [toasts, setToasts] = useState([]);
+  const add = useCallback((type, title, msg) => {
+    const id = ++_tid;
+    setToasts(t => [...t, {id, type, title, msg}]);
+    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 4500);
+  }, []);
+  const remove = useCallback(id => setToasts(t => t.filter(x => x.id !== id)), []);
+  return {toasts, add, remove};
+}
+
+// ─── TOAST STACK ─────────────────────────────────────────────────────────────
+function ToastStack({toasts, remove}) {
+  const icons = {success:'✅', warning:'⚠️', error:'🚫', info:'ℹ️', 'auto-bid':'⚡'};
+  return (
+    <div className="toast-stack">
+      {toasts.map(t => (
+        <div key={t.id} className={`toast ${t.type}`}>
+          <span className="t-icon">{icons[t.type] || '📢'}</span>
+          <div className="t-body">
+            <div className="t-title">{t.title}</div>
+            {t.msg && <div className="t-msg">{t.msg}</div>}
+          </div>
+          <span className="t-close" onClick={() => remove(t.id)}>×</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── INFO MODAL ───────────────────────────────────────────────────────────────
+function InfoModal({onClose}) {
+  const rules = [
+    ['🏛 Open Auction','Everyone can see the highest bid in real time. Bids are unlimited — you place each one manually. Increments are fixed by vehicle type: ₹500 (2W) · ₹1,000 (3W) · ₹2,000 (4W). Optional price ceiling prevents over-bidding.'],
+    ['🔒 Closed Auction','The highest bid is sealed — no participant can see what others are bidding. Max 20 bids total (Auto + Manual). You know only your own bid; you are notified when outbid but rival amounts stay hidden until the session ends.'],
+    ['Closed — Set Your Max Bid','Enter the maximum amount you\'re willing to pay. The auto-bid system will never exceed this limit. Your max bid is private and sealed from rivals.'],
+    ['Closed — Auto Pool (1–15 bids)','Up to 15 bids placed automatically by the system whenever you\'re outbid, staying within your max. Rival bid amounts are never exposed — only the outcome (outbid / leading) is shown.'],
+    ['Closed — Manual Reserve (min 5)','At least 5 bids reserved for you to place manually — for decisive moments. Auto + Manual combined cannot exceed 20.'],
+    ['Open — Enforced Increments','Each bid in an Open Auction must increase by exactly the vehicle-specific step. No skipping, no custom amounts. The new highest bid is immediately visible to all.'],
+    ['Pause / Resume / Stop','Closed Auction: Pause auto-responses temporarily, Resume to continue, Stop ends permanently. Open Auction: Stop ends the session permanently.'],
+  ];
+  return (
+    <div className="modal-bg" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-hd">
+          <span className="modal-title">🔒 Closed & 🏛 Open Auction — How It Works</span>
+          <button className="modal-close" onClick={onClose}>✕</button>
+        </div>
+        <div className="modal-body">
+          {rules.map(([title, text], i) => (
+            <div key={i} className="rule-row">
+              <div className="rule-num">{i+1}</div>
+              <div className="rule-text"><strong>{title}:</strong> {text}</div>
+            </div>
+          ))}
+          <div className="rule-note">
+            🔒 <strong>Closed Auction:</strong> When your auto pool runs out, place manual bids to stay in. Once all {MAX_TOTAL} bids are used, bidding stops permanently for that session. Rival bid amounts remain sealed throughout.<br/><br/>
+            🏛 <strong>Open Auction:</strong> No bid cap — bid as many times as you like. All bids and the current highest bid are publicly visible to everyone in the auction room.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── BID SETUP PANEL (idle state) ─────────────────────────────────────────────
+function BidSetupPanel({vehicle, session, onUpdate, onEnable, onShowInfo}) {
+  const maxNum = parseInt(session.maxBid) || 0;
+  const nextBid = session.currentBid + vehicle.step;
+  const isValid = maxNum >= nextBid;
+  const totalCfg = session.autoPool + session.manualReserve;
+  const overCap = totalCfg > MAX_TOTAL;
+  const canEnable = isValid && !overCap && session.manualReserve >= MIN_MAN;
+
+  const autoFill = `${((session.autoPool - 1)/(MAX_AUTO - 1)) * 100}%`;
+  const maxManForSlider = MAX_TOTAL - session.autoPool;
+  const manFill = `${((session.manualReserve - MIN_MAN) / (maxManForSlider - MIN_MAN || 1)) * 100}%`;
+  const stepsAvail = isValid ? Math.floor((maxNum - session.currentBid) / vehicle.step) : 0;
+
+  return (
+    <div>
+      {/* Closed auction notice */}
+      <div style={{background:'var(--g200)',borderRadius:'var(--r)',padding:'8px 10px',marginBottom:'12px',display:'flex',alignItems:'center',gap:'7px',fontSize:'11px',color:'var(--g600)',fontWeight:600,lineHeight:1.5}}>
+        <span style={{fontSize:'14px'}}>🔒</span>
+        <span>Closed Auction — max 20 bids. Highest bid is sealed and not visible to other participants.</span>
+      </div>
+      {/* Max Bid */}
+      <div className="bp-hd"><span>Max Bid Limit</span><span className="bp-hd-line"/></div>
+      <div className="mb-row" style={{marginBottom:'4px'}}>
+        <div className="mb-wrap">
+          <span className="mb-prefix">₹</span>
+          <input
+            className={`mb-inp ${session.maxBid ? (isValid ? 'valid' : 'invalid') : ''}`}
+            type="text" inputMode="numeric"
+            placeholder={fmt(nextBid * 3).replace('₹','')}
+            value={session.maxBid ? parseInt(session.maxBid).toLocaleString('en-IN') : ''}
+            onChange={e => onUpdate({maxBid: e.target.value.replace(/[^0-9]/g,'')})}
+          />
+        </div>
+        <button className="info-btn" onClick={onShowInfo} title="How auto bid works">ℹ</button>
+      </div>
+      {session.maxBid && !isValid && (
+        <div className="mb-hint" style={{color:'var(--red)'}}>Minimum required: {fmt(nextBid)} (current + 1 step)</div>
+      )}
+      {isValid && (
+        <div className="mb-hint" style={{color:'var(--green)',marginBottom:'10px'}}>
+          Up to {stepsAvail} auto-step{stepsAvail !== 1 ? 's' : ''} available within limit
+        </div>
+      )}
+      {!session.maxBid && <div style={{height:'14px'}}/>}
+
+      {/* Allocation Sliders */}
+      <div className="bp-hd"><span>Bid Allocation</span><span className="bp-hd-line"/></div>
+      <div className="sl-wrap">
+        <div className="sl-row">
+          <div className="sl-top">
+            <div>
+              <div className="sl-name">Auto Pool</div>
+              <div className="sl-sub">System places these automatically</div>
+            </div>
+            <div>
+              <span className="sl-val" style={{color:'var(--purple)'}}>{session.autoPool}</span>
+              <span className="sl-denom"> / {MAX_AUTO}</span>
+            </div>
+          </div>
+          <input
+            type="range" className="blue-r"
+            min="1" max={MAX_AUTO} value={session.autoPool}
+            style={{'--fill': autoFill}}
+            onChange={e => {
+              const v = parseInt(e.target.value);
+              const maxMR = MAX_TOTAL - v;
+              onUpdate({autoPool: v, manualReserve: Math.max(MIN_MAN, Math.min(session.manualReserve, maxMR))});
+            }}
+          />
+        </div>
+        <div className="sl-row">
+          <div className="sl-top">
+            <div>
+              <div className="sl-name">Manual Reserve</div>
+              <div className="sl-sub">You place these yourself</div>
+            </div>
+            <div>
+              <span className="sl-val" style={{color:'var(--blue)'}}>{session.manualReserve}</span>
+              <span className="sl-denom"> / {MAX_TOTAL - session.autoPool}</span>
+            </div>
+          </div>
+          <input
+            type="range" className="amber-r"
+            min={MIN_MAN} max={maxManForSlider} value={session.manualReserve}
+            style={{'--fill': manFill}}
+            onChange={e => onUpdate({manualReserve: parseInt(e.target.value)})}
+          />
+        </div>
+      </div>
+
+      <div className={`total-bar ${overCap ? 'warn' : ''}`}>
+        <span className="total-bar-lbl">Total Bids Configured</span>
+        <span className="total-bar-val">{totalCfg} / {MAX_TOTAL}</span>
+      </div>
+
+      <button className="enable-btn" disabled={!canEnable} onClick={onEnable}>
+        <span>🔒</span>
+        <span>Join Closed Auction</span>
+      </button>
+    </div>
+  );
+}
+
+// ─── OPEN BID SETUP PANEL ─────────────────────────────────────────────────────
+function OpenBidSetupPanel({vehicle, session, onUpdate, onStartOpenBid}) {
+  const nextBid = session.currentBid + vehicle.step;
+  const maxNum = parseInt(session.openMaxBid) || 0;
+  const maxValid = maxNum === 0 || maxNum >= nextBid;
+  const stepsAvail = maxNum > 0 ? Math.floor((maxNum - session.currentBid) / vehicle.step) : null;
+  const stepLabel = {'2w':'₹500 · Two-Wheeler','3w':'₹1,000 · Three-Wheeler','4w':'₹2,000 · Four-Wheeler'}[vehicle.cls];
+
+  return (
+    <div>
+      <div className="bp-hd"><span>Auction Details</span><span className="bp-hd-line"/></div>
+      <div className="ob-info-box">
+        <div className="ob-info-row">
+          <span className="ob-info-lbl">Current Bid</span>
+          <span className="ob-info-val">{fmt(session.currentBid)}</span>
+        </div>
+        <div className="ob-info-row">
+          <span className="ob-info-lbl">Your Next Bid</span>
+          <span className="ob-info-val" style={{color:'var(--green)'}}>{fmt(nextBid)}</span>
+        </div>
+        <div className="ob-info-row">
+          <span className="ob-info-lbl">Bid Increment</span>
+          <span className="ob-info-val" style={{color:'var(--blue)',fontSize:'12px'}}>{stepLabel}</span>
+        </div>
+      </div>
+
+      <div className="bp-hd"><span>Max Price Ceiling (Optional)</span><span className="bp-hd-line"/></div>
+      <div className="mb-row" style={{marginBottom:'4px'}}>
+        <div className="mb-wrap">
+          <span className="mb-prefix">₹</span>
+          <input
+            className={`mb-inp ${session.openMaxBid ? (maxValid ? 'valid' : 'invalid') : ''}`}
+            type="text" inputMode="numeric"
+            placeholder={`No limit — e.g. ${(nextBid * 3).toLocaleString('en-IN')}`}
+            value={session.openMaxBid ? parseInt(session.openMaxBid).toLocaleString('en-IN') : ''}
+            onChange={e => onUpdate({openMaxBid: e.target.value.replace(/[^0-9]/g,'')})}
+          />
+        </div>
+      </div>
+      {session.openMaxBid && !maxValid && (
+        <div className="mb-hint" style={{color:'var(--red)',marginBottom:'10px'}}>Must be at least {fmt(nextBid)}</div>
+      )}
+      {session.openMaxBid && maxValid && stepsAvail !== null && (
+        <div className="mb-hint" style={{color:'var(--green)',marginBottom:'10px'}}>
+          Up to {stepsAvail} bid{stepsAvail !== 1 ? 's' : ''} within your ceiling
+        </div>
+      )}
+      {!session.openMaxBid && <div style={{height:'14px'}}/>}
+
+      <div style={{background:'var(--green-l)',border:'1px solid rgba(26,138,60,.2)',borderRadius:'var(--r)',padding:'9px 11px',marginBottom:'12px',fontSize:'11px',color:'var(--green)',fontWeight:600,lineHeight:1.5}}>
+        🏛 This is an Open Auction — bids are unlimited and the current highest bid is visible to everyone. You place each bid manually at the fixed increment. Set an optional ceiling to avoid over-bidding.
+      </div>
+
+      <button className="ob-start-btn" disabled={!!(session.openMaxBid && !maxValid)} onClick={onStartOpenBid}>
+        <span>🏛</span><span>Join Open Auction</span>
+      </button>
+    </div>
+  );
+}
+
+// ─── OPEN BID ACTIVE PANEL ────────────────────────────────────────────────────
+function OpenBidActivePanel({vehicle, session, onPlaceBid, onStop}) {
+  const nextBid = Math.max(session.avinashBid, session.niravBid, session.currentBid) + vehicle.step;
+  const maxNum = parseInt(session.openMaxBid) || 0;
+  const atMax = maxNum > 0 && nextBid > maxNum;
+  const isOutbid = session.niravBid > session.avinashBid;
+  const st = session.status;
+  const stepLabel = {'2w':'₹500','3w':'₹1,000','4w':'₹2,000'}[vehicle.cls];
+
+  return (
+    <div>
+      <div className={`st-bar ${st === 'active' ? 'active' : 'stopped'}`}>
+        <div className={`st-dot ${st === 'active' ? 'active' : 'stopped'}`}/>
+        <span className={`st-label ${st === 'active' ? 'active' : 'stopped'}`}>
+          {st === 'active' ? '🏛 Open Auction Active' : '⏹ Session Ended'}
+        </span>
+        <span className="st-detail">{session.openBidsPlaced || 0} bid{(session.openBidsPlaced || 0) !== 1 ? 's' : ''} placed</span>
+      </div>
+
+      <div style={{background:'var(--g100)',borderRadius:'var(--r)',padding:'10px 12px',marginBottom:'10px',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+        <div>
+          <div style={{fontSize:'10px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.5px',color:'var(--g400)',marginBottom:'2px'}}>Your Bid</div>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--blue-d)'}}>{fmt(session.avinashBid)}</div>
+        </div>
+        <div style={{textAlign:'right'}}>
+          <div style={{fontSize:'10px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.5px',color:'var(--g400)',marginBottom:'2px'}}>Next Bid</div>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'20px',fontWeight:800,color: atMax ? 'var(--g400)' : 'var(--green)'}}>{fmt(nextBid)}</div>
+        </div>
+      </div>
+
+      {isOutbid && st === 'active' && (
+        <div style={{background:'var(--red-l)',border:'1px solid rgba(192,57,43,.2)',borderRadius:'var(--r)',padding:'7px 10px',marginBottom:'8px',fontSize:'11px',color:'var(--red)',fontWeight:700}}>
+          ⚠️ Outbid by {fmt(session.niravBid - session.avinashBid)} — place a bid to take the lead!
+        </div>
+      )}
+
+      {st === 'active' && (
+        <button className="place-bid-btn" disabled={atMax} onClick={onPlaceBid}>
+          {atMax
+            ? `🛑 Max Ceiling Reached (${fmt(maxNum)})`
+            : <><span>Bid {fmt(nextBid)}</span><span style={{fontSize:'11px',fontWeight:600,opacity:.75}}>+{stepLabel}</span></>
+          }
+        </button>
+      )}
+
+      {maxNum > 0 && !atMax && (
+        <div style={{fontSize:'11px',color:'var(--g500)',fontWeight:600,textAlign:'center',marginBottom:'8px'}}>
+          Ceiling: {fmt(maxNum)}
+        </div>
+      )}
+      {atMax && (
+        <div style={{fontSize:'11px',color:'var(--red)',fontWeight:700,textAlign:'center',marginBottom:'8px'}}>
+          Your price ceiling of {fmt(maxNum)} has been reached
+        </div>
+      )}
+
+      {st === 'active' && (
+        <button className="act-btn stop" style={{width:'100%',marginBottom:'10px'}} onClick={onStop}>⏹ End Bidding Session</button>
+      )}
+      {st === 'stopped' && (
+        <div style={{fontSize:'11px',color:'var(--red)',fontWeight:600,padding:'7px 10px',background:'var(--red-l)',borderRadius:'var(--r)',textAlign:'center',marginBottom:'10px'}}>⏹ Open bid session ended</div>
+      )}
+
+      {session.history.length > 0 && (
+        <>
+          <div className="bp-hd" style={{marginBottom:'7px'}}><span>Bid History</span><span className="bp-hd-line"/></div>
+          <div className="mini-hist">
+            {[...session.history].reverse().slice(0,7).map((h,i) => (
+              <div key={i} className="hist-row">
+                <span className={`htag ${h.type}`}>{h.type==='manual'?'BID':h.type==='comp'?'RIVAL':'SYS'}</span>
+                <span className="htime">{h.time}</span>
+                <span className="hdesc">{h.desc}</span>
+                {h.bid && <span className={`hamt ${h.type}`}>{fmt(h.bid)}</span>}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ─── BID ACTIVE PANEL (active/paused/stopped) ─────────────────────────────────
+function BidActivePanel({vehicle, session, onPause, onResume, onStop, onManualBid, onShowInfo}) {
+  const totalUsed = session.autoBidsUsed + session.manualBidsUsed;
+  const totalCap  = session.autoPool + session.manualReserve;
+  const remaining = totalCap - totalUsed;
+  const manLeft    = session.manualReserve - session.manualBidsUsed;
+  const isOutbid   = session.niravBid > session.avinashBid;
+  const canManual  = manLeft > 0 && session.status !== 'stopped' && isOutbid;
+  const st = session.status;
+
+  return (
+    <div>
+      {/* Status bar */}
+      <div className={`st-bar ${st}`}>
+        <div className={`st-dot ${st}`}/>
+        <span className={`st-label ${st}`}>
+          {st === 'active' ? '🔒 Closed Auction Active' : st === 'paused' ? '⏸ Closed Auction Paused' : '⏹ Session Ended'}
+        </span>
+        <span className="st-detail">
+          {st === 'active' ? `${totalUsed} placed` : st === 'paused' ? 'Paused' : 'Stopped'}
+        </span>
+        <button className="info-btn" style={{marginLeft:'auto',height:'28px'}} onClick={onShowInfo}>ℹ</button>
+      </div>
+
+      {/* Usage grid */}
+      <div className="usage-grid">
+        <div className="ucard">
+          <div><span className="ucard-num" style={{color:'var(--purple)'}}>{session.autoBidsUsed}</span><span className="ucard-denom">/{session.autoPool}</span></div>
+          <div className="ucard-lbl" style={{color:'var(--purple)'}}>Auto</div>
+        </div>
+        <div className="ucard">
+          <div><span className="ucard-num" style={{color:'var(--blue)'}}>{session.manualBidsUsed}</span><span className="ucard-denom">/{session.manualReserve}</span></div>
+          <div className="ucard-lbl" style={{color:'var(--blue)'}}>Manual</div>
+        </div>
+        <div className="ucard">
+          <div><span className="ucard-num" style={{color:'var(--g700)'}}>{remaining}</span><span className="ucard-denom">/{totalCap}</span></div>
+          <div className="ucard-lbl">Left</div>
+        </div>
+      </div>
+
+      {/* Current bid row — always show user's own bid; highest bid is sealed */}
+      <div style={{background:'var(--g100)',borderRadius:'var(--r)',padding:'8px 10px',marginBottom:'10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <span style={{fontSize:'11px',color:'var(--g500)',fontWeight:600}}>Your bid</span>
+        <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'17px',fontWeight:800,color:'var(--blue-d)'}}>{fmt(session.avinashBid)}</span>
+      </div>
+      {/* Highest bid sealed notice */}
+      <div style={{background:'var(--g200)',borderRadius:'var(--r)',padding:'6px 10px',marginBottom:'10px',display:'flex',alignItems:'center',gap:'6px',fontSize:'11px',color:'var(--g500)',fontWeight:600}}>
+        <span>🔒</span><span>Highest bid is sealed — not visible to participants</span>
+      </div>
+
+      {/* Actions */}
+      <div className="act-row">
+        {st === 'active' && <button className="act-btn pause" onClick={onPause}>⏸ Pause</button>}
+        {st === 'paused' && <button className="act-btn resume" onClick={onResume}>▶ Resume</button>}
+        {st !== 'stopped' && <button className="act-btn stop" onClick={onStop}>⏹ Stop</button>}
+        <button className="act-btn manual" disabled={!canManual} onClick={onManualBid}
+          title={!isOutbid ? 'Only available when Nirav is leading' : manLeft<=0 ? 'No manual bids left' : 'Place a manual bid above Nirav'}>
+          ✋ Manual {!isOutbid ? '(winning)' : manLeft > 0 ? `(${manLeft})` : '(0)'}
+        </button>
+      </div>
+
+      {/* Recent history */}
+      {session.history.length > 0 && (
+        <>
+          <div className="bp-hd" style={{marginBottom:'7px'}}><span>Recent Activity</span><span className="bp-hd-line"/></div>
+          <div className="mini-hist">
+            {[...session.history].reverse().slice(0,7).map((h,i) => (
+              <div key={i} className="hist-row">
+                <span className={`htag ${h.type}`}>{h.type==='auto'?'AUTO':h.type==='manual'?'MANUAL':h.type==='comp'?'RIVAL':'SYS'}</span>
+                <span className="htime">{h.time}</span>
+                <span className="hdesc">{h.desc}</span>
+                {h.bid && <span className={`hamt ${h.type}`}>{fmt(h.bid)}</span>}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ─── AUCTION CARD ─────────────────────────────────────────────────────────────
+function AuctionCard({vehicle:v, session, onUpdate, onEnable, onStartOpenBid, onPlaceBid, onPause, onResume, onStop, onManualBid, onShowInfo}) {
+  const [open, setOpen] = useState(false);
+  const st = session ? session.status : 'idle';
+  const isOpen = v.auctionType === 'open';
+
+  const ctaLabel = st === 'idle'
+    ? (isOpen ? '🏛 Join Open Auction →' : '🔒 Join Closed Auction →')
+    : st === 'active' ? (isOpen ? '🏛 Open Auction Active' : '🔒 Closed Auction Active')
+    : st === 'paused' ? '⏸ Closed Auction Paused'
+    : '⏹ Session Ended';
+  const ctaCls = `ac-cta ${{idle:'', active: isOpen ? 'st-open' : 'st-active', paused:'st-paused', stopped:'st-stopped'}[st]}`;
+
+  const emojiColors = {'4w':'var(--blue-l)','3w':'var(--amber-l)','2w':'var(--green-l)'};
+
+  return (
+    <div className={`ac ${open ? 'expanded' : ''}`}>
+      <div className="ac-head" onClick={() => setOpen(x => !x)}>
+        <div className="ac-emoji" style={{background: emojiColors[v.cls]}}>{v.img}</div>
+        <div className="ac-info">
+          <div className="ac-title">{v.year} {v.make} {v.model}</div>
+          <div className="ac-sub">{v.lot} · {v.bank}</div>
+        </div>
+        <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'4px',flexShrink:0}}>
+          <span className={`badge badge-${v.status}`}>
+            {v.status === 'live' ? 'LIVE' : v.status === 'upcoming' ? 'SOON' : 'ENDED'}
+          </span>
+          <span className={`badge ${v.auctionType === 'open' ? 'badge-open-auction' : 'badge-closed-auction'}`}>
+            {v.auctionType === 'open' ? '🏛 OPEN' : '🔒 CLOSED'}
+          </span>
+        </div>
+      </div>
+
+      <div className="ac-body">
+        <div className="ac-meta">
+          <div className="ac-field"><span className="ac-label">Fuel</span><span className="ac-val">{v.fuel}</span></div>
+          <div className="ac-field"><span className="ac-label">Transmission</span><span className="ac-val">{v.tx}</span></div>
+          <div className="ac-field"><span className="ac-label">Odometer</span><span className="ac-val">{v.km} km</span></div>
+          <div className="ac-field"><span className="ac-label">Location</span><span className="ac-val">{v.loc}</span></div>
+        </div>
+
+        <div className="bid-box">
+          <div>
+            {(() => {
+              const sealed = st !== 'idle' && !isOpen;
+              return sealed ? (
+                <>
+                  <div className="bid-label">Highest Bid</div>
+                  <div className="bid-sealed-val">•••••</div>
+                  <div><span className="sealed-pill">🔒 SEALED</span></div>
+                </>
+              ) : (
+                <>
+                  <div className="bid-label">Current Bid</div>
+                  <div className="bid-current">{fmt(session ? session.currentBid : v.current)}</div>
+                  <div className="bid-step">Step: {fmtShort(v.step)} · {v.bids} bids</div>
+                </>
+              );
+            })()}</div>
+          <div style={{textAlign:'right'}}>
+            <div className="bid-label">Time Left</div>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'19px',fontWeight:800,color:v.status==='live'?'var(--red)':'var(--g400)'}}>{v.timeLeft}</div>
+            <div style={{fontSize:'10px',color:'var(--g400)',fontWeight:600,marginTop:'1px'}}>{v.label}</div>
+          </div>
+        </div>
+
+        <button className={ctaCls} onClick={e => { e.stopPropagation(); setOpen(x => !x); }}>
+          {ctaLabel}
+        </button>
+      </div>
+
+      {open && (
+        <div className="bid-panel">
+          {st === 'idle' && isOpen
+            ? <OpenBidSetupPanel vehicle={v} session={session} onUpdate={onUpdate} onStartOpenBid={onStartOpenBid}/>
+            : st === 'idle'
+            ? <BidSetupPanel vehicle={v} session={session} onUpdate={onUpdate} onEnable={onEnable} onShowInfo={onShowInfo}/>
+            : isOpen
+            ? <OpenBidActivePanel vehicle={v} session={session} onPlaceBid={onPlaceBid} onStop={onStop}/>
+            : <BidActivePanel vehicle={v} session={session} onPause={onPause} onResume={onResume} onStop={onStop} onManualBid={onManualBid} onShowInfo={onShowInfo}/>
+          }
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── MY BIDS TAB ──────────────────────────────────────────────────────────────
+function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, onManualBid, onPlaceBid}) {
+  const [firingId, setFiringId] = useState(null);
+  const hasSess = v => sessions[v.id] && sessions[v.id].status !== 'idle';
+  const active = vehicles.filter(hasSess);
+  const allHistory = active.flatMap(v =>
+    (sessions[v.id]?.history || []).map(h => ({...h, vname:`${v.year} ${v.make} ${v.model}`, lot:v.lot}))
+  ).sort((a,b) => (b.ts||0) - (a.ts||0));
+
+  if (active.length === 0) {
+    return (
+      <div className="tab-wrap">
+        <div className="empty">
+          <div className="empty-icon">🏷️</div>
+          <div className="empty-txt">No active bid sessions yet.<br/>Enable Auto Bid on any auction card to get started.</div>
+        </div>
+      </div>
+    );
+  }
+
+  const fireRival = vId => {
+    setFiringId(vId);
+    onRivalBid(vId);
+    setTimeout(() => setFiringId(null), 450);
+  };
+
+  const tagBg   = t => t==='auto'?'var(--purple-l)':t==='manual'?'var(--blue-l)':t==='comp'?'#fde8e8':'var(--amber-l)';
+  const tagColor = t => t==='auto'?'var(--purple)':t==='manual'?'var(--blue)':t==='comp'?'var(--red)':'var(--amber)';
+  const tagLabel = t => t==='auto'?'AUTO':t==='manual'?'MANUAL':t==='comp'?'NIRAV':'SYS';
+
+  const emojiColors = {'4w':'var(--blue-l)','3w':'var(--amber-l)','2w':'var(--green-l)'};
+
+  return (
+    <div className="tab-wrap">
+      <div className="sec-title">Bidder Battle</div>
+
+      {active.map(v => {
+        const s = sessions[v.id];
+        const manLeft  = s.manualReserve - s.manualBidsUsed;
+        const totalUsed = s.autoBidsUsed + s.manualBidsUsed;
+        const totalCap  = s.autoPool + s.manualReserve;
+
+        // Who's winning?
+        // Open auction: use explicit rivalLeading flag (set directly on each bid — no numerical race)
+        // Closed auction: derive from bid amounts (auto-bid keeps them in sync)
+        const avinashWinning = v.auctionType === 'open'
+          ? (s.niravBid > 0 && !s.rivalLeading)
+          : (s.avinashBid >= s.niravBid);
+        const niravLeading = v.auctionType === 'open'
+          ? (s.niravBid > 0 && !!s.rivalLeading)
+          : (s.niravBid > s.avinashBid);
+
+        const sessionPillBg    = s.status==='active'?'var(--teal-l)':s.status==='paused'?'var(--amber-l)':'var(--red-l)';
+        const sessionPillColor = s.status==='active'?'var(--teal)':s.status==='paused'?'var(--amber)':'var(--red)';
+
+        return (
+          <div key={v.id} className="battle-row">
+            {/* Vehicle header */}
+            <div className="battle-hdr">
+              <div className="battle-emoji" style={{background:emojiColors[v.cls]}}>{v.img}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div className="battle-title">{v.year} {v.make} {v.model}</div>
+                <div style={{fontSize:'11px',color:'var(--g400)',fontWeight:500}}>{v.lot} · {v.loc} · Step {fmtShort(v.step)}</div>
+              </div>
+              <span style={{fontSize:'10px',fontWeight:700,padding:'3px 9px',borderRadius:'2px',background:sessionPillBg,color:sessionPillColor,flexShrink:0}}>
+                {s.mode==='open'
+                  ? (s.status==='active'?'🏛 OPEN AUCTION':'⏹ STOPPED')
+                  : (s.status==='active'?'🔒 CLOSED AUCTION':s.status==='paused'?'⏸ PAUSED':'⏹ STOPPED')}
+              </span>
+            </div>
+
+            {/* Two bidder cards */}
+            <div className="battle-cards">
+
+              {/* ── AVINASH card ── */}
+              <div className={`bidder-card ${avinashWinning && s.niravBid > 0 ? 'winning' : niravLeading ? 'outbid' : ''}`}>
+                <div className="bidder-name-row">
+                  <div className="bidder-name">
+                    Avinash
+                    <span className="bidder-you">YOU</span>
+                  </div>
+                  {s.niravBid === 0
+                    ? <span className="bid-status-badge idle">WATCHING</span>
+                    : avinashWinning
+                      ? <span className="bid-status-badge winning">🏆 WINNING</span>
+                      : <span className="bid-status-badge outbid">⚠️ OUTBID</span>
+                  }
+                </div>
+
+                <div className={`bidder-amount ${s.niravBid===0?'you':avinashWinning?'winning':'outbid'}`}>
+                  {fmt(s.avinashBid)}
+                </div>
+                <div className="bidder-sub">
+                  {s.niravBid === 0 ? 'No rival bid yet'
+                    : s.mode === 'open'
+                      ? (avinashWinning ? 'Current highest bid' : `Nirav leads by ${fmt(s.niravBid - s.avinashBid)}`)
+                      : (avinashWinning ? 'You hold the highest sealed bid' : "You've been outbid — place a higher bid")}
+                </div>
+
+                {/* Bid usage — auto vs open bid */}
+                {s.mode === 'open' ? (
+                  <div className="bidder-stats">
+                    <div className="bstat">
+                      <span className="bstat-n" style={{color:'var(--green)'}}>{s.openBidsPlaced || 0}</span>
+                      <span className="bstat-l">Bids Placed</span>
+                    </div>
+                    <div className="bstat">
+                      <span className="bstat-n" style={{color:'var(--blue)',fontSize:'12px'}}>{fmtShort(v.step)}</span>
+                      <span className="bstat-l">Per Bid</span>
+                    </div>
+                    <div className="bstat">
+                      <span className="bstat-n" style={{color:'var(--g400)',fontSize:'12px'}}>{parseInt(s.openMaxBid) > 0 ? fmtShort(parseInt(s.openMaxBid)) : '∞'}</span>
+                      <span className="bstat-l">Ceiling</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bidder-stats">
+                    <div className="bstat">
+                      <span className="bstat-n" style={{color:'var(--purple)'}}>{s.autoBidsUsed}<span style={{fontSize:'11px',color:'var(--g400)',fontWeight:400}}>/{s.autoPool}</span></span>
+                      <span className="bstat-l">Auto</span>
+                    </div>
+                    <div className="bstat">
+                      <span className="bstat-n" style={{color:'var(--blue)'}}>{s.manualBidsUsed}<span style={{fontSize:'11px',color:'var(--g400)',fontWeight:400}}>/{s.manualReserve}</span></span>
+                      <span className="bstat-l">Manual</span>
+                    </div>
+                    <div className="bstat">
+                      <span className="bstat-n" style={{color:'var(--g700)'}}>{totalCap - totalUsed}</span>
+                      <span className="bstat-l">Left</span>
+                    </div>
+                    <div className="bstat">
+                      <span className="bstat-n" style={{color:'var(--g400)',fontSize:'12px'}}>{fmtShort(parseInt(s.maxBid)||0)}</span>
+                      <span className="bstat-l">Limit</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Avinash controls — open bid */}
+                {s.mode === 'open' ? (
+                  <div className="bidder-acts">
+                    {s.status !== 'stopped' && (() => {
+                      const nextBid = Math.max(s.avinashBid, s.niravBid, s.currentBid) + v.step;
+                      const maxNum = parseInt(s.openMaxBid) || 0;
+                      const atMax = maxNum > 0 && nextBid > maxNum;
+                      return (
+                        <>
+                          <button className="place-bid-btn" style={{fontSize:'13px',padding:'8px 10px'}}
+                            disabled={s.status !== 'active' || atMax} onClick={() => onPlaceBid(v)}>
+                            {atMax ? '🛑 Max Ceiling Reached' : `Bid ${fmt(nextBid)}`}
+                          </button>
+                          <button className="bact stop" style={{width:'100%'}} onClick={() => onStop(v.id)}>⏹ Stop</button>
+                        </>
+                      );
+                    })()}
+                    {s.status === 'stopped' && (
+                      <div style={{fontSize:'11px',color:'var(--red)',fontWeight:600,marginTop:'6px',padding:'6px 8px',background:'var(--red-l)',borderRadius:'var(--r)'}}>⏹ Session ended</div>
+                    )}
+                  </div>
+                ) : (
+                  /* Auto bid controls */
+                  <>
+                    {s.status !== 'stopped' && (
+                      <div className="bidder-acts">
+                        <div className="bact-row">
+                          {s.status==='active' && <button className="bact pause" onClick={()=>onPause(v.id)}>⏸ Pause</button>}
+                          {s.status==='paused' && <button className="bact resume" onClick={()=>onResume(v.id)}>▶ Resume</button>}
+                          <button className="bact stop" onClick={()=>onStop(v.id)}>⏹ Stop</button>
+                        </div>
+                        {(() => {
+                          const isOutbid = s.niravBid > s.avinashBid;
+                          const noBidYet = s.niravBid === 0;
+                          const canPlace = isOutbid && manLeft > 0;
+                          const reason   = noBidYet ? 'Wait for Nirav to bid' : !isOutbid ? 'Already winning' : manLeft <= 0 ? 'None left' : null;
+                          return (
+                            <button className="bact manual" style={{width:'100%'}} disabled={!canPlace} onClick={()=>onManualBid(v)}
+                              title={reason || 'Place a manual bid above Nirav'}>
+                              ✋ Manual Bid {canPlace ? `(${manLeft} left)` : reason ? `— ${reason}` : ''}
+                            </button>
+                          );
+                        })()}
+                      </div>
+                    )}
+                    {s.status === 'stopped' && (
+                      <div style={{fontSize:'11px',color:'var(--red)',fontWeight:600,marginTop:'6px',padding:'6px 8px',background:'var(--red-l)',borderRadius:'var(--r)'}}>⏹ Session ended</div>
+                    )}
+                  </>
+                )}
+              </div>
+
+              {/* ── NIRAV card ── */}
+              <div className={`bidder-card ${niravLeading ? 'leading' : ''}`} style={{display:'flex',flexDirection:'column'}}>
+                <div className="bidder-name-row">
+                  <div className="bidder-name">
+                    Nirav
+                    <span style={{fontSize:'9px',fontWeight:700,padding:'2px 5px',borderRadius:'2px',background:'#fde8e8',color:'var(--red)'}}>RIVAL</span>
+                  </div>
+                  {s.niravBid === 0
+                    ? <span className="bid-status-badge idle">NO BID YET</span>
+                    : niravLeading
+                      ? <span className="bid-status-badge leading">🔴 LEADING</span>
+                      : <span className="bid-status-badge idle">OUTBID</span>
+                  }
+                </div>
+
+                {s.mode === 'open' ? (
+                  /* Open auction — show exact amount */
+                  <>
+                    <div className={`bidder-amount ${s.niravBid===0?'idle':niravLeading?'leading':'idle'}`}>
+                      {s.niravBid === 0 ? '—' : fmt(s.niravBid)}
+                    </div>
+                    <div className="bidder-sub">
+                      {s.niravBid === 0 ? 'Waiting to place a bid'
+                        : niravLeading ? `Ahead by ${fmt(s.niravBid - s.avinashBid)}`
+                        : `Avinash leads by ${fmt(s.avinashBid - s.niravBid)}`}
+                    </div>
+                  </>
+                ) : (
+                  /* Closed auction — amount sealed */
+                  <>
+                    <div className="nirav-sealed">{s.niravBid === 0 ? '—' : '•••••'}</div>
+                    <div className="bidder-sub">
+                      {s.niravBid === 0 ? 'No bid placed yet'
+                        : niravLeading ? 'Placed a sealed bid — you\'ve been outbid'
+                        : 'Sealed bid placed'}
+                    </div>
+                    {s.niravBid > 0 && <div><span className="sealed-pill">🔒 AMOUNT SEALED</span></div>}
+                  </>
+                )}
+
+                {s.niravBid > 0 && (
+                  <div className="rival-bid-count">
+                    {s.niravBidCount} rival bid{s.niravBidCount !== 1 ? 's' : ''} placed
+                  </div>
+                )}
+
+                <div style={{flex:1}}/>
+
+                {s.status !== 'stopped' && (
+                  <button
+                    className={`rival-fire-btn ${firingId===v.id?'firing':''}`}
+                    disabled={s.status !== 'active'}
+                    onClick={() => fireRival(v.id)}
+                    title={s.mode==='open'?'Nirav places a bid — you must manually respond':s.status==='paused'?'Resume first to see auto-bid respond':'Nirav places a bid above yours — watch auto bid fire back'}
+                  >
+                    <span style={{fontSize:'15px'}}>🔴</span>
+                    Nirav Places a Bid
+                    {s.status==='paused' && <span style={{fontSize:'10px',opacity:.7}}> (paused)</span>}
+                  </button>
+                )}
+                {s.status === 'stopped' && s.niravBid > 0 && (
+                  <div style={{fontSize:'11px',fontWeight:600,padding:'6px 8px',borderRadius:'var(--r)',
+                    background: niravLeading?'var(--red-l)':'var(--green-l)',
+                    color: niravLeading?'var(--red)':'var(--green)',marginTop:'auto'}}>
+                    {niravLeading
+                      ? (s.mode==='open' ? `🔴 Nirav won — final bid ${fmt(s.niravBid)}` : '🔴 Nirav holds the highest sealed bid')
+                      : (s.mode==='open' ? `✅ Avinash won — final bid ${fmt(s.avinashBid)}` : `✅ Avinash holds the highest sealed bid (${fmt(s.avinashBid)})`)}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
+      <div className="sec-title" style={{marginTop:'8px'}}>Bid History</div>
+      <div className="hist-table">
+        <div className="ht-hd">
+          <div>Time</div><div>Vehicle</div><div>Bidder</div><div>Amount</div><div>Note</div>
+        </div>
+        {allHistory.length === 0
+          ? <div style={{padding:'18px',textAlign:'center',color:'var(--g400)',fontSize:'12px'}}>No bids placed yet.</div>
+          : allHistory.map((h,i) => (
+              <div key={i} className="ht-row">
+                <div style={{fontSize:'11px',color:'var(--g500)'}}>{h.time}</div>
+                <div style={{fontSize:'11px',fontWeight:600,color:'var(--g700)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{h.vname}</div>
+                <div>
+                  <span style={{fontSize:'10px',fontWeight:700,padding:'2px 6px',borderRadius:'2px',
+                    background:tagBg(h.type),color:tagColor(h.type)}}>
+                    {tagLabel(h.type)}
+                  </span>
+                </div>
+                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'14px',fontWeight:800,color:tagColor(h.type)}}>
+                  {h.bid
+                    ? (h.type === 'comp' && sessions[vehicles.find(vv=>vv.lot===h.lot)?.id]?.mode !== 'open' ? '🔒 Sealed' : fmt(h.bid))
+                    : '—'}
+                </div>
+                <div style={{fontSize:'11px',color:'var(--g500)'}}>{h.desc}</div>
+              </div>
+            ))
+        }
+      </div>
+    </div>
+  );
+}
+
+// ─── SIMULATOR TAB ────────────────────────────────────────────────────────────
+function SimulatorTab({addToast}) {
+  const [vid, setVid] = useState(5);
+  const [speed, setSpeed] = useState(1);
+  const [running, setRunning] = useState(false);
+  const [msgs, setMsgs] = useState([]);
+  const [sess, setSess] = useState(null);
+  const [stats, setStats] = useState({auto:0, manual:0, rival:0});
+  const feedRef = useRef(null);
+  const ivRef   = useRef(null);
+  const vehicle = VEHICLES.find(v => v.id === vid);
+
+  const scrollFeed = () => {
+    setTimeout(() => { if (feedRef.current) feedRef.current.scrollTop = feedRef.current.scrollHeight; }, 40);
+  };
+
+  const pushMsg = (type, text, bid) => {
+    setMsgs(m => [...m.slice(-60), {type, text, bid, time:ts(), id: Date.now()+Math.random()}]);
+    scrollFeed();
+  };
+
+  const initSess = () => {
+    const v = VEHICLES.find(x => x.id === vid);
+    return {status:'active', maxBid: v.current + v.step * 10, autoPool:12, manualReserve:5, autoBidsUsed:0, manualBidsUsed:0, currentBid:v.current};
+  };
+
+  const doStart = () => {
+    const v = VEHICLES.find(x => x.id === vid);
+    const s = initSess();
+    setSess(s);
+    setMsgs([]);
+    setStats({auto:0, manual:0, rival:0});
+    setRunning(true);
+    addToast('info','Simulation Started',`Auto Bid demo: ${v.make} ${v.model}`);
+  };
+
+  const doStop = useCallback(() => {
+    setRunning(false);
+    if (ivRef.current) { clearInterval(ivRef.current); ivRef.current = null; }
+    addToast('warning','Simulation Stopped','Auto bid session ended.');
+  }, [addToast]);
+
+  const doManual = () => {
+    setSess(s => {
+      if (!s || s.status !== 'active') return s;
+      if (s.manualBidsUsed >= s.manualReserve) {
+        addToast('error','Manual Reserve Exhausted','No manual bids remaining.');
+        return s;
+      }
+      const newBid = s.currentBid + vehicle.step;
+      pushMsg('you-manual','You placed a manual bid', newBid);
+      setStats(st => ({...st, manual: st.manual + 1}));
+      addToast('info','Manual Bid Placed', fmt(newBid));
+      return {...s, currentBid: newBid, manualBidsUsed: s.manualBidsUsed + 1};
+    });
+  };
+
+  // reset on vehicle change
+  useEffect(() => {
+    if (running) doStop();
+    setMsgs([]); setSess(null); setStats({auto:0,manual:0,rival:0});
+  }, [vid]);
+
+  // simulator loop
+  useEffect(() => {
+    if (!running) return;
+    const delay = Math.round(3000 / speed);
+    ivRef.current = setInterval(() => {
+      setSess(s => {
+        if (!s || s.status !== 'active') return s;
+        const v = VEHICLES.find(x => x.id === vid);
+        const totalUsed = s.autoBidsUsed + s.manualBidsUsed;
+        const totalCap  = s.autoPool + s.manualReserve;
+
+        if (totalUsed >= totalCap) {
+          clearInterval(ivRef.current);
+          setRunning(false);
+          pushMsg('system',`All ${MAX_TOTAL} bids used. Session ended.`, null);
+          addToast('error','Bid Cap Reached','All configured bids have been used.');
+          return {...s, status:'stopped'};
+        }
+
+        // Rival bids
+        const rivalBid = s.currentBid + v.step;
+        pushMsg('comp','Rival placed a bid', rivalBid);
+        setStats(st => ({...st, rival: st.rival + 1}));
+
+        // Auto-bid response
+        const nextAuto = rivalBid + v.step;
+        if (s.autoBidsUsed >= s.autoPool) {
+          pushMsg('system',`Auto pool exhausted. ${s.manualReserve - s.manualBidsUsed} manual bid(s) left.`, null);
+          addToast('warning','Auto Pool Exhausted','Place manual bids to stay in auction.');
+          return {...s};
+        }
+        if (nextAuto > s.maxBid) {
+          pushMsg('system',`Max bid limit hit. Rival exceeds your limit of ${fmt(s.maxBid)}.`, null);
+          addToast('warning','Max Limit Reached','Rival bid exceeds your maximum.');
+          clearInterval(ivRef.current);
+          setRunning(false);
+          return {...s, status:'stopped'};
+        }
+
+        // Fire auto
+        pushMsg('you-auto','⚡ Auto bid fired', nextAuto);
+        setStats(st => ({...st, auto: st.auto + 1}));
+        addToast('auto-bid','⚡ Auto Bid Placed', fmt(nextAuto));
+        return {...s, currentBid: nextAuto, autoBidsUsed: s.autoBidsUsed + 1};
+      });
+    }, delay);
+
+    return () => { if (ivRef.current) { clearInterval(ivRef.current); ivRef.current = null; } };
+  }, [running, speed]);
+
+  const simTagLabel = type => ({comp:'RIVAL','you-auto':'AUTO','you-manual':'MANUAL',system:'SYSTEM'}[type] || type.toUpperCase());
+
+  return (
+    <div className="sim-wrap">
+      {/* Feed */}
+      <div className="sim-feed-card">
+        <div className="sim-feed-hd">
+          <div className="sim-feed-title">
+            {running && <span className="sim-live-dot"/>}
+            Auction Room Feed
+          </div>
+          <span className="sim-feed-sub">{vehicle.year} {vehicle.make} {vehicle.model}</span>
+        </div>
+        <div className="sim-msgs" ref={feedRef}>
+          {msgs.length === 0 && (
+            <div className="empty" style={{paddingTop:'60px'}}>
+              <div className="empty-icon">🎯</div>
+              <div className="empty-txt">Pick a vehicle and start the simulation<br/>to see the live auction feed.</div>
+            </div>
+          )}
+          {msgs.map(m => (
+            <div key={m.id} className={`sim-msg ${m.type}`}>
+              <span className="sim-t">{m.time.slice(0,5)}</span>
+              <span className={`sim-tag ${m.type}`}>{simTagLabel(m.type)}</span>
+              <span className="sim-text">{m.text}</span>
+              {m.bid && <span className={`sim-amt ${m.type}`}>{fmt(m.bid)}</span>}
+            </div>
+          ))}
+        </div>
+        {sess && (
+          <div className="sim-footer">
+            <span className="sim-footer-item">Bid: <strong style={{color:'var(--blue-d)',fontFamily:"'Barlow Condensed',sans-serif"}}>{fmt(sess.currentBid)}</strong></span>
+            <span className="sim-footer-item" style={{color:'var(--purple)'}}>Auto: {sess.autoBidsUsed}/{sess.autoPool}</span>
+            <span className="sim-footer-item" style={{color:'var(--blue)'}}>Manual: {sess.manualBidsUsed}/{sess.manualReserve}</span>
+            <span className="sim-footer-item">
+              <span style={{width:8,height:8,borderRadius:'50%',display:'inline-block',marginRight:4,background:sess.status==='active'?'var(--teal)':sess.status==='paused'?'var(--amber)':'var(--red)'}}/>
+              {sess.status.toUpperCase()}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Controls */}
+      <div className="sim-ctrl-card">
+        <div className="sim-ctrl-hd">
+          <div className="sim-ctrl-title">Simulator Controls</div>
+          <div className="sim-ctrl-sub">Test auto-bid behavior in a real-time scenario</div>
+        </div>
+        <div className="sim-ctrl-body">
+          <label className="field-label">Select Vehicle</label>
+          <select className="vehicle-sel" value={vid} onChange={e => setVid(parseInt(e.target.value))} disabled={running}>
+            {VEHICLES.map(v => (
+              <option key={v.id} value={v.id}>{v.year} {v.make} {v.model} — {v.label}</option>
+            ))}
+          </select>
+
+          <label className="field-label">Simulation Speed</label>
+          <div className="speed-row">
+            {[['0.5×',0.5],['1×',1],['2×',2],['5×',5]].map(([lbl,val]) => (
+              <button key={val} className={`speed-btn ${speed===val?'on':''}`} disabled={running} onClick={() => setSpeed(val)}>{lbl}</button>
+            ))}
+          </div>
+
+          {sess && (
+            <div className="sim-info-box">
+              <div className="sim-info-row">
+                <span className="sim-info-lbl">Max Bid</span>
+                <span className="sim-info-val" style={{color:'var(--g900)'}}>{fmt(sess.maxBid)}</span>
+              </div>
+              <div className="sim-info-row">
+                <span className="sim-info-lbl">Auto Pool</span>
+                <span className="sim-info-val" style={{color:'var(--purple)'}}>{sess.autoBidsUsed} / {sess.autoPool}</span>
+              </div>
+              <div className="sim-info-row">
+                <span className="sim-info-lbl">Manual Left</span>
+                <span className="sim-info-val" style={{color:'var(--blue)'}}>{sess.manualReserve - sess.manualBidsUsed}</span>
+              </div>
+            </div>
+          )}
+
+          <button className={`sim-start-btn ${running ? 'stop-mode' : ''}`} onClick={running ? doStop : doStart}>
+            {running ? '⏹ Stop Simulation' : '▶ Start Simulation'}
+          </button>
+
+          {running && sess && sess.status === 'active' && (
+            <button className="sim-manual-btn" onClick={doManual} disabled={sess.manualBidsUsed >= sess.manualReserve}>
+              ✋ Place Manual Bid
+              {sess.manualBidsUsed < sess.manualReserve
+                ? ` (${sess.manualReserve - sess.manualBidsUsed} left)`
+                : ' (none left)'}
+            </button>
+          )}
+
+          <div className="sim-stat-grid">
+            <div className="sstat">
+              <div className="sstat-n" style={{color:'var(--purple)'}}>{stats.auto}</div>
+              <div className="sstat-l">Auto Bids</div>
+            </div>
+            <div className="sstat">
+              <div className="sstat-n" style={{color:'var(--blue)'}}>{stats.manual}</div>
+              <div className="sstat-l">Manual Bids</div>
+            </div>
+            <div className="sstat">
+              <div className="sstat-n" style={{color:'var(--g600)'}}>{stats.rival}</div>
+              <div className="sstat-l">Rival Bids</div>
+            </div>
+            <div className="sstat">
+              <div className="sstat-n" style={{color:'var(--teal)',fontSize:'15px'}}>{sess ? fmtShort(sess.currentBid) : '—'}</div>
+              <div className="sstat-l">Current Bid</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── APP ──────────────────────────────────────────────────────────────────────
+function App() {
+  const [tab, setTab] = useState('auctions');
+  const [filter, setFilter] = useState('all');
+  const [showInfo, setShowInfo] = useState(false);
+  const [sessions, setSessions] = useState({});
+  const {toasts, add: addToast, remove: removeToast} = useToasts();
+
+  const activeCnt = Object.values(sessions).filter(s => s.status === 'active' || s.status === 'paused').length;
+
+  const getSession = v => sessions[v.id] || mkSession(v);
+
+  const patchSession = (vId, updates) => {
+    setSessions(prev => {
+      const base = prev[vId] || mkSession(VEHICLES.find(v => v.id === vId));
+      return {...prev, [vId]: {...base, ...updates}};
+    });
+  };
+
+  const handleEnable = v => {
+    const s = getSession(v);
+    const maxNum = parseInt(s.maxBid) || 0;
+    if (maxNum < v.current + v.step) {
+      addToast('error','Invalid Max Bid',`Minimum: ${fmt(v.current + v.step)}`);
+      return;
+    }
+    patchSession(v.id, {status:'active', avinashBid: v.current, niravBid: 0, niravBidCount: 0});
+    addToast('success','Auto Bid Enabled!',`Avinash watching ${v.make} ${v.model} — up to ${s.autoPool} auto bids.`);
+    setTab('my-bids');
+  };
+
+  const handleRivalBid = vId => {
+    const v = VEHICLES.find(x => x.id === vId);
+    if (!v) return;
+
+    // Always update state functionally — prev is always latest, avoiding stale-closure bugs
+    setSessions(prev => {
+      const cur = prev[vId];
+      if (!cur || cur.status !== 'active') return prev;
+      // Bid one step above whoever is currently leading (robust against currentBid drift)
+      const niravBid = Math.max(cur.avinashBid, cur.niravBid, cur.currentBid) + v.step;
+      const rivalEntry = {type:'comp', time:ts(), desc:'Nirav placed a bid', bid:niravBid, bidder:'Nirav', ts:Date.now()};
+      return {...prev, [vId]: {...cur, currentBid:niravBid, niravBid, niravBidCount:(cur.niravBidCount||0)+1, history:[...cur.history, rivalEntry], rivalLeading:true}};
+    });
+
+    // Side effects: toasts + closed-auction auto-bid
+    // Use stale s only for mode check and toast display (acceptable for side effects)
+    const s = sessions[vId];
+    if (!s || s.status !== 'active') return;
+
+    const niravBid = s.currentBid + v.step;
+
+    // Open auction: auto-bid back after short delay (up to openMaxBid ceiling)
+    if (s.mode === 'open') {
+      addToast('warning', '🔴 Nirav placed a bid!', `${fmt(niravBid)} on ${v.make} ${v.model}`);
+      setTimeout(() => {
+        setSessions(prev => {
+          const cur = prev[vId];
+          if (!cur || cur.status !== 'active') return prev;
+          const avinashNext = Math.max(cur.avinashBid, cur.niravBid, cur.currentBid) + v.step;
+          const ceiling = parseInt(cur.openMaxBid) || 0;
+          if (ceiling > 0 && avinashNext > ceiling) return prev;  // ceiling hit — don't auto-bid
+          const autoEntry = {type:'manual', time:ts(), desc:'⚡ Auto bid — Avinash responds', bid:avinashNext, bidder:'Avinash', ts:Date.now()};
+          return {...prev, [vId]: {...cur, currentBid:avinashNext, avinashBid:avinashNext, openBidsPlaced:(cur.openBidsPlaced||0)+1, history:[...cur.history, autoEntry], rivalLeading:false}};
+        });
+        // Toast for open auto-bid (use stale s for ceiling check — ceiling doesn't change mid-session)
+        const ceiling = parseInt(s.openMaxBid) || 0;
+        const avinashNext = niravBid + v.step;
+        if (ceiling > 0 && avinashNext > ceiling) {
+          addToast('warning', '🛑 Ceiling Reached', `Your max price ${fmt(ceiling)} — Avinash cannot bid higher`);
+        } else {
+          addToast('success', '🏛 Auto Bid!', `Avinash responds: ${fmt(avinashNext)} on ${v.make} ${v.model}`);
+        }
+      }, 750);
+      return;
+    }
+    addToast('warning', '🔒 Sealed bid placed!', `${v.make} ${v.model} — you've been outbid (amount sealed)`);
+
+    // Auto bid: fire back automatically if within pool and max limit
+    const maxNum   = parseInt(s.maxBid) || 0;
+    const nextAuto = niravBid + v.step;
+    const canAutoFire = s.autoBidsUsed < s.autoPool && nextAuto <= maxNum;
+
+    if (canAutoFire) {
+      setTimeout(() => {
+        const autoEntry = {type:'auto', time:ts(), desc:'⚡ Auto bid — Avinash responds', bid:nextAuto, bidder:'Avinash', ts:Date.now()};
+        setSessions(prev => {
+          const cur = prev[vId];
+          if (!cur || cur.status !== 'active') return prev;
+          return {...prev, [vId]: {...cur, currentBid:nextAuto, avinashBid:nextAuto, autoBidsUsed:cur.autoBidsUsed+1, history:[...cur.history, autoEntry], rivalLeading:false}};
+        });
+        addToast('auto-bid', '🔒 Sealed auto-bid placed!', `Your bid: ${fmt(nextAuto)} — rival's bid remains sealed`);
+      }, 750);
+    } else {
+      setTimeout(() => {
+        if (s.autoBidsUsed >= s.autoPool) {
+          addToast('error', '⚠️ Auto Pool Exhausted', `Avinash has no auto bids left — place a manual bid!`);
+        } else {
+          addToast('error', '⚠️ Max Limit Reached', `${fmt(nextAuto)} exceeds Avinash's limit. Nirav is winning!`);
+        }
+      }, 400);
+    }
+  };
+
+  const handleStartOpenBid = v => {
+    patchSession(v.id, {status:'active', mode:'open', avinashBid: v.current, niravBid:0, niravBidCount:0, openBidsPlaced:0, rivalLeading:false});
+    addToast('success', '🏛 Open Bidding Started!', `${v.make} ${v.model} — step ${fmtShort(v.step)} per bid`);
+    setTab('my-bids');
+  };
+
+  const handlePlaceBid = v => {
+    if (v.auctionType !== 'open') return;
+    setSessions(prev => {
+      const s = prev[v.id];
+      if (!s || s.status !== 'active') return prev;
+      // Always bid one step above whoever is currently leading
+      const newBid = Math.max(s.avinashBid, s.niravBid, s.currentBid) + v.step;
+      const maxNum = parseInt(s.openMaxBid) || 0;
+      if (maxNum > 0 && newBid > maxNum) return prev;
+      const entry = {type:'manual', time:ts(), desc:'Open bid placed', bid:newBid, bidder:'Avinash', ts:Date.now()};
+      return {...prev, [v.id]: {...s, currentBid:newBid, avinashBid:newBid, openBidsPlaced:(s.openBidsPlaced||0)+1, history:[...s.history, entry], rivalLeading:false}};
+    });
+    // Toast (stale s ok for display)
+    const s = sessions[v.id];
+    if (!s || s.status !== 'active') return;
+    const newBid = Math.max(s.avinashBid, s.niravBid, s.currentBid) + v.step;
+    const maxNum = parseInt(s.openMaxBid) || 0;
+    if (maxNum > 0 && newBid > maxNum) {
+      addToast('error', 'Ceiling Reached', `Max price is ${fmt(maxNum)} — cannot bid higher.`);
+      return;
+    }
+    addToast('info', '🏛 Bid Placed!', `${fmt(newBid)} on ${v.make} ${v.model}`);
+  };
+
+  const handlePause = vId => {
+    const v = VEHICLES.find(x => x.id === vId);
+    patchSession(vId, {status:'paused'});
+    addToast('warning','Auto Bid Paused',`${v.make} ${v.model} — manual bids still available.`);
+  };
+
+  const handleResume = vId => {
+    const v = VEHICLES.find(x => x.id === vId);
+    patchSession(vId, {status:'active'});
+    addToast('success','Auto Bid Resumed',`${v.make} ${v.model} is back watching the auction.`);
+  };
+
+  const handleStop = vId => {
+    const v = VEHICLES.find(x => x.id === vId);
+    patchSession(vId, {status:'stopped'});
+    addToast('error','Auto Bid Stopped',`Session for ${v.make} ${v.model} ended. Cannot resume.`);
+  };
+
+  const handleManualBid = v => {
+    const s = sessions[v.id];
+    if (!s) return;
+    if (s.avinashBid >= s.currentBid && s.niravBid === 0) {
+      addToast('warning','Already Watching','Avinash is the current bid holder — wait for Nirav to bid first.'); return;
+    }
+    if (s.avinashBid >= s.niravBid && s.niravBid > 0) {
+      addToast('warning','Already Winning','Avinash is already the highest bidder — no manual bid needed.'); return;
+    }
+    const manLeft = s.manualReserve - s.manualBidsUsed;
+    if (manLeft <= 0) { addToast('error','Manual Reserve Exhausted','No manual bids remaining.'); return; }
+    const newBid = s.currentBid + v.step;   // bid one step above current market
+    const entry = {type:'manual', time:ts(), desc:'Avinash placed a manual bid', bid:newBid, bidder:'Avinash', ts:Date.now()};
+    patchSession(v.id, {
+      currentBid: newBid, avinashBid: newBid,
+      manualBidsUsed: s.manualBidsUsed + 1,
+      history: [...s.history, entry],
+      rivalLeading: false,
+    });
+    addToast('info','Avinash — Manual Bid Placed',`${fmt(newBid)} on ${v.make} ${v.model}`);
+  };
+
+  const filtered = VEHICLES.filter(v => filter === 'all' || v.cls === filter);
+
+  return (
+    <>
+      {/* ── HEADER ── */}
+      <header className="hdr">
+        <div className="logo">
+          <div className="logo-icon">⚡</div>
+          Hammer<span>ly</span>
+        </div>
+        <div className="hdr-div"/>
+        <nav className="hdr-nav">
+          {[['auctions','🏷','Live Auctions'],['my-bids','📋','My Bids'],['simulator','🎯','Simulator']].map(([id,icon,label]) => (
+            <button key={id} className={`nav-btn ${tab===id?'on':''}`} onClick={() => setTab(id)}>
+              <span>{icon}</span>
+              <span className="nav-label">{label}</span>
+              {id==='my-bids' && activeCnt > 0 && <span className="nav-badge">{activeCnt}</span>}
+            </button>
+          ))}
+        </nav>
+        <nav className="app-sw">
+          <a href="listings.html">🏛 Auctions</a>
+          <a href="search.html">🔍 Search</a>
+          <span className="cur" style={{cursor:'default'}}>⚡ Auto Bid</span>
+          <a href="swipe-bid.html">👆 Swipe</a>
+          <a href="bulk-bid.html">📦 Bulk Bid</a>
+        </nav>
+        <div className="hdr-div"/>
+        <div className="hdr-right">
+          <span className="live-pill">LIVE</span>
+          <div className="avatar">AV</div>
+        </div>
+      </header>
+
+      {/* ── LIVE AUCTIONS ── */}
+      {tab === 'auctions' && (
+        <>
+          <div className="hero">
+            <h1>⚡ Smart Auto Bidding</h1>
+            <p>Set your limit. Let the system bid for you. Never miss an auction.</p>
+            <div className="hero-stats">
+              {[
+                [VEHICLES.length,'Auctions'],
+                ['₹46L+','Total Value'],
+                [MAX_TOTAL,'Bid Cap'],
+                ['₹500','Min Step'],
+              ].map(([val,lbl]) => (
+                <div key={lbl}>
+                  <span className="hero-stat-val">{val}</span>
+                  <span className="hero-stat-lbl">{lbl}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="filters">
+            {[['all','All Vehicles'],['2w','Two-Wheeler'],['3w','Three-Wheeler'],['4w','Four-Wheeler']].map(([val,lbl]) => (
+              <button key={val} className={`chip ${filter===val?'on':''}`} onClick={() => setFilter(val)}>
+                {filter===val && <span className="chip-dot"/>}
+                {lbl}
+              </button>
+            ))}
+            <span className="filter-count">{filtered.length} vehicle{filtered.length !== 1 ? 's' : ''}</span>
+          </div>
+
+          <div className="grid">
+            {filtered.map(v => (
+              <AuctionCard
+                key={v.id} vehicle={v}
+                session={getSession(v)}
+                onUpdate={updates => patchSession(v.id, updates)}
+                onEnable={() => handleEnable(v)}
+                onStartOpenBid={() => handleStartOpenBid(v)}
+                onPlaceBid={() => handlePlaceBid(v)}
+                onPause={() => handlePause(v.id)}
+                onResume={() => handleResume(v.id)}
+                onStop={() => handleStop(v.id)}
+                onManualBid={() => handleManualBid(v)}
+                onShowInfo={() => setShowInfo(true)}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* ── MY BIDS ── */}
+      {tab === 'my-bids' && <MyBidsTab sessions={sessions} vehicles={VEHICLES} onRivalBid={handleRivalBid} onPause={handlePause} onResume={handleResume} onStop={handleStop} onManualBid={handleManualBid} onPlaceBid={handlePlaceBid}/>}
+
+      {/* ── SIMULATOR ── */}
+      {tab === 'simulator' && <SimulatorTab addToast={addToast}/>}
+
+      {/* ── INFO MODAL ── */}
+      {showInfo && <InfoModal onClose={() => setShowInfo(false)}/>}
+
+      {/* ── TOASTS ── */}
+      <ToastStack toasts={toasts} remove={removeToast}/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

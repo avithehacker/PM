@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Hammerly — AI Recommendations</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;--blue-m:#1a6fc4;
+  --green:#1a8a3c;--green-l:#e6f5eb;
+  --red:#c0392b;--red-l:#fdecea;
+  --amber:#d97706;--amber-l:#fffbeb;
+  --teal:#0d9488;--teal-l:#e6faf9;
+  --purple:#7c3aed;--purple-l:#f3f0ff;
+  --gold:#f0c040;
+  --g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;--g400:#9ca3af;
+  --g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --white:#fff;
+  --hh:56px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.1);
+  --shadow-md:0 4px 14px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 30px rgba(0,0,0,.16);
+  --r:4px;--rm:6px;
+}
+html{font-family:'Barlow',sans-serif;background:var(--g100);color:var(--g900);font-size:14px}
+body{min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:'Barlow',sans-serif;border:none;outline:none}
+input,select{font-family:'Barlow',sans-serif}
+
+/* ── HEADER ── */
+.hdr{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap;text-decoration:none}
+.logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo span{color:var(--gold)}
+.hdr-div{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
+.page-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:3px 10px;font-size:12px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.nav-link{padding:6px 13px;border-radius:var(--r);font-size:13px;font-weight:600;color:rgba(255,255,255,.65);transition:all .15s;white-space:nowrap}
+.nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--blue-d) 0%,var(--blue-m) 100%);padding:52px 28px 56px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,rgba(124,58,237,.2) 0%,transparent 60%),radial-gradient(ellipse at 15% 70%,rgba(13,148,136,.15) 0%,transparent 50%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 16px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.05;letter-spacing:.3px;margin-bottom:14px}
+.hero h1 span{color:var(--gold)}
+.hero p{font-size:15px;color:rgba(255,255,255,.7);max-width:520px;margin:0 auto 32px;line-height:1.65}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;border:none;white-space:nowrap}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--blue-m)}
+.btn-ghost{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1.5px solid rgba(255,255,255,.22)}
+.btn-ghost:hover{background:rgba(255,255,255,.2);color:#fff}
+
+/* ── INPUT SECTION ── */
+.input-section{background:var(--white);border-bottom:1px solid var(--g200);padding:28px;max-width:780px;margin:0 auto;width:100%}
+.input-label{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.pref-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.pref-chip{padding:7px 16px;border-radius:var(--r);border:1.5px solid var(--g200);font-size:13px;font-weight:600;color:var(--g600);background:var(--white);cursor:pointer;transition:all .15s}
+.pref-chip:hover{border-color:var(--blue);color:var(--blue)}
+.pref-chip.on{background:var(--blue-l);border-color:var(--blue);color:var(--blue)}
+.budget-row{display:flex;gap:12px;align-items:center}
+.budget-input{flex:1;padding:9px 14px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:14px;font-weight:600;color:var(--g900);outline:none;transition:border-color .15s}
+.budget-input:focus{border-color:var(--blue)}
+.run-btn{padding:10px 24px;background:var(--purple);color:#fff;border-radius:var(--r);font-size:14px;font-weight:700;border:none;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:7px}
+.run-btn:hover{background:#6d28d9}
+.run-btn .spin{display:none}
+.run-btn.running .spin{display:inline}
+.run-btn.running .lbl{display:none}
+
+/* ── CARDS GRID ── */
+.section{max-width:1160px;margin:0 auto;padding:32px 28px}
+.section-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--g900)}
+.section-sub{font-size:12px;color:var(--g500);font-weight:500}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+
+/* ── REC CARD ── */
+.rec-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:all .2s;cursor:pointer}
+.rec-card:hover{box-shadow:var(--shadow-md);border-color:var(--g300);transform:translateY(-2px)}
+.rec-card.top-pick{border-color:var(--purple);box-shadow:0 0 0 1px var(--purple-l)}
+.rec-img{height:100px;display:flex;align-items:center;justify-content:center;font-size:44px;position:relative}
+.rec-img.g1{background:linear-gradient(135deg,#1a2a4a 0%,#0057a8 100%)}
+.rec-img.g2{background:linear-gradient(135deg,#1a3a5c 0%,#0d9488 100%)}
+.rec-img.g3{background:linear-gradient(135deg,#1c3a2a 0%,#1a8a3c 100%)}
+.rec-img.g4{background:linear-gradient(135deg,#2a1a3a 0%,#7c3aed 100%)}
+.rec-img.g5{background:linear-gradient(135deg,#3a2000 0%,#d97706 100%)}
+.rec-img.g6{background:linear-gradient(135deg,#1a2a4a 0%,#c0392b 100%)}
+.match-badge{position:absolute;top:10px;right:12px;font-size:11px;font-weight:800;padding:3px 9px;border-radius:2px;background:var(--purple);color:#fff}
+.top-badge{position:absolute;top:10px;left:12px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;background:var(--gold);color:var(--blue-d)}
+.rec-body{padding:14px 16px}
+.rec-lot{font-size:10px;font-weight:700;color:var(--g400);letter-spacing:.4px;text-transform:uppercase;margin-bottom:4px}
+.rec-title{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;color:var(--g900);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rec-sub{font-size:11px;color:var(--g500);margin-bottom:14px}
+.rec-reasons{margin-bottom:14px;display:flex;flex-direction:column;gap:5px}
+.reason-row{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--g600)}
+.reason-dot{width:5px;height:5px;border-radius:50%;background:var(--purple);flex-shrink:0}
+.rec-bid-row{display:flex;align-items:flex-end;justify-content:space-between;padding-top:10px;border-top:1px solid var(--g200)}
+.rec-bid-lbl{font-size:10px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.rec-bid-amt{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--green)}
+.rec-score-bar{width:80px}
+.rec-score-lbl{font-size:10px;font-weight:700;color:var(--g500);margin-bottom:4px;text-align:right}
+.rec-score-track{height:5px;background:var(--g200);border-radius:3px;overflow:hidden}
+.rec-score-fill{height:100%;background:var(--purple);border-radius:3px;transition:width .6s ease}
+
+/* ── WHY AI SECTION ── */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.why-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);padding:22px 20px}
+.why-icon{font-size:28px;margin-bottom:12px}
+.why-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--g900);margin-bottom:6px}
+.why-desc{font-size:12px;color:var(--g500);line-height:1.6}
+
+/* ── FOOTER ── */
+footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;margin-top:auto}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:rgba(255,255,255,.7)}
+.footer-logo span{color:var(--gold)}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{color:rgba(255,255,255,.45);font-size:12px;font-weight:500;text-decoration:none}
+.footer-links a:hover{color:rgba(255,255,255,.8)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp .35s ease forwards}
+
+@media(max-width:700px){.hero{padding:36px 20px 40px}.pref-row{gap:8px}.budget-row{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="hdr">
+  <a href="../auction/index.html" class="logo">
+    <div class="logo-icon">🏛</div>
+    Hammer<span>ly</span>
+  </a>
+  <div class="hdr-div"></div>
+  <div class="page-badge">🤖 AI Recommendations</div>
+  <div class="hdr-right">
+    <a href="../auction/listings.html" class="nav-link">Listings</a>
+    <a href="../auto-bid/index.html" class="nav-link">Auto Bid</a>
+    <a href="../bulk-bid/index.html" class="nav-link">Bulk Bid</a>
+    <a href="../drafts.html" class="nav-link">All Prototypes</a>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-eyebrow">Powered by Hammerly AI</div>
+  <h1>Smart Vehicle <span>Recommendations</span></h1>
+  <p>Tell us your preferences and budget. Our AI engine scans live auction inventory and surfaces the best-matched lots — ranked by fit score, value, and win probability.</p>
+  <div class="hero-actions">
+    <button class="btn btn-blue" onclick="runAI()">🤖 Get My Recommendations</button>
+    <a href="../auction/listings.html" class="btn btn-ghost">Browse All Listings</a>
+  </div>
+</section>
+
+<!-- ── PREFERENCE INPUT ── -->
+<div style="background:var(--white);border-bottom:1px solid var(--g200);padding:28px 0">
+  <div style="max-width:780px;margin:0 auto;padding:0 28px">
+
+    <div class="input-label">Vehicle Type</div>
+    <div class="pref-row">
+      <button class="pref-chip on" onclick="toggleChip(this)">🏍️ 2-Wheeler</button>
+      <button class="pref-chip" onclick="toggleChip(this)">🛺 3-Wheeler</button>
+      <button class="pref-chip on" onclick="toggleChip(this)">🚗 4-Wheeler</button>
+    </div>
+
+    <div class="input-label" style="margin-top:16px">Fuel Type</div>
+    <div class="pref-row">
+      <button class="pref-chip on" onclick="toggleChip(this)">⛽ Petrol</button>
+      <button class="pref-chip on" onclick="toggleChip(this)">🔋 Electric</button>
+      <button class="pref-chip" onclick="toggleChip(this)">💨 Diesel</button>
+      <button class="pref-chip" onclick="toggleChip(this)">🟢 CNG</button>
+    </div>
+
+    <div class="input-label" style="margin-top:16px">Condition</div>
+    <div class="pref-row">
+      <button class="pref-chip on" onclick="toggleChip(this)">✅ Excellent</button>
+      <button class="pref-chip on" onclick="toggleChip(this)">👍 Good</button>
+      <button class="pref-chip" onclick="toggleChip(this)">🔧 Fair</button>
+    </div>
+
+    <div class="input-label" style="margin-top:16px">Max Budget</div>
+    <div class="budget-row">
+      <input type="text" class="budget-input" id="budgetInput" placeholder="e.g. ₹5,00,000" value="₹8,00,000"/>
+      <select class="budget-input" style="flex:0;width:160px">
+        <option>Any City</option>
+        <option>Mumbai</option>
+        <option>Delhi</option>
+        <option>Bangalore</option>
+        <option>Chennai</option>
+        <option>Hyderabad</option>
+        <option>Pune</option>
+      </select>
+      <button class="run-btn" id="runBtn" onclick="runAI()">
+        <span class="spin">⏳</span>
+        <span class="lbl">🤖 Get Recommendations</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── RESULTS ── -->
+<div class="section" id="results-section" style="display:none">
+  <div class="section-hdr">
+    <div>
+      <div class="section-title">Your Matched Vehicles</div>
+      <div class="section-sub" id="result-sub">Ranked by AI fit score</div>
+    </div>
+    <span style="font-size:12px;font-weight:700;color:var(--purple);background:var(--purple-l);padding:4px 12px;border-radius:3px">6 matches found</span>
+  </div>
+  <div class="cards-grid" id="rec-grid"></div>
+</div>
+
+<!-- ── WHY AI ── -->
+<div style="background:var(--white);border-top:1px solid var(--g200);border-bottom:1px solid var(--g200);padding:8px 0">
+  <div class="section">
+    <div class="section-hdr">
+      <div class="section-title">How the AI Works</div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🧠</div>
+        <div class="why-title">Preference Matching</div>
+        <div class="why-desc">Scores every live lot against your selected vehicle type, fuel, condition, and location preferences.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📊</div>
+        <div class="why-title">Value Analysis</div>
+        <div class="why-desc">Compares current bid against estimated market value to surface underpriced opportunities first.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🎯</div>
+        <div class="why-title">Win Probability</div>
+        <div class="why-desc">Estimates how likely you are to win based on bid count, time remaining, and reserve gap.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⚡</div>
+        <div class="why-title">Auto Bid Ready</div>
+        <div class="why-desc">One tap to open any recommendation directly in Smart Auto Bid with your ceiling pre-filled.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Hammer<span>ly</span></div>
+  <div class="footer-links">
+    <a href="../auction/index.html">Home</a>
+    <a href="../auction/listings.html">Listings</a>
+    <a href="../auto-bid/index.html">Auto Bid</a>
+    <a href="../bulk-bid/index.html">Bulk Bid</a>
+    <a href="../estimated-sale-price/index.html">Est. Sale Price</a>
+    <a href="../robo-call/index.html">Robo Call</a>
+    <a href="../drafts.html">All Prototypes</a>
+  </div>
+  <div>© 2026 Hammerly · Prototype</div>
+</footer>
+
+<script>
+  function toggleChip(el) {
+    el.classList.toggle('on');
+  }
+
+  const RECS = [
+    {id:1, title:'2022 Tata Nexon EV', sub:'Electric · Automatic · 22,100 km', lot:'AXS-1102 · Bangalore', img:'🚗', gradient:'g4', match:96, isTop:true,
+     reasons:['Electric — matches your fuel preference','Excellent condition','Well below your ₹8L budget'],
+     bid:1850000, score:96},
+    {id:2, title:'2022 Maruti Swift Dzire', sub:'Petrol · Manual · 31,200 km', lot:'SBI-892 · Lucknow', img:'🚗', gradient:'g3', match:91, isTop:false,
+     reasons:['Strong petrol match','Good condition, high bid activity (11 bids)','₹60K below reserve — high win probability'],
+     bid:520000, score:91},
+    {id:3, title:'2021 Toyota Fortuner', sub:'Diesel · Automatic · 62,000 km', lot:'HDF-2401 · Mumbai', img:'🚙', gradient:'g2', match:85, isTop:false,
+     reasons:['Premium segment, high resale value','Ending soon — strong urgency signal','HDFC Bank lot — verified clean title'],
+     bid:2650000, score:85},
+    {id:4, title:'2022 TVS Apache RTR 200', sub:'Petrol · Manual · 18,400 km', lot:'HDF-774 · Ahmedabad', img:'🏍️', gradient:'g1', match:79, isTop:false,
+     reasons:['Excellent condition, low mileage','2-Wheeler within budget','High reserve gap — low competition'],
+     bid:95000, score:79},
+    {id:5, title:'2021 Hyundai i20', sub:'Petrol · Manual · 38,400 km', lot:'ICI-739 · Kolkata', img:'🚗', gradient:'g5', match:74, isTop:false,
+     reasons:['Petrol, Good condition','Competitive bid count (7 bids)','Ending in 1h 55m — act soon'],
+     bid:780000, score:74},
+    {id:6, title:'2021 Honda CB200R', sub:'Petrol · Manual · 19,200 km', lot:'ICI-442 · Chennai', img:'🏍️', gradient:'g6', match:68, isTop:false,
+     reasons:['Excellent condition, low km','High interest (9 bids)','Open auction — auto bid recommended'],
+     bid:110000, score:68},
+  ];
+
+  const fmt = n => '₹' + n.toLocaleString('en-IN');
+
+  function runAI() {
+    const btn = document.getElementById('runBtn');
+    btn.classList.add('running');
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.classList.remove('running');
+      btn.disabled = false;
+      renderRecs();
+    }, 1400);
+  }
+
+  function renderRecs() {
+    const grid = document.getElementById('rec-grid');
+    const section = document.getElementById('results-section');
+    section.style.display = 'block';
+    section.scrollIntoView({behavior:'smooth', block:'start'});
+
+    grid.innerHTML = RECS.map((r, i) => `
+      <div class="rec-card${r.isTop ? ' top-pick' : ''} fade-in" style="animation-delay:${i * 0.07}s">
+        <div class="rec-img ${r.gradient}">
+          ${r.img}
+          <span class="match-badge">${r.match}% match</span>
+          ${r.isTop ? '<span class="top-badge">⭐ Top Pick</span>' : ''}
+        </div>
+        <div class="rec-body">
+          <div class="rec-lot">${r.lot}</div>
+          <div class="rec-title">${r.title}</div>
+          <div class="rec-sub">${r.sub}</div>
+          <div class="rec-reasons">
+            ${r.reasons.map(rx => `<div class="reason-row"><div class="reason-dot"></div>${rx}</div>`).join('')}
+          </div>
+          <div class="rec-bid-row">
+            <div>
+              <div class="rec-bid-lbl">Current Bid</div>
+              <div class="rec-bid-amt">${fmt(r.bid)}</div>
+            </div>
+            <div class="rec-score-bar">
+              <div class="rec-score-lbl">Fit Score</div>
+              <div class="rec-score-track">
+                <div class="rec-score-fill" style="width:${r.score}%"></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <a href="../auto-bid/index.html" style="flex:1;padding:8px;background:var(--blue-d);color:#fff;border-radius:var(--r);font-size:12px;font-weight:700;text-align:center;display:block">⚡ Auto Bid</a>
+            <a href="../bulk-bid/index.html" style="flex:1;padding:8px;background:var(--white);color:var(--blue-d);border:1.5px solid var(--blue-d);border-radius:var(--r);font-size:12px;font-weight:700;text-align:center;display:block">📦 Bulk Add</a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Auto-run on load for demo
+  setTimeout(runAI, 600);
+</script>
+</body>
+</html>
