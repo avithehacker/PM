@@ -3,446 +3,631 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Hammerly — Estimated Sale Price</title>
+<title>Hammerly — Bid Intelligence Engine</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;--blue-m:#1a6fc4;
-  --green:#1a8a3c;--green-l:#e6f5eb;
+  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;
+  --teal:#0d9488;--teal-l:#e6faf9;--teal-d:#0f766e;
+  --green:#1a8a3c;--green-d:#14532d;--green-l:#e6f5eb;
+  --amber:#d97706;--amber-l:#fffbeb;--amber-d:#92400e;
   --red:#c0392b;--red-l:#fdecea;
-  --amber:#d97706;--amber-l:#fffbeb;
-  --teal:#0d9488;--teal-l:#e6faf9;
-  --purple:#7c3aed;--purple-l:#f3f0ff;
-  --gold:#f0c040;
-  --g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;--g400:#9ca3af;
-  --g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
-  --white:#fff;
-  --hh:56px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.1);
-  --shadow-md:0 4px 14px rgba(0,0,0,.12);
-  --shadow-lg:0 8px 30px rgba(0,0,0,.16);
-  --r:4px;--rm:6px;
+  --purple:#7c3aed;--purple-l:#f3f0ff;--purple-d:#5b21b6;
+  --g50:#f9fafb;--g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;
+  --g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --white:#fff;--r:8px;--rm:12px;--rl:16px;
 }
-html{font-family:'Barlow',sans-serif;background:var(--g100);color:var(--g900);font-size:14px}
-body{min-height:100vh;display:flex;flex-direction:column}
-a{text-decoration:none;color:inherit}
-button{cursor:pointer;font-family:'Barlow',sans-serif;border:none;outline:none}
-input,select{font-family:'Barlow',sans-serif}
+body{font-family:'Barlow',sans-serif;background:#f4f5f8;color:var(--g900);min-height:100vh}
 
-/* ── HEADER ── */
-.hdr{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap;text-decoration:none}
-.logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px}
-.logo span{color:var(--gold)}
-.hdr-div{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
-.page-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:3px 10px;font-size:12px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.nav-link{padding:6px 13px;border-radius:var(--r);font-size:13px;font-weight:600;color:rgba(255,255,255,.65);transition:all .15s}
-.nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+/* NAV */
+nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height:52px;position:sticky;top:0;z-index:100}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#fff;letter-spacing:.5px;margin-right:24px;text-decoration:none}
+.nav-brand span{color:var(--amber)}
+.nav-link{color:#aaa;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
+.nav-link:hover{color:#fff}
+.nav-link.active{color:var(--amber);border-bottom:2px solid var(--amber)}
 
-/* ── HERO ── */
-.hero{background:linear-gradient(135deg,var(--blue-d) 0%,#0d5c7a 100%);padding:52px 28px 56px;text-align:center;color:#fff;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 30%,rgba(13,148,136,.2) 0%,transparent 55%);pointer-events:none}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 16px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.05;letter-spacing:.3px;margin-bottom:14px}
-.hero h1 span{color:var(--gold)}
-.hero p{font-size:15px;color:rgba(255,255,255,.7);max-width:520px;margin:0 auto 32px;line-height:1.65}
+/* PAGE HEADER */
+.page-header{background:linear-gradient(135deg,#1a0e00 0%,#3a2000 50%,#0a1628 100%);padding:32px;color:#fff}
+.page-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.ph-left{}
+.ph-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(217,119,6,.15);border:1px solid rgba(217,119,6,.4);border-radius:20px;padding:4px 12px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
+.ph-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;line-height:1.1;margin-bottom:6px}
+.ph-title span{color:#fcd34d}
+.ph-sub{font-size:.85rem;color:#94a3b8;max-width:420px;line-height:1.5}
+.ph-stats{display:flex;gap:32px;flex-wrap:wrap}
+.ph-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;color:#fcd34d}
+.ph-stat-lbl{font-size:.7rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
 
-/* ── FORM + RESULT LAYOUT ── */
-.main-wrap{max-width:1100px;margin:0 auto;padding:32px 28px;display:grid;grid-template-columns:380px 1fr;gap:20px}
-@media(max-width:900px){.main-wrap{grid-template-columns:1fr}}
+/* HOW IT WORKS STRIP */
+.hiw-strip{background:#fff;border-bottom:1px solid var(--g200);padding:18px 32px}
+.hiw-strip-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:0}
+.hiw-s{display:flex;align-items:center;gap:10px;flex:1}
+.hiw-s-num{width:24px;height:24px;border-radius:50%;background:var(--amber);color:#fff;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hiw-s-text{}
+.hiw-s-title{font-size:.8rem;font-weight:700;color:var(--g900)}
+.hiw-s-desc{font-size:.72rem;color:var(--g500)}
+.hiw-arrow{color:var(--g300);font-size:1.2rem;padding:0 12px;flex-shrink:0}
 
-/* ── FORM PANEL ── */
-.form-panel{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);padding:24px;align-self:start}
-.panel-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--g900);margin-bottom:18px}
-.field-row{margin-bottom:14px}
-.field-label{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
-.field-input,.field-select{width:100%;padding:9px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:13px;font-weight:500;color:var(--g900);outline:none;transition:border-color .15s;background:var(--white);appearance:none}
-.field-input:focus,.field-select:focus{border-color:var(--blue)}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.estimate-btn{width:100%;padding:12px;background:var(--teal);color:#fff;border-radius:var(--r);font-size:14px;font-weight:700;border:none;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:4px}
-.estimate-btn:hover{background:#0a7a6a}
-.estimate-btn.loading{background:var(--g400);cursor:not-allowed}
+/* BODY LAYOUT */
+.page-body{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start}
 
-/* ── RESULT PANEL ── */
-.result-panel{display:flex;flex-direction:column;gap:16px}
-.result-hero{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);padding:28px;text-align:center}
-.result-vehicle{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--g900);margin-bottom:4px}
-.result-sub{font-size:12px;color:var(--g500);margin-bottom:28px}
-.price-range{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:24px;flex-wrap:wrap}
-.price-block{text-align:center}
-.price-lbl{font-size:10px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-.price-amt{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;line-height:1}
-.price-mid{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:800;color:var(--teal);line-height:1}
-.price-mid-lbl{font-size:12px;font-weight:700;color:var(--teal);margin-bottom:4px}
-.price-low{color:var(--amber)}
-.price-high{color:var(--green)}
-.price-arrow{font-size:20px;color:var(--g300);align-self:center}
-.confidence-bar{margin:0 auto;max-width:360px;margin-bottom:8px}
-.conf-lbl{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--g500);margin-bottom:6px}
-.conf-track{height:8px;background:var(--g200);border-radius:4px;overflow:hidden}
-.conf-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--teal),var(--green));border-radius:4px;transition:width .8s ease}
-.conf-score{font-size:12px;font-weight:700;color:var(--teal);margin-top:6px;text-align:center}
-.result-actions{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;border:none;white-space:nowrap;text-decoration:none}
-.btn-blue{background:var(--blue-d);color:#fff}
-.btn-blue:hover{background:var(--blue)}
-.btn-outline{background:var(--white);color:var(--blue-d);border:1.5px solid var(--blue-d)}
-.btn-outline:hover{background:var(--blue-l)}
+/* LOT LIST */
+.lot-list-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.lot-list-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;color:var(--g900)}
+.lot-count{font-size:.75rem;color:var(--g500);background:var(--g200);border-radius:10px;padding:2px 8px;font-weight:600}
+.lot-search{width:100%;border:1.5px solid var(--g300);border-radius:var(--r);padding:8px 12px;font-family:inherit;font-size:.82rem;color:var(--g900);margin-bottom:12px;transition:border-color .15s}
+.lot-search:focus{outline:none;border-color:var(--amber)}
+.lot-cards{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 200px);overflow-y:auto;padding-right:2px}
+.lot-cards::-webkit-scrollbar{width:4px}
+.lot-cards::-webkit-scrollbar-track{background:var(--g100)}
+.lot-cards::-webkit-scrollbar-thumb{background:var(--g300);border-radius:2px}
 
-/* ── BREAKDOWN CARDS ── */
-.breakdown-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:600px){.breakdown-grid{grid-template-columns:1fr}}
-.breakdown-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);padding:18px}
-.bk-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--g700);margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.bk-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--g200)}
-.bk-row:last-child{border-bottom:none}
-.bk-key{font-size:12px;color:var(--g600)}
-.bk-val{font-size:12px;font-weight:700;color:var(--g900)}
-.bk-val.pos{color:var(--green)}
-.bk-val.neg{color:var(--red)}
-.bk-val.neu{color:var(--amber)}
+.lot-card{background:#fff;border:1.5px solid var(--g200);border-radius:var(--rm);padding:12px 14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.lot-card:hover{border-color:var(--amber);box-shadow:0 2px 8px rgba(217,119,6,.1)}
+.lot-card.active{border-color:var(--amber);background:#fffdf7;box-shadow:0 2px 8px rgba(217,119,6,.12)}
+.lot-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.lot-card-num{font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g400)}
+.lot-card-timer{font-size:.65rem;font-weight:700;color:var(--red);background:var(--red-l);padding:2px 6px;border-radius:4px}
+.lot-card-timer.soon{color:var(--amber);background:var(--amber-l)}
+.lot-card-timer.ok{color:var(--teal);background:var(--teal-l)}
+.lot-card-name{font-weight:700;font-size:.88rem;color:var(--g900);margin-bottom:3px}
+.lot-card-meta{font-size:.72rem;color:var(--g500)}
+.lot-card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.lot-card-bid{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;color:var(--g900)}
+.lot-card-bid-lbl{font-size:.65rem;color:var(--g400);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.est-pill{background:var(--amber-l);border:1px solid rgba(217,119,6,.25);color:var(--amber-d);font-size:.68rem;font-weight:700;border-radius:6px;padding:3px 8px}
 
-/* ── COMPARABLES ── */
-.comps-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden}
-.comps-hdr{padding:16px 20px;border-bottom:1px solid var(--g200);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--g900)}
-.comp-row{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--g200)}
-.comp-row:last-child{border-bottom:none}
-.comp-img{width:40px;height:40px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.comp-img.g1{background:linear-gradient(135deg,#1a2a4a,#0057a8)}
-.comp-img.g2{background:linear-gradient(135deg,#1a3a5c,#0d9488)}
-.comp-img.g3{background:linear-gradient(135deg,#2a1a3a,#7c3aed)}
-.comp-info{flex:1;min-width:0}
-.comp-name{font-size:13px;font-weight:700;color:var(--g900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.comp-meta{font-size:11px;color:var(--g500)}
-.comp-price{text-align:right;flex-shrink:0}
-.comp-amt{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--g900)}
-.comp-diff{font-size:10px;font-weight:700}
-.comp-diff.up{color:var(--green)}
-.comp-diff.down{color:var(--red)}
+/* RIGHT PANEL */
+.calc-panel{}
+.calc-empty{background:#fff;border:2px dashed var(--g200);border-radius:var(--rl);padding:56px 32px;text-align:center}
+.calc-empty-icon{font-size:3rem;margin-bottom:14px}
+.calc-empty h3{font-size:1rem;font-weight:700;color:var(--g600);margin-bottom:6px}
+.calc-empty p{font-size:.82rem;color:var(--g400);line-height:1.5;max-width:300px;margin:0 auto}
+.calc-empty .arrow{font-size:2rem;color:var(--amber);margin-bottom:16px}
 
-/* ── FOOTER ── */
-footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;margin-top:auto}
-.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:rgba(255,255,255,.7)}
-.footer-logo span{color:var(--gold)}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap}
-.footer-links a{color:rgba(255,255,255,.45);font-size:12px;font-weight:500;text-decoration:none}
-.footer-links a:hover{color:rgba(255,255,255,.8)}
+.calc-vehicle-hdr{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+.cvh-lot{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g400);margin-bottom:4px}
+.cvh-name{font-weight:800;font-size:1.05rem;color:var(--g900)}
+.cvh-meta{font-size:.76rem;color:var(--g500);margin-top:3px}
+.cvh-right{text-align:right}
+.cvh-current-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--g400);margin-bottom:3px}
+.cvh-current-bid{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.4rem;color:var(--g900)}
+.cvh-bids{font-size:.7rem;color:var(--g400);margin-top:2px}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeUp .35s ease forwards}
+/* WIN PROBABILITY DISPLAY */
+.win-prob-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:24px 20px;margin-bottom:14px}
+.win-prob-inner{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.prob-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.prob-ring{width:110px;height:110px;position:relative;flex-shrink:0}
+.prob-ring svg{transform:rotate(-90deg)}
+.prob-ring-bg{fill:none;stroke:var(--g200);stroke-width:10}
+.prob-ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .3s}
+.prob-ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.prob-pct{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.8rem;line-height:1;transition:color .3s}
+.prob-pct-sign{font-size:.9rem;font-weight:700}
+.prob-right{}
+.prob-status-badge{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:5px 14px;font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.prob-status-badge.low{background:var(--red-l);color:var(--red);border:1px solid rgba(192,57,43,.2)}
+.prob-status-badge.comp{background:var(--amber-l);color:var(--amber-d);border:1px solid rgba(217,119,6,.2)}
+.prob-status-badge.strong{background:var(--blue-l);color:var(--blue-d);border:1px solid rgba(0,87,168,.2)}
+.prob-status-badge.dom{background:var(--green-l);color:var(--green-d);border:1px solid rgba(26,138,60,.2)}
+.prob-desc{font-size:.82rem;color:var(--g600);line-height:1.5;margin-bottom:12px}
+.prob-sub-stats{display:flex;gap:16px;flex-wrap:wrap}
+.pss{text-align:center}
+.pss-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;color:var(--g900)}
+.pss-lbl{font-size:.65rem;color:var(--g400);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+
+/* PRICE TRACK */
+.price-track-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:20px;margin-bottom:14px}
+.ptc-title{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:16px}
+.price-track-wrap{position:relative;padding:0 0 36px;margin-bottom:8px}
+.price-track{height:12px;border-radius:6px;background:linear-gradient(90deg, var(--red-l) 0%, var(--red-l) 20%, var(--amber-l) 20%, #fef3c7 45%, #d1fae5 45%, var(--green-l) 75%, var(--green-l) 75%, rgba(26,138,60,.15) 100%);position:relative;overflow:visible}
+.track-zone-labels{display:flex;margin-top:4px;font-size:.62rem;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.05em}
+.tzl{flex:1;text-align:center}
+.track-pins{position:absolute;top:0;left:0;right:0;height:12px}
+.track-pin{position:absolute;transform:translateX(-50%);top:-4px}
+.track-pin-line{width:2px;height:20px;background:var(--g400);margin:0 auto}
+.track-pin-dot{width:8px;height:8px;border-radius:50%;border:2px solid var(--g400);background:#fff;margin:-4px auto 0}
+.track-pin-label{font-size:.65rem;color:var(--g500);font-weight:600;text-align:center;margin-top:3px;white-space:nowrap;transform:translateX(-50%);position:absolute;left:50%}
+.bid-marker{position:absolute;transform:translateX(-50%);transition:left .6s cubic-bezier(.34,1.56,.64,1)}
+.bid-marker-needle{width:3px;height:28px;background:var(--amber);margin:0 auto;border-radius:2px;margin-top:-8px}
+.bid-marker-dot{width:14px;height:14px;border-radius:50%;background:var(--amber);border:3px solid #fff;box-shadow:0 0 0 2px var(--amber);margin:-2px auto 0}
+.bid-marker-flag{background:var(--amber);color:#fff;font-size:.62rem;font-weight:800;padding:3px 7px;border-radius:4px;white-space:nowrap;margin-top:4px;text-align:center}
+
+/* BID INPUT */
+.bid-input-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:18px 20px;margin-bottom:14px}
+.bid-input-label{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--g600);margin-bottom:10px;display:block}
+.bid-stepper{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.stepper-btn{width:38px;height:38px;border-radius:var(--r);border:1.5px solid var(--g300);background:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;color:var(--g700);transition:all .15s;flex-shrink:0}
+.stepper-btn:hover{border-color:var(--amber);color:var(--amber)}
+.bid-input-field{flex:1;border:1.5px solid var(--amber);border-radius:var(--r);padding:9px 14px;font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:var(--g900);text-align:center;transition:border-color .15s}
+.bid-input-field:focus{outline:none;border-color:var(--amber)}
+.bid-increment-row{display:flex;gap:6px;flex-wrap:wrap}
+.bid-inc-btn{background:var(--g100);border:1px solid var(--g200);border-radius:6px;padding:5px 10px;font-family:inherit;font-size:.72rem;font-weight:700;color:var(--g600);cursor:pointer;transition:all .15s}
+.bid-inc-btn:hover{background:var(--amber-l);border-color:var(--amber);color:var(--amber-d)}
+
+/* RECOMMENDATION */
+.rec-card{border-radius:var(--rl);padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px}
+.rec-card.low{background:var(--red-l);border:1px solid rgba(192,57,43,.2)}
+.rec-card.comp{background:var(--amber-l);border:1px solid rgba(217,119,6,.2)}
+.rec-card.strong{background:var(--blue-l);border:1px solid rgba(0,87,168,.15)}
+.rec-card.dom{background:var(--green-l);border:1px solid rgba(26,138,60,.15)}
+.rec-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.rec-text{}
+.rec-title{font-size:.82rem;font-weight:800;margin-bottom:4px}
+.rec-card.low .rec-title{color:var(--red)}
+.rec-card.comp .rec-title{color:var(--amber-d)}
+.rec-card.strong .rec-title{color:var(--blue-d)}
+.rec-card.dom .rec-title{color:var(--green-d)}
+.rec-msg{font-size:.78rem;color:var(--g700);line-height:1.5}
+.rec-action{display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:var(--amber);color:#fff;border:none;border-radius:var(--r);padding:7px 14px;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;transition:opacity .15s}
+.rec-action:hover{opacity:.88}
+.rec-action.green-btn{background:var(--green)}
+
+/* COMPARABLE TABLE */
+.comp-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);overflow:hidden}
+.comp-card-hdr{padding:12px 16px;border-bottom:1px solid var(--g200);display:flex;align-items:center;gap:10px}
+.comp-card-hdr-icon{width:28px;height:28px;background:var(--green-l);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.comp-card-hdr-title{font-size:.85rem;font-weight:700;color:var(--g900)}
+.comp-card-hdr-sub{font-size:.72rem;color:var(--g500);margin-top:1px}
+.comp-table{width:100%;border-collapse:collapse}
+.comp-table th{font-size:.63rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--g400);text-align:left;padding:8px 14px;border-bottom:1.5px solid var(--g200)}
+.comp-table td{font-size:.78rem;padding:9px 14px;border-bottom:1px solid var(--g100);color:var(--g700)}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table tr:hover td{background:var(--g50)}
+.tag-sold{color:var(--green);font-weight:700}
+.tag-live{color:var(--amber);font-weight:700}
+.delta-pos{color:var(--green);font-weight:700}
+.delta-neg{color:var(--red);font-weight:700}
+.delta-neu{color:var(--g500);font-weight:600}
+
+@media(max-width:800px){
+  .page-body{grid-template-columns:1fr}
+  .lot-cards{max-height:300px}
+  .hiw-strip-inner{flex-direction:column;gap:12px;align-items:flex-start}
+  .hiw-arrow{display:none}
+  .prob-ring-wrap{flex-direction:row}
+}
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
-<header class="hdr">
-  <a href="index.html" class="logo">
-    <div class="logo-icon">🏛</div>
-    Hammer<span>ly</span>
-  </a>
-  <div class="hdr-div"></div>
-  <div class="page-badge">📈 Estimated Sale Price</div>
-  <div class="hdr-right">
-    <a href="listings.html" class="nav-link">Listings</a>
-    <a href="auto-bid.html" class="nav-link">Auto Bid</a>
-    <a href="recommendation.html" class="nav-link">AI Recs</a>
-    <a href="robo-call.html" class="nav-link">Robo Call</a>
+<nav>
+  <a href="index.html" class="nav-brand">HAMMER<span>LY</span></a>
+  <a href="index.html" class="nav-link">Listings</a>
+  <a href="search.html" class="nav-link">Search</a>
+  <a href="recommendation.html" class="nav-link">AI Match</a>
+  <a href="robo-call.html" class="nav-link">Robo Call</a>
+  <a href="estimated-price.html" class="nav-link active">Price Engine</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="ph-left">
+      <div class="ph-badge">📊 Bid Intelligence Engine</div>
+      <div class="ph-title">Will You <span>Win at This Price?</span></div>
+      <div class="ph-sub">Select any live lot, enter your planned bid, and see your win probability — plus exactly how much to raise to improve your odds.</div>
+    </div>
+    <div class="ph-stats">
+      <div>
+        <div class="ph-stat-val">18</div>
+        <div class="ph-stat-lbl">Live Lots</div>
+      </div>
+      <div>
+        <div class="ph-stat-val">±8%</div>
+        <div class="ph-stat-lbl">Price Accuracy</div>
+      </div>
+      <div>
+        <div class="ph-stat-val">5k+</div>
+        <div class="ph-stat-lbl">Auction Sales</div>
+      </div>
+    </div>
   </div>
-</header>
+</div>
 
-<!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-eyebrow">Valuation Engine</div>
-  <h1>Estimated <span>Sale Price</span></h1>
-  <p>Enter any vehicle's details and get an instant price estimate powered by Hammerly's auction history, market comparables, and depreciation models — so you bid with confidence.</p>
-</section>
-
-<!-- ── MAIN ── -->
-<div class="main-wrap">
-
-  <!-- Form -->
-  <div class="form-panel">
-    <div class="panel-title">🔍 Vehicle Details</div>
-
-    <div class="field-row">
-      <div class="field-label">Make</div>
-      <select class="field-select" id="make" onchange="updateModel()">
-        <option>Hyundai</option>
-        <option>Maruti</option>
-        <option>Tata</option>
-        <option>Toyota</option>
-        <option>Honda</option>
-        <option>Royal Enfield</option>
-        <option>Bajaj</option>
-        <option>TVS</option>
-        <option>Yamaha</option>
-      </select>
-    </div>
-
-    <div class="field-row">
-      <div class="field-label">Model</div>
-      <select class="field-select" id="model">
-        <option>Creta</option>
-        <option>i20</option>
-        <option>Verna</option>
-        <option>Venue</option>
-      </select>
-    </div>
-
-    <div class="two-col" style="margin-bottom:14px">
-      <div>
-        <div class="field-label">Year</div>
-        <select class="field-select">
-          <option>2022</option>
-          <option>2021</option>
-          <option>2020</option>
-          <option>2019</option>
-          <option>2018</option>
-        </select>
-      </div>
-      <div>
-        <div class="field-label">Fuel</div>
-        <select class="field-select">
-          <option>Petrol</option>
-          <option>Diesel</option>
-          <option>Electric</option>
-          <option>CNG</option>
-        </select>
+<!-- HOW IT WORKS STRIP -->
+<div class="hiw-strip">
+  <div class="hiw-strip-inner">
+    <div class="hiw-s">
+      <div class="hiw-s-num">1</div>
+      <div class="hiw-s-text">
+        <div class="hiw-s-title">Pick a lot</div>
+        <div class="hiw-s-desc">Select any live auction vehicle from the list</div>
       </div>
     </div>
-
-    <div class="two-col" style="margin-bottom:14px">
-      <div>
-        <div class="field-label">Transmission</div>
-        <select class="field-select">
-          <option>Automatic</option>
-          <option>Manual</option>
-        </select>
-      </div>
-      <div>
-        <div class="field-label">Condition</div>
-        <select class="field-select">
-          <option>Excellent</option>
-          <option>Good</option>
-          <option>Fair</option>
-        </select>
+    <div class="hiw-arrow">→</div>
+    <div class="hiw-s">
+      <div class="hiw-s-num">2</div>
+      <div class="hiw-s-text">
+        <div class="hiw-s-title">Enter your bid</div>
+        <div class="hiw-s-desc">Type the amount you're planning to bid</div>
       </div>
     </div>
-
-    <div class="field-row">
-      <div class="field-label">Odometer (km)</div>
-      <input type="text" class="field-input" value="24,500" placeholder="e.g. 35,000"/>
+    <div class="hiw-arrow">→</div>
+    <div class="hiw-s">
+      <div class="hiw-s-num">3</div>
+      <div class="hiw-s-text">
+        <div class="hiw-s-title">See your win odds</div>
+        <div class="hiw-s-desc">AI shows probability + how much to raise to win</div>
+      </div>
     </div>
-
-    <div class="field-row">
-      <div class="field-label">City</div>
-      <select class="field-select">
-        <option>Pune</option>
-        <option>Mumbai</option>
-        <option>Delhi</option>
-        <option>Bangalore</option>
-        <option>Chennai</option>
-        <option>Hyderabad</option>
-      </select>
+    <div class="hiw-arrow">→</div>
+    <div class="hiw-s">
+      <div class="hiw-s-num">4</div>
+      <div class="hiw-s-text">
+        <div class="hiw-s-title">Place bid confidently</div>
+        <div class="hiw-s-desc">Go back to listings and bid with full context</div>
+      </div>
     </div>
+  </div>
+</div>
 
-    <div class="field-row">
-      <div class="field-label">Title / Condition Code</div>
-      <select class="field-select">
-        <option>Repossessed — Clean Title</option>
-        <option>Repossessed — Minor Dents</option>
-        <option>Repossessed — Accidental</option>
-      </select>
+<!-- MAIN BODY -->
+<div class="page-body">
+
+  <!-- LEFT: Lot List -->
+  <div>
+    <div class="lot-list-header">
+      <div class="lot-list-title">Live Auction Lots</div>
+      <span class="lot-count" id="lotCount">18 lots</span>
     </div>
-
-    <button class="estimate-btn" id="estBtn" onclick="runEstimate()">
-      <span id="estIcon">📈</span>
-      <span id="estText">Get Price Estimate</span>
-    </button>
+    <input class="lot-search" id="lotSearch" placeholder="Search vehicle or lot…" oninput="filterLots()"/>
+    <div class="lot-cards" id="lotCards"></div>
   </div>
 
-  <!-- Result -->
-  <div class="result-panel" id="resultPanel">
+  <!-- RIGHT: Calculator -->
+  <div id="calcPanel">
+    <div class="calc-empty" id="calcEmpty">
+      <div class="arrow">←</div>
+      <div class="calc-empty-icon">🎯</div>
+      <h3>Select a lot to check your win odds</h3>
+      <p>Click any vehicle on the left to see your bid win probability, estimated price range, and how to improve your chances.</p>
+    </div>
+  </div>
 
-    <div class="result-hero fade-in">
-      <div class="result-vehicle">2022 Hyundai Creta</div>
-      <div class="result-sub">Petrol · Automatic · 24,500 km · Repossessed · Pune</div>
+</div>
 
-      <div class="price-range">
-        <div class="price-block">
-          <div class="price-lbl">Conservative</div>
-          <div class="price-amt price-low">₹12,40,000</div>
-        </div>
-        <div class="price-arrow">→</div>
-        <div class="price-block">
-          <div class="price-mid-lbl">Expected Sale Price</div>
-          <div class="price-mid" id="midPrice">₹13,80,000</div>
-        </div>
-        <div class="price-arrow">→</div>
-        <div class="price-block">
-          <div class="price-lbl">Optimistic</div>
-          <div class="price-amt price-high">₹15,20,000</div>
-        </div>
+<script>
+/* ── DATA ───────────────────────────────────────────── */
+const LOTS = [
+  {id:1,  lot:'LOT-4821', name:'Maruti Swift VXi',        year:2022, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:35200,  price:370000, bank:'HDFC',  cond:'Good',      minLeft:134, bids:7},
+  {id:2,  lot:'LOT-3904', name:'Hyundai i20 Sportz',      year:2021, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Pune',      km:42100,  price:415000, bank:'ICICI', cond:'Good',      minLeft:210, bids:5},
+  {id:3,  lot:'LOT-5102', name:'Maruti Baleno Delta',     year:2022, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:28400,  price:448000, bank:'SBI',   cond:'Excellent', minLeft:45,  bids:12},
+  {id:4,  lot:'LOT-4201', name:'Tata Tiago XZ+',          year:2021, type:'Hatchback', fuel:'Petrol', trans:'AMT',       city:'Pune',      km:38900,  price:298000, bank:'Axis',  cond:'Good',      minLeft:320, bids:3},
+  {id:5,  lot:'LOT-3288', name:'VW Polo Comfortline',     year:2019, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Delhi',     km:61000,  price:278000, bank:'HDFC',  cond:'Fair',      minLeft:480, bids:4},
+  {id:6,  lot:'LOT-4502', name:'Maruti Swift ZDi',        year:2020, type:'Hatchback', fuel:'Diesel', trans:'Manual',    city:'Mumbai',    km:55000,  price:340000, bank:'ICICI', cond:'Good',      minLeft:95,  bids:9},
+  {id:7,  lot:'LOT-3701', name:'Hyundai i20 Active SX',   year:2019, type:'Hatchback', fuel:'Diesel', trans:'Manual',    city:'Chennai',   km:68000,  price:258000, bank:'SBI',   cond:'Fair',      minLeft:600, bids:2},
+  {id:8,  lot:'LOT-3711', name:'Honda City V MT',          year:2020, type:'Sedan',     fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:58400,  price:485000, bank:'HDFC',  cond:'Good',      minLeft:180, bids:6},
+  {id:9,  lot:'LOT-5201', name:'Maruti Dzire ZXi+',       year:2021, type:'Sedan',     fuel:'Petrol', trans:'Manual',    city:'Pune',      km:47300,  price:390000, bank:'Axis',  cond:'Good',      minLeft:390, bids:4},
+  {id:10, lot:'LOT-4608', name:'Hyundai Verna SX',        year:2021, type:'Sedan',     fuel:'Petrol', trans:'Automatic', city:'Mumbai',    km:44000,  price:575000, bank:'ICICI', cond:'Excellent', minLeft:60,  bids:11},
+  {id:11, lot:'LOT-3802', name:'Toyota Yaris G CVT',      year:2020, type:'Sedan',     fuel:'Petrol', trans:'Automatic', city:'Bangalore', km:51000,  price:515000, bank:'HDFC',  cond:'Good',      minLeft:720, bids:3},
+  {id:12, lot:'LOT-4705', name:'Maruti Ciaz Alpha CNG',   year:2020, type:'Sedan',     fuel:'CNG',    trans:'Manual',    city:'Delhi',     km:62000,  price:355000, bank:'SBI',   cond:'Good',      minLeft:280, bids:5},
+  {id:13, lot:'LOT-4901', name:'Tata Nexon XZ+ Petrol',  year:2021, type:'SUV',       fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:39500,  price:640000, bank:'SBI',   cond:'Good',      minLeft:150, bids:8},
+  {id:14, lot:'LOT-5008', name:'Hyundai Creta SX Diesel', year:2020, type:'SUV',       fuel:'Diesel', trans:'Manual',    city:'Delhi',     km:62000,  price:720000, bank:'HDFC',  cond:'Good',      minLeft:90,  bids:14},
+  {id:15, lot:'LOT-4305', name:'Kia Sonet HTX Diesel',   year:2021, type:'SUV',       fuel:'Diesel', trans:'Manual',    city:'Bangalore', km:35800,  price:685000, bank:'ICICI', cond:'Good',      minLeft:360, bids:6},
+  {id:16, lot:'LOT-5301', name:'Mahindra XUV300 W8',     year:2022, type:'SUV',       fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:22000,  price:820000, bank:'SBI',   cond:'Excellent', minLeft:240, bids:9},
+  {id:17, lot:'LOT-4102', name:'Maruti Ertiga VXi',      year:2021, type:'MUV',       fuel:'Petrol', trans:'Manual',    city:'Pune',      km:48000,  price:560000, bank:'HDFC',  cond:'Good',      minLeft:510, bids:5},
+  {id:18, lot:'LOT-3404', name:'Toyota Innova Crysta 2.4G', year:2019, type:'MUV',    fuel:'Diesel', trans:'Manual',    city:'Mumbai',    km:88000,  price:1050000,bank:'ICICI', cond:'Good',      minLeft:420, bids:7},
+];
+
+/* Per-model comparable sales (from recent auctions) */
+const COMPS = {
+  1:  [{yr:2022,desc:'Swift VXi · Petrol',km:32400,city:'Mumbai',p:382000,s:'sold'},{yr:2022,desc:'Swift VXi · Petrol',km:41100,city:'Pune',p:365000,s:'sold'},{yr:2021,desc:'Swift ZXi · Petrol',km:38500,city:'Mumbai',p:370000,s:'sold'},{yr:2022,desc:'Swift ZDi · Diesel',km:29800,city:'Delhi',p:398000,s:'sold'},{yr:2022,desc:'Swift VXi · Petrol',km:35900,city:'Bangalore',p:368000,s:'live'}],
+  2:  [{yr:2022,desc:'i20 Sportz · Petrol',km:28000,city:'Mumbai',p:428000,s:'sold'},{yr:2021,desc:'i20 Sportz · Petrol',km:42100,city:'Pune',p:395000,s:'sold'},{yr:2022,desc:'i20 Asta · Petrol IVT',km:24000,city:'Delhi',p:455000,s:'sold'},{yr:2021,desc:'i20 Era · Petrol',km:55000,city:'Mumbai',p:360000,s:'sold'},{yr:2022,desc:'i20 Magna · Petrol',km:32000,city:'Bangalore',p:418000,s:'live'}],
+  3:  [{yr:2022,desc:'Baleno Delta · Petrol',km:21000,city:'Delhi',p:475000,s:'sold'},{yr:2021,desc:'Baleno Zeta · AMT',km:34000,city:'Pune',p:435000,s:'sold'},{yr:2022,desc:'Baleno Alpha · Manual',km:28400,city:'Mumbai',p:448000,s:'sold'},{yr:2021,desc:'Baleno Delta · Petrol',km:48000,city:'Mumbai',p:405000,s:'sold'},{yr:2022,desc:'Baleno Zeta · Manual',km:31000,city:'Bangalore',p:452000,s:'live'}],
+  8:  [{yr:2022,desc:'City V · Petrol',km:30000,city:'Mumbai',p:548000,s:'sold'},{yr:2021,desc:'City VX · CVT',km:44000,city:'Pune',p:520000,s:'sold'},{yr:2020,desc:'City V · Petrol',km:58400,city:'Mumbai',p:468000,s:'sold'},{yr:2022,desc:'City SV · Manual',km:26000,city:'Delhi',p:558000,s:'sold'},{yr:2021,desc:'City V · Petrol',km:38000,city:'Bangalore',p:510000,s:'live'}],
+  10: [{yr:2022,desc:'Verna SX · Petrol Auto',km:22000,city:'Mumbai',p:610000,s:'sold'},{yr:2021,desc:'Verna SX · Petrol',km:44000,city:'Pune',p:570000,s:'sold'},{yr:2022,desc:'Verna SX(O) · Auto',km:18000,city:'Delhi',p:640000,s:'sold'},{yr:2021,desc:'Verna S+ · Manual',km:52000,city:'Mumbai',p:530000,s:'sold'},{yr:2021,desc:'Verna SX · Auto',km:35000,city:'Bangalore',p:580000,s:'live'}],
+  13: [{yr:2022,desc:'Nexon XZ+ · Petrol',km:22000,city:'Mumbai',p:700000,s:'sold'},{yr:2021,desc:'Nexon XZ+ · Diesel',km:39500,city:'Pune',p:668000,s:'sold'},{yr:2022,desc:'Nexon XZA+ · AMT',km:18000,city:'Delhi',p:720000,s:'sold'},{yr:2020,desc:'Nexon XM · Petrol',km:55000,city:'Mumbai',p:588000,s:'sold'},{yr:2021,desc:'Nexon XZ · Diesel',km:42000,city:'Bangalore',p:640000,s:'live'}],
+  14: [{yr:2022,desc:'Creta SX · Petrol',km:28000,city:'Mumbai',p:810000,s:'sold'},{yr:2021,desc:'Creta SX · Diesel',km:38000,city:'Delhi',p:780000,s:'sold'},{yr:2022,desc:'Creta EX · DCT',km:22000,city:'Pune',p:850000,s:'sold'},{yr:2020,desc:'Creta SX · Diesel',km:62000,city:'Mumbai',p:695000,s:'sold'},{yr:2021,desc:'Creta E · Petrol',km:45000,city:'Bangalore',p:730000,s:'live'}],
+  18: [{yr:2022,desc:'Innova 2.4G · Diesel',km:28000,city:'Mumbai',p:1880000,s:'sold'},{yr:2021,desc:'Innova 2.4G · Diesel',km:45000,city:'Delhi',p:1750000,s:'sold'},{yr:2022,desc:'Innova 2.7V · Petrol Auto',km:32000,city:'Pune',p:1920000,s:'sold'},{yr:2019,desc:'Innova 2.4G · Diesel',km:88000,city:'Mumbai',p:1420000,s:'sold'},{yr:2021,desc:'Innova 2.4VX · Diesel Auto',km:38000,city:'Bangalore',p:1810000,s:'live'}],
+};
+
+/* ── UTILS ──────────────────────────────────────────── */
+function fmt(n){
+  if(n>=100000) return '₹'+(n/100000).toFixed(n%100000===0?0:2).replace(/\.?0+$/,'')+'L';
+  return '₹'+n.toLocaleString('en-IN');
+}
+function fmtKm(n){ return n.toLocaleString('en-IN')+' km'; }
+function fmtTimer(m){
+  if(m<60) return m+'m';
+  if(m<1440) return Math.floor(m/60)+'h '+(m%60)+'m';
+  return Math.floor(m/1440)+'d '+Math.floor((m%1440)/60)+'h';
+}
+function timerClass(m){ return m<60?'':'m<240?'soon':'ok'; }
+
+/* ── PRICE RANGE ENGINE ─────────────────────────────── */
+function getRange(lot){
+  const b = lot.price;
+  // tighter range for excellent condition, wider for fair/poor
+  const spread = lot.cond==='Excellent'?0.08:lot.cond==='Fair'?0.13:0.10;
+  return {
+    floor: Math.round(b*0.80/1000)*1000,
+    low:   Math.round(b*(1-spread)/1000)*1000,
+    mid:   Math.round(b/1000)*1000,
+    high:  Math.round(b*(1+spread)/1000)*1000,
+    ceil:  Math.round(b*1.22/1000)*1000,
+  };
+}
+
+/* ── WIN PROBABILITY ────────────────────────────────── */
+function calcWinProb(bid, r){
+  if(bid<=r.floor) return 3;
+  if(bid<r.low)    return Math.round(3  + (bid-r.floor)/(r.low-r.floor)  * 17);
+  if(bid<r.mid)    return Math.round(20 + (bid-r.low)  /(r.mid-r.low)   * 35);
+  if(bid<r.high)   return Math.round(55 + (bid-r.mid)  /(r.high-r.mid)  * 25);
+  if(bid<r.ceil)   return Math.round(80 + (bid-r.high) /(r.ceil-r.high) * 15);
+  return 97;
+}
+
+function getStatus(p){
+  if(p<25)  return {label:'Low Chance',    cls:'low',    icon:'⚠️', desc:'Unlikely to win at this bid. Most lots at this price go unsold for this bidder.'};
+  if(p<50)  return {label:'Competitive',   cls:'comp',   icon:'🤔', desc:'In the race, but at risk. A rival bid at a small increment could beat you.'};
+  if(p<75)  return {label:'Strong',        cls:'strong', icon:'💪', desc:'Well positioned. Your bid is near the expected sale price.'};
+  return     {label:'Dominant',            cls:'dom',    icon:'🏆', desc:'Your bid is well above the expected price. Very high chance to win.'};
+}
+
+function getRec(bid, r, prob){
+  if(prob>=80) return {title:'You\'re in the winning zone', msg:'This bid is well above the estimated sale price. Your chances are very high.', action:null, cls:'dom', icon:'🏆'};
+  if(prob>=55){
+    const target = r.high; const diff = target-bid;
+    return {title:'Raise slightly to lock it in', msg:`Raise by ${fmt(diff)} to reach the high-confidence zone. At ${fmt(target)}, your win probability jumps to 80%+.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'strong', icon:'💡'};
+  }
+  if(prob>=20){
+    const target = r.mid; const diff = target-bid;
+    if(diff<=0){
+      const target2=r.high; const diff2=target2-bid;
+      return {title:'You\'re near the estimated price', msg:`Raise by ${fmt(diff2)} to move into the strong zone (75%+ win chance).`, action:{label:`Set bid to ${fmt(target2)}`, val:target2}, cls:'comp', icon:'💡'};
+    }
+    return {title:'Raise to reach the estimated price', msg:`The estimated auction price is ${fmt(r.mid)}. Raise your bid by ${fmt(diff)} to hit the mid-point where most lots sell.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'comp', icon:'💡'};
+  }
+  const target=r.low; const diff=target-bid;
+  return {title:'Bid is too low to be competitive', msg:`The historical floor for this vehicle is around ${fmt(r.low)}. You need to raise by at least ${fmt(diff)} to have a meaningful chance.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'low', icon:'⚠️'};
+}
+
+/* ── UI ─────────────────────────────────────────────── */
+let activeLot = null;
+let currentBid = 0;
+
+function filterLots(){
+  const q = document.getElementById('lotSearch').value.toLowerCase();
+  const filtered = LOTS.filter(l=>
+    l.name.toLowerCase().includes(q)||
+    l.lot.toLowerCase().includes(q)||
+    l.city.toLowerCase().includes(q)||
+    l.type.toLowerCase().includes(q)||
+    l.fuel.toLowerCase().includes(q)
+  );
+  renderLotList(filtered);
+  document.getElementById('lotCount').textContent = filtered.length+' lots';
+}
+
+function renderLotList(lots){
+  const container = document.getElementById('lotCards');
+  container.innerHTML = lots.map(l=>{
+    const r = getRange(l);
+    const tc = l.minLeft<60?'':'l.minLeft<240?'soon':'ok';
+    return `<div class="lot-card${activeLot&&activeLot.id===l.id?' active':''}" onclick="selectLot(${l.id})" id="lcard-${l.id}">
+      <div class="lot-card-top">
+        <span class="lot-card-num">${l.lot} · ${l.bank}</span>
+        <span class="lot-card-timer ${tc}">${fmtTimer(l.minLeft)}</span>
       </div>
-
-      <div class="confidence-bar">
-        <div class="conf-lbl"><span>Estimate Confidence</span><span>87%</span></div>
-        <div class="conf-track"><div class="conf-fill" id="confFill" style="width:87%"></div></div>
-        <div class="conf-score">High confidence · Based on 43 recent comparable sales</div>
+      <div class="lot-card-name">${l.year} ${l.name}</div>
+      <div class="lot-card-meta">${fmtKm(l.km)} · ${l.fuel} · ${l.trans} · ${l.city} · ${l.cond}</div>
+      <div class="lot-card-bottom">
+        <div>
+          <div class="lot-card-bid-lbl">Current Bid</div>
+          <div class="lot-card-bid">${fmt(l.price)}</div>
+        </div>
+        <span class="est-pill">Est. ${fmt(r.low)}–${fmt(r.high)}</span>
       </div>
+    </div>`;
+  }).join('');
+}
 
-      <div class="result-actions">
-        <a href="auto-bid.html" class="btn btn-blue">⚡ Set Auto Bid Ceiling</a>
-        <a href="listings.html" class="btn btn-outline">🔍 Find This Vehicle</a>
-        <a href="bulk-bid.html" class="btn btn-outline">📦 Add to Bulk Basket</a>
+function selectLot(id){
+  activeLot = LOTS.find(l=>l.id===id);
+  currentBid = activeLot.price + 5000;
+  document.querySelectorAll('.lot-card').forEach(c=>c.classList.remove('active'));
+  const card = document.getElementById('lcard-'+id);
+  if(card){card.classList.add('active'); card.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  renderCalculator();
+}
+
+function renderCalculator(){
+  const l = activeLot;
+  const r = getRange(l);
+  const prob = calcWinProb(currentBid, r);
+  const status = getStatus(prob);
+  const rec = getRec(currentBid, r, prob);
+  const comps = COMPS[l.id] || genComps(l, r.mid);
+
+  const tc = l.minLeft<60?'var(--red)':l.minLeft<240?'var(--amber)':'var(--teal)';
+
+  // Ring: circumference of r=46 circle ≈ 289
+  const circ = 289;
+  const dash = circ - (prob/100)*circ;
+  const ringColor = prob>=75?'#1a8a3c':prob>=50?'#0057a8':prob>=25?'#d97706':'#c0392b';
+
+  // Track positions (% along track floor→ceil)
+  function pos(v){ return Math.max(2,Math.min(97,((v-r.floor)/(r.ceil-r.floor))*100)).toFixed(1); }
+  const bidPos = pos(currentBid);
+
+  document.getElementById('calcPanel').innerHTML = `
+    <!-- Vehicle header -->
+    <div class="calc-vehicle-hdr">
+      <div>
+        <div class="cvh-lot">${l.lot} · ${l.bank} Repossession · <span style="color:${tc};font-weight:800">${fmtTimer(l.minLeft)} left</span></div>
+        <div class="cvh-name">${l.year} ${l.name}</div>
+        <div class="cvh-meta">${fmtKm(l.km)} · ${l.fuel} · ${l.trans} · ${l.city} · ${l.type} · ${l.cond}</div>
+      </div>
+      <div class="cvh-right">
+        <div class="cvh-current-lbl">Current Bid</div>
+        <div class="cvh-current-bid">${fmt(l.price)}</div>
+        <div class="cvh-bids">${l.bids} bids placed</div>
       </div>
     </div>
 
-    <!-- Breakdown -->
-    <div class="breakdown-grid fade-in">
-      <div class="breakdown-card">
-        <div class="bk-title">📊 Value Factors</div>
-        <div class="bk-row"><span class="bk-key">Ex-showroom (2022)</span><span class="bk-val">₹17,85,000</span></div>
-        <div class="bk-row"><span class="bk-key">Depreciation (2 yrs)</span><span class="bk-val neg">−₹3,57,000</span></div>
-        <div class="bk-row"><span class="bk-key">Mileage adjustment</span><span class="bk-val neg">−₹18,000</span></div>
-        <div class="bk-row"><span class="bk-key">Condition premium</span><span class="bk-val pos">+₹24,000</span></div>
-        <div class="bk-row"><span class="bk-key">City demand index</span><span class="bk-val pos">+₹46,000</span></div>
-        <div class="bk-row" style="border-top:2px solid var(--g200);margin-top:6px;padding-top:10px"><span class="bk-key" style="font-weight:700;color:var(--g900)">Estimated Market Value</span><span class="bk-val" style="color:var(--teal);font-size:14px">₹13,80,000</span></div>
+    <!-- Bid input -->
+    <div class="bid-input-card">
+      <label class="bid-input-label">Your Planned Bid — adjust to recalculate odds</label>
+      <div class="bid-stepper">
+        <button class="stepper-btn" onclick="adjustBid(-5000)">−</button>
+        <input class="bid-input-field" type="number" id="bidField" value="${currentBid}" step="5000" oninput="onBidInput(this.value)"/>
+        <button class="stepper-btn" onclick="adjustBid(5000)">+</button>
       </div>
+      <div class="bid-increment-row">
+        <button class="bid-inc-btn" onclick="adjustBid(-20000)">−₹20k</button>
+        <button class="bid-inc-btn" onclick="adjustBid(-10000)">−₹10k</button>
+        <button class="bid-inc-btn" onclick="adjustBid(10000)">+₹10k</button>
+        <button class="bid-inc-btn" onclick="adjustBid(20000)">+₹20k</button>
+        <button class="bid-inc-btn" onclick="adjustBid(50000)">+₹50k</button>
+      </div>
+    </div>
 
-      <div class="breakdown-card">
-        <div class="bk-title">🏦 Auction Metrics</div>
-        <div class="bk-row"><span class="bk-key">Avg auction realisation</span><span class="bk-val">₹13,20,000</span></div>
-        <div class="bk-row"><span class="bk-key">vs market value</span><span class="bk-val neg">−4.3%</span></div>
-        <div class="bk-row"><span class="bk-key">Avg bid count (similar)</span><span class="bk-val">9.4 bids</span></div>
-        <div class="bk-row"><span class="bk-key">Reserve hit rate</span><span class="bk-val pos">78%</span></div>
-        <div class="bk-row"><span class="bk-key">Typical closing window</span><span class="bk-val">Last 30 min</span></div>
-        <div class="bk-row"><span class="bk-key">Recommended max bid</span><span class="bk-val neu">₹14,50,000</span></div>
+    <!-- Win Probability -->
+    <div class="win-prob-card">
+      <div class="win-prob-inner">
+        <div class="prob-ring-wrap">
+          <div class="prob-ring" id="probRing">
+            <svg width="110" height="110" viewBox="0 0 110 110">
+              <circle class="prob-ring-bg" cx="55" cy="55" r="46"/>
+              <circle class="prob-ring-fill" id="probFill" cx="55" cy="55" r="46"
+                stroke="${ringColor}"
+                stroke-dasharray="${circ}"
+                stroke-dashoffset="${dash}"/>
+            </svg>
+            <div class="prob-ring-text">
+              <div class="prob-pct" style="color:${ringColor}" id="probPct">${prob}<span class="prob-pct-sign">%</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="prob-right">
+          <div class="prob-status-badge ${status.cls}">${status.icon} ${status.label}</div>
+          <div class="prob-desc">${status.desc}</div>
+          <div class="prob-sub-stats">
+            <div class="pss"><div class="pss-val">${fmt(r.low)}</div><div class="pss-lbl">Floor Est.</div></div>
+            <div class="pss"><div class="pss-val">${fmt(r.mid)}</div><div class="pss-lbl">Mid Est.</div></div>
+            <div class="pss"><div class="pss-val">${fmt(r.high)}</div><div class="pss-lbl">Ceiling Est.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Price Track -->
+    <div class="price-track-card">
+      <div class="ptc-title">Where your bid sits in the price range</div>
+      <div class="price-track-wrap">
+        <div class="price-track" id="priceTrack">
+          <!-- Zone pins -->
+          <div class="track-pins">
+            <div class="track-pin" style="left:${pos(r.low)}%">
+              <div class="track-pin-line"></div>
+              <div class="track-pin-dot"></div>
+              <div class="track-pin-label">${fmt(r.low)}<br>Floor</div>
+            </div>
+            <div class="track-pin" style="left:${pos(r.mid)}%">
+              <div class="track-pin-line" style="background:var(--amber)"></div>
+              <div class="track-pin-dot" style="border-color:var(--amber)"></div>
+              <div class="track-pin-label" style="color:var(--amber-d);font-weight:800">${fmt(r.mid)}<br>Estimate</div>
+            </div>
+            <div class="track-pin" style="left:${pos(r.high)}%">
+              <div class="track-pin-line" style="background:var(--green)"></div>
+              <div class="track-pin-dot" style="border-color:var(--green)"></div>
+              <div class="track-pin-label" style="color:var(--green-d);font-weight:800">${fmt(r.high)}<br>High</div>
+            </div>
+            <!-- Your bid marker -->
+            <div class="bid-marker" id="bidMarker" style="left:${bidPos}%">
+              <div class="bid-marker-needle"></div>
+              <div class="bid-marker-dot"></div>
+              <div class="bid-marker-flag" id="bidMarkerFlag">Your Bid<br>${fmt(currentBid)}</div>
+            </div>
+          </div>
+        </div>
+        <div class="track-zone-labels" style="margin-top:52px">
+          <div class="tzl" style="color:var(--red);flex:1.2">Below range</div>
+          <div class="tzl" style="color:var(--amber)">Low zone</div>
+          <div class="tzl" style="color:var(--green)">Win zone</div>
+          <div class="tzl" style="color:var(--green-d);flex:.8">Dominant</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="rec-card ${rec.cls}">
+      <div class="rec-icon">${rec.icon}</div>
+      <div class="rec-text">
+        <div class="rec-title">${rec.title}</div>
+        <div class="rec-msg">${rec.msg}</div>
+        ${rec.action?`<button class="rec-action${rec.cls==='dom'?' green-btn':''}" onclick="setBid(${rec.action.val})">${rec.action.label}</button>`:''}
       </div>
     </div>
 
     <!-- Comparables -->
-    <div class="comps-card fade-in">
-      <div class="comps-hdr">📋 Recent Comparable Sales</div>
-      <div class="comp-row">
-        <div class="comp-img g2">🚗</div>
-        <div class="comp-info">
-          <div class="comp-name">2022 Hyundai Creta SX · Phantom Black</div>
-          <div class="comp-meta">Petrol · Auto · 21,400 km · Bangalore · 12 days ago</div>
-        </div>
-        <div class="comp-price">
-          <div class="comp-amt">₹14,10,000</div>
-          <div class="comp-diff up">+2.2% vs est.</div>
+    <div class="comp-card">
+      <div class="comp-card-hdr">
+        <div class="comp-card-hdr-icon">🔍</div>
+        <div>
+          <div class="comp-card-hdr-title">Recent Auction Comparables</div>
+          <div class="comp-card-hdr-sub">Similar lots sold in last 90 days · vs your bid of ${fmt(currentBid)}</div>
         </div>
       </div>
-      <div class="comp-row">
-        <div class="comp-img g1">🚗</div>
-        <div class="comp-info">
-          <div class="comp-name">2021 Hyundai Creta SX+ · Turquoise Blue</div>
-          <div class="comp-meta">Petrol · Auto · 28,900 km · Mumbai · 19 days ago</div>
-        </div>
-        <div class="comp-price">
-          <div class="comp-amt">₹13,25,000</div>
-          <div class="comp-diff down">−4.0% vs est.</div>
-        </div>
+      <div style="overflow-x:auto">
+        <table class="comp-table">
+          <thead><tr>
+            <th>Vehicle</th><th>Yr</th><th>Km</th><th>City</th>
+            <th>Sale Price</th><th>vs Your Bid</th><th>Status</th>
+          </tr></thead>
+          <tbody>
+            ${comps.map(c=>{
+              const d=c.p-currentBid, pct=Math.round(d/currentBid*100);
+              const dc=d>0?'delta-pos':d<0?'delta-neg':'delta-neu';
+              const ds=(d>0?'+':'')+pct+'%';
+              return `<tr>
+                <td><strong>${c.yr} ${l.name.split(' ').slice(0,2).join(' ')}</strong><br><span style="font-size:.7rem;color:var(--g400)">${c.desc}</span></td>
+                <td>${c.yr}</td>
+                <td>${c.km.toLocaleString('en-IN')}</td>
+                <td>${c.city}</td>
+                <td><strong>${fmt(c.p)}</strong></td>
+                <td><span class="${dc}">${ds}</span></td>
+                <td>${c.s==='sold'?'<span class="tag-sold">✓ Sold</span>':'<span class="tag-live">● Live</span>'}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
       </div>
-      <div class="comp-row">
-        <div class="comp-img g3">🚗</div>
-        <div class="comp-info">
-          <div class="comp-name">2022 Hyundai Creta E · Polar White</div>
-          <div class="comp-meta">Petrol · Manual · 31,200 km · Delhi · 26 days ago</div>
-        </div>
-        <div class="comp-price">
-          <div class="comp-amt">₹12,80,000</div>
-          <div class="comp-diff down">−7.2% vs est.</div>
-        </div>
-      </div>
-      <div class="comp-row">
-        <div class="comp-img g2">🚗</div>
-        <div class="comp-info">
-          <div class="comp-name">2022 Hyundai Creta S · Typhoon Silver</div>
-          <div class="comp-meta">Diesel · Auto · 19,800 km · Pune · 31 days ago</div>
-        </div>
-        <div class="comp-price">
-          <div class="comp-amt">₹14,60,000</div>
-          <div class="comp-diff up">+5.8% vs est.</div>
-        </div>
-      </div>
-    </div>
+    </div>`;
+}
 
-  </div>
-</div>
+function genComps(lot, mid){
+  const cities=['Mumbai','Pune','Delhi','Bangalore','Chennai'];
+  return Array.from({length:5},(_,i)=>({
+    yr:lot.year-(i%2), desc:lot.name+' · '+lot.fuel+' · '+lot.trans,
+    km:Math.round(lot.km*(0.85+i*0.12)/1000)*1000,
+    city:cities[i], p:Math.round(mid*(0.91+i*0.045*(i%2?-1:1))/1000)*1000,
+    s:i<4?'sold':'live'
+  }));
+}
 
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-logo">Hammer<span>ly</span></div>
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="listings.html">Listings</a>
-    <a href="auto-bid.html">Auto Bid</a>
-    <a href="bulk-bid.html">Bulk Bid</a>
-    <a href="search.html">Smart Search</a>
-    <a href="recommendation.html">AI Recs</a>
-    <a href="robo-call.html">Robo Call</a>
-  </div>
-  <div>© 2026 Hammerly · Prototype</div>
-</footer>
+function onBidInput(val){
+  const n = parseInt(val)||0;
+  if(n>0&&n!==currentBid){ currentBid=n; renderCalculator(); }
+}
 
-<script>
-  const MODELS = {
-    'Hyundai': ['Creta','i20','Verna','Venue','Tucson'],
-    'Maruti': ['Swift Dzire','Baleno','Ertiga','Alto','Brezza'],
-    'Tata': ['Nexon','Nexon EV','Punch','Harrier','Safari'],
-    'Toyota': ['Fortuner','Innova','Glanza','Urban Cruiser'],
-    'Honda': ['City','Amaze','WR-V','CB200R','Activa'],
-    'Royal Enfield': ['Classic 350','Meteor 350','Himalayan','Thunderbird'],
-    'Bajaj': ['Pulsar NS200','Dominar 400','RE Compact','Maxima Z'],
-    'TVS': ['Apache RTR 200','Jupiter','Ntorq','Raider'],
-    'Yamaha': ['FZ-S V3','MT-15','R15','FZ25'],
-  };
+function adjustBid(delta){
+  currentBid = Math.max(activeLot.price, currentBid+delta);
+  renderCalculator();
+}
 
-  const PRICES = {
-    'Creta':{low:1240000,mid:1380000,high:1520000,conf:87,comps:43},
-    'i20':{low:740000,mid:820000,high:910000,conf:82,comps:31},
-    'Fortuner':{low:2400000,mid:2650000,high:2900000,conf:91,comps:18},
-    'Swift Dzire':{low:480000,mid:540000,high:600000,conf:88,comps:56},
-    'Nexon EV':{low:1650000,mid:1850000,high:2050000,conf:79,comps:22},
-    'default':{low:800000,mid:950000,high:1100000,conf:75,comps:12},
-  };
+function setBid(val){
+  currentBid = val;
+  renderCalculator();
+}
 
-  const fmt = n => '₹' + n.toLocaleString('en-IN');
-
-  function updateModel() {
-    const make = document.getElementById('make').value;
-    const sel = document.getElementById('model');
-    const models = MODELS[make] || [];
-    sel.innerHTML = models.map(m => `<option>${m}</option>`).join('');
-  }
-
-  function runEstimate() {
-    const btn = document.getElementById('estBtn');
-    btn.classList.add('loading');
-    document.getElementById('estIcon').textContent = '⏳';
-    document.getElementById('estText').textContent = 'Analysing…';
-    btn.disabled = true;
-
-    setTimeout(() => {
-      const model = document.getElementById('model').value;
-      const d = PRICES[model] || PRICES['default'];
-
-      document.getElementById('midPrice').textContent = fmt(d.mid);
-      document.getElementById('confFill').style.width = d.conf + '%';
-
-      btn.classList.remove('loading');
-      document.getElementById('estIcon').textContent = '🔄';
-      document.getElementById('estText').textContent = 'Recalculate';
-      btn.disabled = false;
-
-      document.getElementById('resultPanel').scrollIntoView({behavior:'smooth',block:'start'});
-    }, 1200);
-  }
+/* Init */
+renderLotList(LOTS);
 </script>
 </body>
 </html>

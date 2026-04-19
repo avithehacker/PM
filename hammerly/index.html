@@ -87,19 +87,47 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .tb-count{margin-left:auto;font-size:12px;color:var(--g500);font-weight:500}
 .tb-count strong{color:var(--g900);font-weight:700}
 
-/* ══ AI BANNER ══ */
-.ai-banner{background:linear-gradient(135deg,#1a0a3a 0%,#2d1b69 100%);overflow:hidden;max-height:0;transition:max-height .4s ease}
-.ai-banner.open{max-height:200px}
-.ai-inner{padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.ai-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-.ai-chips{display:flex;gap:6px;flex-wrap:wrap}
-.ai-chip{padding:5px 12px;border-radius:var(--r);border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);font-size:12px;font-weight:600;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s;white-space:nowrap}
-.ai-chip:hover{border-color:rgba(255,255,255,.35);color:#fff;background:rgba(255,255,255,.12)}
-.ai-chip.on{background:var(--purple);border-color:var(--purple);color:#fff}
-.ai-budget{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.ai-budget input{width:140px;padding:6px 12px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);border-radius:var(--r);font-size:13px;font-weight:600;color:#fff}
-.ai-budget input::placeholder{color:rgba(255,255,255,.35)}
-.ai-run-btn{padding:7px 18px;background:var(--purple);color:#fff;border-radius:var(--r);font-size:13px;font-weight:700;flex-shrink:0;transition:background .15s}
+/* ══ PANEL INTERNALS — shared by all 3 panels ══ */
+.p-desc{font-size:11px;color:var(--g400);margin-bottom:8px;line-height:1.5;font-weight:400}
+
+/* How-it-works strip */
+.hiw{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rm);padding:14px 16px;margin-bottom:20px;display:flex;flex-direction:column;gap:0}
+.hiw-step{display:flex;align-items:flex-start;gap:10px;padding:7px 0}
+.hiw-step+.hiw-step{border-top:1px dashed var(--g200)}
+.hiw-num{width:20px;height:20px;border-radius:50%;background:var(--blue-d);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.hiw-content{flex:1}
+.hiw-title{font-size:12px;font-weight:700;color:var(--g900);margin-bottom:2px}
+.hiw-desc{font-size:11px;color:var(--g500);line-height:1.45;font-weight:400}
+
+/* Alert card (robo-call) */
+.alert-card{border:1.5px solid var(--g200);border-radius:var(--rm);padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s}
+.alert-card.on{border-color:var(--teal);background:var(--teal-l)}
+.alert-card-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.alert-card-body{flex:1;min-width:0}
+.alert-card-title{font-size:13px;font-weight:700;color:var(--g900);margin-bottom:2px}
+.alert-card-when{font-size:10px;font-weight:600;color:var(--g400);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
+.alert-card-preview{font-size:11px;color:var(--g500);font-style:italic;line-height:1.45;background:var(--g100);border-radius:3px;padding:5px 8px;border-left:2px solid var(--g300)}
+.alert-card.on .alert-card-preview{background:rgba(13,148,136,.06);border-left-color:var(--teal);color:var(--teal-d)}
+
+/* Stat card grid */
+.stat-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:0}
+.stat-cell{background:var(--g100);border-radius:var(--r);padding:10px 8px;text-align:center;border:1px solid var(--g200)}
+.stat-cell-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--g900);line-height:1}
+.stat-cell-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--g400);margin-top:3px}
+.stat-cell-sub{font-size:9px;color:var(--g400);margin-top:2px;line-height:1.3}
+
+/* AI chips (inside panel) */
+.panel-chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.panel-chip{padding:6px 14px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
+.panel-chip:hover{border-color:var(--purple);color:var(--purple)}
+.panel-chip.on{background:var(--purple-l);border-color:var(--purple);color:var(--purple-d)}
+
+/* AI results hint */
+.ai-result-hint{background:var(--purple-l);border:1.5px solid rgba(124,58,237,.2);border-radius:var(--rm);padding:12px 14px;margin-top:12px;display:none}
+.ai-result-hint.show{display:block}
+.ai-result-hint-title{font-size:12px;font-weight:700;color:var(--purple-d);margin-bottom:4px}
+.ai-result-hint-body{font-size:11px;color:var(--purple);line-height:1.5}
+.ai-run-btn{width:100%;padding:12px;background:var(--purple);color:#fff;border-radius:var(--rm);font-size:14px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
 .ai-run-btn:hover{background:var(--purple-d)}
 .ai-run-btn.loading{opacity:.7;pointer-events:none}
 
@@ -416,70 +444,134 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
   <div class="tb-count" id="tbCount"></div>
 </div>
 
-<!-- ══ AI BANNER ══ -->
-<div class="ai-banner" id="aiBanner">
-  <div class="ai-inner">
-    <span class="ai-label">Vehicle Type</span>
-    <div class="ai-chips" id="aiTypeChips">
-      <button class="ai-chip" onclick="toggleAIChip(this,'type','2w')">🏍 2-Wheeler</button>
-      <button class="ai-chip" onclick="toggleAIChip(this,'type','4w')">🚗 4-Wheeler</button>
-      <button class="ai-chip" onclick="toggleAIChip(this,'type','ev')">⚡ EV</button>
-    </div>
-    <span class="ai-label">Fuel</span>
-    <div class="ai-chips">
-      <button class="ai-chip" onclick="toggleAIChip(this,'fuel','Petrol')">⛽ Petrol</button>
-      <button class="ai-chip" onclick="toggleAIChip(this,'fuel','Diesel')">🛢 Diesel</button>
-      <button class="ai-chip" onclick="toggleAIChip(this,'fuel','Electric')">⚡ Electric</button>
-    </div>
-    <div class="ai-budget">
-      <span class="ai-label">Max Budget</span>
-      <input type="text" id="aiBudget" placeholder="e.g. 20,00,000"/>
-    </div>
-    <button class="ai-run-btn" id="aiRunBtn" onclick="runAI()">✨ Find Matches</button>
-  </div>
-</div>
-
 <!-- ══ MAIN GRID ══ -->
 <main class="main" id="mainGrid"></main>
 
-<!-- ══ AUTO-BID PANEL ══ -->
+<!-- ══ PANEL OVERLAY ══ -->
 <div class="panel-overlay" id="panelOverlay" onclick="closePanels()"></div>
 
-<div class="panel" id="abPanel">
-  <div class="panel-hdr">
+<!-- ══ AI SMART MATCH PANEL ══ -->
+<div class="panel" id="aiPanel">
+  <div class="panel-hdr" style="background:linear-gradient(135deg,#1a0a3a 0%,#5b21b6 100%)">
     <div>
-      <div class="panel-title" id="abPanelTitle">Auto-Bid Setup</div>
-      <div class="panel-sub" id="abPanelSub"></div>
+      <div class="panel-title">✨ Smart Match AI</div>
+      <div class="panel-sub">Your AI-powered auction scout</div>
     </div>
     <button class="panel-close" onclick="closePanels()">✕</button>
   </div>
   <div class="panel-body">
-    <div class="ab-stat-row" id="abStats"></div>
+    <div class="hiw">
+      <div class="hiw-step">
+        <div class="hiw-num" style="background:var(--purple)">1</div>
+        <div class="hiw-content"><div class="hiw-title">Tell us what you want</div><div class="hiw-desc">Pick vehicle type, fuel preference, and the most you'll pay</div></div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num" style="background:var(--purple)">2</div>
+        <div class="hiw-content"><div class="hiw-title">AI scores all 25 lots</div><div class="hiw-desc">Each vehicle gets a match % based on how well it fits your preferences</div></div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num" style="background:var(--purple)">3</div>
+        <div class="hiw-content"><div class="hiw-title">Best matches surface on cards</div><div class="hiw-desc">Gold badge = 88%+, Purple = 72%+. Sort by "AI Match %" to rank them</div></div>
+      </div>
+    </div>
+    <div class="panel-section">
+      <label class="p-label">What type of vehicle?</label>
+      <div class="p-desc">Select all that interest you — AI will prioritise these</div>
+      <div class="panel-chip-row">
+        <button class="panel-chip" onclick="toggleAIChip(this,'type','2w')">🏍 2-Wheeler</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'type','4w')">🚗 4-Wheeler</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'type','ev')">⚡ EV Only</button>
+      </div>
+    </div>
+    <div class="panel-section">
+      <label class="p-label">Preferred fuel type</label>
+      <div class="p-desc">Leave blank to consider all fuels</div>
+      <div class="panel-chip-row">
+        <button class="panel-chip" onclick="toggleAIChip(this,'fuel','Petrol')">⛽ Petrol</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'fuel','Diesel')">🛢 Diesel</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'fuel','Electric')">⚡ Electric</button>
+      </div>
+    </div>
+    <div class="panel-section">
+      <label class="p-label">Your maximum budget</label>
+      <div class="p-desc">Lots above this will be penalised in the score — enter in rupees</div>
+      <input class="p-input" type="text" id="aiBudget" placeholder="e.g. 15,00,000"/>
+    </div>
+    <button class="ai-run-btn" id="aiRunBtn" onclick="runAI()">✨ Find My Matches</button>
+    <div class="ai-result-hint" id="aiResultHint">
+      <div class="ai-result-hint-title">✓ Matches found — scores visible on all cards</div>
+      <div class="ai-result-hint-body">Use Sort → "AI Match %" to rank best lots first. Gold badge = strong match, purple = good fit.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ AUTO-BID PANEL ══ -->
+<div class="panel" id="abPanel">
+  <div class="panel-hdr" style="background:linear-gradient(135deg,var(--teal-d) 0%,var(--teal) 100%)">
+    <div>
+      <div class="panel-title" id="abPanelTitle">⚡ Auto-Bid Setup</div>
+      <div class="panel-sub" id="abPanelSub">Set ceiling · choose strategy · walk away</div>
+    </div>
+    <button class="panel-close" onclick="closePanels()">✕</button>
+  </div>
+  <div class="panel-body">
+    <div class="hiw">
+      <div class="hiw-step">
+        <div class="hiw-num" style="background:var(--teal)">1</div>
+        <div class="hiw-content"><div class="hiw-title">Set your ceiling</div><div class="hiw-desc">The maximum you'd ever pay — you won't be charged more than this, ever</div></div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num" style="background:var(--teal)">2</div>
+        <div class="hiw-content"><div class="hiw-title">Pick a strategy</div><div class="hiw-desc">Controls when the system fires — last-second snipe, balanced, or aggressive lead</div></div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num" style="background:var(--teal)">3</div>
+        <div class="hiw-content"><div class="hiw-title">Enable and walk away</div><div class="hiw-desc">System bids automatically. You get notified when you win or if ceiling is reached</div></div>
+      </div>
+    </div>
     <div class="panel-section">
       <label class="p-label">Max Bid Ceiling</label>
-      <input class="p-input" type="text" id="abMaxBid" placeholder="₹ Enter max amount" oninput="onMaxBidInput(this.value)"/>
-      <div class="p-hint" id="abHint">Set the highest you're willing to go — system bids automatically below this.</div>
+      <div class="p-desc">The system will never bid above this amount on your behalf</div>
+      <input class="p-input" type="text" id="abMaxBid" placeholder="e.g. 22,00,000" oninput="onMaxBidInput(this.value)"/>
+      <div class="p-hint" id="abHint">Enter an amount above the current bid to continue.</div>
     </div>
     <div class="panel-section">
       <label class="p-label">Bidding Strategy</label>
+      <div class="p-desc">Choose how the engine responds to rival bids</div>
       <div class="strategy-row">
         <button class="strat-btn" data-strat="sniper" onclick="setStrategy('sniper',this)">
-          <span class="strat-icon">🎯</span>Sniper<br/><span style="font-size:9px;font-weight:400;color:var(--g400)">Last second</span>
+          <span class="strat-icon">🎯</span>Sniper
+          <span style="display:block;font-size:9px;font-weight:400;color:var(--g400);margin-top:2px">Bids in last 30 sec</span>
         </button>
         <button class="strat-btn on" data-strat="steady" onclick="setStrategy('steady',this)">
-          <span class="strat-icon">⚖️</span>Steady<br/><span style="font-size:9px;font-weight:400;color:var(--g400)">Balanced</span>
+          <span class="strat-icon">⚖️</span>Steady
+          <span style="display:block;font-size:9px;font-weight:400;color:var(--g400);margin-top:2px">Responds in ~60 sec</span>
         </button>
         <button class="strat-btn" data-strat="bold" onclick="setStrategy('bold',this)">
-          <span class="strat-icon">🔥</span>Bold<br/><span style="font-size:9px;font-weight:400;color:var(--g400)">Lead always</span>
+          <span class="strat-icon">🔥</span>Bold
+          <span style="display:block;font-size:9px;font-weight:400;color:var(--g400);margin-top:2px">Bids immediately</span>
         </button>
       </div>
     </div>
     <div class="panel-section">
-      <label class="p-label">Rival Activity</label>
-      <div class="ab-stat-row">
-        <div class="ab-stat"><div class="ab-stat-val" id="rivalCount">2</div><div class="ab-stat-lbl">Rivals</div></div>
-        <div class="ab-stat"><div class="ab-stat-val" id="winProb">68%</div><div class="ab-stat-lbl">Win Prob.</div></div>
-        <div class="ab-stat"><div class="ab-stat-val" id="autoBidFired">0</div><div class="ab-stat-lbl">Auto-Bids</div></div>
+      <label class="p-label">Live Intelligence</label>
+      <div class="p-desc">Real-time signals from the auction</div>
+      <div class="stat-grid-3">
+        <div class="stat-cell">
+          <div class="stat-cell-val" id="rivalCount">2</div>
+          <div class="stat-cell-lbl">Rivals</div>
+          <div class="stat-cell-sub">Others watching this lot</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-val" id="winProb">68%</div>
+          <div class="stat-cell-lbl">Win Prob.</div>
+          <div class="stat-cell-sub">Based on ceiling vs current bid</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-val" id="autoBidFired">0</div>
+          <div class="stat-cell-lbl">Auto-Bids</div>
+          <div class="stat-cell-sub">Fired this session</div>
+        </div>
       </div>
     </div>
     <button class="enable-btn off" id="abEnableBtn" onclick="toggleAutoBid()">⚡ Enable Auto-Bid</button>
@@ -488,42 +580,88 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 
 <!-- ══ ROBO-CALL PANEL ══ -->
 <div class="panel" id="roboPanel">
-  <div class="panel-hdr">
+  <div class="panel-hdr" style="background:linear-gradient(135deg,#0d2137 0%,var(--blue) 100%)">
     <div>
       <div class="panel-title">🔔 Robo-Call Alerts</div>
-      <div class="panel-sub">Automated calls & SMS for your auctions</div>
+      <div class="panel-sub">Instant voice calls when your auctions move</div>
     </div>
     <button class="panel-close" onclick="closePanels()">✕</button>
   </div>
   <div class="panel-body">
+    <div class="hiw">
+      <div class="hiw-step">
+        <div class="hiw-num">1</div>
+        <div class="hiw-content"><div class="hiw-title">Add your phone number</div><div class="hiw-desc">All alerts are sent as automated voice calls to this number</div></div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">2</div>
+        <div class="hiw-content"><div class="hiw-title">Choose which events trigger a call</div><div class="hiw-desc">Each alert type shows exactly what the voice call will say</div></div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">3</div>
+        <div class="hiw-content"><div class="hiw-title">Stay in the game without watching the screen</div><div class="hiw-desc">Re-bid, confirm a win, or set reminders — all via the phone call menu</div></div>
+      </div>
+    </div>
     <div class="panel-section">
       <label class="p-label">Your Phone Number</label>
+      <div class="p-desc">All alerts go to this number. You can change it any time.</div>
       <div class="phone-input-wrap">
         <span class="phone-prefix">+91</span>
         <input type="tel" class="phone-input" id="phoneInput" placeholder="98765 43210" maxlength="10"/>
       </div>
     </div>
     <div class="panel-section">
-      <label class="p-label">Alert Settings</label>
-      <div class="toggle-row">
-        <div class="toggle-info"><div class="toggle-title">📞 Outbid Alert</div><div class="toggle-sub">Instant call when someone outbids you</div></div>
-        <label class="toggle-switch"><input type="checkbox" checked id="rt-outbid"/><span class="toggle-slider"></span></label>
+      <label class="p-label">Alert Types</label>
+      <div class="p-desc">Toggle each alert on or off. The preview shows what the call will say.</div>
+
+      <div class="alert-card on" id="ac-outbid">
+        <div class="alert-card-icon">📞</div>
+        <div class="alert-card-body">
+          <div class="alert-card-title">Outbid Alert</div>
+          <div class="alert-card-when">Triggers when: Someone places a higher bid than yours</div>
+          <div class="alert-card-preview">"Hi Rahul, your bid on Lot V12 was beaten. New bid: ₹12.5L. Press 1 to re-bid now, press 2 to set auto-bid."</div>
+        </div>
+        <label class="toggle-switch" style="flex-shrink:0;margin-top:2px"><input type="checkbox" checked id="rt-outbid" onchange="syncAlertCard('outbid',this)"/><span class="toggle-slider"></span></label>
       </div>
-      <div class="toggle-row">
-        <div class="toggle-info"><div class="toggle-title">🏆 Winner Notification</div><div class="toggle-sub">Call when you win a lot</div></div>
-        <label class="toggle-switch"><input type="checkbox" checked id="rt-won"/><span class="toggle-slider"></span></label>
+
+      <div class="alert-card on" id="ac-won">
+        <div class="alert-card-icon">🏆</div>
+        <div class="alert-card-body">
+          <div class="alert-card-title">Winner Notification</div>
+          <div class="alert-card-when">Triggers when: You win a lot at auction close</div>
+          <div class="alert-card-preview">"Congratulations! You've won Lot V12 — 2022 Hyundai Creta at ₹13.5L. Press 1 for payment instructions."</div>
+        </div>
+        <label class="toggle-switch" style="flex-shrink:0;margin-top:2px"><input type="checkbox" checked id="rt-won" onchange="syncAlertCard('won',this)"/><span class="toggle-slider"></span></label>
       </div>
-      <div class="toggle-row">
-        <div class="toggle-info"><div class="toggle-title">⏰ Auction Starting Soon</div><div class="toggle-sub">30-minute reminder before auction opens</div></div>
-        <label class="toggle-switch"><input type="checkbox" checked id="rt-remind"/><span class="toggle-slider"></span></label>
+
+      <div class="alert-card on" id="ac-remind">
+        <div class="alert-card-icon">⏰</div>
+        <div class="alert-card-body">
+          <div class="alert-card-title">Auction Starting Soon</div>
+          <div class="alert-card-when">Triggers when: 30 minutes before an auction you're watching goes live</div>
+          <div class="alert-card-preview">"Reminder: ICICI Seized Vehicle Lot in Delhi opens in 30 minutes. You have 5 watchlisted vehicles. Press 1 to review."</div>
+        </div>
+        <label class="toggle-switch" style="flex-shrink:0;margin-top:2px"><input type="checkbox" checked id="rt-remind" onchange="syncAlertCard('remind',this)"/><span class="toggle-slider"></span></label>
       </div>
-      <div class="toggle-row">
-        <div class="toggle-info"><div class="toggle-title">📱 Bid Confirmation SMS</div><div class="toggle-sub">SMS receipt after every bid</div></div>
-        <label class="toggle-switch"><input type="checkbox" id="rt-sms"/><span class="toggle-slider"></span></label>
+
+      <div class="alert-card" id="ac-sms">
+        <div class="alert-card-icon">📱</div>
+        <div class="alert-card-body">
+          <div class="alert-card-title">Bid Confirmation SMS</div>
+          <div class="alert-card-when">Triggers when: Any bid is placed on your behalf</div>
+          <div class="alert-card-preview">"[Hammerly] Bid placed: ₹14L on Lot V12 — 2022 Hyundai Creta. Ref: HM-204518. Reply STOP to opt out."</div>
+        </div>
+        <label class="toggle-switch" style="flex-shrink:0;margin-top:2px"><input type="checkbox" id="rt-sms" onchange="syncAlertCard('sms',this)"/><span class="toggle-slider"></span></label>
       </div>
-      <div class="toggle-row">
-        <div class="toggle-info"><div class="toggle-title">📅 Daily Auction Digest</div><div class="toggle-sub">Morning call with today's live auctions</div></div>
-        <label class="toggle-switch"><input type="checkbox" id="rt-digest"/><span class="toggle-slider"></span></label>
+
+      <div class="alert-card" id="ac-digest">
+        <div class="alert-card-icon">📅</div>
+        <div class="alert-card-body">
+          <div class="alert-card-title">Morning Auction Digest</div>
+          <div class="alert-card-when">Triggers when: Every morning at 8 AM on auction days</div>
+          <div class="alert-card-preview">"Good morning! 3 auctions are live today in Bengaluru, Delhi, and Mumbai. 47 lots match your watchlist. Press 1 to hear highlights."</div>
+        </div>
+        <label class="toggle-switch" style="flex-shrink:0;margin-top:2px"><input type="checkbox" id="rt-digest" onchange="syncAlertCard('digest',this)"/><span class="toggle-slider"></span></label>
       </div>
     </div>
     <button class="save-btn" onclick="saveRoboSettings()">✓ Save Alert Preferences</button>
@@ -1117,10 +1255,7 @@ function scheduleRival(vid) {
 // ─────────────────────────────────────────────────────────
 //  AI RECOMMENDATIONS
 // ─────────────────────────────────────────────────────────
-function toggleAIBanner() {
-  document.getElementById('aiBanner').classList.toggle('open');
-  document.getElementById('aiBtn').classList.toggle('active');
-}
+function toggleAIBanner() { openPanel('ai'); }
 
 function toggleAIChip(btn, group, val) {
   btn.classList.toggle('on');
@@ -1153,8 +1288,9 @@ function runAI() {
     });
     S.aiRun = true;
     btn.classList.remove('loading');
-    btn.textContent = '✨ Find Matches';
+    btn.textContent = '✨ Find My Matches';
     const top = VEHICLES.filter(v=>S.aiScores[v.id]>=80).length;
+    document.getElementById('aiResultHint').classList.add('show');
     toast('Smart Match complete', `Found ${top} strong matches for your preferences`, 'purple', '✨');
     renderGrid();
   }, 1200);
@@ -1164,19 +1300,23 @@ function runAI() {
 //  PANELS + ROBO-CALL
 // ─────────────────────────────────────────────────────────
 function openPanel(which) {
-  const overlay = document.getElementById('panelOverlay');
-  const abPanel = document.getElementById('abPanel');
-  const roboPanel = document.getElementById('roboPanel');
-  overlay.classList.add('open');
-  if (which === 'ab') { abPanel.classList.add('open'); roboPanel.classList.remove('open'); }
-  if (which === 'robo') { roboPanel.classList.add('open'); abPanel.classList.remove('open'); }
+  ['abPanel','roboPanel','aiPanel'].forEach(id => document.getElementById(id).classList.remove('open'));
+  document.getElementById('panelOverlay').classList.add('open');
+  if (which === 'ab') document.getElementById('abPanel').classList.add('open');
+  if (which === 'robo') document.getElementById('roboPanel').classList.add('open');
+  if (which === 'ai') { document.getElementById('aiPanel').classList.add('open'); document.getElementById('aiBtn').classList.add('active'); }
 }
 
 function closePanels() {
   document.getElementById('panelOverlay').classList.remove('open');
-  document.getElementById('abPanel').classList.remove('open');
-  document.getElementById('roboPanel').classList.remove('open');
+  ['abPanel','roboPanel','aiPanel'].forEach(id => document.getElementById(id).classList.remove('open'));
+  document.getElementById('aiBtn').classList.remove('active');
   S.abPanelVid = null;
+}
+
+function syncAlertCard(key, cb) {
+  const card = document.getElementById('ac-'+key);
+  if (card) card.classList.toggle('on', cb.checked);
 }
 
 function saveRoboSettings() {

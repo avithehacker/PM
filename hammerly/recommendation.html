@@ -3,347 +3,480 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Hammerly — AI Recommendations</title>
+<title>Hammerly — AI Vehicle Recommendations</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;--blue-m:#1a6fc4;
+  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;
+  --teal:#0d9488;--teal-l:#e6faf9;--teal-d:#0f766e;
   --green:#1a8a3c;--green-l:#e6f5eb;
-  --red:#c0392b;--red-l:#fdecea;
   --amber:#d97706;--amber-l:#fffbeb;
-  --teal:#0d9488;--teal-l:#e6faf9;
-  --purple:#7c3aed;--purple-l:#f3f0ff;
-  --gold:#f0c040;
-  --g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;--g400:#9ca3af;
-  --g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
-  --white:#fff;
-  --hh:56px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.1);
-  --shadow-md:0 4px 14px rgba(0,0,0,.12);
-  --shadow-lg:0 8px 30px rgba(0,0,0,.16);
-  --r:4px;--rm:6px;
+  --purple:#7c3aed;--purple-l:#f3f0ff;--purple-d:#5b21b6;
+  --g50:#f9fafb;--g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;
+  --g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --white:#fff;--r:8px;--rm:12px;--rl:16px;
 }
-html{font-family:'Barlow',sans-serif;background:var(--g100);color:var(--g900);font-size:14px}
-body{min-height:100vh;display:flex;flex-direction:column}
-a{text-decoration:none;color:inherit}
-button{cursor:pointer;font-family:'Barlow',sans-serif;border:none;outline:none}
-input,select{font-family:'Barlow',sans-serif}
+body{font-family:'Barlow',sans-serif;background:#f4f5f8;color:var(--g900);min-height:100vh}
 
-/* ── HEADER ── */
-.hdr{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap;text-decoration:none}
-.logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px}
-.logo span{color:var(--gold)}
-.hdr-div{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
-.page-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:3px 10px;font-size:12px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.nav-link{padding:6px 13px;border-radius:var(--r);font-size:13px;font-weight:600;color:rgba(255,255,255,.65);transition:all .15s;white-space:nowrap}
-.nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height:52px;position:sticky;top:0;z-index:100}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#fff;letter-spacing:.5px;margin-right:24px;text-decoration:none}
+.nav-brand span{color:var(--purple)}
+.nav-link{color:#aaa;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
+.nav-link:hover{color:#fff}
+.nav-link.active{color:var(--purple);border-bottom:2px solid var(--purple)}
 
-/* ── HERO ── */
-.hero{background:linear-gradient(135deg,var(--blue-d) 0%,var(--blue-m) 100%);padding:52px 28px 56px;text-align:center;color:#fff;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,rgba(124,58,237,.2) 0%,transparent 60%),radial-gradient(ellipse at 15% 70%,rgba(13,148,136,.15) 0%,transparent 50%);pointer-events:none}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 16px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.05;letter-spacing:.3px;margin-bottom:14px}
-.hero h1 span{color:var(--gold)}
-.hero p{font-size:15px;color:rgba(255,255,255,.7);max-width:520px;margin:0 auto 32px;line-height:1.65}
-.hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;border:none;white-space:nowrap}
-.btn-blue{background:var(--blue);color:#fff}
-.btn-blue:hover{background:var(--blue-m)}
-.btn-ghost{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1.5px solid rgba(255,255,255,.22)}
-.btn-ghost:hover{background:rgba(255,255,255,.2);color:#fff}
+.hero{background:linear-gradient(135deg,#1a0a3a 0%,#2d1060 50%,#0a1628 100%);color:#fff;padding:56px 32px 48px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#c4b5fd;margin-bottom:20px}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2.8rem;letter-spacing:.02em;line-height:1.1;margin-bottom:12px}
+.hero h1 span{color:#c4b5fd}
+.hero-sub{color:#94a3b8;font-size:1rem;max-width:520px;margin:0 auto 36px}
+.hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;color:#c4b5fd;line-height:1}
+.hero-stat-lbl{font-size:.75rem;color:#64748b;margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
 
-/* ── INPUT SECTION ── */
-.input-section{background:var(--white);border-bottom:1px solid var(--g200);padding:28px;max-width:780px;margin:0 auto;width:100%}
-.input-label{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.pref-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.pref-chip{padding:7px 16px;border-radius:var(--r);border:1.5px solid var(--g200);font-size:13px;font-weight:600;color:var(--g600);background:var(--white);cursor:pointer;transition:all .15s}
-.pref-chip:hover{border-color:var(--blue);color:var(--blue)}
-.pref-chip.on{background:var(--blue-l);border-color:var(--blue);color:var(--blue)}
-.budget-row{display:flex;gap:12px;align-items:center}
-.budget-input{flex:1;padding:9px 14px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:14px;font-weight:600;color:var(--g900);outline:none;transition:border-color .15s}
-.budget-input:focus{border-color:var(--blue)}
-.run-btn{padding:10px 24px;background:var(--purple);color:#fff;border-radius:var(--r);font-size:14px;font-weight:700;border:none;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:7px}
-.run-btn:hover{background:#6d28d9}
-.run-btn .spin{display:none}
-.run-btn.running .spin{display:inline}
-.run-btn.running .lbl{display:none}
+.hiw-section{background:#fff;border-bottom:1px solid var(--g200);padding:40px 32px}
+.hiw-inner{max-width:900px;margin:0 auto}
+.section-label{font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--purple);margin-bottom:6px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.6rem;color:var(--g900);margin-bottom:28px}
+.hiw-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.hiw-step{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rl);padding:22px 20px}
+.hiw-num{width:32px;height:32px;border-radius:50%;background:var(--purple);color:#fff;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.hiw-step-icon{font-size:1.6rem;margin-bottom:10px}
+.hiw-step h3{font-size:.95rem;font-weight:700;color:var(--g900);margin-bottom:6px}
+.hiw-step p{font-size:.8rem;color:var(--g600);line-height:1.5}
 
-/* ── CARDS GRID ── */
-.section{max-width:1160px;margin:0 auto;padding:32px 28px}
-.section-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px}
-.section-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--g900)}
-.section-sub{font-size:12px;color:var(--g500);font-weight:500}
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.page-body{max-width:1060px;margin:0 auto;padding:32px 24px;display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start}
 
-/* ── REC CARD ── */
-.rec-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:all .2s;cursor:pointer}
-.rec-card:hover{box-shadow:var(--shadow-md);border-color:var(--g300);transform:translateY(-2px)}
-.rec-card.top-pick{border-color:var(--purple);box-shadow:0 0 0 1px var(--purple-l)}
-.rec-img{height:100px;display:flex;align-items:center;justify-content:center;font-size:44px;position:relative}
-.rec-img.g1{background:linear-gradient(135deg,#1a2a4a 0%,#0057a8 100%)}
-.rec-img.g2{background:linear-gradient(135deg,#1a3a5c 0%,#0d9488 100%)}
-.rec-img.g3{background:linear-gradient(135deg,#1c3a2a 0%,#1a8a3c 100%)}
-.rec-img.g4{background:linear-gradient(135deg,#2a1a3a 0%,#7c3aed 100%)}
-.rec-img.g5{background:linear-gradient(135deg,#3a2000 0%,#d97706 100%)}
-.rec-img.g6{background:linear-gradient(135deg,#1a2a4a 0%,#c0392b 100%)}
-.match-badge{position:absolute;top:10px;right:12px;font-size:11px;font-weight:800;padding:3px 9px;border-radius:2px;background:var(--purple);color:#fff}
-.top-badge{position:absolute;top:10px;left:12px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;background:var(--gold);color:var(--blue-d)}
-.rec-body{padding:14px 16px}
-.rec-lot{font-size:10px;font-weight:700;color:var(--g400);letter-spacing:.4px;text-transform:uppercase;margin-bottom:4px}
-.rec-title{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;color:var(--g900);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rec-sub{font-size:11px;color:var(--g500);margin-bottom:14px}
-.rec-reasons{margin-bottom:14px;display:flex;flex-direction:column;gap:5px}
-.reason-row{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--g600)}
-.reason-dot{width:5px;height:5px;border-radius:50%;background:var(--purple);flex-shrink:0}
-.rec-bid-row{display:flex;align-items:flex-end;justify-content:space-between;padding-top:10px;border-top:1px solid var(--g200)}
-.rec-bid-lbl{font-size:10px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
-.rec-bid-amt{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--green)}
-.rec-score-bar{width:80px}
-.rec-score-lbl{font-size:10px;font-weight:700;color:var(--g500);margin-bottom:4px;text-align:right}
-.rec-score-track{height:5px;background:var(--g200);border-radius:3px;overflow:hidden}
-.rec-score-fill{height:100%;background:var(--purple);border-radius:3px;transition:width .6s ease}
+.card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);overflow:hidden}
+.card-hdr{padding:16px 20px;border-bottom:1px solid var(--g200);display:flex;align-items:center;gap:10px}
+.card-hdr-icon{width:32px;height:32px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.card-hdr-title{font-size:.9rem;font-weight:700;color:var(--g900)}
+.card-hdr-sub{font-size:.75rem;color:var(--g500);margin-top:2px}
+.card-body{padding:20px}
 
-/* ── WHY AI SECTION ── */
-.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.why-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);padding:22px 20px}
-.why-icon{font-size:28px;margin-bottom:12px}
-.why-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--g900);margin-bottom:6px}
-.why-desc{font-size:12px;color:var(--g500);line-height:1.6}
+.form-group{margin-bottom:16px}
+.form-group label{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--g600);display:block;margin-bottom:8px}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 12px;border-radius:var(--r);border:1.5px solid var(--g300);background:#fff;font-family:inherit;font-size:.78rem;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--purple);color:var(--purple)}
+.chip.on{background:var(--purple-l);border-color:var(--purple);color:var(--purple-d)}
+.budget-row{display:flex;gap:8px}
+.budget-row input{flex:1;border:1.5px solid var(--g300);border-radius:var(--r);padding:9px 12px;font-family:inherit;font-size:.85rem;color:var(--g900);transition:border-color .15s}
+.budget-row input:focus{outline:none;border-color:var(--purple)}
+.btn-run{width:100%;background:linear-gradient(135deg,var(--purple) 0%,var(--purple-d) 100%);color:#fff;border:none;border-radius:var(--r);padding:12px;font-family:inherit;font-size:.9rem;font-weight:800;cursor:pointer;letter-spacing:.04em;transition:opacity .15s;margin-top:4px}
+.btn-run:hover{opacity:.9}
+.btn-run:disabled{opacity:.5;cursor:not-allowed}
 
-/* ── FOOTER ── */
-footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;margin-top:auto}
-.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:rgba(255,255,255,.7)}
-.footer-logo span{color:var(--gold)}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap}
-.footer-links a{color:rgba(255,255,255,.45);font-size:12px;font-weight:500;text-decoration:none}
-.footer-links a:hover{color:rgba(255,255,255,.8)}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.results-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.25rem;color:var(--g900)}
+.results-meta{font-size:.75rem;color:var(--g500)}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeUp .35s ease forwards}
+.result-empty{background:var(--g50);border:2px dashed var(--g200);border-radius:var(--rl);padding:48px 32px;text-align:center;color:var(--g400)}
+.result-empty-icon{font-size:3rem;margin-bottom:12px}
+.result-empty h3{font-size:1rem;font-weight:700;color:var(--g600);margin-bottom:6px}
+.result-empty p{font-size:.8rem;line-height:1.5;max-width:320px;margin:0 auto}
 
-@media(max-width:700px){.hero{padding:36px 20px 40px}.pref-row{gap:8px}.budget-row{flex-direction:column}}
+.result-grid{display:flex;flex-direction:column;gap:12px}
+.result-card{background:#fff;border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.result-card:hover{border-color:var(--purple);box-shadow:0 2px 12px rgba(124,58,237,.1)}
+.result-card-top{display:grid;grid-template-columns:auto 1fr auto;gap:12px;padding:14px 16px 10px;align-items:start}
+.rank-num{width:24px;height:24px;border-radius:50%;background:var(--g200);color:var(--g600);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.rank-num.r1{background:#fef9e7;color:#92400e;border:1px solid #f59e0b}
+.rank-num.r2{background:var(--purple-l);color:var(--purple-d);border:1px solid rgba(124,58,237,.3)}
+.rank-num.r3{background:var(--blue-l);color:var(--blue-d);border:1px solid rgba(0,87,168,.25)}
+.result-card-main{min-width:0}
+.result-card-lot{font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g400);margin-bottom:3px}
+.result-card-name{font-weight:800;font-size:.95rem;color:var(--g900)}
+.result-card-meta{font-size:.73rem;color:var(--g500);margin-top:3px}
+.result-card-price{text-align:right;flex-shrink:0}
+.result-card-bid{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;color:var(--g900)}
+.result-card-est{font-size:.7rem;color:var(--g400);margin-top:2px}
+.match-badge{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:4px 10px;font-size:.72rem;font-weight:800;margin-top:6px}
+.match-badge.gold{background:#fffbeb;border:1px solid #f59e0b;color:#92400e}
+.match-badge.purple{background:var(--purple-l);border:1px solid rgba(124,58,237,.3);color:var(--purple-d)}
+.match-badge.blue{background:var(--blue-l);border:1px solid rgba(0,87,168,.25);color:var(--blue-d)}
+.result-card-reasons{padding:0 16px 12px;display:flex;flex-wrap:wrap;gap:6px}
+.reason-tag{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.2);border-radius:6px;padding:4px 9px;font-size:.72rem;font-weight:600;color:var(--purple-d)}
+.miss-tag{background:var(--g50);border:1px solid var(--g200);border-radius:6px;padding:4px 9px;font-size:.72rem;font-weight:600;color:var(--g400)}
+.result-card-actions{padding:10px 16px 14px;display:flex;gap:8px;border-top:1px solid var(--g100)}
+.rc-btn{flex:1;padding:8px 0;border-radius:var(--r);font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .15s;text-align:center}
+.rc-btn-primary{background:var(--purple);color:#fff;border-color:var(--purple)}
+.rc-btn-primary:hover{background:var(--purple-d)}
+.rc-btn-secondary{background:#fff;color:var(--g700);border-color:var(--g300)}
+.rc-btn-secondary:hover{border-color:var(--g500)}
+
+.analyzing{display:none;flex-direction:column;align-items:center;padding:48px 32px;text-align:center;gap:16px}
+.analyzing.show{display:flex}
+.ai-spinner{width:44px;height:44px;border:3px solid var(--purple-l);border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-steps{list-style:none;display:flex;flex-direction:column;gap:6px;text-align:left}
+.ai-steps li{font-size:.8rem;color:var(--g500);font-weight:500;display:flex;align-items:center;gap:8px;transition:color .3s}
+.ai-steps li.done{color:var(--purple-d);font-weight:600}
+.ai-steps li.done::before{content:'✓';font-size:.75rem;color:var(--purple)}
+.ai-steps li:not(.done)::before{content:'○';font-size:.75rem;color:var(--g300)}
+
+.no-match{background:var(--amber-l);border:1px solid rgba(217,119,6,.3);border-radius:var(--rl);padding:28px 24px;text-align:center;display:none}
+.no-match.show{display:block}
+.no-match h3{font-size:1rem;font-weight:700;color:var(--amber);margin-bottom:6px}
+.no-match p{font-size:.8rem;color:var(--g600)}
+
+@media(max-width:700px){
+  .page-body{grid-template-columns:1fr}
+  .hiw-steps{grid-template-columns:1fr}
+  .hero h1{font-size:2rem}
+  .hero-stats{gap:24px}
+}
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
-<header class="hdr">
-  <a href="index.html" class="logo">
-    <div class="logo-icon">🏛</div>
-    Hammer<span>ly</span>
-  </a>
-  <div class="hdr-div"></div>
-  <div class="page-badge">🤖 AI Recommendations</div>
-  <div class="hdr-right">
-    <a href="listings.html" class="nav-link">Listings</a>
-    <a href="auto-bid.html" class="nav-link">Auto Bid</a>
-    <a href="bulk-bid.html" class="nav-link">Bulk Bid</a>
-    <a href="estimated-price.html" class="nav-link">Est. Price</a>
-    <a href="robo-call.html" class="nav-link">Robo Call</a>
-  </div>
-</header>
+<nav>
+  <a href="index.html" class="nav-brand">HAMMER<span>LY</span></a>
+  <a href="index.html" class="nav-link">Listings</a>
+  <a href="search.html" class="nav-link">Search</a>
+  <a href="recommendation.html" class="nav-link active">AI Match</a>
+  <a href="robo-call.html" class="nav-link">Robo Call</a>
+  <a href="estimated-price.html" class="nav-link">Price Engine</a>
+</nav>
 
-<!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-eyebrow">Powered by Hammerly AI</div>
-  <h1>Smart Vehicle <span>Recommendations</span></h1>
-  <p>Tell us your preferences and budget. Our AI engine scans live auction inventory and surfaces the best-matched lots — ranked by fit score, value, and win probability.</p>
-  <div class="hero-actions">
-    <button class="btn btn-blue" onclick="runAI()">🤖 Get My Recommendations</button>
-    <a href="listings.html" class="btn btn-ghost">Browse All Listings</a>
-  </div>
-</section>
-
-<!-- ── PREFERENCE INPUT ── -->
-<div style="background:var(--white);border-bottom:1px solid var(--g200);padding:28px 0">
-  <div style="max-width:780px;margin:0 auto;padding:0 28px">
-
-    <div class="input-label">Vehicle Type</div>
-    <div class="pref-row">
-      <button class="pref-chip on" onclick="toggleChip(this)">🏍️ 2-Wheeler</button>
-      <button class="pref-chip" onclick="toggleChip(this)">🛺 3-Wheeler</button>
-      <button class="pref-chip on" onclick="toggleChip(this)">🚗 4-Wheeler</button>
-    </div>
-
-    <div class="input-label" style="margin-top:16px">Fuel Type</div>
-    <div class="pref-row">
-      <button class="pref-chip on" onclick="toggleChip(this)">⛽ Petrol</button>
-      <button class="pref-chip on" onclick="toggleChip(this)">🔋 Electric</button>
-      <button class="pref-chip" onclick="toggleChip(this)">💨 Diesel</button>
-      <button class="pref-chip" onclick="toggleChip(this)">🟢 CNG</button>
-    </div>
-
-    <div class="input-label" style="margin-top:16px">Condition</div>
-    <div class="pref-row">
-      <button class="pref-chip on" onclick="toggleChip(this)">✅ Excellent</button>
-      <button class="pref-chip on" onclick="toggleChip(this)">👍 Good</button>
-      <button class="pref-chip" onclick="toggleChip(this)">🔧 Fair</button>
-    </div>
-
-    <div class="input-label" style="margin-top:16px">Max Budget</div>
-    <div class="budget-row">
-      <input type="text" class="budget-input" id="budgetInput" placeholder="e.g. ₹5,00,000" value="₹8,00,000"/>
-      <select class="budget-input" style="flex:0;width:160px">
-        <option>Any City</option>
-        <option>Mumbai</option>
-        <option>Delhi</option>
-        <option>Bangalore</option>
-        <option>Chennai</option>
-        <option>Hyderabad</option>
-        <option>Pune</option>
-      </select>
-      <button class="run-btn" id="runBtn" onclick="runAI()">
-        <span class="spin">⏳</span>
-        <span class="lbl">🤖 Get Recommendations</span>
-      </button>
-    </div>
+<div class="hero">
+  <div class="hero-badge">✨ Powered by AI</div>
+  <h1>Your Personal<br><span>Auction Scout</span></h1>
+  <p class="hero-sub">Tell Hammerly what you're looking for — vehicle type, fuel, budget — and the AI scans every live lot to find your best matches, ranked by how well they fit you.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-val">18</div><div class="hero-stat-lbl">Live Lots</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">7</div><div class="hero-stat-lbl">Match Signals</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">&lt; 3s</div><div class="hero-stat-lbl">Analysis Time</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">97%</div><div class="hero-stat-lbl">Top Match Score</div></div>
   </div>
 </div>
 
-<!-- ── RESULTS ── -->
-<div class="section" id="results-section" style="display:none">
-  <div class="section-hdr">
-    <div>
-      <div class="section-title">Your Matched Vehicles</div>
-      <div class="section-sub" id="result-sub">Ranked by AI fit score</div>
-    </div>
-    <span style="font-size:12px;font-weight:700;color:var(--purple);background:var(--purple-l);padding:4px 12px;border-radius:3px">6 matches found</span>
-  </div>
-  <div class="cards-grid" id="rec-grid"></div>
-</div>
-
-<!-- ── WHY AI ── -->
-<div style="background:var(--white);border-top:1px solid var(--g200);border-bottom:1px solid var(--g200);padding:8px 0">
-  <div class="section">
-    <div class="section-hdr">
-      <div class="section-title">How the AI Works</div>
-    </div>
-    <div class="why-grid">
-      <div class="why-card">
-        <div class="why-icon">🧠</div>
-        <div class="why-title">Preference Matching</div>
-        <div class="why-desc">Scores every live lot against your selected vehicle type, fuel, condition, and location preferences.</div>
+<div class="hiw-section">
+  <div class="hiw-inner">
+    <div class="section-label">How It Works</div>
+    <div class="section-title">AI Matching in 3 Steps</div>
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="hiw-step-icon">🎯</div>
+        <div class="hiw-num">1</div>
+        <h3>Set Your Preferences</h3>
+        <p>Toggle vehicle types, fuel, transmission, budget, and preferred cities. Every chip you select sharpens the AI's filter.</p>
       </div>
-      <div class="why-card">
-        <div class="why-icon">📊</div>
-        <div class="why-title">Value Analysis</div>
-        <div class="why-desc">Compares current bid against estimated market value to surface underpriced opportunities first.</div>
+      <div class="hiw-step">
+        <div class="hiw-step-icon">🤖</div>
+        <div class="hiw-num">2</div>
+        <h3>AI Scores Every Lot</h3>
+        <p>The engine checks each of the 18 live lots against your 7 preferences — type, fuel, transmission, city, budget, mileage, and year.</p>
       </div>
-      <div class="why-card">
-        <div class="why-icon">🎯</div>
-        <div class="why-title">Win Probability</div>
-        <div class="why-desc">Estimates how likely you are to win based on bid count, time remaining, and reserve gap.</div>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">⚡</div>
-        <div class="why-title">Auto Bid Ready</div>
-        <div class="why-desc">One tap to open any recommendation directly in Smart Auto Bid with your ceiling pre-filled.</div>
+      <div class="hiw-step">
+        <div class="hiw-step-icon">🏆</div>
+        <div class="hiw-num">3</div>
+        <h3>See Why Each Matched</h3>
+        <p>Results are ranked by score. Every card shows exactly which signals matched — not just a number, but a reason.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-logo">Hammer<span>ly</span></div>
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="listings.html">Listings</a>
-    <a href="auto-bid.html">Auto Bid</a>
-    <a href="bulk-bid.html">Bulk Bid</a>
-    <a href="estimated-price.html">Est. Sale Price</a>
-    <a href="robo-call.html">Robo Call</a>
-    <a href="swipe-bid.html">Swipe Bid</a>
+<div class="page-body">
+
+  <div>
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-hdr-icon" style="background:var(--purple-l)">🎯</div>
+        <div class="card-hdr-text">
+          <div class="card-hdr-title">Your Preferences</div>
+          <div class="card-hdr-sub">Select what you're looking for</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label>Vehicle Type</label>
+          <div class="chip-row" id="typeChips">
+            <button class="chip on" onclick="toggleChip(this)">Hatchback</button>
+            <button class="chip on" onclick="toggleChip(this)">Sedan</button>
+            <button class="chip" onclick="toggleChip(this)">SUV</button>
+            <button class="chip" onclick="toggleChip(this)">MUV</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Fuel Type</label>
+          <div class="chip-row" id="fuelChips">
+            <button class="chip on" onclick="toggleChip(this)">Petrol</button>
+            <button class="chip on" onclick="toggleChip(this)">Diesel</button>
+            <button class="chip" onclick="toggleChip(this)">CNG</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Transmission</label>
+          <div class="chip-row" id="transChips">
+            <button class="chip on" onclick="toggleChip(this)">Manual</button>
+            <button class="chip" onclick="toggleChip(this)">Automatic</button>
+            <button class="chip" onclick="toggleChip(this)">AMT</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Budget Range</label>
+          <div class="budget-row">
+            <input type="text" id="budgetMin" placeholder="Min ₹" value="2,00,000"/>
+            <input type="text" id="budgetMax" placeholder="Max ₹" value="6,00,000"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Preferred Cities</label>
+          <div class="chip-row" id="cityChips">
+            <button class="chip on" onclick="toggleChip(this)">Mumbai</button>
+            <button class="chip on" onclick="toggleChip(this)">Pune</button>
+            <button class="chip" onclick="toggleChip(this)">Delhi</button>
+            <button class="chip" onclick="toggleChip(this)">Bangalore</button>
+            <button class="chip" onclick="toggleChip(this)">Chennai</button>
+          </div>
+        </div>
+        <button class="btn-run" id="runBtn" onclick="runAI()">✨ Find My Matches</button>
+      </div>
+    </div>
   </div>
-  <div>© 2026 Hammerly · Prototype</div>
-</footer>
+
+  <div>
+    <div class="results-header">
+      <div class="results-title">Matched Lots</div>
+      <div class="results-meta" id="resultsMeta">Run the AI to see recommendations</div>
+    </div>
+
+    <div class="analyzing" id="analyzingBlock">
+      <div class="ai-spinner"></div>
+      <ul class="ai-steps" id="aiSteps">
+        <li id="step1">Scanning 18 live lots…</li>
+        <li id="step2">Matching vehicle type &amp; fuel…</li>
+        <li id="step3">Checking city &amp; budget fit…</li>
+        <li id="step4">Scoring mileage &amp; year…</li>
+        <li id="step5">Ranking results by match score…</li>
+      </ul>
+    </div>
+
+    <div class="result-empty" id="emptyBlock">
+      <div class="result-empty-icon">✨</div>
+      <h3>No results yet</h3>
+      <p>Set your preferences on the left and click "Find My Matches" to let the AI scout live lots for you.</p>
+    </div>
+
+    <div class="no-match" id="noMatchBlock">
+      <h3>⚠️ No lots matched your preferences</h3>
+      <p>Try broadening your filters — select more vehicle types, add more cities, or raise your budget ceiling.</p>
+    </div>
+
+    <div class="result-grid" id="resultGrid" style="display:none"></div>
+  </div>
+
+</div>
 
 <script>
-  function toggleChip(el) {
-    el.classList.toggle('on');
-  }
+const VEHICLES = [
+  // Hatchbacks
+  {id:1, lot:'LOT-4821', name:'Maruti Swift VXi', year:2022, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:35200,  price:370000, bank:'HDFC',  cond:'Good'},
+  {id:2, lot:'LOT-3904', name:'Hyundai i20 Sportz', year:2021, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Pune',      km:42100,  price:415000, bank:'ICICI', cond:'Good'},
+  {id:3, lot:'LOT-5102', name:'Maruti Baleno Delta', year:2022, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:28400,  price:448000, bank:'SBI',   cond:'Excellent'},
+  {id:4, lot:'LOT-4201', name:'Tata Tiago XZ+',     year:2021, type:'Hatchback', fuel:'Petrol', trans:'AMT',       city:'Pune',      km:38900,  price:298000, bank:'Axis',  cond:'Good'},
+  {id:5, lot:'LOT-3288', name:'VW Polo Comfortline', year:2019, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Delhi',     km:61000,  price:278000, bank:'HDFC',  cond:'Fair'},
+  {id:6, lot:'LOT-4502', name:'Maruti Swift ZDi',   year:2020, type:'Hatchback', fuel:'Diesel', trans:'Manual',    city:'Mumbai',    km:55000,  price:340000, bank:'ICICI', cond:'Good'},
+  {id:7, lot:'LOT-3701', name:'Hyundai i20 Active', year:2019, type:'Hatchback', fuel:'Diesel', trans:'Manual',    city:'Chennai',   km:68000,  price:258000, bank:'SBI',   cond:'Fair'},
+  // Sedans
+  {id:8, lot:'LOT-3711', name:'Honda City V MT',     year:2020, type:'Sedan',     fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:58400,  price:485000, bank:'HDFC',  cond:'Good'},
+  {id:9, lot:'LOT-5201', name:'Maruti Dzire ZXi+',  year:2021, type:'Sedan',     fuel:'Petrol', trans:'Manual',    city:'Pune',      km:47300,  price:390000, bank:'Axis',  cond:'Good'},
+  {id:10,lot:'LOT-4608', name:'Hyundai Verna SX',   year:2021, type:'Sedan',     fuel:'Petrol', trans:'Automatic', city:'Mumbai',    km:44000,  price:575000, bank:'ICICI', cond:'Excellent'},
+  {id:11,lot:'LOT-3802', name:'Toyota Yaris G CVT', year:2020, type:'Sedan',     fuel:'Petrol', trans:'Automatic', city:'Bangalore', km:51000,  price:515000, bank:'HDFC',  cond:'Good'},
+  {id:12,lot:'LOT-4705', name:'Maruti Ciaz Alpha',  year:2020, type:'Sedan',     fuel:'CNG',    trans:'Manual',    city:'Delhi',     km:62000,  price:355000, bank:'SBI',   cond:'Good'},
+  // SUVs
+  {id:13,lot:'LOT-4901', name:'Tata Nexon XZ+ Petrol', year:2021, type:'SUV',    fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:39500,  price:640000, bank:'SBI',   cond:'Good'},
+  {id:14,lot:'LOT-5008', name:'Hyundai Creta SX Diesel',year:2020,type:'SUV',    fuel:'Diesel', trans:'Manual',    city:'Delhi',     km:62000,  price:720000, bank:'HDFC',  cond:'Good'},
+  {id:15,lot:'LOT-4305', name:'Kia Sonet HTX Diesel',   year:2021,type:'SUV',    fuel:'Diesel', trans:'Manual',    city:'Bangalore', km:35800,  price:685000, bank:'ICICI', cond:'Good'},
+  {id:16,lot:'LOT-5301', name:'Mahindra XUV300 W8',     year:2022,type:'SUV',    fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:22000,  price:820000, bank:'SBI',   cond:'Excellent'},
+  // MUV
+  {id:17,lot:'LOT-4102', name:'Maruti Ertiga VXi',  year:2021, type:'MUV',      fuel:'Petrol', trans:'Manual',    city:'Pune',      km:48000,  price:560000, bank:'HDFC',  cond:'Good'},
+  {id:18,lot:'LOT-3404', name:'Toyota Innova 2.4G', year:2019, type:'MUV',      fuel:'Diesel', trans:'Manual',    city:'Mumbai',    km:88000,  price:1050000,bank:'ICICI', cond:'Good'},
+];
 
-  const RECS = [
-    {id:1, title:'2022 Tata Nexon EV', sub:'Electric · Automatic · 22,100 km', lot:'AXS-1102 · Bangalore', img:'🚗', gradient:'g4', match:96, isTop:true,
-     reasons:['Electric — matches your fuel preference','Excellent condition','Well below your ₹8L budget'],
-     bid:1850000, score:96},
-    {id:2, title:'2022 Maruti Swift Dzire', sub:'Petrol · Manual · 31,200 km', lot:'SBI-892 · Lucknow', img:'🚗', gradient:'g3', match:91, isTop:false,
-     reasons:['Strong petrol match','Good condition, high bid activity (11 bids)','₹60K below reserve — high win probability'],
-     bid:520000, score:91},
-    {id:3, title:'2021 Toyota Fortuner', sub:'Diesel · Automatic · 62,000 km', lot:'HDF-2401 · Mumbai', img:'🚙', gradient:'g2', match:85, isTop:false,
-     reasons:['Premium segment, high resale value','Ending soon — strong urgency signal','HDFC Bank lot — verified clean title'],
-     bid:2650000, score:85},
-    {id:4, title:'2022 TVS Apache RTR 200', sub:'Petrol · Manual · 18,400 km', lot:'HDF-774 · Ahmedabad', img:'🏍️', gradient:'g1', match:79, isTop:false,
-     reasons:['Excellent condition, low mileage','2-Wheeler within budget','High reserve gap — low competition'],
-     bid:95000, score:79},
-    {id:5, title:'2021 Hyundai i20', sub:'Petrol · Manual · 38,400 km', lot:'ICI-739 · Kolkata', img:'🚗', gradient:'g5', match:74, isTop:false,
-     reasons:['Petrol, Good condition','Competitive bid count (7 bids)','Ending in 1h 55m — act soon'],
-     bid:780000, score:74},
-    {id:6, title:'2021 Honda CB200R', sub:'Petrol · Manual · 19,200 km', lot:'ICI-442 · Chennai', img:'🏍️', gradient:'g6', match:68, isTop:false,
-     reasons:['Excellent condition, low km','High interest (9 bids)','Open auction — auto bid recommended'],
-     bid:110000, score:68},
-  ];
+function fmtPrice(n) {
+  if (n >= 100000) return '₹' + (n/100000).toFixed(2).replace(/\.?0+$/,'') + ' L';
+  return '₹' + n.toLocaleString('en-IN');
+}
+function fmtKm(n) { return n.toLocaleString('en-IN') + ' km'; }
 
-  const fmt = n => '₹' + n.toLocaleString('en-IN');
+function getOnChips(id) {
+  return Array.from(document.querySelectorAll('#'+id+' .chip.on')).map(c => c.textContent.trim());
+}
 
-  function runAI() {
-    const btn = document.getElementById('runBtn');
-    btn.classList.add('running');
-    btn.disabled = true;
+function parseBudget(str) {
+  return parseInt(str.replace(/[^0-9]/g,'')) || 0;
+}
 
+function scoreVehicle(v, prefs) {
+  let score = 0, maxScore = 0;
+  const reasons = [], misses = [];
+
+  // Type — weight 28
+  maxScore += 28;
+  if (!prefs.types.length || prefs.types.includes(v.type)) {
+    score += 28; reasons.push('✓ Type: ' + v.type);
+  } else { misses.push('✗ Type mismatch'); }
+
+  // Fuel — weight 22
+  maxScore += 22;
+  if (!prefs.fuels.length || prefs.fuels.includes(v.fuel)) {
+    score += 22; reasons.push('✓ Fuel: ' + v.fuel);
+  } else { misses.push('✗ Fuel mismatch'); }
+
+  // Transmission — weight 12
+  maxScore += 12;
+  if (!prefs.trans.length || prefs.trans.includes(v.trans)) {
+    score += 12; reasons.push('✓ Transmission: ' + v.trans);
+  } else { misses.push('✗ Transmission mismatch'); }
+
+  // City — weight 18
+  maxScore += 18;
+  if (!prefs.cities.length || prefs.cities.includes(v.city)) {
+    score += 18; reasons.push('✓ City: ' + v.city);
+  } else { misses.push('✗ Not in preferred city'); }
+
+  // Budget — weight 10
+  maxScore += 10;
+  if (v.price >= prefs.minBudget && v.price <= prefs.maxBudget) {
+    score += 10; reasons.push('✓ Budget: In range (' + fmtPrice(v.price) + ')');
+  } else if (v.price < prefs.minBudget) {
+    score += 6; reasons.push('✓ Budget: Below max (great deal)');
+  } else { misses.push('✗ Over budget'); }
+
+  // Mileage bonus — weight 6
+  maxScore += 6;
+  if (v.km < 30000) { score += 6; reasons.push('✓ Very low mileage (' + fmtKm(v.km) + ')'); }
+  else if (v.km < 50000) { score += 4; reasons.push('✓ Low mileage (' + fmtKm(v.km) + ')'); }
+  else if (v.km < 70000) { score += 2; }
+  else { misses.push('✗ High mileage (' + fmtKm(v.km) + ')'); }
+
+  // Year bonus — weight 4
+  maxScore += 4;
+  if (v.year >= 2022) { score += 4; reasons.push('✓ Recent: ' + v.year); }
+  else if (v.year >= 2020) { score += 2; }
+
+  const pct = Math.min(Math.round((score / maxScore) * 100), 97);
+  return { ...v, score: pct, reasons, misses };
+}
+
+function toggleChip(btn) { btn.classList.toggle('on'); }
+
+let analyzing = false;
+function runAI() {
+  if (analyzing) return;
+  analyzing = true;
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.textContent = '✨ Analyzing…';
+
+  document.getElementById('emptyBlock').style.display = 'none';
+  document.getElementById('resultGrid').style.display = 'none';
+  document.getElementById('noMatchBlock').classList.remove('show');
+  document.getElementById('analyzingBlock').classList.add('show');
+  document.getElementById('resultsMeta').textContent = 'Scanning live lots…';
+
+  ['step1','step2','step3','step4','step5'].forEach(id => {
+    document.getElementById(id).classList.remove('done');
+  });
+
+  const steps = ['step1','step2','step3','step4','step5'];
+  steps.forEach((id, i) => {
     setTimeout(() => {
-      btn.classList.remove('running');
-      btn.disabled = false;
-      renderRecs();
-    }, 1400);
+      document.getElementById(id).classList.add('done');
+    }, 420 * (i + 1));
+  });
+
+  setTimeout(() => {
+    analyzing = false;
+    btn.disabled = false;
+    btn.textContent = '✨ Find My Matches';
+    document.getElementById('analyzingBlock').classList.remove('show');
+    renderResults();
+  }, 2600);
+}
+
+function renderResults() {
+  const prefs = {
+    types: getOnChips('typeChips'),
+    fuels: getOnChips('fuelChips'),
+    trans: getOnChips('transChips'),
+    cities: getOnChips('cityChips'),
+    minBudget: parseBudget(document.getElementById('budgetMin').value),
+    maxBudget: parseBudget(document.getElementById('budgetMax').value) || 9999999,
+  };
+
+  const scored = VEHICLES
+    .map(v => scoreVehicle(v, prefs))
+    .filter(v => v.score >= 42)
+    .sort((a, b) => b.score - a.score);
+
+  const grid = document.getElementById('resultGrid');
+  const noMatch = document.getElementById('noMatchBlock');
+
+  if (!scored.length) {
+    noMatch.classList.add('show');
+    grid.style.display = 'none';
+    document.getElementById('resultsMeta').textContent = '0 lots matched — try broadening filters';
+    return;
   }
 
-  function renderRecs() {
-    const grid = document.getElementById('rec-grid');
-    const section = document.getElementById('results-section');
-    section.style.display = 'block';
-    section.scrollIntoView({behavior:'smooth', block:'start'});
+  grid.innerHTML = '';
+  scored.forEach((v, i) => {
+    const rankClass = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : '';
+    const bc = v.score >= 88 ? 'gold' : v.score >= 72 ? 'purple' : 'blue';
+    const bl = v.score >= 88 ? '★ ' + v.score + '% Match' : v.score + '% Match';
+    const bid = fmtPrice(v.price);
+    const estLow = fmtPrice(Math.round(v.price * 0.95));
+    const estHigh = fmtPrice(Math.round(v.price * 1.10));
+    const condColor = v.cond === 'Excellent' ? 'var(--green)' : v.cond === 'Fair' ? 'var(--amber)' : 'var(--g600)';
+    const reasonHtml = v.reasons.map(r => `<span class="reason-tag">${r}</span>`).join('');
+    const missHtml = v.misses.map(r => `<span class="miss-tag">${r}</span>`).join('');
 
-    grid.innerHTML = RECS.map((r, i) => `
-      <div class="rec-card${r.isTop ? ' top-pick' : ''} fade-in" style="animation-delay:${i * 0.07}s">
-        <div class="rec-img ${r.gradient}">
-          ${r.img}
-          <span class="match-badge">${r.match}% match</span>
-          ${r.isTop ? '<span class="top-badge">⭐ Top Pick</span>' : ''}
-        </div>
-        <div class="rec-body">
-          <div class="rec-lot">${r.lot}</div>
-          <div class="rec-title">${r.title}</div>
-          <div class="rec-sub">${r.sub}</div>
-          <div class="rec-reasons">
-            ${r.reasons.map(rx => `<div class="reason-row"><div class="reason-dot"></div>${rx}</div>`).join('')}
+    grid.innerHTML += `
+      <div class="result-card">
+        <div class="result-card-top">
+          <div class="rank-num ${rankClass}">${i+1}</div>
+          <div class="result-card-main">
+            <div class="result-card-lot">${v.lot} · ${v.bank} Repossession</div>
+            <div class="result-card-name">${v.year} ${v.name}</div>
+            <div class="result-card-meta">${fmtKm(v.km)} · ${v.fuel} · ${v.trans} · ${v.city} · <span style="color:${condColor};font-weight:700">${v.cond}</span></div>
+            <span class="match-badge ${bc}">${bl}</span>
           </div>
-          <div class="rec-bid-row">
-            <div>
-              <div class="rec-bid-lbl">Current Bid</div>
-              <div class="rec-bid-amt">${fmt(r.bid)}</div>
-            </div>
-            <div class="rec-score-bar">
-              <div class="rec-score-lbl">Fit Score</div>
-              <div class="rec-score-track">
-                <div class="rec-score-fill" style="width:${r.score}%"></div>
-              </div>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;margin-top:12px">
-            <a href="auto-bid.html" style="flex:1;padding:8px;background:var(--blue-d);color:#fff;border-radius:var(--r);font-size:12px;font-weight:700;text-align:center;display:block">⚡ Auto Bid</a>
-            <a href="bulk-bid.html" style="flex:1;padding:8px;background:var(--white);color:var(--blue-d);border:1.5px solid var(--blue-d);border-radius:var(--r);font-size:12px;font-weight:700;text-align:center;display:block">📦 Bulk Add</a>
+          <div class="result-card-price">
+            <div class="result-card-bid">${bid}</div>
+            <div class="result-card-est">Est. ${estLow}–${estHigh}</div>
           </div>
         </div>
-      </div>
-    `).join('');
-  }
+        <div class="result-card-reasons">${reasonHtml}${missHtml}</div>
+        <div class="result-card-actions">
+          <button class="rc-btn rc-btn-primary" onclick="placeBid(${v.id})">Place Bid</button>
+          <button class="rc-btn rc-btn-secondary" onclick="viewLot(${v.id})">View Lot</button>
+          <button class="rc-btn rc-btn-secondary" onclick="watchLot(this, ${v.id})">Watch</button>
+        </div>
+      </div>`;
+  });
 
-  // Auto-run on load for demo
-  setTimeout(runAI, 600);
+  grid.style.display = 'flex';
+  document.getElementById('resultsMeta').textContent = scored.length + ' of 18 lots matched · Ranked by preference fit';
+}
+
+function placeBid(id) {
+  const v = VEHICLES.find(x => x.id === id);
+  alert(`Opening bid for ${v.year} ${v.name}\n\nCurrent bid: ${fmtPrice(v.price)}\nNext bid: ${fmtPrice(v.price + 5000)}\n\n(This would open the bid drawer in the full platform)`);
+}
+function viewLot(id) {
+  const v = VEHICLES.find(x => x.id === id);
+  alert(`Lot details: ${v.lot}\n${v.year} ${v.name}\n${fmtKm(v.km)} · ${v.fuel} · ${v.trans} · ${v.city}\nCondition: ${v.cond}\nFinancing bank: ${v.bank}`);
+}
+function watchLot(btn, id) {
+  btn.textContent = '★ Watching';
+  btn.style.color = 'var(--purple)';
+  btn.style.borderColor = 'var(--purple)';
+}
 </script>
 </body>
 </html>

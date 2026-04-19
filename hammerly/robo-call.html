@@ -3,369 +3,475 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Hammerly — Robo Call</title>
+<title>Hammerly — Robo Call Engine</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;--blue-m:#1a6fc4;
+  --teal:#0d9488;--teal-l:#e6faf9;--teal-d:#0f766e;
   --green:#1a8a3c;--green-l:#e6f5eb;
   --red:#c0392b;--red-l:#fdecea;
   --amber:#d97706;--amber-l:#fffbeb;
-  --teal:#0d9488;--teal-l:#e6faf9;
-  --purple:#7c3aed;--purple-l:#f3f0ff;
+  --purple:#7c3aed;--purple-l:#f3f0ff;--purple-d:#5b21b6;
   --gold:#f0c040;
-  --g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;--g400:#9ca3af;
-  --g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --g50:#f9fafb;--g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;
+  --g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
   --white:#fff;
-  --hh:56px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.1);
-  --shadow-md:0 4px 14px rgba(0,0,0,.12);
-  --shadow-lg:0 8px 30px rgba(0,0,0,.16);
-  --r:4px;--rm:6px;
+  --r:8px;--rm:12px;--rl:16px;
 }
-html{font-family:'Barlow',sans-serif;background:var(--g100);color:var(--g900);font-size:14px}
-body{min-height:100vh;display:flex;flex-direction:column}
-a{text-decoration:none;color:inherit}
-button{cursor:pointer;font-family:'Barlow',sans-serif;border:none;outline:none}
-input,select,textarea{font-family:'Barlow',sans-serif}
+body{font-family:'Barlow',sans-serif;background:#f4f5f8;color:var(--g900);min-height:100vh}
 
-/* ── HEADER ── */
-.hdr{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap;text-decoration:none}
-.logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px}
-.logo span{color:var(--gold)}
-.hdr-div{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
-.page-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:3px 10px;font-size:12px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.nav-link{padding:6px 13px;border-radius:var(--r);font-size:13px;font-weight:600;color:rgba(255,255,255,.65);transition:all .15s}
-.nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+/* NAV */
+nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;height:52px;position:sticky;top:0;z-index:100}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#fff;letter-spacing:.5px;margin-right:24px;text-decoration:none}
+.nav-brand span{color:var(--teal)}
+.nav-link{color:#aaa;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
+.nav-link:hover{color:#fff}
+.nav-link.active{color:var(--teal);border-bottom:2px solid var(--teal)}
 
-/* ── HERO ── */
-.hero{background:linear-gradient(135deg,var(--blue-d) 0%,#0d6e3a 100%);padding:52px 28px 56px;text-align:center;color:#fff;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 35%,rgba(26,138,60,.25) 0%,transparent 60%);pointer-events:none}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 16px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.05;letter-spacing:.3px;margin-bottom:14px}
-.hero h1 span{color:var(--gold)}
-.hero p{font-size:15px;color:rgba(255,255,255,.7);max-width:520px;margin:0 auto 32px;line-height:1.65}
-.hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-top:8px}
-.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:var(--gold);display:block}
-.stat-lbl{font-size:11px;color:rgba(255,255,255,.6);font-weight:500;letter-spacing:.3px}
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a1628 0%,#0f2a4a 50%,#0a2a27 100%);color:#fff;padding:56px 32px 48px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(13,148,136,.2);border:1px solid rgba(13,148,136,.4);border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5eead4;margin-bottom:20px}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2.8rem;letter-spacing:.02em;line-height:1.1;margin-bottom:12px}
+.hero h1 span{color:#5eead4}
+.hero-sub{color:#94a3b8;font-size:1rem;max-width:520px;margin:0 auto 36px}
+.hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;color:#5eead4;line-height:1}
+.hero-stat-lbl{font-size:.75rem;color:#64748b;margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
 
-/* ── CALL DASHBOARD ── */
-.dashboard{max-width:1160px;margin:0 auto;padding:32px 28px;display:grid;grid-template-columns:340px 1fr;gap:20px}
-@media(max-width:900px){.dashboard{grid-template-columns:1fr}}
+/* HOW IT WORKS */
+.hiw-section{background:#fff;border-bottom:1px solid var(--g200);padding:40px 32px}
+.hiw-inner{max-width:800px;margin:0 auto}
+.section-label{font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.6rem;color:var(--g900);margin-bottom:28px}
+.hiw-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.hiw-step{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rl);padding:22px 20px;position:relative}
+.hiw-num{width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.hiw-step h3{font-size:.95rem;font-weight:700;color:var(--g900);margin-bottom:6px}
+.hiw-step p{font-size:.8rem;color:var(--g600);line-height:1.5}
+.hiw-step-icon{font-size:1.6rem;margin-bottom:10px}
 
-/* ── COMPOSE PANEL ── */
-.compose-panel{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);padding:24px;align-self:start}
-.panel-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--g900);margin-bottom:18px;display:flex;align-items:center;gap:8px}
-.field-label{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
-.field-input{width:100%;padding:9px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:13px;font-weight:500;color:var(--g900);outline:none;transition:border-color .15s;margin-bottom:14px}
-.field-input:focus{border-color:var(--blue)}
-.field-select{width:100%;padding:9px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:13px;font-weight:500;color:var(--g900);outline:none;background:var(--white);appearance:none;cursor:pointer;margin-bottom:14px}
-.script-box{width:100%;padding:10px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:12px;color:var(--g700);outline:none;resize:vertical;min-height:90px;line-height:1.55;margin-bottom:14px}
-.script-box:focus{border-color:var(--blue)}
-.call-btn{width:100%;padding:11px;background:var(--green);color:#fff;border-radius:var(--r);font-size:14px;font-weight:700;border:none;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.call-btn:hover{background:#156a2e}
-.call-btn.calling{background:var(--red);animation:callPulse 1.2s infinite}
-@keyframes callPulse{0%,100%{opacity:1}50%{opacity:.75}}
+/* MAIN LAYOUT */
+.page-body{max-width:960px;margin:0 auto;padding:32px 24px;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
 
-/* ── LOG PANEL ── */
-.log-panel{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;display:flex;flex-direction:column}
-.log-hdr{padding:16px 20px;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between}
-.log-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--g900)}
-.log-filter{display:flex;gap:6px}
-.log-tab{padding:4px 12px;border-radius:var(--r);border:1.5px solid var(--g200);font-size:11px;font-weight:700;color:var(--g600);background:var(--white);cursor:pointer;transition:all .15s}
-.log-tab.on{background:var(--blue-l);border-color:var(--blue);color:var(--blue)}
-.log-list{overflow-y:auto;max-height:480px}
-.log-item{padding:14px 20px;border-bottom:1px solid var(--g200);display:flex;align-items:flex-start;gap:14px;transition:background .12s}
-.log-item:hover{background:var(--g100)}
-.log-item:last-child{border-bottom:none}
-.log-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.av-green{background:var(--green-l);color:var(--green)}
-.av-amber{background:var(--amber-l);color:var(--amber)}
-.av-red{background:var(--red-l);color:var(--red)}
-.av-blue{background:var(--blue-l);color:var(--blue)}
-.log-body{flex:1;min-width:0}
-.log-name{font-size:13px;font-weight:700;color:var(--g900);margin-bottom:2px}
-.log-msg{font-size:12px;color:var(--g600);line-height:1.5}
-.log-meta{font-size:10px;color:var(--g400);margin-top:4px;display:flex;align-items:center;gap:8px}
-.log-status{font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px}
-.st-answered{background:var(--green-l);color:var(--green)}
-.st-missed{background:var(--amber-l);color:var(--amber)}
-.st-failed{background:var(--red-l);color:var(--red)}
-.st-scheduled{background:var(--blue-l);color:var(--blue)}
-.log-dur{font-size:10px;color:var(--g400)}
+/* CARD BASE */
+.card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);overflow:hidden}
+.card-hdr{padding:16px 20px;border-bottom:1px solid var(--g200);display:flex;align-items:center;gap:10px}
+.card-hdr-icon{width:32px;height:32px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.card-hdr-text{}
+.card-hdr-title{font-size:.9rem;font-weight:700;color:var(--g900)}
+.card-hdr-sub{font-size:.75rem;color:var(--g500);margin-top:2px}
+.card-body{padding:20px}
 
-/* ── LIVE CALL INDICATOR ── */
-.live-call-bar{background:var(--green);color:#fff;padding:12px 20px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;display:none}
-.live-call-bar.active{display:flex}
-.pulse-ring{width:12px;height:12px;border-radius:50%;background:#fff;position:relative;flex-shrink:0}
-.pulse-ring::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(255,255,255,.5);animation:ringPulse 1.2s infinite}
-@keyframes ringPulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.8);opacity:0}}
-.live-dur{margin-left:auto;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;letter-spacing:.5px}
+/* PHONE SETUP */
+.phone-field{margin-bottom:16px}
+.phone-field label{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--g600);display:block;margin-bottom:6px}
+.phone-input-row{display:flex;gap:8px}
+.phone-input-row input{flex:1;border:1.5px solid var(--g300);border-radius:var(--r);padding:10px 14px;font-family:inherit;font-size:.9rem;color:var(--g900);transition:border-color .15s}
+.phone-input-row input:focus{outline:none;border-color:var(--teal)}
+.btn-test{background:var(--teal-l);color:var(--teal-d);border:1.5px solid rgba(13,148,136,.3);border-radius:var(--r);padding:10px 16px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s}
+.btn-test:hover{background:rgba(13,148,136,.15)}
+.btn-test.calling{background:var(--teal);color:#fff;animation:pulse-btn 1s ease-in-out infinite}
+@keyframes pulse-btn{0%,100%{opacity:1}50%{opacity:.7}}
 
-/* ── WHY SECTION ── */
-.section{max-width:1160px;margin:0 auto;padding:32px 28px 40px}
-.section-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--g900);margin-bottom:20px}
-.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.feat-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);padding:22px 20px}
-.feat-icon{font-size:28px;margin-bottom:12px}
-.feat-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--g900);margin-bottom:6px}
-.feat-desc{font-size:12px;color:var(--g500);line-height:1.6}
+.test-result{background:var(--teal-l);border:1px solid rgba(13,148,136,.25);border-radius:var(--r);padding:10px 14px;font-size:.8rem;color:var(--teal-d);margin-top:10px;display:none}
+.test-result.show{display:flex;align-items:center;gap:8px}
 
-/* ── FOOTER ── */
-footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;margin-top:auto}
-.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:rgba(255,255,255,.7)}
-.footer-logo span{color:var(--gold)}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap}
-.footer-links a{color:rgba(255,255,255,.45);font-size:12px;font-weight:500;text-decoration:none}
-.footer-links a:hover{color:rgba(255,255,255,.8)}
+/* ALERT CARDS */
+.alerts-label{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--g500);margin-bottom:12px}
+.alert-card{border:1.5px solid var(--g200);border-radius:var(--rm);padding:14px 16px;margin-bottom:10px;transition:border-color .2s,background .2s;background:#fff}
+.alert-card.on{border-color:var(--teal);background:#fafffe}
+.alert-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:0}
+.alert-card-info{}
+.alert-card-name{font-size:.85rem;font-weight:700;color:var(--g900)}
+.alert-card-when{font-size:.75rem;color:var(--g500);margin-top:3px}
+.alert-card.on .alert-card-when{color:var(--teal-d)}
+.alert-card-preview{font-size:.75rem;color:var(--g500);font-style:italic;background:var(--g100);border-left:3px solid var(--g300);padding:8px 12px;border-radius:0 6px 6px 0;margin-top:10px;line-height:1.5;display:none}
+.alert-card.on .alert-card-preview{display:block;background:rgba(13,148,136,.05);border-left-color:var(--teal);color:var(--teal-d)}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeUp .3s ease forwards}
+/* TOGGLE */
+.toggle-wrap{flex-shrink:0;padding-top:2px}
+.toggle{position:relative;display:inline-block;width:38px;height:22px}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--g300);border-radius:11px;cursor:pointer;transition:.2s}
+.toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
+.toggle input:checked+.toggle-slider{background:var(--teal)}
+.toggle input:checked+.toggle-slider:before{transform:translateX(16px)}
+
+/* RIGHT COLUMN */
+.right-col{display:flex;flex-direction:column;gap:16px}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+.stat-box{background:var(--g50);border:1px solid var(--g200);border-radius:var(--r);padding:14px 12px;text-align:center}
+.stat-box-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;line-height:1}
+.stat-box-lbl{font-size:.7rem;color:var(--g500);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.stat-box.teal .stat-box-val{color:var(--teal)}
+.stat-box.green .stat-box-val{color:var(--green)}
+.stat-box.red .stat-box-val{color:var(--red)}
+.stat-box.amber .stat-box-val{color:var(--amber)}
+
+/* CALL LOG */
+.call-log{list-style:none}
+.call-log li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--g100)}
+.call-log li:last-child{border-bottom:none}
+.call-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.call-dot.answered{background:var(--green)}
+.call-dot.missed{background:var(--red)}
+.call-dot.sms{background:var(--amber)}
+.call-info{flex:1}
+.call-type{font-size:.8rem;font-weight:600;color:var(--g900)}
+.call-vehicle{font-size:.73rem;color:var(--g500)}
+.call-time{font-size:.7rem;color:var(--g400);flex-shrink:0}
+
+/* STATUS BAR */
+.status-bar{display:flex;align-items:center;gap:8px;background:rgba(13,148,136,.08);border:1px solid rgba(13,148,136,.2);border-radius:var(--r);padding:10px 14px;margin-bottom:16px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.status-text{font-size:.8rem;font-weight:600;color:var(--teal-d)}
+
+/* SAVE BTN */
+.btn-save{width:100%;background:var(--teal);color:#fff;border:none;border-radius:var(--r);padding:12px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .15s;margin-top:4px}
+.btn-save:hover{background:var(--teal-d)}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .page-body{grid-template-columns:1fr}
+  .hiw-steps{grid-template-columns:1fr}
+  .hero h1{font-size:2rem}
+  .hero-stats{gap:24px}
+}
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
-<header class="hdr">
-  <a href="index.html" class="logo">
-    <div class="logo-icon">🏛</div>
-    Hammer<span>ly</span>
-  </a>
-  <div class="hdr-div"></div>
-  <div class="page-badge">📞 Robo Call</div>
-  <div class="hdr-right">
-    <a href="listings.html" class="nav-link">Listings</a>
-    <a href="auto-bid.html" class="nav-link">Auto Bid</a>
-    <a href="recommendation.html" class="nav-link">AI Recs</a>
-    <a href="estimated-price.html" class="nav-link">Est. Price</a>
-  </div>
-</header>
+<nav>
+  <a href="index.html" class="nav-brand">HAMMER<span>LY</span></a>
+  <a href="index.html" class="nav-link">Listings</a>
+  <a href="search.html" class="nav-link">Search</a>
+  <a href="recommendation.html" class="nav-link">AI Match</a>
+  <a href="robo-call.html" class="nav-link active">Robo Call</a>
+  <a href="estimated-price.html" class="nav-link">Price Engine</a>
+</nav>
 
-<!-- ── LIVE CALL BAR ── -->
-<div class="live-call-bar" id="liveBar">
-  <div class="pulse-ring"></div>
-  <span>Active call — <strong id="callRecipient">Rajesh Kumar</strong> · 2022 Hyundai Creta · Lot KOT-667</span>
-  <span class="live-dur" id="liveDur">00:00</span>
-</div>
-
-<!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-eyebrow">Automated Outreach</div>
-  <h1>Robo Call <span>Engine</span></h1>
-  <p>Automatically notify bidders about outbid events, auction closures, payment reminders, and lot updates — via AI-driven voice calls at scale.</p>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">📞 Automated Alert Engine</div>
+  <h1>Never Miss a<br><span>Critical Auction Moment</span></h1>
+  <p class="hero-sub">Hammerly's Robo Call Engine monitors auctions 24/7 and calls your phone the instant something important happens — so you can act fast, even when you're away from the screen.</p>
   <div class="hero-stats">
-    <div><span class="stat-val">2,847</span><span class="stat-lbl">Calls Today</span></div>
-    <div><span class="stat-val">91%</span><span class="stat-lbl">Answer Rate</span></div>
-    <div><span class="stat-val">1.8m</span><span class="stat-lbl">Avg Duration</span></div>
-    <div><span class="stat-val">₹0.60</span><span class="stat-lbl">Cost Per Call</span></div>
-  </div>
-</section>
-
-<!-- ── DASHBOARD ── -->
-<div class="dashboard">
-
-  <!-- Compose -->
-  <div class="compose-panel">
-    <div class="panel-title">📞 New Call Campaign</div>
-
-    <div class="field-label">Call Type</div>
-    <select class="field-select" id="callType" onchange="updateScript()">
-      <option value="outbid">🔴 Outbid Alert</option>
-      <option value="reminder">⏰ Auction Ending Reminder</option>
-      <option value="winner">🏆 Winner Notification</option>
-      <option value="payment">💳 Payment Due Reminder</option>
-      <option value="custom">✏️ Custom Message</option>
-    </select>
-
-    <div class="field-label">Lot / Vehicle</div>
-    <select class="field-select">
-      <option>KOT-667 · Hyundai Creta · Pune</option>
-      <option>HDF-2401 · Toyota Fortuner · Mumbai</option>
-      <option>SBI-892 · Maruti Swift Dzire · Lucknow</option>
-      <option>ICI-739 · Hyundai i20 · Kolkata</option>
-      <option>AXS-881 · Royal Enfield Classic 350 · Bangalore</option>
-    </select>
-
-    <div class="field-label">Recipients</div>
-    <select class="field-select">
-      <option>All registered bidders on this lot (12)</option>
-      <option>Outbid bidders only (8)</option>
-      <option>Watchlist holders (5)</option>
-      <option>Specific number</option>
-    </select>
-
-    <div class="field-label">Voice Script</div>
-    <textarea class="script-box" id="scriptBox">Hello, this is Hammerly. You have been outbid on the 2022 Hyundai Creta, Lot KOT-667 in Pune. The current highest bid is ₹14,00,000. The auction closes in 2 hours. To place a new bid, visit the Hammerly platform or press 1 now to be connected.</textarea>
-
-    <div class="field-label">Schedule</div>
-    <select class="field-select">
-      <option>Send immediately</option>
-      <option>In 15 minutes</option>
-      <option>In 1 hour</option>
-      <option>Custom time</option>
-    </select>
-
-    <button class="call-btn" id="callBtn" onclick="startCampaign()">
-      <span id="callBtnIcon">📞</span>
-      <span id="callBtnText">Launch Call Campaign</span>
-    </button>
-  </div>
-
-  <!-- Log -->
-  <div class="log-panel">
-    <div id="liveCallBanner" style="display:none;padding:12px 20px;background:var(--green-l);border-bottom:1px solid #b7dfc5;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;color:var(--green)">
+    <div class="hero-stat">
+      <div class="hero-stat-val">&lt; 4s</div>
+      <div class="hero-stat-lbl">Alert Response</div>
     </div>
-    <div class="log-hdr">
-      <div class="log-title">Call Log</div>
-      <div class="log-filter">
-        <button class="log-tab on" onclick="filterLog('all',this)">All</button>
-        <button class="log-tab" onclick="filterLog('answered',this)">Answered</button>
-        <button class="log-tab" onclick="filterLog('missed',this)">Missed</button>
-        <button class="log-tab" onclick="filterLog('scheduled',this)">Scheduled</button>
-      </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">94%</div>
+      <div class="hero-stat-lbl">Answer Rate</div>
     </div>
-    <div class="log-list" id="logList"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">5</div>
+      <div class="hero-stat-lbl">Alert Types</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">24/7</div>
+      <div class="hero-stat-lbl">Monitoring</div>
+    </div>
   </div>
 </div>
 
-<!-- ── FEATURES ── -->
-<div style="background:var(--white);border-top:1px solid var(--g200);border-bottom:1px solid var(--g200);padding:8px 0">
-  <div class="section">
-    <div class="section-title">Platform Capabilities</div>
-    <div class="feature-grid">
-      <div class="feat-card">
-        <div class="feat-icon">🔴</div>
-        <div class="feat-title">Outbid Alerts</div>
-        <div class="feat-desc">Instantly call bidders the moment they are outbid, giving them time to respond before the auction closes.</div>
+<!-- HOW IT WORKS -->
+<div class="hiw-section">
+  <div class="hiw-inner">
+    <div class="section-label">How It Works</div>
+    <div class="section-title">3 Steps to Never Miss a Bid</div>
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="hiw-step-icon">📱</div>
+        <div class="hiw-num">1</div>
+        <h3>Save Your Number</h3>
+        <p>Enter your mobile number below. Hammerly stores it securely and uses it exclusively for auction alerts you enable.</p>
       </div>
-      <div class="feat-card">
-        <div class="feat-icon">⏰</div>
-        <div class="feat-title">Countdown Reminders</div>
-        <div class="feat-desc">Automated calls 2 hours, 30 minutes, and 5 minutes before an auction ends to maximise bid activity.</div>
+      <div class="hiw-step">
+        <div class="hiw-step-icon">🔔</div>
+        <div class="hiw-num">2</div>
+        <h3>Choose Your Alerts</h3>
+        <p>Toggle on only the events that matter to you — outbid, won, reminders, or a daily digest. Each card shows exactly what you'll hear.</p>
       </div>
-      <div class="feat-card">
-        <div class="feat-icon">🏆</div>
-        <div class="feat-title">Winner Notifications</div>
-        <div class="feat-desc">Congratulate winners and guide them through next steps — payment, paperwork, and vehicle pickup.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">💳</div>
-        <div class="feat-title">Payment Reminders</div>
-        <div class="feat-desc">Escalating call sequences for overdue payments — reducing defaults and improving bank recovery rates.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">🌐</div>
-        <div class="feat-title">Multi-language</div>
-        <div class="feat-desc">Calls delivered in Hindi, Marathi, Tamil, Telugu, Kannada, Bengali, and English — auto-detected by region.</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">📊</div>
-        <div class="feat-title">Live Analytics</div>
-        <div class="feat-desc">Real-time dashboards for answer rates, call duration, opt-outs, and conversion from call to bid.</div>
+      <div class="hiw-step">
+        <div class="hiw-step-icon">⚡</div>
+        <div class="hiw-num">3</div>
+        <h3>Get Called Instantly</h3>
+        <p>The moment your trigger fires, an automated call reaches you in under 4 seconds with clear vehicle details and next-step instructions.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-logo">Hammer<span>ly</span></div>
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="listings.html">Listings</a>
-    <a href="auto-bid.html">Auto Bid</a>
-    <a href="recommendation.html">AI Recs</a>
-    <a href="estimated-price.html">Est. Sale Price</a>
-    <a href="swipe-bid.html">Swipe Bid</a>
+<!-- MAIN BODY -->
+<div class="page-body">
+
+  <!-- LEFT: Phone Setup + Alert Cards -->
+  <div>
+
+    <!-- Phone Setup -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-hdr">
+        <div class="card-hdr-icon" style="background:var(--teal-l)">📱</div>
+        <div class="card-hdr-text">
+          <div class="card-hdr-title">Your Alert Number</div>
+          <div class="card-hdr-sub">Calls and SMS will be sent to this number</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="status-bar">
+          <div class="status-dot"></div>
+          <span class="status-text">Engine active — monitoring your watched lots</span>
+        </div>
+        <div class="phone-field">
+          <label>Mobile Number</label>
+          <div class="phone-input-row">
+            <input type="tel" id="phoneInput" placeholder="+91 98765 43210" value="+91 98765 43210"/>
+            <button class="btn-test" id="testBtn" onclick="testCall()">Test Call</button>
+          </div>
+        </div>
+        <div class="test-result" id="testResult">
+          <span>✅</span>
+          <span>Test call placed — you should receive it within 4 seconds.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert Cards -->
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-hdr-icon" style="background:#fef9e7">🔔</div>
+        <div class="card-hdr-text">
+          <div class="card-hdr-title">Alert Triggers</div>
+          <div class="card-hdr-sub">Toggle each event — preview shows the exact call script</div>
+        </div>
+      </div>
+      <div class="card-body">
+
+        <div class="alert-card on" id="ac-outbid">
+          <div class="alert-card-top">
+            <div class="alert-card-info">
+              <div class="alert-card-name">📞 Outbid Alert</div>
+              <div class="alert-card-when">Triggers: When someone outbids you on a watched lot</div>
+            </div>
+            <div class="toggle-wrap">
+              <label class="toggle"><input type="checkbox" checked onchange="toggleCard('outbid',this)"><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+          <div class="alert-card-preview">
+            "Hello, this is Hammerly. You have been outbid on Lot 4821 — 2022 Maruti Swift VXi. Current bid is ₹3,85,000. Auction closes in 8 minutes. Press 1 to place a counter-bid now, or visit Hammerly to act."
+          </div>
+        </div>
+
+        <div class="alert-card on" id="ac-won">
+          <div class="alert-card-top">
+            <div class="alert-card-info">
+              <div class="alert-card-name">🏆 Winner Notification</div>
+              <div class="alert-card-when">Triggers: When you win an auction lot</div>
+            </div>
+            <div class="toggle-wrap">
+              <label class="toggle"><input type="checkbox" checked onchange="toggleCard('won',this)"><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+          <div class="alert-card-preview">
+            "Congratulations from Hammerly! You have won Lot 4821 — 2022 Maruti Swift VXi at ₹3,70,000. Your payment window opens in 2 hours. Please log in to Hammerly to complete the purchase."
+          </div>
+        </div>
+
+        <div class="alert-card" id="ac-remind">
+          <div class="alert-card-top">
+            <div class="alert-card-info">
+              <div class="alert-card-name">⏰ Auction Starting Soon</div>
+              <div class="alert-card-when">Triggers: 15 minutes before a watched lot opens</div>
+            </div>
+            <div class="toggle-wrap">
+              <label class="toggle"><input type="checkbox" onchange="toggleCard('remind',this)"><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+          <div class="alert-card-preview">
+            "Reminder from Hammerly. Your watched auction — 2019 Honda City V MT — opens in 15 minutes at 2:30 PM. Starting bid is ₹2,90,000. Log in to Hammerly now to be ready."
+          </div>
+        </div>
+
+        <div class="alert-card" id="ac-sms">
+          <div class="alert-card-top">
+            <div class="alert-card-info">
+              <div class="alert-card-name">💬 Bid Confirmation SMS</div>
+              <div class="alert-card-when">Triggers: After every bid you place, sent as SMS</div>
+            </div>
+            <div class="toggle-wrap">
+              <label class="toggle"><input type="checkbox" onchange="toggleCard('sms',this)"><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+          <div class="alert-card-preview">
+            "HAMMERLY: Bid of ₹3,70,000 placed on Lot 4821 (2022 Maruti Swift). You are currently the highest bidder. Auction ends at 3:45 PM. Reply STOP to unsubscribe."
+          </div>
+        </div>
+
+        <div class="alert-card" id="ac-digest">
+          <div class="alert-card-top">
+            <div class="alert-card-info">
+              <div class="alert-card-name">🌅 Morning Digest Call</div>
+              <div class="alert-card-when">Triggers: Daily at 8:00 AM — summary of today's lots</div>
+            </div>
+            <div class="toggle-wrap">
+              <label class="toggle"><input type="checkbox" onchange="toggleCard('digest',this)"><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+          <div class="alert-card-preview">
+            "Good morning from Hammerly. You have 3 auctions today. Lot 4821 — Maruti Swift opens at 10 AM, Lot 3904 — Hyundai i20 at 1 PM, and Lot 5102 — Honda City at 3:30 PM. Have a great bidding day!"
+          </div>
+        </div>
+
+        <button class="btn-save" onclick="saveAlerts()">Save Alert Preferences</button>
+      </div>
+    </div>
+
   </div>
-  <div>© 2026 Hammerly · Prototype</div>
-</footer>
 
-<script>
-  const SCRIPTS = {
-    outbid:   'Hello, this is Hammerly. You have been outbid on the 2022 Hyundai Creta, Lot KOT-667 in Pune. The current highest bid is ₹14,00,000. The auction closes in 2 hours. To place a new bid, visit the Hammerly platform or press 1 now to be connected.',
-    reminder: 'Hello from Hammerly. Your watched lot — the 2022 Hyundai Creta in Pune — closes in 2 hours. Current bid is ₹14,00,000. Log in to Hammerly to place or update your bid before the auction ends.',
-    winner:   'Congratulations from Hammerly! You are the highest bidder on the 2022 Hyundai Creta, Lot KOT-667. Please complete payment within 48 hours to secure your vehicle. Press 1 to speak with our support team.',
-    payment:  'Hello, this is Hammerly with a payment reminder. Your winning bid for Lot KOT-667 is due today. Please complete the transfer to avoid forfeiture. Press 1 to confirm or 2 to request an extension.',
-    custom:   '',
-  };
+  <!-- RIGHT: Stats + Call Log -->
+  <div class="right-col">
 
-  function updateScript() {
-    const type = document.getElementById('callType').value;
-    document.getElementById('scriptBox').value = SCRIPTS[type] || '';
-  }
-
-  const LOG_DATA = [
-    {name:'Rajesh Kumar', phone:'+91 98765 43210', lot:'KOT-667 · Hyundai Creta', type:'Outbid Alert', status:'answered', dur:'1:42', time:'2 min ago', av:'av-red', emoji:'🔴'},
-    {name:'Priya Sharma', phone:'+91 98123 45678', lot:'HDF-2401 · Fortuner', type:'Ending Reminder', status:'answered', dur:'0:55', time:'8 min ago', av:'av-amber', emoji:'⏰'},
-    {name:'Anil Mehta', phone:'+91 99887 76655', lot:'SBI-892 · Swift Dzire', type:'Outbid Alert', status:'missed', dur:'—', time:'15 min ago', av:'av-amber', emoji:'🔴'},
-    {name:'Sunita Rao', phone:'+91 91234 56789', lot:'ICI-739 · Hyundai i20', type:'Winner Notification', status:'answered', dur:'2:18', time:'22 min ago', av:'av-green', emoji:'🏆'},
-    {name:'Vikram Nair', phone:'+91 94567 89012', lot:'AXS-881 · RE Classic', type:'Payment Reminder', status:'answered', dur:'1:05', time:'35 min ago', av:'av-green', emoji:'💳'},
-    {name:'Deepa Iyer', phone:'+91 98034 12345', lot:'KOT-667 · Hyundai Creta', type:'Outbid Alert', status:'failed', dur:'—', time:'41 min ago', av:'av-red', emoji:'🔴'},
-    {name:'Mohit Jain', phone:'+91 97654 32109', lot:'HDF-2401 · Fortuner', type:'Ending Reminder', status:'answered', dur:'1:30', time:'58 min ago', av:'av-amber', emoji:'⏰'},
-    {name:'Kavya Reddy', phone:'+91 93456 78901', lot:'SBI-892 · Swift Dzire', type:'Outbid Alert', status:'scheduled', dur:'—', time:'In 12 min', av:'av-blue', emoji:'🕐'},
-    {name:'Suresh Pillai', phone:'+91 95678 90123', lot:'KOT-667 · Hyundai Creta', type:'Outbid Alert', status:'scheduled', dur:'—', time:'In 25 min', av:'av-blue', emoji:'🕐'},
-  ];
-
-  let activeLogFilter = 'all';
-  function filterLog(f, btn) {
-    activeLogFilter = f;
-    document.querySelectorAll('.log-tab').forEach(b => b.classList.remove('on'));
-    btn.classList.add('on');
-    renderLog();
-  }
-
-  function renderLog() {
-    const list = document.getElementById('logList');
-    const items = activeLogFilter === 'all' ? LOG_DATA : LOG_DATA.filter(l => l.status === activeLogFilter);
-    list.innerHTML = items.map(l => `
-      <div class="log-item fade-in">
-        <div class="log-avatar ${l.av}">${l.emoji}</div>
-        <div class="log-body">
-          <div class="log-name">${l.name} <span style="font-weight:400;color:var(--g500)">${l.phone}</span></div>
-          <div class="log-msg">${l.type} · ${l.lot}</div>
-          <div class="log-meta">
-            <span class="log-status st-${l.status}">${l.status.charAt(0).toUpperCase()+l.status.slice(1)}</span>
-            ${l.dur !== '—' ? `<span class="log-dur">⏱ ${l.dur}</span>` : ''}
-            <span>${l.time}</span>
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-hdr-icon" style="background:var(--teal-l)">📊</div>
+        <div class="card-hdr-text">
+          <div class="card-hdr-title">This Month's Activity</div>
+          <div class="card-hdr-sub">Your call and alert statistics</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="stat-grid">
+          <div class="stat-box teal">
+            <div class="stat-box-val">14</div>
+            <div class="stat-box-lbl">Total Calls</div>
+          </div>
+          <div class="stat-box green">
+            <div class="stat-box-val">12</div>
+            <div class="stat-box-lbl">Answered</div>
+          </div>
+          <div class="stat-box red">
+            <div class="stat-box-val">2</div>
+            <div class="stat-box-lbl">Missed</div>
+          </div>
+          <div class="stat-box amber">
+            <div class="stat-box-val">86%</div>
+            <div class="stat-box-lbl">Answer Rate</div>
           </div>
         </div>
       </div>
-    `).join('');
-  }
+    </div>
 
-  let callTimer = null;
-  let callSec = 0;
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-hdr-icon" style="background:var(--g100)">📋</div>
+        <div class="card-hdr-text">
+          <div class="card-hdr-title">Recent Calls</div>
+          <div class="card-hdr-sub">Last 7 alert events</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding:12px 20px">
+        <ul class="call-log">
+          <li>
+            <div class="call-dot answered"></div>
+            <div class="call-info">
+              <div class="call-type">Outbid Alert — Answered</div>
+              <div class="call-vehicle">2022 Maruti Swift VXi · Lot 4821</div>
+            </div>
+            <div class="call-time">2h ago</div>
+          </li>
+          <li>
+            <div class="call-dot answered"></div>
+            <div class="call-info">
+              <div class="call-type">Winner Notification — Answered</div>
+              <div class="call-vehicle">2019 Honda City V · Lot 3711</div>
+            </div>
+            <div class="call-time">Yesterday</div>
+          </li>
+          <li>
+            <div class="call-dot sms"></div>
+            <div class="call-info">
+              <div class="call-type">Bid Confirmation SMS</div>
+              <div class="call-vehicle">2021 Hyundai i20 Sportz · Lot 3904</div>
+            </div>
+            <div class="call-time">Yesterday</div>
+          </li>
+          <li>
+            <div class="call-dot missed"></div>
+            <div class="call-info">
+              <div class="call-type">Outbid Alert — Missed</div>
+              <div class="call-vehicle">2020 Tata Nexon XZ+ · Lot 3501</div>
+            </div>
+            <div class="call-time">2 days ago</div>
+          </li>
+          <li>
+            <div class="call-dot answered"></div>
+            <div class="call-info">
+              <div class="call-type">Morning Digest — Answered</div>
+              <div class="call-vehicle">3 lots scheduled for the day</div>
+            </div>
+            <div class="call-time">3 days ago</div>
+          </li>
+          <li>
+            <div class="call-dot answered"></div>
+            <div class="call-info">
+              <div class="call-type">Auction Reminder — Answered</div>
+              <div class="call-vehicle">2018 Ford EcoSport SE · Lot 3288</div>
+            </div>
+            <div class="call-time">4 days ago</div>
+          </li>
+          <li>
+            <div class="call-dot missed"></div>
+            <div class="call-info">
+              <div class="call-type">Outbid Alert — Missed</div>
+              <div class="call-vehicle">2021 Kia Sonet HTX · Lot 3102</div>
+            </div>
+            <div class="call-time">5 days ago</div>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-  function startCampaign() {
-    const btn = document.getElementById('callBtn');
-    const bar = document.getElementById('liveBar');
-    if (btn.classList.contains('calling')) {
-      btn.classList.remove('calling');
-      document.getElementById('callBtnIcon').textContent = '📞';
-      document.getElementById('callBtnText').textContent = 'Launch Call Campaign';
-      bar.classList.remove('active');
-      clearInterval(callTimer);
-      callSec = 0;
-      return;
-    }
-    btn.classList.add('calling');
-    document.getElementById('callBtnIcon').textContent = '⏹';
-    document.getElementById('callBtnText').textContent = 'End Campaign';
-    bar.classList.add('active');
-    callSec = 0;
-    callTimer = setInterval(() => {
-      callSec++;
-      const m = String(Math.floor(callSec/60)).padStart(2,'0');
-      const s = String(callSec%60).padStart(2,'0');
-      document.getElementById('liveDur').textContent = m+':'+s;
-    }, 1000);
-  }
+  </div>
+</div>
 
-  renderLog();
+<script>
+function toggleCard(key, cb) {
+  const card = document.getElementById('ac-' + key);
+  if (card) card.classList.toggle('on', cb.checked);
+}
+
+function testCall() {
+  const btn = document.getElementById('testBtn');
+  const result = document.getElementById('testResult');
+  btn.textContent = 'Calling…';
+  btn.classList.add('calling');
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Test Call';
+    btn.classList.remove('calling');
+    btn.disabled = false;
+    result.classList.add('show');
+    setTimeout(() => result.classList.remove('show'), 5000);
+  }, 2200);
+}
+
+function saveAlerts() {
+  const btn = event.currentTarget;
+  const orig = btn.textContent;
+  btn.textContent = '✓ Preferences Saved';
+  btn.style.background = 'var(--green)';
+  setTimeout(() => {
+    btn.textContent = orig;
+    btn.style.background = '';
+  }, 2500);
+}
 </script>
 </body>
 </html>
