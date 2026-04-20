@@ -28,17 +28,17 @@ input,select{font-family:'Barlow',sans-serif}
 a{text-decoration:none}
 
 /* ══ HEADER ══ */
-.hdr{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-.hdr-logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap}
-.hdr-logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:15px}
-.hdr-logo span{color:#f0c040}
-.hdr-divider{width:1px;height:28px;background:rgba(255,255,255,.2)}
+.hdr{position:sticky;top:0;z-index:300;background:#ffffff;height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;border-bottom:1px solid #e8e8e8;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.hdr-logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#111111;letter-spacing:.5px;white-space:nowrap}
+.hdr-logo-icon{width:30px;height:30px;background:#111111;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:15px}
+.hdr-logo span{color:#111111}
+.hdr-divider{width:1px;height:28px;background:#e8e8e8}
 /* NAV TABS */
 .hdr-nav{display:flex;gap:4px}
-.nav-tab{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r);border:none;background:transparent;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;transition:all .15s;position:relative}
-.nav-tab:hover{background:rgba(255,255,255,.1);color:#fff}
-.nav-tab.active{background:rgba(255,255,255,.15);color:#fff}
-.nav-tab.active::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:24px;height:2px;background:#f0c040;border-radius:2px}
+.nav-tab{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r);border:none;background:transparent;color:#555555;font-size:13px;font-weight:600;transition:all .15s;position:relative}
+.nav-tab:hover{background:#f0f0f0;color:#111111}
+.nav-tab.active{background:#f0f0f0;color:#111111}
+.nav-tab.active::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:24px;height:2px;background:#111111;border-radius:2px}
 .nav-badge{background:var(--red);color:#fff;border-radius:2px;font-size:10px;font-weight:700;padding:1px 5px;min-width:16px;text-align:center}
 .app-switcher{margin-left:auto;display:flex;align-items:center;gap:3px}
 .app-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r);color:rgba(255,255,255,.6);font-size:12px;font-weight:600;text-decoration:none;transition:all .15s;white-space:nowrap;position:relative}
@@ -97,22 +97,22 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .breadcrumb a{color:var(--blue);font-weight:600;cursor:pointer}
 .breadcrumb a:hover{text-decoration:underline}
 .breadcrumb-sep{color:var(--g300)}
-.auction-detail-bar{background:var(--blue-d);padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.auction-detail-bar{background:#f7f7f7;border-bottom:1px solid #e8e8e8;padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .adb-bank{display:flex;align-items:center;gap:10px}
-.adb-logo{width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:18px}
-.adb-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff}
-.adb-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:1px}
-.adb-sep{width:1px;height:32px;background:rgba(255,255,255,.2)}
+.adb-logo{width:38px;height:38px;background:#e8e8e8;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:18px}
+.adb-name{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#111111}
+.adb-sub{font-size:11px;color:#888888;margin-top:1px}
+.adb-sep{width:1px;height:32px;background:#e8e8e8}
 .adb-stat{text-align:center}
-.adb-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#fff}
-.adb-stat-lbl{font-size:10px;color:rgba(255,255,255,.55);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.adb-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#111111}
+.adb-stat-lbl{font-size:10px;color:#999999;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .adb-right{margin-left:auto;display:flex;gap:8px}
 /* Vehicles toolbar */
 .vehicles-toolbar{background:var(--white);border-bottom:2px solid var(--g200);padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .vt-filter-tabs{display:flex;gap:4px}
 .vt-tab{padding:5px 12px;border-radius:var(--r);border:1.5px solid transparent;font-size:12px;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
 .vt-tab:hover{background:var(--g100)}
-.vt-tab.on{background:var(--g900);color:#fff;border-color:var(--g900)}
+.vt-tab.on{background:#111111;color:#fff;border-color:#111111}
 .vt-tab .tcount{background:rgba(255,255,255,.2);border-radius:2px;padding:1px 5px;font-size:10px;margin-left:4px}
 .vt-tab:not(.on) .tcount{background:var(--g200);color:var(--g600)}
 .vt-sep{width:1px;height:22px;background:var(--g300)}
@@ -162,7 +162,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .vc2-actions .btn{flex:1;justify-content:center;padding:6px 8px;font-size:12px}
 /* buttons */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--r);border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
-.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blue-d)}
+.btn-blue{background:#111111;color:#fff}.btn-blue:hover{background:#333333}
 .btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#156a2e}
 .btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#a52d20}
 .btn-ghost{background:#fff;color:var(--g600);border:1.5px solid var(--g300)}.btn-ghost:hover{border-color:var(--g500);color:var(--g800)}
@@ -200,8 +200,8 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .mbd-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--blue-d)}
 .mbd-stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--g400)}
 /* Bulk controls bar */
-.bulk-ctrl{background:var(--g900);padding:10px 22px;display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap}
-.bulk-ctrl-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.5)}
+.bulk-ctrl{background:#111111;padding:10px 22px;display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap}
+.bulk-ctrl-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.55)}
 .bulk-amount-ctrl{display:flex;align-items:center;border:2px solid #fff;border-radius:var(--rm);overflow:hidden;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .bac-btn{background:#e2e8f0;border:none;width:40px;height:42px;font-size:24px;font-weight:700;color:var(--g900);transition:background .1s}
 .bac-btn:hover{background:#cbd5e1}
@@ -240,7 +240,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .modal-ov.open{opacity:1;pointer-events:all}
 .modal{background:#fff;border-radius:var(--rm);width:500px;max-width:calc(100vw - 32px);max-height:86vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);transform:translateY(10px);transition:transform .2s}
 .modal-ov.open .modal{transform:translateY(0)}
-.modal-hdr{background:var(--blue-d);color:#fff;padding:15px 18px;border-radius:var(--rm) var(--rm) 0 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-hdr{background:#111111;color:#fff;padding:15px 18px;border-radius:var(--rm) var(--rm) 0 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .modal-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
 .modal-close{background:rgba(255,255,255,.15);border:none;color:#fff;width:26px;height:26px;border-radius:var(--r);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .15s}
 .modal-close:hover{background:rgba(255,255,255,.3)}
@@ -254,7 +254,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .cr-name{font-weight:700;font-size:13px}
 .cr-id{font-size:11px;color:var(--g500);margin-top:2px}
 .cr-bid{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--blue-d)}
-.confirm-total{margin-top:12px;background:var(--blue-d);border-radius:var(--r);padding:13px 16px;display:flex;justify-content:space-between;align-items:center}
+.confirm-total{margin-top:12px;background:#111111;border-radius:var(--r);padding:13px 16px;display:flex;justify-content:space-between;align-items:center}
 .ct-lbl{font-weight:700;color:rgba(255,255,255,.8);font-size:12px;text-transform:uppercase}
 .ct-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#fff}
 /* ══ TOAST ══ */
@@ -303,19 +303,19 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 
 <!-- ═══ HEADER ═══ -->
 <header class="hdr">
-  <div class="hdr-logo"><div class="hdr-logo-icon">🏛</div>Hammer<span>ly</span></div>
+  <div class="hdr-logo"><div class="hdr-logo-icon" style="color:#fff;font-weight:800;font-size:13px;font-family:'Barlow Condensed',sans-serif;letter-spacing:-0.5px">H</div>Hammer<span>ly</span></div>
   <div class="hdr-divider"></div>
   <nav class="hdr-nav">
-    <button class="nav-tab active" onclick="goScreen('s1',this)" id="tab-s1">🏛️ Auction Listings</button>
-    <button class="nav-tab" onclick="goScreen('s2',this)" id="tab-s2" id="tab-s2">📋 Vehicles</button>
-    <button class="nav-tab" onclick="goScreen('s3',this)" id="tab-s3">📂 My Bids <span class="nav-badge" id="mybids-badge">0</span></button>
+    <button class="nav-tab active" onclick="goScreen('s1',this)" id="tab-s1">Auction Listings</button>
+    <button class="nav-tab" onclick="goScreen('s2',this)" id="tab-s2" id="tab-s2">Vehicles</button>
+    <button class="nav-tab" onclick="goScreen('s3',this)" id="tab-s3">My Bids <span class="nav-badge" id="mybids-badge">0</span></button>
   </nav>
   <nav class="app-switcher">
-    <a href="listings.html" class="app-link">🏛 Auctions</a>
-    <a href="search.html" class="app-link">🔍 Search</a>
-    <a href="auto-bid.html" class="app-link">⚡ Auto Bid</a>
-    <a href="swipe-bid.html" class="app-link">👆 Swipe</a>
-    <span class="app-link current" style="cursor:default">📦 Bulk Bid</span>
+    <a href="listings.html" class="app-link">Auctions</a>
+    <a href="search.html" class="app-link">Search</a>
+    <a href="auto-bid.html" class="app-link">Auto Bid</a>
+    <a href="swipe-bid.html" class="app-link">Swipe</a>
+    <span class="app-link current" style="cursor:default">Bulk Bid</span>
   </nav>
   <div class="hdr-right">
     <div class="live-pill">● LIVE</div>
@@ -328,7 +328,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 ══════════════════════════════════════════ -->
 <div class="screen active" id="s1">
   <div class="listing-hero">
-    <h1>🏛️ Live & Upcoming Auctions</h1>
+    <h1>Live & Upcoming Auctions</h1>
     <p>Browse bank-authorized vehicle auctions across India — select a sale to view lots and place bids</p>
   </div>
   <div class="listing-filters">
@@ -365,7 +365,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
   <!-- Auction Detail Bar -->
   <div class="auction-detail-bar">
     <div class="adb-bank">
-      <div class="adb-logo" id="adb-logo">🏦</div>
+      <div class="adb-logo" id="adb-logo" style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.5px;background:rgba(255,255,255,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;width:38px;height:38px;flex-shrink:0"></div>
       <div><div class="adb-name" id="adb-name">—</div><div class="adb-sub" id="adb-sub">—</div></div>
     </div>
     <div class="adb-sep"></div>
@@ -375,7 +375,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
     <div class="adb-sep"></div>
     <div class="adb-stat"><div class="adb-stat-val" id="adb-date">—</div><div class="adb-stat-lbl">Sale Date</div></div>
     <div class="adb-right">
-      <button class="btn btn-ghost btn-sm" onclick="goScreen('s3',document.getElementById('tab-s3'))">📂 My Bids</button>
+      <button class="btn btn-ghost btn-sm" onclick="goScreen('s3',document.getElementById('tab-s3'))">My Bids</button>
     </div>
   </div>
   <!-- Group Row -->
@@ -388,9 +388,9 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
   <div class="vehicles-toolbar">
     <div class="vt-filter-tabs">
       <div class="vt-tab on" onclick="filterVeh('all',this)">All <span class="tcount" id="tc-all">0</span></div>
-      <div class="vt-tab" onclick="filterVeh('4w',this)">🚗 4-Wheeler <span class="tcount" id="tc-4w">0</span></div>
-      <div class="vt-tab" onclick="filterVeh('2w',this)">🏍️ 2-Wheeler <span class="tcount" id="tc-2w">0</span></div>
-      <div class="vt-tab" onclick="filterVeh('grouped',this)">📦 Grouped <span class="tcount" id="tc-gr">0</span></div>
+      <div class="vt-tab" onclick="filterVeh('4w',this)">4-Wheeler <span class="tcount" id="tc-4w">0</span></div>
+      <div class="vt-tab" onclick="filterVeh('2w',this)">2-Wheeler <span class="tcount" id="tc-2w">0</span></div>
+      <div class="vt-tab" onclick="filterVeh('grouped',this)">Grouped <span class="tcount" id="tc-gr">0</span></div>
     </div>
     <div class="vt-sep"></div>
     <span style="font-size:12px;color:var(--g500);font-weight:500">Active Group:</span>
@@ -407,7 +407,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
     <!-- Sidebar: Groups list -->
     <div class="mybids-sidebar">
       <div class="mbs-header">
-        <span class="mbs-title">📂 My Bid Groups</span>
+        <span class="mbs-title">My Bid Groups</span>
         <span class="mbs-count" id="mbs-count">0</span>
       </div>
       <div id="mbsSidebar"></div>
@@ -418,7 +418,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
     <!-- Detail panel -->
     <div class="mybids-detail" id="mybidsDetail">
       <div class="mbd-empty">
-        <div class="mbd-empty-icon">📋</div>
+        <div class="mbd-empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round"><rect x="9" y="2" width="12" height="12" rx="2"/><path d="M3 7v14a2 2 0 0 0 2 2h14"/></svg></div>
         <div class="mbd-empty-txt">Select a group to view vehicles & place bulk bids</div>
       </div>
     </div>
@@ -428,7 +428,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 <!-- ══ MODAL: Create Group ══ -->
 <div class="modal-ov" id="modalNewGroup">
   <div class="modal">
-    <div class="modal-hdr"><span class="modal-title">📁 Create New Group</span><button class="modal-close" onclick="closeModal('modalNewGroup')">✕</button></div>
+    <div class="modal-hdr"><span class="modal-title">Create New Group</span><button class="modal-close" onclick="closeModal('modalNewGroup')">✕</button></div>
     <div class="modal-body">
       <div style="margin-bottom:14px"><label class="form-label">Group Name</label><input class="form-input" id="newGroupName" placeholder="e.g. Premium Lot, Budget Fleet…" maxlength="30" onkeydown="if(event.key==='Enter')confirmNewGroup()"/></div>
       <p style="font-size:12px;color:var(--g500);line-height:1.55">Groups let you select multiple vehicles and place a single bulk bid. Add vehicles from the vehicle listing screen.</p>
@@ -440,7 +440,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 <!-- ══ MODAL: Bulk Bid Confirm ══ -->
 <div class="modal-ov" id="modalConfirm">
   <div class="modal">
-    <div class="modal-hdr"><span class="modal-title">🔨 Confirm Bulk Bid</span><button class="modal-close" onclick="closeModal('modalConfirm')">✕</button></div>
+    <div class="modal-hdr"><span class="modal-title">Confirm Bulk Bid</span><button class="modal-close" onclick="closeModal('modalConfirm')">✕</button></div>
     <div class="modal-body">
       <p style="font-size:12px;color:var(--g500);margin-bottom:12px">Review vehicles and bids before confirming. You can adjust your bids continuously after placing.</p>
       <div id="confirmList"></div>
@@ -550,17 +550,17 @@ function renderListings() {
   grid.innerHTML = AUCTIONS.map(a => `
   <div class="auction-card" onclick="openAuction('${a.id}')">
     <div class="ac-header">
-      <div class="ac-bank-logo" style="background:${a.status==='live'?'#fee2e2':a.status==='upcoming'?'#fef3c7':'var(--g100)'}">${a.logo}</div>
+      <div class="ac-bank-logo" style="background:${a.status==='live'?'#fee2e2':a.status==='upcoming'?'#fef3c7':'var(--g100)'};font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--g600);letter-spacing:.5px">${a.bank.split(' ').map(w=>w[0]).slice(0,2).join('')}</div>
       <div class="ac-info">
         <div class="ac-title">${a.name}</div>
         <div class="ac-sub">Ref: ${a.ref}</div>
       </div>
-      <div class="ac-status"><span class="status-pill ${a.status==='live'?'status-live':a.status==='upcoming'?'status-upcoming':'status-closed'}">${a.status==='live'?'● LIVE':a.status==='upcoming'?'⏳ UPCOMING':'CLOSED'}</span></div>
+      <div class="ac-status"><span class="status-pill ${a.status==='live'?'status-live':a.status==='upcoming'?'status-upcoming':'status-closed'}">${a.status==='live'?'● LIVE':a.status==='upcoming'?'UPCOMING':'CLOSED'}</span></div>
     </div>
     <div class="ac-meta">
       <div class="ac-meta-item"><div class="ac-meta-label">Bank</div><div class="ac-meta-val">${a.bank}</div></div>
-      <div class="ac-meta-item"><div class="ac-meta-label">Location</div><div class="ac-meta-val">📍 ${a.location}</div></div>
-      <div class="ac-meta-item"><div class="ac-meta-label">Sale Date</div><div class="ac-meta-val">📅 ${a.date}</div></div>
+      <div class="ac-meta-item"><div class="ac-meta-label">Location</div><div class="ac-meta-val">${a.location}</div></div>
+      <div class="ac-meta-item"><div class="ac-meta-label">Sale Date</div><div class="ac-meta-val">${a.date}</div></div>
       <div class="ac-meta-item"><div class="ac-meta-label">Total Lots</div><div class="ac-meta-val highlight">${a.lots} Vehicles</div></div>
     </div>
     <div class="ac-categories">
@@ -578,7 +578,7 @@ function openAuction(aid) {
   const a = AUCTIONS.find(x => x.id === aid);
   // fill detail bar
   document.getElementById('bc-auction-name').textContent = a.name;
-  document.getElementById('adb-logo').textContent = a.logo;
+  document.getElementById('adb-logo').textContent = a.bank.split(' ').map(w=>w[0]).slice(0,2).join('');
   document.getElementById('adb-name').textContent = a.bank + ' — ' + a.name;
   document.getElementById('adb-sub').textContent = 'Ref: ' + a.ref;
   document.getElementById('adb-lots').textContent = (VEHICLES_BY_AUCTION[aid]||[]).length;
@@ -610,7 +610,7 @@ function renderGroupChipsS2() {
   el.innerHTML = gids.map(gid => {
     const g = groups[gid];
     return `<div class="gr-chip ${activeGroupId===gid?'sel':''}" onclick="selectGroup('${gid}')">
-      📦 ${g.name} <span class="gc-count">${g.vehicles.size}</span>
+      ${g.name} <span class="gc-count">${g.vehicles.size}</span>
       <span class="gc-del" onclick="event.stopPropagation();deleteGroup('${gid}')">✕</span>
     </div>`;
   }).join('');
@@ -633,7 +633,7 @@ function renderVehicleGrid() {
   document.getElementById('tc-gr').textContent = vehicles.filter(v=>!!vehicleGroup[v.id]).length;
 
   if (!filtered.length) {
-    grid.innerHTML = `<div class="empty-g"><div class="empty-g-icon">🔍</div><div class="empty-g-txt">No vehicles match this filter</div></div>`;
+    grid.innerHTML = `<div class="empty-g"><div class="empty-g-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="empty-g-txt">No vehicles match this filter</div></div>`;
     return;
   }
   grid.innerHTML = filtered.map(v => buildVehicleCard(v)).join('');
@@ -650,17 +650,17 @@ function buildVehicleCard(v) {
 
   return `<div class="vc2 ${inGrp?'grouped':''}" id="vc2-${v.id}">
     <div class="vc2-img" style="background:${v.color}">
-      ${v.emoji}
+      ${v.type==='4w'?'<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="1.5" stroke-linecap="round"><path d="M5 17H3a2 2 0 0 1-2-2v-4l2-4h14l2 4v4a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M7 15h10"/></svg>':'<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="1.5" stroke-linecap="round"><circle cx="5" cy="17" r="3"/><circle cx="19" cy="17" r="3"/><path d="M5 17V9l4-4h5l3 4v4"/><path d="M9 5v4h5"/></svg>'}
       <div class="vc2-lot">LOT #${v.id}</div>
-      <div class="vc2-type ${v.type==='4w'?'fw':'tw'}">${v.type==='4w'?'🚗 4W':'🏍️ 2W'}</div>
-      <div class="vc2-grp-tag">📦 ${gName}</div>
+      <div class="vc2-type ${v.type==='4w'?'fw':'tw'}">${v.type==='4w'?'4W':'2W'}</div>
+      <div class="vc2-grp-tag">${gName}</div>
     </div>
     <div class="vc2-body">
       <div class="vc2-name">${v.year} ${v.name}</div>
       <div class="vc2-pills">
-        <span class="vc2-pill">⛽ ${v.fuel}</span>
-        <span class="vc2-pill">🛣️ ${v.km} km</span>
-        <span class="vc2-pill">📍 ${v.city}</span>
+        <span class="vc2-pill">${v.fuel}</span>
+        <span class="vc2-pill">${v.km} km</span>
+        <span class="vc2-pill">${v.city}</span>
         <span class="vc2-pill">Incr: ${fmt(inc)}</span>
       </div>
       <div class="vc2-bid-row">
@@ -686,7 +686,7 @@ function buildVehicleCard(v) {
             </select>`
           : `<button class="btn btn-ghost" style="flex:1;font-size:11px;padding:5px 8px" onclick="removeFromGroup('${v.id}')" ${locked?'disabled':''}>✕ Remove</button>`
         }
-        <button class="btn btn-blue" style="flex:1;font-size:12px;padding:5px 8px" onclick="placeSingleBid('${v.id}')" ${locked?'disabled':''}>🏷️ Bid</button>
+        <button class="btn btn-blue" style="flex:1;font-size:12px;padding:5px 8px" onclick="placeSingleBid('${v.id}')" ${locked?'disabled':''}>Bid</button>
       </div>
     </div>
   </div>`;
@@ -795,7 +795,7 @@ function adjBid(vid, dir) {
 
 function placeSingleBid(vid) {
   const v = allVehicles().find(x => x.id === vid);
-  toast(`🏷️ Bid placed: ${v.name} @ ${fmt(bids[vid])}`, 'success');
+  toast(`Bid placed: ${v.name} @ ${fmt(bids[vid])}`, 'success');
 }
 
 // ─────────────────────────────────────────────
@@ -808,7 +808,7 @@ function renderS3() {
   // Sidebar
   const sb = document.getElementById('mbsSidebar');
   if (!gids.length) {
-    sb.innerHTML = '<div style="padding:32px 16px;text-align:center;color:var(--g400)"><div style="font-size:36px;margin-bottom:8px">📋</div><div style="font-size:13px;font-weight:500">No groups yet</div></div>';
+    sb.innerHTML = '<div style="padding:32px 16px;text-align:center;color:var(--g400)"><div style="margin-bottom:8px"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round"><rect x="9" y="2" width="12" height="12" rx="2"/><path d="M3 7v14a2 2 0 0 0 2 2h14"/></svg></div><div style="font-size:13px;font-weight:500">No groups yet</div></div>';
   } else {
     sb.innerHTML = gids.map(gid => {
       const g = groups[gid];
@@ -816,8 +816,8 @@ function renderS3() {
       const cnt = g.vehicles.size;
       return `<div class="mbs-group ${selectedGroupS3===gid?'sel':''}" onclick="selectGroupS3('${gid}')">
         <div class="mbs-g-name">
-          📦 ${g.name}
-          <span class="mbs-g-status ${g.locked?'placed':'active'}">${g.locked?'✅ PLACED':'⏳ ACTIVE'}</span>
+          ${g.name}
+          <span class="mbs-g-status ${g.locked?'placed':'active'}">${g.locked?'PLACED':'ACTIVE'}</span>
         </div>
         <div class="mbs-g-meta"><span>${cnt} vehicle${cnt!==1?'s':''}</span><span>•</span><span>${g.locked?'Bid Placed':'Bidding Open'}</span></div>
         <div class="mbs-g-total">${fmt(total)}</div>
@@ -831,7 +831,7 @@ function renderS3() {
   } else {
     document.getElementById('mybidsDetail').innerHTML = `
       <div class="mbd-empty">
-        <div class="mbd-empty-icon">📂</div>
+        <div class="mbd-empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round"><rect x="9" y="2" width="12" height="12" rx="2"/><path d="M3 7v14a2 2 0 0 0 2 2h14"/></svg></div>
         <div class="mbd-empty-txt">Select a group to view details &amp; place bulk bid</div>
       </div>`;
   }
@@ -854,13 +854,13 @@ function renderGroupDetail(gid) {
     <div class="mbd-header">
       <div>
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:3px">Active Group</div>
-        <div class="mbd-group-name">📦 ${g.name}</div>
+        <div class="mbd-group-name">${g.name}</div>
       </div>
       <div class="mbd-stats">
         <div class="mbd-stat"><div class="mbd-stat-val">${vids.length}</div><div class="mbd-stat-lbl">Vehicles</div></div>
         <div class="mbd-stat"><div class="mbd-stat-val" id="s3-total">${fmt(total)}</div><div class="mbd-stat-lbl">Total Bid</div></div>
       </div>
-      ${locked ? `<button class="btn btn-ghost btn-sm" onclick="resetGroup('${gid}')">🔄 Reset</button>` : ''}
+      ${locked ? `<button class="btn btn-ghost btn-sm" onclick="resetGroup('${gid}')">Reset</button>` : ''}
     </div>
 
     <div class="bulk-ctrl" id="bulkCtrl-${gid}" ${locked?'style="opacity:.5;pointer-events:none"':''}>
@@ -870,21 +870,21 @@ function renderGroupDetail(gid) {
         <div class="bac-val" id="ba-val-${gid}">${fmt(ba)}</div>
         <button class="bac-btn" onclick="changeBulkAmt('${gid}',500)">＋</button>
       </div>
-      <button class="bulk-dn-btn" onclick="bulkAdj('${gid}','dn')">⬇ Decrease All</button>
-      <button class="bulk-up-btn" onclick="bulkAdj('${gid}','up')">⬆ Increase All</button>
+      <button class="bulk-dn-btn" onclick="bulkAdj('${gid}','dn')">Decrease All</button>
+      <button class="bulk-up-btn" onclick="bulkAdj('${gid}','up')">Increase All</button>
       <div class="bulk-sep"></div>
-      <button class="continue-bid-btn" onclick="goToBidScreen('${gid}')">📋 Continue Bidding</button>
-      <button class="place-bulk-btn" onclick="openBulkConfirm('${gid}')">🔨 PLACE BULK BID</button>
+      <button class="continue-bid-btn" onclick="goToBidScreen('${gid}')">Continue Bidding</button>
+      <button class="place-bulk-btn" onclick="openBulkConfirm('${gid}')">PLACE BULK BID</button>
     </div>
 
     ${locked ? `<div style="background:var(--green-l);border-bottom:2px solid var(--green);padding:10px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-      <span style="font-size:13px;font-weight:700;color:var(--green)">✅ Bulk bid placed — all bids locked</span>
-      <button class="btn btn-ghost btn-sm" onclick="resetGroup('${gid}')">🔄 Reset Group</button>
+      <span style="font-size:13px;font-weight:700;color:var(--green)">Bulk bid placed — all bids locked</span>
+      <button class="btn btn-ghost btn-sm" onclick="resetGroup('${gid}')">Reset Group</button>
     </div>` : ''}
 
     <div class="mbd-vehicles" id="mbd-vehicles-${gid}">
       ${!vids.length
-        ? `<div style="padding:40px;text-align:center;color:var(--g400)"><div style="font-size:40px;margin-bottom:10px">🚗</div><div style="font-size:14px;font-weight:500">No vehicles in this group yet</div><button class="btn btn-outline-blue btn-sm" style="margin-top:12px" onclick="goScreen('s2',document.getElementById('tab-s2'))">Browse Auction Listings</button></div>`
+        ? `<div style="padding:40px;text-align:center;color:var(--g400)"><div style="margin-bottom:10px"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/></svg></div><div style="font-size:14px;font-weight:500">No vehicles in this group yet</div><button class="btn btn-outline-blue btn-sm" style="margin-top:12px" onclick="goScreen('s2',document.getElementById('tab-s2'))">Browse Auction Listings</button></div>`
         : vids.map(vid => buildMbdRow(vid, locked)).join('')
       }
     </div>`;
@@ -899,13 +899,13 @@ function buildMbdRow(vid, locked) {
   const aid = groups[vehicleGroup[vid]]?.vehicles.get(vid)?.auctionId || '';
   const a = AUCTIONS.find(x => x.id === aid);
   return `<div class="mbd-vrow ${locked?'locked-row':''}" id="mbd-row-${vid}">
-    <div class="mbd-vrow-img" style="background:${v.color}">${v.emoji}</div>
+    <div class="mbd-vrow-img" style="background:${v.color}">${v.type==='4w'?'<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="1.5" stroke-linecap="round"><path d="M5 17H3a2 2 0 0 1-2-2v-4l2-4h14l2 4v4a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M7 15h10"/></svg>':'<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="1.5" stroke-linecap="round"><circle cx="5" cy="17" r="3"/><circle cx="19" cy="17" r="3"/><path d="M5 17V9l4-4h5l3 4v4"/><path d="M9 5v4h5"/></svg>'}</div>
     <div class="mbd-vrow-body">
       <div class="mbd-vrow-name">${v.year} ${v.name}</div>
       <div class="mbd-vrow-meta">
         <span>LOT #${v.id}</span><span>•</span>
         <span>${v.type==='4w'?'4-Wheeler':'2-Wheeler'}</span><span>•</span>
-        <span>⛽ ${v.fuel}</span><span>•</span>
+        <span>${v.fuel}</span><span>•</span>
         <span>${a ? a.bank : ''}</span>
       </div>
       ${!locked ? `<div class="mbd-vrow-controls">
@@ -915,8 +915,8 @@ function buildMbdRow(vid, locked) {
           <button onclick="adjBid('${vid}',1)">＋</button>
         </div>
         <button class="btn btn-ghost" style="font-size:11px;padding:4px 8px" onclick="removeFromGroup('${vid}');renderS3()">✕ Remove</button>
-        <button class="btn btn-blue" style="font-size:11px;padding:4px 10px" onclick="placeSingleBid('${vid}')">🏷️ Bid</button>
-      </div>` : `<div><span class="placed-badge">✅ Bid Locked</span></div>`}
+        <button class="btn btn-blue" style="font-size:11px;padding:4px 10px" onclick="placeSingleBid('${vid}')">Bid</button>
+      </div>` : `<div><span class="placed-badge">Bid Locked</span></div>`}
     </div>
     <div class="mbd-vrow-right">
       <div>
@@ -996,7 +996,7 @@ function executeBulkBid() {
   const total = vids.reduce((s,vid) => s+bids[vid], 0);
   // removed locked logic so bidding is continuous
   closeModal('modalConfirm');
-  toast(`🔨 Bulk bid placed — ${vids.length} vehicles, Total ${fmt(total)}`, 'success');
+  toast(`Bulk bid placed — ${vids.length} vehicles, Total ${fmt(total)}`, 'success');
   updateBadge();
   renderS3();
 }
@@ -1040,11 +1040,11 @@ document.querySelectorAll('.modal-ov').forEach(mo => {
   mo.addEventListener('click', e => { if (e.target===mo) mo.classList.remove('open'); });
 });
 
-const TICONS = {success:'✅',warning:'⚠️',error:'❌',info:'ℹ️'};
+const TICONS = {success:'',warning:'',error:'',info:''};
 function toast(msg, type='success') {
   const el = document.createElement('div');
   el.className = `toast ${type}`;
-  el.innerHTML = `<span>${TICONS[type]||''}</span><span class="toast-msg">${msg}</span>`;
+  el.innerHTML = `<span class="toast-msg">${msg}</span>`;
   document.getElementById('toasts').appendChild(el);
   setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, 3200);
 }

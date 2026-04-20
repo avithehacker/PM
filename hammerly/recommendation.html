@@ -8,40 +8,41 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;
-  --teal:#0d9488;--teal-l:#e6faf9;--teal-d:#0f766e;
-  --green:#1a8a3c;--green-l:#e6f5eb;
-  --amber:#d97706;--amber-l:#fffbeb;
-  --purple:#7c3aed;--purple-l:#f3f0ff;--purple-d:#5b21b6;
-  --g50:#f9fafb;--g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;
-  --g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --green:#166534;--green-l:#f0fdf4;
+  --red:#991b1b;--red-l:#fef2f2;
+  --amber:#92400e;--amber-l:#fffbeb;
+  --teal:#134e4a;--teal-l:#f0fdfa;--teal-d:#0f3d39;
+  --blue:#1e3a5f;--blue-d:#1e3a5f;--blue-l:#eff6ff;--blue-m:#bfdbfe;
+  --purple:#4c1d95;--purple-l:#f5f3ff;--purple-d:#3b0764;
+  --g50:#fafafa;--g100:#f5f5f5;--g200:#e8e8e8;--g300:#d4d4d4;
+  --g400:#a3a3a3;--g500:#737373;--g600:#525252;--g700:#404040;--g900:#111111;
   --white:#fff;--r:8px;--rm:12px;--rl:16px;
 }
-body{font-family:'Barlow',sans-serif;background:#f4f5f8;color:var(--g900);min-height:100vh}
+body{font-family:'Barlow',sans-serif;background:#ffffff;color:#111111;min-height:100vh}
 
-nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height:52px;position:sticky;top:0;z-index:100}
-.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#fff;letter-spacing:.5px;margin-right:24px;text-decoration:none}
-.nav-brand span{color:var(--purple)}
-.nav-link{color:#aaa;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
-.nav-link:hover{color:#fff}
-.nav-link.active{color:var(--purple);border-bottom:2px solid var(--purple)}
+nav{background:#ffffff;padding:0 24px;display:flex;align-items:center;height:52px;position:sticky;top:0;z-index:100;border-bottom:1px solid #e8e8e8}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#111111;letter-spacing:.5px;margin-right:24px;text-decoration:none}
+.nav-brand span{color:#111111}
+.nav-link{color:#888888;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
+.nav-link:hover{color:#111111}
+.nav-link.active{color:#111111;border-bottom:2px solid #111111}
 
-.hero{background:linear-gradient(135deg,#1a0a3a 0%,#2d1060 50%,#0a1628 100%);color:#fff;padding:56px 32px 48px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#c4b5fd;margin-bottom:20px}
+.hero{background:#f7f7f7;color:#111111;padding:56px 32px 48px;text-align:center;border-bottom:1px solid #e8e8e8}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#efefef;border:1px solid #e0e0e0;border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#555555;margin-bottom:20px}
 .hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2.8rem;letter-spacing:.02em;line-height:1.1;margin-bottom:12px}
-.hero h1 span{color:#c4b5fd}
-.hero-sub{color:#94a3b8;font-size:1rem;max-width:520px;margin:0 auto 36px}
+.hero h1 span{color:#111111}
+.hero-sub{color:#666666;font-size:1rem;max-width:520px;margin:0 auto 36px}
 .hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
-.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;color:#c4b5fd;line-height:1}
-.hero-stat-lbl{font-size:.75rem;color:#64748b;margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;color:#111111;line-height:1}
+.hero-stat-lbl{font-size:.75rem;color:#999999;margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
 
-.hiw-section{background:#fff;border-bottom:1px solid var(--g200);padding:40px 32px}
+.hiw-section{background:#fff;border-bottom:1px solid #e8e8e8;padding:40px 32px}
 .hiw-inner{max-width:900px;margin:0 auto}
-.section-label{font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--purple);margin-bottom:6px}
-.section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.6rem;color:var(--g900);margin-bottom:28px}
+.section-label{font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#999999;margin-bottom:6px}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.6rem;color:#111111;margin-bottom:28px}
 .hiw-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.hiw-step{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rl);padding:22px 20px}
-.hiw-num{width:32px;height:32px;border-radius:50%;background:var(--purple);color:#fff;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.hiw-step{background:#fafafa;border:1px solid #e8e8e8;border-radius:var(--rl);padding:22px 20px}
+.hiw-num{width:32px;height:32px;border-radius:50%;background:#111111;color:#fff;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 .hiw-step-icon{font-size:1.6rem;margin-bottom:10px}
 .hiw-step h3{font-size:.95rem;font-weight:700;color:var(--g900);margin-bottom:6px}
 .hiw-step p{font-size:.8rem;color:var(--g600);line-height:1.5}
@@ -58,13 +59,13 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
 .form-group{margin-bottom:16px}
 .form-group label{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--g600);display:block;margin-bottom:8px}
 .chip-row{display:flex;flex-wrap:wrap;gap:6px}
-.chip{padding:6px 12px;border-radius:var(--r);border:1.5px solid var(--g300);background:#fff;font-family:inherit;font-size:.78rem;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
-.chip:hover{border-color:var(--purple);color:var(--purple)}
-.chip.on{background:var(--purple-l);border-color:var(--purple);color:var(--purple-d)}
+.chip{padding:6px 12px;border-radius:var(--r);border:1.5px solid #dddddd;background:#fff;font-family:inherit;font-size:.78rem;font-weight:600;color:#444444;cursor:pointer;transition:all .15s}
+.chip:hover{border-color:#111111;color:#111111}
+.chip.on{background:#111111;border-color:#111111;color:#ffffff}
 .budget-row{display:flex;gap:8px}
 .budget-row input{flex:1;border:1.5px solid var(--g300);border-radius:var(--r);padding:9px 12px;font-family:inherit;font-size:.85rem;color:var(--g900);transition:border-color .15s}
 .budget-row input:focus{outline:none;border-color:var(--purple)}
-.btn-run{width:100%;background:linear-gradient(135deg,var(--purple) 0%,var(--purple-d) 100%);color:#fff;border:none;border-radius:var(--r);padding:12px;font-family:inherit;font-size:.9rem;font-weight:800;cursor:pointer;letter-spacing:.04em;transition:opacity .15s;margin-top:4px}
+.btn-run{width:100%;background:#111111;color:#fff;border:none;border-radius:var(--r);padding:12px;font-family:inherit;font-size:.9rem;font-weight:800;cursor:pointer;letter-spacing:.04em;transition:opacity .15s;margin-top:4px}
 .btn-run:hover{opacity:.9}
 .btn-run:disabled{opacity:.5;cursor:not-allowed}
 
@@ -81,10 +82,10 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
 .result-card{background:#fff;border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:border-color .2s,box-shadow .2s}
 .result-card:hover{border-color:var(--purple);box-shadow:0 2px 12px rgba(124,58,237,.1)}
 .result-card-top{display:grid;grid-template-columns:auto 1fr auto;gap:12px;padding:14px 16px 10px;align-items:start}
-.rank-num{width:24px;height:24px;border-radius:50%;background:var(--g200);color:var(--g600);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.rank-num.r1{background:#fef9e7;color:#92400e;border:1px solid #f59e0b}
-.rank-num.r2{background:var(--purple-l);color:var(--purple-d);border:1px solid rgba(124,58,237,.3)}
-.rank-num.r3{background:var(--blue-l);color:var(--blue-d);border:1px solid rgba(0,87,168,.25)}
+.rank-num{width:24px;height:24px;border-radius:50%;background:#f0f0f0;color:#555555;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.rank-num.r1{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+.rank-num.r2{background:#f5f3ff;color:#4c1d95;border:1px solid #ddd6fe}
+.rank-num.r3{background:#eff6ff;color:#1e3a5f;border:1px solid #bfdbfe}
 .result-card-main{min-width:0}
 .result-card-lot{font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g400);margin-bottom:3px}
 .result-card-name{font-weight:800;font-size:.95rem;color:var(--g900)}
@@ -101,18 +102,18 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
 .miss-tag{background:var(--g50);border:1px solid var(--g200);border-radius:6px;padding:4px 9px;font-size:.72rem;font-weight:600;color:var(--g400)}
 .result-card-actions{padding:10px 16px 14px;display:flex;gap:8px;border-top:1px solid var(--g100)}
 .rc-btn{flex:1;padding:8px 0;border-radius:var(--r);font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .15s;text-align:center}
-.rc-btn-primary{background:var(--purple);color:#fff;border-color:var(--purple)}
-.rc-btn-primary:hover{background:var(--purple-d)}
+.rc-btn-primary{background:#111111;color:#fff;border-color:#111111}
+.rc-btn-primary:hover{background:#333333}
 .rc-btn-secondary{background:#fff;color:var(--g700);border-color:var(--g300)}
 .rc-btn-secondary:hover{border-color:var(--g500)}
 
 .analyzing{display:none;flex-direction:column;align-items:center;padding:48px 32px;text-align:center;gap:16px}
 .analyzing.show{display:flex}
-.ai-spinner{width:44px;height:44px;border:3px solid var(--purple-l);border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite}
+.ai-spinner{width:44px;height:44px;border:3px solid #e8e8e8;border-top-color:#111111;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .ai-steps{list-style:none;display:flex;flex-direction:column;gap:6px;text-align:left}
 .ai-steps li{font-size:.8rem;color:var(--g500);font-weight:500;display:flex;align-items:center;gap:8px;transition:color .3s}
-.ai-steps li.done{color:var(--purple-d);font-weight:600}
+.ai-steps li.done{color:#111111;font-weight:600}
 .ai-steps li.done::before{content:'✓';font-size:.75rem;color:var(--purple)}
 .ai-steps li:not(.done)::before{content:'○';font-size:.75rem;color:var(--g300)}
 
@@ -141,7 +142,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
 </nav>
 
 <div class="hero">
-  <div class="hero-badge">✨ Powered by AI</div>
+  <div class="hero-badge">Powered by AI</div>
   <h1>Your Personal<br><span>Auction Scout</span></h1>
   <p class="hero-sub">Tell Hammerly what you're looking for — vehicle type, fuel, budget — and the AI scans every live lot to find your best matches, ranked by how well they fit you.</p>
   <div class="hero-stats">
@@ -158,19 +159,19 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
     <div class="section-title">AI Matching in 3 Steps</div>
     <div class="hiw-steps">
       <div class="hiw-step">
-        <div class="hiw-step-icon">🎯</div>
+        <div class="hiw-step-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div>
         <div class="hiw-num">1</div>
         <h3>Set Your Preferences</h3>
         <p>Toggle vehicle types, fuel, transmission, budget, and preferred cities. Every chip you select sharpens the AI's filter.</p>
       </div>
       <div class="hiw-step">
-        <div class="hiw-step-icon">🤖</div>
+        <div class="hiw-step-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg></div>
         <div class="hiw-num">2</div>
         <h3>AI Scores Every Lot</h3>
         <p>The engine checks each of the 18 live lots against your 7 preferences — type, fuel, transmission, city, budget, mileage, and year.</p>
       </div>
       <div class="hiw-step">
-        <div class="hiw-step-icon">🏆</div>
+        <div class="hiw-step-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
         <div class="hiw-num">3</div>
         <h3>See Why Each Matched</h3>
         <p>Results are ranked by score. Every card shows exactly which signals matched — not just a number, but a reason.</p>
@@ -184,7 +185,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
   <div>
     <div class="card">
       <div class="card-hdr">
-        <div class="card-hdr-icon" style="background:var(--purple-l)">🎯</div>
+        <div class="card-hdr-icon" style="background:#f0f0f0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div>
         <div class="card-hdr-text">
           <div class="card-hdr-title">Your Preferences</div>
           <div class="card-hdr-sub">Select what you're looking for</div>
@@ -233,7 +234,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
             <button class="chip" onclick="toggleChip(this)">Chennai</button>
           </div>
         </div>
-        <button class="btn-run" id="runBtn" onclick="runAI()">✨ Find My Matches</button>
+        <button class="btn-run" id="runBtn" onclick="runAI()">Find My Matches</button>
       </div>
     </div>
   </div>
@@ -256,13 +257,13 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
     </div>
 
     <div class="result-empty" id="emptyBlock">
-      <div class="result-empty-icon">✨</div>
+      <div class="result-empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div>
       <h3>No results yet</h3>
       <p>Set your preferences on the left and click "Find My Matches" to let the AI scout live lots for you.</p>
     </div>
 
     <div class="no-match" id="noMatchBlock">
-      <h3>⚠️ No lots matched your preferences</h3>
+      <h3>No lots matched your preferences</h3>
       <p>Try broadening your filters — select more vehicle types, add more cities, or raise your budget ceiling.</p>
     </div>
 
@@ -371,7 +372,7 @@ function runAI() {
   analyzing = true;
   const btn = document.getElementById('runBtn');
   btn.disabled = true;
-  btn.textContent = '✨ Analyzing…';
+  btn.textContent = 'Analyzing…';
 
   document.getElementById('emptyBlock').style.display = 'none';
   document.getElementById('resultGrid').style.display = 'none';
@@ -393,7 +394,7 @@ function runAI() {
   setTimeout(() => {
     analyzing = false;
     btn.disabled = false;
-    btn.textContent = '✨ Find My Matches';
+    btn.textContent = 'Find My Matches';
     document.getElementById('analyzingBlock').classList.remove('show');
     renderResults();
   }, 2600);

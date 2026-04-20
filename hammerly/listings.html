@@ -528,11 +528,11 @@
 <!-- ── HEADER ── -->
 <header class="hdr">
   <a href="index.html" class="logo">
-    <div class="logo-icon">🏛</div>
+    <div class="logo-icon"><div style="color:#fff;font-weight:800;font-size:14px;font-family:'Barlow Condensed',sans-serif;letter-spacing:-0.5px">H</div></div>
     Hammer<span>ly</span>
   </a>
   <div class="hdr-search">
-    <span class="search-icon">🔍</span>
+    <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
     <input type="text" placeholder="Search make, model, lot, city…" id="searchInput" oninput="filterCards()">
   </div>
   <nav class="hdr-nav">
@@ -540,8 +540,8 @@
     <a href="listings.html" class="nav-link active">Listings</a>
   </nav>
   <div class="hdr-r">
-    <a href="auto-bid.html" class="btn btn-ghost-dark btn-sm">⚡ Auto Bid</a>
-    <a href="bulk-bid.html" class="btn btn-ghost-dark btn-sm">📦 Bulk Bid</a>
+    <a href="auto-bid.html" class="btn btn-ghost-dark btn-sm">Auto Bid</a>
+    <a href="bulk-bid.html" class="btn btn-ghost-dark btn-sm">Bulk Bid</a>
   </div>
 </header>
 
@@ -556,13 +556,13 @@
         <span class="live-dot"></span>Live <span class="filter-count" id="cnt-live">9</span>
       </button>
       <button class="filter-tab" onclick="setFilter('2w', this)">
-        🏍️ 2W <span class="filter-count" id="cnt-2w">5</span>
+        2W <span class="filter-count" id="cnt-2w">5</span>
       </button>
       <button class="filter-tab" onclick="setFilter('3w', this)">
-        🛺 3W <span class="filter-count" id="cnt-3w">3</span>
+        3W <span class="filter-count" id="cnt-3w">3</span>
       </button>
       <button class="filter-tab" onclick="setFilter('4w', this)">
-        🚗 4W <span class="filter-count" id="cnt-4w">6</span>
+        4W <span class="filter-count" id="cnt-4w">6</span>
       </button>
     </div>
     <div class="filter-divider"></div>
@@ -706,7 +706,7 @@
     const root = document.getElementById('listings-root');
 
     if (items.length === 0) {
-      root.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-txt">No vehicles match your search.</div></div>`;
+      root.innerHTML = `<div class="empty"><div class="empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="empty-txt">No vehicles match your search.</div></div>`;
       return;
     }
 
@@ -727,7 +727,7 @@
     if (upcoming.length) {
       html += `
         <div class="list-section-hdr">
-          <div class="list-section-title">🕐 Upcoming (${upcoming.length})</div>
+          <div class="list-section-title">Upcoming (${upcoming.length})</div>
         </div>
         <div class="listings-grid">${upcoming.map(cardHTML).join('')}</div>
       `;
@@ -735,7 +735,7 @@
     if (closed.length) {
       html += `
         <div class="list-section-hdr">
-          <div class="list-section-title">🔒 Closed (${closed.length})</div>
+          <div class="list-section-title">Closed (${closed.length})</div>
         </div>
         <div class="listings-grid">${closed.map(cardHTML).join('')}</div>
       `;
@@ -746,7 +746,7 @@
 
   function cardHTML(v) {
     const badgeClass = v.status === 'live' ? 'badge-live' : v.status === 'upcoming' ? 'badge-upcoming' : 'badge-closed';
-    const badgeLabel = v.status === 'live' ? '● Live' : v.status === 'upcoming' ? '⏳ Soon' : '🔒 Closed';
+    const badgeLabel = v.status === 'live' ? '● Live' : v.status === 'upcoming' ? 'Soon' : 'Closed';
     const timeClass  = v.status === 'live' ? 'live' : v.status === 'upcoming' ? 'upcoming' : 'closed';
     const amtClass   = v.status === 'closed' ? 'closed' : '';
     const clsLabel   = v.cls === '2w' ? '2W' : v.cls === '3w' ? '3W' : '4W';
@@ -762,13 +762,13 @@
     };
 
     const extra = bidLinks[v.id]
-      ? `<a href="${bidLinks[v.id]}" class="v-btn-watch" title="Open in prototype">⚡</a>`
-      : `<button class="v-btn-watch">🔖</button>`;
+      ? `<a href="${bidLinks[v.id]}" class="v-btn-watch" title="Open in prototype">→</a>`
+      : `<button class="v-btn-watch">Save</button>`;
 
     return `
       <div class="v-card${v.status === 'live' && v.bids > 6 ? ' featured' : ''}">
         <div class="v-card-img ${v.imgCls}">
-          ${v.img}
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase">${v.cls === '2w' ? '2W' : v.cls === '3w' ? '3W' : '4W'}</span>
           <span class="v-badge ${badgeClass}">${badgeLabel}</span>
           <span class="v-cls">${clsLabel}</span>
         </div>

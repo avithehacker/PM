@@ -25,51 +25,53 @@
   --shadow-lg:0 8px 32px rgba(0,0,0,.18);
   --shadow-xl:0 16px 48px rgba(0,0,0,.22);
 }
-html{font-family:'Barlow',sans-serif;background:var(--g100);color:var(--g900);font-size:14px}
+html{font-family:'Barlow',sans-serif;background:#f7f7f7;color:var(--g900);font-size:14px}
 body{min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 button{cursor:pointer;font-family:'Barlow',sans-serif;border:none;outline:none}
 input,select{font-family:'Barlow',sans-serif;outline:none}
 
 /* ══ HEADER ══ */
-.hdr{position:sticky;top:0;z-index:400;height:var(--hh);background:var(--blue-d);display:flex;align-items:center;padding:0 20px;gap:12px;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:.4px;white-space:nowrap;flex-shrink:0}
-.logo-icon{width:32px;height:32px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.logo span{color:var(--gold)}
-.hdr-divider{width:1px;height:28px;background:rgba(255,255,255,.15);flex-shrink:0}
+.hdr{position:sticky;top:0;z-index:400;height:var(--hh);background:#ffffff;display:flex;align-items:center;padding:0 20px;gap:12px;border-bottom:1px solid #e8e8e8;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#111111;letter-spacing:.4px;white-space:nowrap;flex-shrink:0}
+.logo-icon{width:32px;height:32px;background:#111111;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.logo span{color:#111111}
+.hdr-divider{width:1px;height:28px;background:#e8e8e8;flex-shrink:0}
 
 /* Search */
 .search-wrap{flex:1;max-width:480px;position:relative}
-.search-wrap input{width:100%;height:36px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);border-radius:var(--rm);padding:0 36px 0 14px;font-size:13px;font-weight:500;color:#fff;transition:all .2s}
-.search-wrap input::placeholder{color:rgba(255,255,255,.45)}
-.search-wrap input:focus{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4);box-shadow:0 0 0 3px rgba(255,255,255,.08)}
-.search-icon{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.45);font-size:14px;pointer-events:none}
-.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;color:rgba(255,255,255,.6);font-size:15px;padding:2px 5px;display:none}
+.search-wrap input{width:100%;height:36px;background:#f7f7f7;border:1.5px solid #e8e8e8;border-radius:var(--rm);padding:0 36px 0 14px;font-size:13px;font-weight:500;color:#111111;transition:all .2s}
+.search-wrap input::placeholder{color:#aaaaaa}
+.search-wrap input:focus{background:#ffffff;border-color:#111111;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.search-icon{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:#aaaaaa;font-size:14px;pointer-events:none}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;color:#888888;font-size:15px;padding:2px 5px;display:none}
 .search-clear.show{display:block}
 
 /* Header right actions */
 .hdr-actions{margin-left:auto;display:flex;align-items:center;gap:6px}
-.hdr-btn{display:flex;align-items:center;gap:6px;padding:6px 13px;border-radius:var(--r);background:transparent;color:rgba(255,255,255,.7);font-size:12px;font-weight:700;transition:all .15s;white-space:nowrap;position:relative}
-.hdr-btn:hover{background:rgba(255,255,255,.1);color:#fff}
-.hdr-btn.active{background:rgba(255,255,255,.15);color:#fff}
+.hdr-btn{display:flex;align-items:center;gap:6px;padding:6px 13px;border-radius:var(--r);background:transparent;color:#555555;font-size:12px;font-weight:700;transition:all .15s;white-space:nowrap;position:relative}
+.hdr-btn:hover{background:#f0f0f0;color:#111111}
+.hdr-btn.active{background:#f0f0f0;color:#111111}
 .hdr-btn-icon{font-size:15px}
-.hdr-badge{position:absolute;top:3px;right:3px;background:var(--red);color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--blue-d)}
+.hdr-badge{position:absolute;top:3px;right:3px;background:var(--red);color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid #ffffff}
 .hdr-badge.show{display:flex}
 .live-pill{background:#e53935;color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:2px;letter-spacing:.8px;animation:blink 2s infinite;flex-shrink:0}
-.avatar{width:30px;height:30px;border-radius:50%;background:var(--blue-m);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid rgba(255,255,255,.2)}
+.avatar{width:30px;height:30px;border-radius:50%;background:#111111;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid #e8e8e8}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.55}}
 
 /* ══ AUCTION RAIL ══ */
-.rail-wrap{background:var(--blue-d);border-bottom:1px solid rgba(255,255,255,.08);padding:0 20px}
+.rail-wrap{background:#f7f7f7;border-bottom:1px solid #e8e8e8;padding:0 20px}
 .rail{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:none;-ms-overflow-style:none;align-items:center}
 .rail::-webkit-scrollbar{display:none}
-.rail-chip{display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--rm);background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0}
-.rail-chip:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22)}
-.rail-chip.sel{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.35)}
+.rail-chip{display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--rm);background:#ffffff;border:1.5px solid #e8e8e8;cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0}
+.rail-chip:hover{background:#f0f0f0;border-color:#cccccc}
+.rail-chip.sel{background:#111111;border-color:#111111}
+.rail-chip.sel .rail-chip-name{color:#ffffff}
+.rail-chip.sel .rail-chip-meta{color:rgba(255,255,255,.65)}
 .rail-chip-emoji{font-size:18px}
 .rail-chip-info{display:flex;flex-direction:column;gap:1px}
-.rail-chip-name{font-size:12px;font-weight:700;color:#fff;line-height:1}
-.rail-chip-meta{font-size:10px;color:rgba(255,255,255,.5);font-weight:500}
+.rail-chip-name{font-size:12px;font-weight:700;color:#111111;line-height:1}
+.rail-chip-meta{font-size:10px;color:#888888;font-weight:500}
 .rail-status{font-size:9px;font-weight:800;padding:2px 6px;border-radius:2px;letter-spacing:.4px}
 .rs-live{background:#c0392b;color:#fff}
 .rs-upcoming{background:rgba(217,119,6,.8);color:#fff}
@@ -79,7 +81,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .filter-tabs{display:flex;gap:3px}
 .ftab{padding:5px 12px;border-radius:3px;border:none;background:transparent;font-size:12px;font-weight:600;color:var(--g500);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
 .ftab:hover{background:var(--g100);color:var(--g700)}
-.ftab.on{background:var(--g900);color:#fff}
+.ftab.on{background:#111111;color:#fff}
 .ftab .fc{background:rgba(255,255,255,.2);border-radius:2px;font-size:10px;padding:0 5px;min-width:16px;text-align:center}
 .ftab:not(.on) .fc{background:var(--g200);color:var(--g500)}
 .tb-sep{width:1px;height:24px;background:var(--g200);flex-shrink:0}
@@ -94,20 +96,20 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .hiw{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rm);padding:14px 16px;margin-bottom:20px;display:flex;flex-direction:column;gap:0}
 .hiw-step{display:flex;align-items:flex-start;gap:10px;padding:7px 0}
 .hiw-step+.hiw-step{border-top:1px dashed var(--g200)}
-.hiw-num{width:20px;height:20px;border-radius:50%;background:var(--blue-d);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.hiw-num{width:20px;height:20px;border-radius:50%;background:#111111;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .hiw-content{flex:1}
 .hiw-title{font-size:12px;font-weight:700;color:var(--g900);margin-bottom:2px}
 .hiw-desc{font-size:11px;color:var(--g500);line-height:1.45;font-weight:400}
 
 /* Alert card (robo-call) */
 .alert-card{border:1.5px solid var(--g200);border-radius:var(--rm);padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s}
-.alert-card.on{border-color:var(--teal);background:var(--teal-l)}
+.alert-card.on{border-color:#111111;background:#f7f7f7}
 .alert-card-icon{font-size:20px;flex-shrink:0;margin-top:2px}
 .alert-card-body{flex:1;min-width:0}
 .alert-card-title{font-size:13px;font-weight:700;color:var(--g900);margin-bottom:2px}
 .alert-card-when{font-size:10px;font-weight:600;color:var(--g400);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
 .alert-card-preview{font-size:11px;color:var(--g500);font-style:italic;line-height:1.45;background:var(--g100);border-radius:3px;padding:5px 8px;border-left:2px solid var(--g300)}
-.alert-card.on .alert-card-preview{background:rgba(13,148,136,.06);border-left-color:var(--teal);color:var(--teal-d)}
+.alert-card.on .alert-card-preview{background:#eeeeee;border-left-color:#111111;color:#333333}
 
 /* Stat card grid */
 .stat-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:0}
@@ -119,16 +121,16 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 /* AI chips (inside panel) */
 .panel-chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
 .panel-chip{padding:6px 14px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
-.panel-chip:hover{border-color:var(--purple);color:var(--purple)}
-.panel-chip.on{background:var(--purple-l);border-color:var(--purple);color:var(--purple-d)}
+.panel-chip:hover{border-color:#111111;color:#111111}
+.panel-chip.on{background:#111111;border-color:#111111;color:#ffffff}
 
 /* AI results hint */
-.ai-result-hint{background:var(--purple-l);border:1.5px solid rgba(124,58,237,.2);border-radius:var(--rm);padding:12px 14px;margin-top:12px;display:none}
+.ai-result-hint{background:#f7f7f7;border:1.5px solid #e8e8e8;border-radius:var(--rm);padding:12px 14px;margin-top:12px;display:none}
 .ai-result-hint.show{display:block}
-.ai-result-hint-title{font-size:12px;font-weight:700;color:var(--purple-d);margin-bottom:4px}
-.ai-result-hint-body{font-size:11px;color:var(--purple);line-height:1.5}
-.ai-run-btn{width:100%;padding:12px;background:var(--purple);color:#fff;border-radius:var(--rm);font-size:14px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
-.ai-run-btn:hover{background:var(--purple-d)}
+.ai-result-hint-title{font-size:12px;font-weight:700;color:#111111;margin-bottom:4px}
+.ai-result-hint-body{font-size:11px;color:#555555;line-height:1.5}
+.ai-run-btn{width:100%;padding:12px;background:#111111;color:#fff;border-radius:var(--rm);font-size:14px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.ai-run-btn:hover{background:#333333}
 .ai-run-btn.loading{opacity:.7;pointer-events:none}
 
 /* ══ MAIN GRID ══ */
@@ -137,23 +139,25 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .es-icon{font-size:52px}
 .es-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--g700)}
 .es-sub{font-size:13px;color:var(--g400);max-width:340px;line-height:1.6}
-.es-btn{padding:8px 20px;background:var(--blue);color:#fff;border-radius:var(--r);font-size:13px;font-weight:700;margin-top:4px}
+.es-btn{padding:8px 20px;background:#111111;color:#fff;border-radius:var(--r);font-size:13px;font-weight:700;margin-top:4px}
 
 /* ══ VEHICLE CARD ══ */
 .vcard{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,border-color .2s,transform .2s;position:relative;user-select:none}
 .vcard:hover{box-shadow:var(--shadow-md);border-color:var(--g300)}
-.vcard.ab-active{border-color:var(--teal);box-shadow:0 0 0 1.5px var(--teal)}
-.vcard.in-basket{border-color:var(--blue);box-shadow:0 0 0 1.5px var(--blue)}
-.vcard.ab-active.in-basket{border-color:var(--purple);box-shadow:0 0 0 1.5px var(--purple)}
+.vcard.ab-active{border-color:#111111;box-shadow:0 0 0 1.5px #111111}
+.vcard.in-basket{border-color:#555555;box-shadow:0 0 0 1.5px #555555}
+.vcard.ab-active.in-basket{border-color:#111111;box-shadow:0 0 0 2px #111111}
 .vcard.bid-flash{animation:bidflash .5s ease}
 @keyframes bidflash{0%,100%{background:#fff}50%{background:var(--green-l)}}
 .vcard.skip-flash{animation:skipflash .35s ease}
 @keyframes skipflash{0%{transform:translateX(0)}30%{transform:translateX(-18px)}60%{transform:translateX(8px)}100%{transform:translateX(0)}}
 
 /* Card image strip */
-.vc-img{height:112px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0}
-.vc-img .bg-emoji{font-size:58px;opacity:.22;position:absolute;bottom:-8px;right:-4px;transform:rotate(-8deg)}
-.vc-img .main-emoji{font-size:48px;position:relative;z-index:1}
+.vc-img{height:112px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;flex-shrink:0;background:#f7f7f7}
+.vc-img .bg-emoji{display:none}
+.vc-img .main-emoji{display:none}
+.vc-silhouette{display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:8px}
+.vc-silhouette svg{width:85%;max-width:180px;height:auto}
 .vc-lot{position:absolute;top:9px;left:10px;background:rgba(0,0,0,.65);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:2px;z-index:2}
 .vc-badges{position:absolute;top:9px;right:10px;display:flex;gap:5px;z-index:2}
 .vc-status{font-size:9px;font-weight:800;padding:3px 7px;border-radius:2px;letter-spacing:.4px}
@@ -161,14 +165,14 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .vcs-upcoming{background:rgba(217,119,6,.85);color:#fff}
 .vcs-closed{background:rgba(0,0,0,.4);color:rgba(255,255,255,.7)}
 .vc-type{font-size:9px;font-weight:800;padding:3px 7px;border-radius:2px;letter-spacing:.3px}
-.vct-4w{background:#1565c0;color:#fff}
-.vct-2w{background:#6a1b9a;color:#fff}
+.vct-4w{background:rgba(0,0,0,.55);color:#fff}
+.vct-2w{background:rgba(0,0,0,.45);color:#fff}
 .vc-timer{position:absolute;bottom:9px;left:10px;display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.55);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;padding:3px 8px;border-radius:2px;z-index:2}
 .vc-timer-dot{width:5px;height:5px;border-radius:50%;background:#ef4444;animation:blink 1.2s infinite}
 .ai-match-badge{position:absolute;bottom:9px;right:10px;font-size:10px;font-weight:800;padding:3px 9px;border-radius:2px;z-index:2;display:none}
-.ai-match-badge.gold{background:var(--gold);color:var(--blue-d)}
-.ai-match-badge.purple{background:var(--purple);color:#fff}
-.ai-match-badge.blue{background:var(--blue);color:#fff}
+.ai-match-badge.gold{background:#111111;color:#ffffff}
+.ai-match-badge.purple{background:#555555;color:#fff}
+.ai-match-badge.blue{background:#888888;color:#fff}
 
 /* Swipe overlay */
 .swipe-ol{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;opacity:0;pointer-events:none;z-index:10;transition:opacity .15s}
@@ -176,12 +180,12 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .swipe-ol.skip{background:rgba(0,0,0,.5);color:#fff}
 
 /* Gradient backgrounds per type */
-.vc-img.suv{background:linear-gradient(135deg,#0a2744 0%,#0d4a8a 100%)}
-.vc-img.car{background:linear-gradient(135deg,#0a2240 0%,#0e5c7c 100%)}
-.vc-img.bike{background:linear-gradient(135deg,#1a0a3a 0%,#4a1580 100%)}
-.vc-img.scooter{background:linear-gradient(135deg,#2a1500 0%,#7a3d00 100%)}
-.vc-img.truck{background:linear-gradient(135deg,#1a1a1a 0%,#3a3a3a 100%)}
-.vc-img.ev{background:linear-gradient(135deg,#003322 0%,#006644 100%)}
+.vc-img.suv{background:linear-gradient(135deg,#e8e8e8 0%,#f2f2f2 100%)}
+.vc-img.car{background:linear-gradient(135deg,#ebebeb 0%,#f5f5f5 100%)}
+.vc-img.bike{background:linear-gradient(135deg,#e5e5e5 0%,#f0f0f0 100%)}
+.vc-img.scooter{background:linear-gradient(135deg,#eeeeee 0%,#f7f7f7 100%)}
+.vc-img.truck{background:linear-gradient(135deg,#e0e0e0 0%,#ebebeb 100%)}
+.vc-img.ev{background:linear-gradient(135deg,#e8f0e8 0%,#f0f7f0 100%)}
 
 /* Card body */
 .vc-body{padding:13px 14px 10px;flex:1}
@@ -197,14 +201,14 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .est-conf{display:flex;align-items:center;gap:6px;margin-left:auto}
 .conf-dots{display:flex;gap:3px}
 .conf-dot{width:5px;height:5px;border-radius:50%;background:var(--g300)}
-.conf-dot.fill{background:var(--teal)}
+.conf-dot.fill{background:#111111}
 .conf-text{font-size:9px;font-weight:700;color:var(--g400);white-space:nowrap}
 
 /* Bid section */
 .vc-bid{padding:10px 14px 0;border-top:1px solid var(--g200)}
 .bid-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:9px}
 .bid-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:2px}
-.bid-current{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--blue-d);line-height:1;transition:color .3s}
+.bid-current{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:#111111;line-height:1;transition:color .3s}
 .bid-current.raised{color:var(--green)}
 .bid-current.outbid{color:var(--red)}
 .bid-base{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--g400);text-align:right}
@@ -216,8 +220,8 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .step-btn:hover{background:var(--g200);border-color:var(--g400)}
 .step-btn:active{transform:scale(.92)}
 .step-val{flex:1;height:30px;display:flex;align-items:center;justify-content:center;background:var(--g100);border-radius:var(--r);border:1.5px solid var(--g300);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--g900)}
-.bid-cta{height:30px;padding:0 16px;background:var(--blue);color:#fff;border-radius:var(--r);font-size:12px;font-weight:800;flex-shrink:0;transition:all .15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
-.bid-cta:hover{background:var(--blue-m)}
+.bid-cta{height:30px;padding:0 16px;background:#111111;color:#fff;border-radius:var(--r);font-size:12px;font-weight:800;flex-shrink:0;transition:all .15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.bid-cta:hover{background:#333333}
 .bid-cta:active{transform:scale(.95)}
 .bid-cta.confirm{background:var(--green)}
 .bid-cta.placed{background:var(--g400);cursor:default}
@@ -225,11 +229,11 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 /* Feature action row */
 .vc-actions{display:flex;gap:6px;padding:0 14px 13px;margin-top:3px}
 .ab-toggle{flex:1;height:30px;border-radius:var(--r);background:var(--g100);border:1.5px solid var(--g300);font-size:11px;font-weight:700;color:var(--g600);display:flex;align-items:center;justify-content:center;gap:5px;transition:all .18s}
-.ab-toggle:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-l)}
-.ab-toggle.on{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d);font-size:10px}
+.ab-toggle:hover{border-color:#111111;color:#111111;background:#f0f0f0}
+.ab-toggle.on{background:#111111;border-color:#111111;color:#ffffff;font-size:10px}
 .basket-toggle{flex:1;height:30px;border-radius:var(--r);background:var(--g100);border:1.5px solid var(--g300);font-size:11px;font-weight:700;color:var(--g600);display:flex;align-items:center;justify-content:center;gap:5px;transition:all .18s}
-.basket-toggle:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
-.basket-toggle.on{background:var(--blue-l);border-color:var(--blue);color:var(--blue)}
+.basket-toggle:hover{border-color:#111111;color:#111111;background:#f0f0f0}
+.basket-toggle.on{background:#111111;border-color:#111111;color:#ffffff}
 
 /* ══ AUTO-BID PANEL ══ */
 .panel-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.35);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .25s}
@@ -239,28 +243,28 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .panel-hdr{padding:16px 18px;border-bottom:1px solid var(--g200);display:flex;align-items:center;gap:10px;flex-shrink:0}
 .panel-close{width:28px;height:28px;border-radius:var(--r);background:var(--g100);color:var(--g500);font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-left:auto}
 .panel-close:hover{background:var(--g200);color:var(--g900)}
-.panel-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--g900)}
-.panel-sub{font-size:11px;color:var(--g400);margin-top:1px;font-weight:500}
+.panel-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#111111}
+.panel-sub{font-size:11px;color:#888888;margin-top:1px;font-weight:500}
 .panel-body{flex:1;overflow-y:auto;padding:18px}
 .panel-section{margin-bottom:20px}
 .p-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--g500);margin-bottom:8px;display:block}
 .p-input{width:100%;padding:10px 14px;border:1.5px solid var(--g300);border-radius:var(--r);font-size:15px;font-weight:700;color:var(--g900)}
-.p-input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.1)}
+.p-input:focus{border-color:#111111;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
 .p-hint{font-size:11px;color:var(--g400);margin-top:5px;font-weight:500}
 .p-hint.good{color:var(--green)}
 .p-hint.warn{color:var(--amber)}
 .strategy-row{display:flex;gap:6px}
 .strat-btn{flex:1;padding:9px 6px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);font-size:11px;font-weight:700;color:var(--g600);text-align:center;cursor:pointer;transition:all .15s}
-.strat-btn:hover{border-color:var(--teal);color:var(--teal)}
-.strat-btn.on{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d)}
+.strat-btn:hover{border-color:#111111;color:#111111}
+.strat-btn.on{background:#111111;border-color:#111111;color:#ffffff}
 .strat-btn .strat-icon{display:block;font-size:18px;margin-bottom:4px}
 .ab-stat-row{display:flex;gap:10px;margin-bottom:4px}
 .ab-stat{flex:1;background:var(--g100);border-radius:var(--r);padding:10px 12px;text-align:center}
 .ab-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--g900)}
 .ab-stat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--g400);margin-top:2px}
 .enable-btn{width:100%;padding:12px;border-radius:var(--rm);font-size:14px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
-.enable-btn.off{background:var(--teal);color:#fff}
-.enable-btn.off:hover{background:var(--teal-d)}
+.enable-btn.off{background:#111111;color:#fff}
+.enable-btn.off:hover{background:#333333}
 .enable-btn.on{background:var(--red-l);color:var(--red);border:1.5px solid var(--red)}
 .enable-btn.on:hover{background:var(--red);color:#fff}
 
@@ -274,23 +278,23 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .toggle-switch input{opacity:0;width:0;height:0;position:absolute}
 .toggle-slider{position:absolute;cursor:pointer;inset:0;background:var(--g300);border-radius:11px;transition:.25s}
 .toggle-slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-.toggle-switch input:checked+.toggle-slider{background:var(--teal)}
+.toggle-switch input:checked+.toggle-slider{background:#111111}
 .toggle-switch input:checked+.toggle-slider::before{transform:translateX(18px)}
 .phone-input-wrap{position:relative;margin-top:6px}
 .phone-prefix{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:var(--g500);pointer-events:none}
 .phone-input{width:100%;padding:9px 12px 9px 40px;border:1.5px solid var(--g300);border-radius:var(--r);font-size:14px;font-weight:600;color:var(--g900)}
-.phone-input:focus{border-color:var(--teal)}
-.save-btn{width:100%;padding:10px;background:var(--blue);color:#fff;border-radius:var(--r);font-size:13px;font-weight:700;margin-top:14px;transition:background .15s}
-.save-btn:hover{background:var(--blue-m)}
+.phone-input:focus{border-color:#111111}
+.save-btn{width:100%;padding:10px;background:#111111;color:#fff;border-radius:var(--r);font-size:13px;font-weight:700;margin-top:14px;transition:background .15s}
+.save-btn:hover{background:#333333}
 
 /* ══ BASKET FLOAT ══ */
 .basket-float{position:fixed;bottom:20px;right:20px;z-index:350;width:320px;border-radius:var(--rm);overflow:hidden;box-shadow:var(--shadow-xl);transition:all .3s cubic-bezier(.4,0,.2,1);transform:translateY(calc(100% + 28px));pointer-events:none}
 .basket-float.show{transform:translateY(0);pointer-events:all}
-.bf-bar{background:var(--g900);padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.bf-bar{background:#111111;padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
 .bf-icon{font-size:18px}
 .bf-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#fff;flex:1}
-.bf-count{background:var(--blue);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:2px}
-.bf-total{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--gold)}
+.bf-count{background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:2px}
+.bf-total{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#ffffff}
 .bf-chevron{color:rgba(255,255,255,.5);font-size:12px;transition:transform .25s}
 .bf-chevron.up{transform:rotate(180deg)}
 .bf-body{background:var(--white);border:1.5px solid var(--g200);border-top:none;border-radius:0 0 var(--rm) var(--rm);max-height:0;overflow:hidden;transition:max-height .35s ease}
@@ -301,20 +305,20 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .bf-item-info{flex:1;min-width:0}
 .bf-item-name{font-size:12px;font-weight:700;color:var(--g900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bf-item-meta{font-size:10px;color:var(--g400);font-weight:500}
-.bf-item-bid{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--blue-d);white-space:nowrap}
+.bf-item-bid{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#111111;white-space:nowrap}
 .bf-item-remove{color:var(--g400);font-size:14px;padding:3px 6px;transition:color .15s;flex-shrink:0}
 .bf-item-remove:hover{color:var(--red)}
 .bf-footer{padding:12px 14px;border-top:1px solid var(--g200);background:var(--g50)}
 .bf-footer-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .bf-footer-lbl{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.4px}
 .bf-footer-total{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--g900)}
-.place-bulk-btn{width:100%;padding:11px;background:var(--blue);color:#fff;border-radius:var(--r);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.place-bulk-btn:hover{background:var(--blue-m)}
+.place-bulk-btn{width:100%;padding:11px;background:#111111;color:#fff;border-radius:var(--r);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.place-bulk-btn:hover{background:#333333}
 .place-bulk-btn:active{transform:scale(.97)}
 
 /* ══ TOASTS ══ */
 .toasts{position:fixed;bottom:20px;left:20px;z-index:999;display:flex;flex-direction:column;gap:7px;pointer-events:none;max-width:320px}
-.toast{background:#fff;border-radius:var(--rm);box-shadow:var(--shadow-lg);padding:11px 14px;display:flex;align-items:flex-start;gap:9px;pointer-events:all;border-left:4px solid var(--blue);animation:tin .22s ease;max-width:320px}
+.toast{background:#fff;border-radius:var(--rm);box-shadow:var(--shadow-lg);padding:11px 14px;display:flex;align-items:flex-start;gap:9px;pointer-events:all;border-left:4px solid #111111;animation:tin .22s ease;max-width:320px}
 @keyframes tin{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
 .toast.out{animation:tout .22s ease forwards}
 @keyframes tout{to{opacity:0;transform:translateX(-12px)}}
@@ -333,24 +337,24 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 .modal-ov.open{opacity:1;pointer-events:all}
 .modal{background:#fff;border-radius:var(--rm);width:480px;max-width:calc(100vw - 32px);max-height:86vh;display:flex;flex-direction:column;box-shadow:var(--shadow-xl);transform:translateY(8px);transition:transform .22s}
 .modal-ov.open .modal{transform:translateY(0)}
-.modal-hdr{padding:16px 18px;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--blue-d);border-radius:var(--rm) var(--rm) 0 0}
+.modal-hdr{padding:16px 18px;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#111111;border-radius:var(--rm) var(--rm) 0 0}
 .modal-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff}
 .modal-close{width:28px;height:28px;border-radius:var(--r);background:rgba(255,255,255,.12);color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .15s}
 .modal-close:hover{background:rgba(255,255,255,.25)}
 .modal-body{padding:18px;overflow-y:auto;flex:1}
 .modal-footer{padding:12px 18px;border-top:1px solid var(--g200);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
-.confirm-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--g100);border-radius:var(--r);margin-bottom:8px;border-left:3px solid var(--blue)}
+.confirm-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--g100);border-radius:var(--r);margin-bottom:8px;border-left:3px solid #111111}
 .ci-emoji{font-size:22px;flex-shrink:0;margin-right:4px}
 .ci-name{font-size:13px;font-weight:700;color:var(--g900)}
 .ci-meta{font-size:10px;color:var(--g400);margin-top:1px}
-.ci-bid{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--blue-d);white-space:nowrap}
-.confirm-total{background:var(--blue-d);border-radius:var(--r);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.ci-bid{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#111111;white-space:nowrap}
+.confirm-total{background:#111111;border-radius:var(--r);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:12px}
 .ct-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.65)}
 .ct-val{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:#fff}
 
 /* ══ BUTTONS ══ */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;border:none}
-.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:var(--blue-m)}
+.btn-blue{background:#111111;color:#fff}.btn-blue:hover{background:#333333}
 .btn-green{background:var(--green);color:#fff}.btn-green:hover{background:var(--green-d)}
 .btn-ghost{background:var(--g100);color:var(--g600);border:1.5px solid var(--g300)}.btn-ghost:hover{border-color:var(--g500);color:var(--g800)}
 .btn-sm{padding:6px 12px;font-size:12px}
@@ -388,28 +392,28 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 <!-- ══ HEADER ══ -->
 <header class="hdr">
   <a href="index.html" class="logo">
-    <div class="logo-icon">🏛</div>
+    <div class="logo-icon" style="background:#111111;color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;letter-spacing:-0.5px;flex-shrink:0">H</div>
     <span class="logo-text">Hammer<span>ly</span></span>
   </a>
   <div class="hdr-divider"></div>
   <div class="search-wrap">
     <input type="text" id="searchInput" placeholder="Search make, model, city, bank, lot…" autocomplete="off" oninput="onSearch(this.value)"/>
-    <span class="search-icon" id="searchIcon">🔍</span>
+    <span class="search-icon" id="searchIcon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
     <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
   </div>
   <div class="hdr-actions">
     <button class="hdr-btn" id="aiBtn" onclick="toggleAIBanner()" title="Smart Match AI">
-      <span class="hdr-btn-icon">✨</span>
+      <span class="hdr-btn-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
       <span class="hdr-btn-label">Smart Match</span>
     </button>
     <div class="hdr-divider"></div>
     <button class="hdr-btn" id="roboBtn" onclick="openPanel('robo')" title="Robo-Call Alerts">
-      <span class="hdr-btn-icon">🔔</span>
+      <span class="hdr-btn-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
       <span class="hdr-btn-label">Alerts</span>
       <span class="hdr-badge" id="roboBadge" style="display:none">3</span>
     </button>
     <button class="hdr-btn" id="basketBtn" onclick="toggleBasketFloat()" title="Bulk Basket">
-      <span class="hdr-btn-icon">📦</span>
+      <span class="hdr-btn-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
       <span class="hdr-btn-label">Basket</span>
       <span class="hdr-badge" id="basketBadge" style="display:none">0</span>
     </button>
@@ -429,9 +433,9 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
   <div class="filter-tabs">
     <button class="ftab on" data-filter="all" onclick="setFilter('all',this)">All <span class="fc" id="fc-all">0</span></button>
     <button class="ftab" data-filter="live" onclick="setFilter('live',this)">● Live <span class="fc" id="fc-live">0</span></button>
-    <button class="ftab" data-filter="upcoming" onclick="setFilter('upcoming',this)">⏳ Upcoming <span class="fc" id="fc-upcoming">0</span></button>
-    <button class="ftab" data-filter="4w" onclick="setFilter('4w',this)">🚗 4-Wheeler <span class="fc" id="fc-4w">0</span></button>
-    <button class="ftab" data-filter="2w" onclick="setFilter('2w',this)">🏍 2-Wheeler <span class="fc" id="fc-2w">0</span></button>
+    <button class="ftab" data-filter="upcoming" onclick="setFilter('upcoming',this)">Upcoming <span class="fc" id="fc-upcoming">0</span></button>
+    <button class="ftab" data-filter="4w" onclick="setFilter('4w',this)">4-Wheeler <span class="fc" id="fc-4w">0</span></button>
+    <button class="ftab" data-filter="2w" onclick="setFilter('2w',this)">2-Wheeler <span class="fc" id="fc-2w">0</span></button>
   </div>
   <div class="tb-sep"></div>
   <select class="sort-select" id="sortSel" onchange="setSort(this.value)">
@@ -452,9 +456,9 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 
 <!-- ══ AI SMART MATCH PANEL ══ -->
 <div class="panel" id="aiPanel">
-  <div class="panel-hdr" style="background:linear-gradient(135deg,#1a0a3a 0%,#5b21b6 100%)">
+  <div class="panel-hdr" style="background:#ffffff;border-bottom:1px solid #e8e8e8">
     <div>
-      <div class="panel-title">✨ Smart Match AI</div>
+      <div class="panel-title">Smart Match AI</div>
       <div class="panel-sub">Your AI-powered auction scout</div>
     </div>
     <button class="panel-close" onclick="closePanels()">✕</button>
@@ -462,15 +466,15 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
   <div class="panel-body">
     <div class="hiw">
       <div class="hiw-step">
-        <div class="hiw-num" style="background:var(--purple)">1</div>
+        <div class="hiw-num">1</div>
         <div class="hiw-content"><div class="hiw-title">Tell us what you want</div><div class="hiw-desc">Pick vehicle type, fuel preference, and the most you'll pay</div></div>
       </div>
       <div class="hiw-step">
-        <div class="hiw-num" style="background:var(--purple)">2</div>
+        <div class="hiw-num">2</div>
         <div class="hiw-content"><div class="hiw-title">AI scores all 25 lots</div><div class="hiw-desc">Each vehicle gets a match % based on how well it fits your preferences</div></div>
       </div>
       <div class="hiw-step">
-        <div class="hiw-num" style="background:var(--purple)">3</div>
+        <div class="hiw-num">3</div>
         <div class="hiw-content"><div class="hiw-title">Best matches surface on cards</div><div class="hiw-desc">Gold badge = 88%+, Purple = 72%+. Sort by "AI Match %" to rank them</div></div>
       </div>
     </div>
@@ -478,18 +482,18 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
       <label class="p-label">What type of vehicle?</label>
       <div class="p-desc">Select all that interest you — AI will prioritise these</div>
       <div class="panel-chip-row">
-        <button class="panel-chip" onclick="toggleAIChip(this,'type','2w')">🏍 2-Wheeler</button>
-        <button class="panel-chip" onclick="toggleAIChip(this,'type','4w')">🚗 4-Wheeler</button>
-        <button class="panel-chip" onclick="toggleAIChip(this,'type','ev')">⚡ EV Only</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'type','2w')">2-Wheeler</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'type','4w')">4-Wheeler</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'type','ev')">EV Only</button>
       </div>
     </div>
     <div class="panel-section">
       <label class="p-label">Preferred fuel type</label>
       <div class="p-desc">Leave blank to consider all fuels</div>
       <div class="panel-chip-row">
-        <button class="panel-chip" onclick="toggleAIChip(this,'fuel','Petrol')">⛽ Petrol</button>
-        <button class="panel-chip" onclick="toggleAIChip(this,'fuel','Diesel')">🛢 Diesel</button>
-        <button class="panel-chip" onclick="toggleAIChip(this,'fuel','Electric')">⚡ Electric</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'fuel','Petrol')">Petrol</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'fuel','Diesel')">Diesel</button>
+        <button class="panel-chip" onclick="toggleAIChip(this,'fuel','Electric')">Electric</button>
       </div>
     </div>
     <div class="panel-section">
@@ -497,7 +501,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
       <div class="p-desc">Lots above this will be penalised in the score — enter in rupees</div>
       <input class="p-input" type="text" id="aiBudget" placeholder="e.g. 15,00,000"/>
     </div>
-    <button class="ai-run-btn" id="aiRunBtn" onclick="runAI()">✨ Find My Matches</button>
+    <button class="ai-run-btn" id="aiRunBtn" onclick="runAI()">Find My Matches</button>
     <div class="ai-result-hint" id="aiResultHint">
       <div class="ai-result-hint-title">✓ Matches found — scores visible on all cards</div>
       <div class="ai-result-hint-body">Use Sort → "AI Match %" to rank best lots first. Gold badge = strong match, purple = good fit.</div>
@@ -507,9 +511,9 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 
 <!-- ══ AUTO-BID PANEL ══ -->
 <div class="panel" id="abPanel">
-  <div class="panel-hdr" style="background:linear-gradient(135deg,var(--teal-d) 0%,var(--teal) 100%)">
+  <div class="panel-hdr" style="background:#ffffff;border-bottom:1px solid #e8e8e8">
     <div>
-      <div class="panel-title" id="abPanelTitle">⚡ Auto-Bid Setup</div>
+      <div class="panel-title" id="abPanelTitle">Auto-Bid Setup</div>
       <div class="panel-sub" id="abPanelSub">Set ceiling · choose strategy · walk away</div>
     </div>
     <button class="panel-close" onclick="closePanels()">✕</button>
@@ -517,15 +521,15 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
   <div class="panel-body">
     <div class="hiw">
       <div class="hiw-step">
-        <div class="hiw-num" style="background:var(--teal)">1</div>
+        <div class="hiw-num">1</div>
         <div class="hiw-content"><div class="hiw-title">Set your ceiling</div><div class="hiw-desc">The maximum you'd ever pay — you won't be charged more than this, ever</div></div>
       </div>
       <div class="hiw-step">
-        <div class="hiw-num" style="background:var(--teal)">2</div>
+        <div class="hiw-num">2</div>
         <div class="hiw-content"><div class="hiw-title">Pick a strategy</div><div class="hiw-desc">Controls when the system fires — last-second snipe, balanced, or aggressive lead</div></div>
       </div>
       <div class="hiw-step">
-        <div class="hiw-num" style="background:var(--teal)">3</div>
+        <div class="hiw-num">3</div>
         <div class="hiw-content"><div class="hiw-title">Enable and walk away</div><div class="hiw-desc">System bids automatically. You get notified when you win or if ceiling is reached</div></div>
       </div>
     </div>
@@ -540,15 +544,15 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
       <div class="p-desc">Choose how the engine responds to rival bids</div>
       <div class="strategy-row">
         <button class="strat-btn" data-strat="sniper" onclick="setStrategy('sniper',this)">
-          <span class="strat-icon">🎯</span>Sniper
+          <span class="strat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></span>Sniper
           <span style="display:block;font-size:9px;font-weight:400;color:var(--g400);margin-top:2px">Bids in last 30 sec</span>
         </button>
         <button class="strat-btn on" data-strat="steady" onclick="setStrategy('steady',this)">
-          <span class="strat-icon">⚖️</span>Steady
+          <span class="strat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>Steady
           <span style="display:block;font-size:9px;font-weight:400;color:var(--g400);margin-top:2px">Responds in ~60 sec</span>
         </button>
         <button class="strat-btn" data-strat="bold" onclick="setStrategy('bold',this)">
-          <span class="strat-icon">🔥</span>Bold
+          <span class="strat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>Bold
           <span style="display:block;font-size:9px;font-weight:400;color:var(--g400);margin-top:2px">Bids immediately</span>
         </button>
       </div>
@@ -574,15 +578,15 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
         </div>
       </div>
     </div>
-    <button class="enable-btn off" id="abEnableBtn" onclick="toggleAutoBid()">⚡ Enable Auto-Bid</button>
+    <button class="enable-btn off" id="abEnableBtn" onclick="toggleAutoBid()">Enable Auto-Bid</button>
   </div>
 </div>
 
 <!-- ══ ROBO-CALL PANEL ══ -->
 <div class="panel" id="roboPanel">
-  <div class="panel-hdr" style="background:linear-gradient(135deg,#0d2137 0%,var(--blue) 100%)">
+  <div class="panel-hdr" style="background:#ffffff;border-bottom:1px solid #e8e8e8">
     <div>
-      <div class="panel-title">🔔 Robo-Call Alerts</div>
+      <div class="panel-title">Robo-Call Alerts</div>
       <div class="panel-sub">Instant voice calls when your auctions move</div>
     </div>
     <button class="panel-close" onclick="closePanels()">✕</button>
@@ -615,7 +619,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
       <div class="p-desc">Toggle each alert on or off. The preview shows what the call will say.</div>
 
       <div class="alert-card on" id="ac-outbid">
-        <div class="alert-card-icon">📞</div>
+        <div class="alert-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.4 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
         <div class="alert-card-body">
           <div class="alert-card-title">Outbid Alert</div>
           <div class="alert-card-when">Triggers when: Someone places a higher bid than yours</div>
@@ -625,7 +629,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
       </div>
 
       <div class="alert-card on" id="ac-won">
-        <div class="alert-card-icon">🏆</div>
+        <div class="alert-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
         <div class="alert-card-body">
           <div class="alert-card-title">Winner Notification</div>
           <div class="alert-card-when">Triggers when: You win a lot at auction close</div>
@@ -635,7 +639,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
       </div>
 
       <div class="alert-card on" id="ac-remind">
-        <div class="alert-card-icon">⏰</div>
+        <div class="alert-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
         <div class="alert-card-body">
           <div class="alert-card-title">Auction Starting Soon</div>
           <div class="alert-card-when">Triggers when: 30 minutes before an auction you're watching goes live</div>
@@ -645,7 +649,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
       </div>
 
       <div class="alert-card" id="ac-sms">
-        <div class="alert-card-icon">📱</div>
+        <div class="alert-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
         <div class="alert-card-body">
           <div class="alert-card-title">Bid Confirmation SMS</div>
           <div class="alert-card-when">Triggers when: Any bid is placed on your behalf</div>
@@ -655,7 +659,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
       </div>
 
       <div class="alert-card" id="ac-digest">
-        <div class="alert-card-icon">📅</div>
+        <div class="alert-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
         <div class="alert-card-body">
           <div class="alert-card-title">Morning Auction Digest</div>
           <div class="alert-card-when">Triggers when: Every morning at 8 AM on auction days</div>
@@ -671,7 +675,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 <!-- ══ BULK BID CONFIRM MODAL ══ -->
 <div class="modal-ov" id="bulkModal">
   <div class="modal">
-    <div class="modal-hdr"><span class="modal-title">🔨 Confirm Bulk Bid</span><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-hdr"><span class="modal-title">Confirm Bulk Bid</span><button class="modal-close" onclick="closeModal()">✕</button></div>
     <div class="modal-body">
       <p style="font-size:12px;color:var(--g500);margin-bottom:14px;line-height:1.6">Review your bids below. You can adjust amounts on each card after placing.</p>
       <div id="bulkConfirmList"></div>
@@ -687,7 +691,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
 <!-- ══ BULK BASKET FLOAT ══ -->
 <div class="basket-float" id="basketFloat">
   <div class="bf-bar" onclick="toggleBFBody()">
-    <span class="bf-icon">📦</span>
+    <span class="bf-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
     <span class="bf-title">Bulk Basket</span>
     <span class="bf-count" id="bfCount">0</span>
     <span class="bf-total" id="bfTotal">₹0</span>
@@ -700,7 +704,7 @@ input,select{font-family:'Barlow',sans-serif;outline:none}
         <span class="bf-footer-lbl">Grand Total</span>
         <span class="bf-footer-total" id="bfFooterTotal">₹0</span>
       </div>
-      <button class="place-bulk-btn" onclick="openBulkConfirm()">🔨 Place Bulk Bid</button>
+      <button class="place-bulk-btn" onclick="openBulkConfirm()">Place Bulk Bid</button>
     </div>
   </div>
 </div>
@@ -863,7 +867,7 @@ function getFiltered() {
 function renderRail() {
   const wrap = document.getElementById('auctionRail');
   const allChip = `<div class="rail-chip ${!S.auction?'sel':''}" onclick="selectAuction(null)">
-    <span class="rail-chip-emoji">🏛</span>
+    <span class="rail-chip-emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span>
     <div class="rail-chip-info">
       <div class="rail-chip-name">All Auctions</div>
       <div class="rail-chip-meta">${VEHICLES.length} lots total</div>
@@ -871,7 +875,7 @@ function renderRail() {
   </div>`;
   const chips = AUCTIONS.map(a => `
     <div class="rail-chip ${S.auction===a.id?'sel':''}" onclick="selectAuction('${a.id}')">
-      <span class="rail-chip-emoji">${a.emoji}</span>
+      <span class="rail-chip-emoji" style="font-size:10px;font-weight:800;color:#555;background:#f0f0f0;width:28px;height:28px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:-0.5px">${a.bank.split(' ').map(w=>w[0]).slice(0,2).join('')}</span>
       <div class="rail-chip-info">
         <div class="rail-chip-name" style="display:flex;align-items:center;gap:6px">
           ${a.bank}
@@ -898,6 +902,18 @@ function renderToolbar() {
 }
 
 // ─────────────────────────────────────────────────────────
+//  VEHICLE SVG SILHOUETTES
+// ─────────────────────────────────────────────────────────
+const VEH_SVG = {
+  car:    `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="42" width="156" height="18" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><path d="M48 42 Q54 20 70 16 L130 16 Q146 20 152 42 Z" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><path d="M60 42 Q64 24 76 20 L124 20 Q136 24 140 42 Z" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><circle cx="56" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="56" cy="62" r="4" fill="#d4d4d4"/><circle cx="144" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="144" cy="62" r="4" fill="#d4d4d4"/></svg>`,
+  suv:    `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="38" width="164" height="22" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><path d="M34 38 Q38 14 56 10 L144 10 Q162 14 166 38 Z" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><path d="M48 38 Q52 18 64 13 L136 13 Q148 18 152 38 Z" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><circle cx="54" cy="62" r="13" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="54" cy="62" r="5" fill="#d4d4d4"/><circle cx="146" cy="62" r="13" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="146" cy="62" r="5" fill="#d4d4d4"/></svg>`,
+  bike:   `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M65 42 L95 26 L135 26 L148 40" stroke="#d0d0d0" stroke-width="1.5" stroke-linecap="round"/><path d="M95 26 L95 42" stroke="#d0d0d0" stroke-width="1.5"/><path d="M135 26 L140 20 L148 20" stroke="#d0d0d0" stroke-width="1.5" stroke-linecap="round"/><path d="M88 26 Q110 20 128 26" stroke="#d0d0d0" stroke-width="2" stroke-linecap="round"/><circle cx="57" cy="56" r="16" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="57" cy="56" r="5" fill="#d4d4d4"/><circle cx="147" cy="56" r="16" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="147" cy="56" r="5" fill="#d4d4d4"/></svg>`,
+  scooter:`<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M80 36 Q88 22 100 18 L124 22 L138 36" stroke="#d0d0d0" stroke-width="1.5" stroke-linejoin="round" fill="none"/><path d="M60 50 L80 36 L138 36 L138 50 Z" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="68" cy="61" r="13" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="68" cy="61" r="4" fill="#d4d4d4"/><circle cx="138" cy="61" r="13" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="138" cy="61" r="4" fill="#d4d4d4"/></svg>`,
+  truck:  `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="26" width="98" height="32" rx="2" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><rect x="120" y="20" width="58" height="38" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><rect x="128" y="25" width="34" height="18" rx="2" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><rect x="16" y="56" width="166" height="6" rx="2" fill="#e4e4e4" stroke="#d0d0d0" stroke-width="1"/><circle cx="46" cy="66" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="46" cy="66" r="4" fill="#d4d4d4"/><circle cx="152" cy="66" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="152" cy="66" r="4" fill="#d4d4d4"/></svg>`,
+  ev:     `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="43" width="150" height="17" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><path d="M46 43 Q50 22 66 17 L134 17 Q150 22 154 43 Z" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><path d="M58 43 Q62 26 74 21 L126 21 Q138 26 142 43 Z" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><circle cx="56" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="56" cy="62" r="4" fill="#d4d4d4"/><circle cx="144" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="144" cy="62" r="4" fill="#d4d4d4"/><path d="M172 46 L168 52 L172 52 L168 58" stroke="#c8c8c8" stroke-width="1.5" stroke-linecap="round"/></svg>`
+};
+
+// ─────────────────────────────────────────────────────────
 //  BUILD VEHICLE CARD
 // ─────────────────────────────────────────────────────────
 function buildCard(v) {
@@ -912,7 +928,7 @@ function buildCard(v) {
   const score = S.aiScores[v.id];
   const title = highlight(v.year + ' ' + v.name, S.search);
   const confConf = ['','','Low','Okay','Good','High'];
-  const abLabel = ab.enabled ? `⚡ Auto: ${fmt(ab.maxBid)}` : '⚡ Auto-Bid';
+  const abLabel = ab.enabled ? `Auto: ${fmt(ab.maxBid)}` : 'Auto-Bid';
 
   let classes = 'vcard fade-in';
   if (ab.enabled) classes += ' ab-active';
@@ -921,30 +937,29 @@ function buildCard(v) {
   let aiBadgeHtml = '';
   if (S.aiRun && score != null) {
     const cls = score >= 88 ? 'gold' : score >= 72 ? 'purple' : 'blue';
-    aiBadgeHtml = `<div class="ai-match-badge ${cls}" style="display:flex">✨ ${score}%</div>`;
+    aiBadgeHtml = `<div class="ai-match-badge ${cls}" style="display:flex">${score}%</div>`;
   }
 
   return `<div class="${classes}" id="card-${v.id}" data-vid="${v.id}">
     <div class="vc-img ${v.cls}" id="img-${v.id}">
-      <div class="bg-emoji">${v.emoji}</div>
-      <div class="main-emoji">${v.emoji}</div>
+      <div class="vc-silhouette">${VEH_SVG[v.cls]||VEH_SVG.car}</div>
       <div class="vc-lot">LOT #${v.id}</div>
       <div class="vc-badges">
-        <span class="vc-status ${auction?.status==='live'?'vcs-live':auction?.status==='upcoming'?'vcs-upcoming':'vcs-closed'}">${auction?.status==='live'?'● LIVE':auction?.status==='upcoming'?'⏳ UPCOMING':'CLOSED'}</span>
-        <span class="vc-type ${v.type==='4w'?'vct-4w':'vct-2w'}">${v.type==='4w'?'🚗 4W':'🏍 2W'}</span>
+        <span class="vc-status ${auction?.status==='live'?'vcs-live':auction?.status==='upcoming'?'vcs-upcoming':'vcs-closed'}">${auction?.status==='live'?'● LIVE':auction?.status==='upcoming'?'UPCOMING':'CLOSED'}</span>
+        <span class="vc-type ${v.type==='4w'?'vct-4w':'vct-2w'}">${v.type==='4w'?'4W':'2W'}</span>
       </div>
       ${timerStr ? `<div class="vc-timer" id="timer-${v.id}"><div class="vc-timer-dot"></div>${timerStr}</div>` : ''}
       ${aiBadgeHtml}
-      <div class="swipe-ol bid" id="swipe-bid-${v.id}">🏷️ Quick Bid!</div>
+      <div class="swipe-ol bid" id="swipe-bid-${v.id}">Quick Bid</div>
       <div class="swipe-ol skip" id="swipe-skip-${v.id}">← Pass</div>
     </div>
     <div class="vc-body">
       <div class="vc-title">${title}</div>
       <div class="vc-source">${v.bank} · ${v.city}</div>
       <div class="vc-specs">
-        <span class="vc-spec">⛽ ${v.fuel}</span>
-        <span class="vc-spec">🛣️ ${(v.km/1000).toFixed(0)}K km</span>
-        <span class="vc-spec">📍 ${v.city}</span>
+        <span class="vc-spec">${v.fuel}</span>
+        <span class="vc-spec">${(v.km/1000).toFixed(0)}K km</span>
+        <span class="vc-spec">${v.city}</span>
       </div>
       <div class="vc-est">
         <span class="est-label">Est. Sale</span>
@@ -971,12 +986,12 @@ function buildCard(v) {
         <button class="step-btn" onclick="adjBid('${v.id}',-1)">−</button>
         <div class="step-val" id="stepval-${v.id}">${fmt(bid)}</div>
         <button class="step-btn" onclick="adjBid('${v.id}',1)">+</button>
-        <button class="bid-cta" id="bidcta-${v.id}" onclick="placeBid('${v.id}',this)">${auction?.status==='upcoming'?'⏳ Watchlist':'🏷️ Bid'}</button>
+        <button class="bid-cta" id="bidcta-${v.id}" onclick="placeBid('${v.id}',this)">${auction?.status==='upcoming'?'Watchlist':'Bid'}</button>
       </div>
     </div>
     <div class="vc-actions">
       <button class="ab-toggle ${ab.enabled?'on':''}" id="abtoggle-${v.id}" onclick="openAutoBid('${v.id}')">${abLabel}</button>
-      <button class="basket-toggle ${inBasket?'on':''}" id="basktoggle-${v.id}" onclick="toggleBasket('${v.id}')">${inBasket?'✓ In Basket':'📦 + Basket'}</button>
+      <button class="basket-toggle ${inBasket?'on':''}" id="basktoggle-${v.id}" onclick="toggleBasket('${v.id}')">${inBasket?'✓ In Basket':'+ Basket'}</button>
     </div>
   </div>`;
 }
@@ -989,7 +1004,7 @@ function renderGrid() {
   const grid = document.getElementById('mainGrid');
   if (!list.length) {
     grid.innerHTML = `<div class="empty-state">
-      <div class="es-icon">🔍</div>
+      <div class="es-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cccccc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
       <div class="es-title">No lots found</div>
       <div class="es-sub">${S.search ? `No results for "<strong>${S.search}</strong>". Try a different search.` : 'No vehicles match the current filters.'}</div>
       <button class="es-btn btn" onclick="clearFilters()">Clear all filters</button>
@@ -1007,7 +1022,7 @@ function renderGrid() {
 function adjBid(vid, dir) {
   const v = VEHICLES.find(x=>x.id===vid);
   const newBid = S.bids[vid] + dir * v.inc;
-  if (newBid < v.base) { toast('Minimum bid reached', `Base bid is ${fmt(v.base)}`, 'warning', '⚠️'); return; }
+  if (newBid < v.base) { toast('Minimum bid reached', `Base bid is ${fmt(v.base)}`, 'warning', ''); return; }
   S.bids[vid] = newBid;
   updateBidDisplay(vid);
 }
@@ -1028,7 +1043,7 @@ function placeBid(vid, btnEl) {
   const v = VEHICLES.find(x=>x.id===vid);
   const auction = AUCTIONS.find(a=>a.id===v.aid);
   if (auction?.status === 'upcoming') {
-    toast('Added to watchlist', `${v.year} ${v.name} — you'll be notified when it goes live`, 'info', '📌');
+    toast('Added to watchlist', `${v.year} ${v.name} — you'll be notified when it goes live`, 'info', '');
     return;
   }
   // Confirm-then-bid flow
@@ -1037,16 +1052,16 @@ function placeBid(vid, btnEl) {
     delete S.confirmStates[vid];
     btnEl.textContent = '✓ Bid Placed!';
     btnEl.classList.add('placed');
-    toast('Bid placed!', `${v.year} ${v.name} @ ${fmt(S.bids[vid])}`, 'success', '🏷️');
+    toast('Bid placed', `${v.year} ${v.name} @ ${fmt(S.bids[vid])}`, 'success', '');
     const card = document.getElementById('card-'+vid);
     if (card) { card.classList.add('bid-flash'); setTimeout(()=>card.classList.remove('bid-flash'),600); }
-    setTimeout(() => { if (btnEl) { btnEl.textContent = '🏷️ Bid'; btnEl.classList.remove('placed'); } }, 2500);
+    setTimeout(() => { if (btnEl) { btnEl.textContent = 'Bid'; btnEl.classList.remove('placed'); } }, 2500);
   } else {
     btnEl.textContent = 'Confirm ✓';
     btnEl.classList.add('confirm');
     S.confirmStates[vid] = setTimeout(() => {
       delete S.confirmStates[vid];
-      if (btnEl) { btnEl.textContent = '🏷️ Bid'; btnEl.classList.remove('confirm'); }
+      if (btnEl) { btnEl.textContent = 'Bid'; btnEl.classList.remove('confirm'); }
     }, 2500);
   }
 }
@@ -1058,15 +1073,15 @@ function toggleBasket(vid) {
   if (S.basket.has(vid)) {
     S.basket.delete(vid);
     const v = VEHICLES.find(x=>x.id===vid);
-    toast('Removed from basket', v.year+' '+v.name, 'warning', '📦');
+    toast('Removed from basket', v.year+' '+v.name, 'warning', '');
   } else {
     S.basket.add(vid);
     const v = VEHICLES.find(x=>x.id===vid);
-    toast('Added to basket', v.year+' '+v.name+' — '+fmt(S.bids[vid]), 'info', '📦');
+    toast('Added to basket', v.year+' '+v.name+' — '+fmt(S.bids[vid]), 'info', '');
   }
   // Update card buttons
   const bt = document.getElementById('basktoggle-'+vid);
-  if (bt) { bt.className = 'basket-toggle' + (S.basket.has(vid)?' on':''); bt.textContent = S.basket.has(vid)?'✓ In Basket':'📦 + Basket'; }
+  if (bt) { bt.className = 'basket-toggle' + (S.basket.has(vid)?' on':''); bt.textContent = S.basket.has(vid)?'✓ In Basket':'+ Basket'; }
   const card = document.getElementById('card-'+vid);
   if (card) { card.classList.toggle('in-basket', S.basket.has(vid)); }
   renderBasketFloat();
@@ -1087,7 +1102,7 @@ function renderBasketFloat() {
   itemsEl.innerHTML = [...S.basket].map(vid => {
     const v = VEHICLES.find(x=>x.id===vid);
     return `<div class="bf-item">
-      <span class="bf-item-emoji">${v.emoji}</span>
+      <span class="bf-item-emoji" style="font-size:9px;font-weight:700;color:#555;background:#f0f0f0;width:28px;height:28px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${v.type==='4w'?'4W':'2W'}</span>
       <div class="bf-item-info"><div class="bf-item-name">${v.year} ${v.name}</div><div class="bf-item-meta">LOT #${vid} · ${v.city}</div></div>
       <div class="bf-item-bid">${fmt(S.bids[vid])}</div>
       <button class="bf-item-remove" onclick="toggleBasket('${vid}')">✕</button>
@@ -1102,7 +1117,7 @@ function toggleBFBody() {
 }
 
 function toggleBasketFloat() {
-  if (S.basket.size === 0) { toast('Basket is empty','Add lots using "+ Basket" on each card','warning','📦'); return; }
+  if (S.basket.size === 0) { toast('Basket is empty','Add lots using "+ Basket" on each card','warning',''); return; }
   S.bfOpen = !S.bfOpen;
   document.getElementById('bfBody').classList.toggle('open', S.bfOpen);
   document.getElementById('bfChevron').classList.toggle('up', S.bfOpen);
@@ -1121,7 +1136,7 @@ function openBulkConfirm() {
   const items = [...S.basket].map(vid => {
     const v = VEHICLES.find(x=>x.id===vid);
     return `<div class="confirm-item">
-      <span class="ci-emoji">${v.emoji}</span>
+      <span class="ci-emoji" style="font-size:10px;font-weight:700;color:#555;background:#f0f0f0;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;flex-shrink:0">${v.type==='4w'?'4W':'2W'}</span>
       <div style="flex:1;min-width:0">
         <div class="ci-name">${v.year} ${v.name}</div>
         <div class="ci-meta">LOT #${vid} · ${v.bank} · ${v.city}</div>
@@ -1138,7 +1153,7 @@ function executeBulkBid() {
   const cnt = S.basket.size;
   const total = [...S.basket].reduce((s,vid)=>s+S.bids[vid],0);
   closeModal();
-  toast('🔨 Bulk bid placed!', `${cnt} vehicles · Total ${fmt(total)}`, 'success', '🔨');
+  toast('Bulk bid placed', `${cnt} vehicles · Total ${fmt(total)}`, 'success', '');
   S.basket.forEach(vid => {
     const card = document.getElementById('card-'+vid);
     if (card) { card.classList.add('bid-flash'); setTimeout(()=>card.classList.remove('bid-flash'),600); }
@@ -1172,7 +1187,7 @@ function openAutoBid(vid) {
   // Enable btn
   const btn = document.getElementById('abEnableBtn');
   btn.className = 'enable-btn ' + (ab.enabled ? 'on' : 'off');
-  btn.textContent = ab.enabled ? '⏹ Disable Auto-Bid' : '⚡ Enable Auto-Bid';
+  btn.textContent = ab.enabled ? 'Disable Auto-Bid' : 'Enable Auto-Bid';
   openPanel('ab');
 }
 
@@ -1199,7 +1214,7 @@ function toggleAutoBid() {
   const ab = S.autoBids[vid];
   const maxRaw = parseInt(document.getElementById('abMaxBid').value.replace(/[^\d]/g,'')) || 0;
   if (!ab.enabled && maxRaw <= S.bids[vid]) {
-    toast('Set a max bid ceiling first', 'Enter an amount above the current bid', 'warning', '⚠️');
+    toast('Set a max bid ceiling first', 'Enter an amount above the current bid', 'warning', '');
     return;
   }
   ab.enabled = !ab.enabled;
@@ -1207,14 +1222,14 @@ function toggleAutoBid() {
   else { if (abTimers[vid]) { clearTimeout(abTimers[vid]); delete abTimers[vid]; } }
   const btn = document.getElementById('abEnableBtn');
   btn.className = 'enable-btn ' + (ab.enabled ? 'on' : 'off');
-  btn.textContent = ab.enabled ? '⏹ Disable Auto-Bid' : '⚡ Enable Auto-Bid';
+  btn.textContent = ab.enabled ? 'Disable Auto-Bid' : 'Enable Auto-Bid';
   // Update card
   const cardBtn = document.getElementById('abtoggle-'+vid);
-  if (cardBtn) { cardBtn.className = 'ab-toggle' + (ab.enabled?' on':''); cardBtn.textContent = ab.enabled ? `⚡ Auto: ${fmt(ab.maxBid)}` : '⚡ Auto-Bid'; }
+  if (cardBtn) { cardBtn.className = 'ab-toggle' + (ab.enabled?' on':''); cardBtn.textContent = ab.enabled ? `Auto: ${fmt(ab.maxBid)}` : 'Auto-Bid'; }
   const card = document.getElementById('card-'+vid);
   if (card) card.classList.toggle('ab-active', ab.enabled);
   const v = VEHICLES.find(x=>x.id===vid);
-  toast(ab.enabled ? 'Auto-Bid enabled' : 'Auto-Bid disabled', `${v.year} ${v.name}`, ab.enabled?'teal':'warning', ab.enabled?'⚡':'⏹');
+  toast(ab.enabled ? 'Auto-Bid enabled' : 'Auto-Bid disabled', `${v.year} ${v.name}`, ab.enabled?'teal':'warning', '');
 }
 
 // ─────────────────────────────────────────────────────────
@@ -1236,14 +1251,14 @@ function scheduleRival(vid) {
       S.bids[vid] = autoBid;
       ab.firedCount++;
       updateBidDisplay(vid);
-      toast('⚡ Auto-bid fired', `${v.year} ${v.name} → ${fmt(autoBid)}`, 'teal', '⚡');
+      toast('Auto-bid fired', `${v.year} ${v.name} → ${fmt(autoBid)}`, 'teal', '');
       if (S.abPanelVid === vid) document.getElementById('autoBidFired').textContent = ab.firedCount;
       scheduleRival(vid); // next round
     } else {
-      toast('Ceiling reached', `${v.year} ${v.name} — rival bid ${fmt(rivalBid)} hit your max`, 'warning', '⚠️');
+      toast('Ceiling reached', `${v.year} ${v.name} — rival bid ${fmt(rivalBid)} hit your max`, 'warning', '');
       ab.enabled = false;
       const cardBtn = document.getElementById('abtoggle-'+vid);
-      if (cardBtn) { cardBtn.className = 'ab-toggle'; cardBtn.textContent = '⚡ Auto-Bid'; }
+      if (cardBtn) { cardBtn.className = 'ab-toggle'; cardBtn.textContent = 'Auto-Bid'; }
       const card = document.getElementById('card-'+vid);
       if (card) card.classList.remove('ab-active');
       const el = document.getElementById('bidamt-'+vid);
@@ -1273,7 +1288,7 @@ function runAI() {
   S.aiPrefs.budget = parseInt(budgetRaw) || 0;
   const btn = document.getElementById('aiRunBtn');
   btn.classList.add('loading');
-  btn.textContent = '⏳ Scanning…';
+  btn.textContent = 'Scanning…';
   setTimeout(() => {
     VEHICLES.forEach(v => {
       let score = 50;
@@ -1288,10 +1303,10 @@ function runAI() {
     });
     S.aiRun = true;
     btn.classList.remove('loading');
-    btn.textContent = '✨ Find My Matches';
+    btn.textContent = 'Find My Matches';
     const top = VEHICLES.filter(v=>S.aiScores[v.id]>=80).length;
     document.getElementById('aiResultHint').classList.add('show');
-    toast('Smart Match complete', `Found ${top} strong matches for your preferences`, 'purple', '✨');
+    toast('Smart Match complete', `Found ${top} strong matches for your preferences`, 'purple', '');
     renderGrid();
   }, 1200);
 }
@@ -1321,11 +1336,11 @@ function syncAlertCard(key, cb) {
 
 function saveRoboSettings() {
   const phone = document.getElementById('phoneInput').value.trim();
-  if (phone && phone.length < 10) { toast('Enter a valid 10-digit number', '', 'warning', '⚠️'); return; }
+  if (phone && phone.length < 10) { toast('Enter a valid 10-digit number', '', 'warning', ''); return; }
   const alerts = ['rt-outbid','rt-won','rt-remind','rt-sms','rt-digest'].filter(id=>document.getElementById(id).checked).length;
   document.getElementById('roboBadge').textContent = alerts;
   document.getElementById('roboBadge').style.display = alerts > 0 ? 'flex' : 'none';
-  toast('Alert preferences saved', `${alerts} active alert${alerts!==1?'s':''} configured`, 'success', '🔔');
+  toast('Alert preferences saved', `${alerts} active alert${alerts!==1?'s':''} configured`, 'success', '');
   closePanels();
 }
 
@@ -1415,7 +1430,7 @@ function attachSwipeListeners() {
       if (dx > 80) {
         adjBid(vid, 1);
         const v = VEHICLES.find(x=>x.id===vid);
-        toast('Quick bid!', v.year+' '+v.name+' → '+fmt(S.bids[vid]), 'success', '🏷️');
+        toast('Quick bid', v.year+' '+v.name+' → '+fmt(S.bids[vid]), 'success', '');
         const card2 = document.getElementById('card-'+vid);
         if (card2) { card2.classList.add('bid-flash'); setTimeout(()=>card2.classList.remove('bid-flash'),600); }
       } else if (dx < -80) {

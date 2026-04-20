@@ -32,16 +32,16 @@ button{cursor:pointer;font-family:'Barlow',sans-serif;border:none;outline:none}
 input,select{font-family:'Barlow',sans-serif}
 
 /* ══ HEADER ══ */
-.hdr{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap}
-.logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px}
-.logo span{color:#f0c040}
-.hdr-div{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
+.hdr{position:sticky;top:0;z-index:300;background:#ffffff;height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;border-bottom:1px solid #e8e8e8;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#111111;letter-spacing:.5px;white-space:nowrap}
+.logo-icon{width:30px;height:30px;background:#111111;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo span{color:#111111}
+.hdr-div{width:1px;height:28px;background:#e8e8e8;flex-shrink:0}
 .hdr-nav{display:flex;gap:4px}
-.nav-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r);background:transparent;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;transition:all .15s;position:relative}
-.nav-btn:hover{background:rgba(255,255,255,.1);color:#fff}
-.nav-btn.on{background:rgba(255,255,255,.15);color:#fff}
-.nav-btn.on::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:24px;height:2px;background:#f0c040;border-radius:2px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r);background:transparent;color:#555555;font-size:13px;font-weight:600;transition:all .15s;position:relative}
+.nav-btn:hover{background:#f0f0f0;color:#111111}
+.nav-btn.on{background:#f0f0f0;color:#111111}
+.nav-btn.on::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:24px;height:2px;background:#111111;border-radius:2px}
 .nav-badge{background:var(--red);color:#fff;border-radius:2px;font-size:10px;font-weight:700;padding:1px 5px;min-width:16px;text-align:center;line-height:16px}
 .hdr-right{display:flex;align-items:center;gap:10px}
 .live-pill{background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:1px;animation:blink 2s infinite}
@@ -73,7 +73,7 @@ input,select{font-family:'Barlow',sans-serif}
 .ac.expanded{border-color:var(--blue-m);box-shadow:var(--shadow-md)}
 .ac-head{padding:14px 16px 12px;border-bottom:1px solid var(--g200);display:flex;align-items:flex-start;gap:12px;cursor:pointer;user-select:none}
 .ac-head:hover{background:var(--g100)}
-.ac-emoji{width:48px;height:48px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.ac-emoji{width:80px;height:52px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:#f7f7f7;padding:4px}
 .ac-info{flex:1;min-width:0}
 .ac-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--g900);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ac-sub{font-size:11px;color:var(--g400);font-weight:500}
@@ -229,7 +229,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 /* battle row = one vehicle session */
 .battle-row{margin-bottom:20px}
 .battle-hdr{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm) var(--rm) 0 0;border-bottom:none;padding:11px 16px;display:flex;align-items:center;gap:12px}
-.battle-emoji{width:36px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.battle-emoji{width:60px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:#f7f7f7;padding:3px}
 .battle-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--g900);flex:1}
 .battle-sub{font-size:11px;color:var(--g400);font-weight:500;margin-top:1px}
 .battle-status-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:2px;letter-spacing:.4px;white-space:nowrap}
@@ -474,14 +474,72 @@ function useToasts() {
   return {toasts, add, remove};
 }
 
+// ─── VEHICLE SILHOUETTE ───────────────────────────────────────────────────────
+function VehicleThumb({cls}) {
+  const s = {width:'100%',height:'100%'};
+  if (cls === '2w') return (
+    <svg viewBox="0 0 200 76" fill="none" style={s}>
+      <path d="M65 42 L95 26 L135 26 L148 40" stroke="#d0d0d0" strokeWidth="1.5" strokeLinecap="round"/>
+      <path d="M95 26 L95 42" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <path d="M135 26 L140 20 L148 20" stroke="#d0d0d0" strokeWidth="1.5" strokeLinecap="round"/>
+      <path d="M88 26 Q110 20 128 26" stroke="#d0d0d0" strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="57" cy="56" r="16" fill="#e8e8e8" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <circle cx="57" cy="56" r="5" fill="#d4d4d4"/>
+      <circle cx="147" cy="56" r="16" fill="#e8e8e8" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <circle cx="147" cy="56" r="5" fill="#d4d4d4"/>
+    </svg>
+  );
+  if (cls === '3w') return (
+    <svg viewBox="0 0 200 80" fill="none" style={s}>
+      <rect x="50" y="28" width="80" height="26" rx="3" fill="#f4f4f4" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <rect x="60" y="18" width="60" height="20" rx="3" fill="#eeeeee" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <rect x="68" y="21" width="44" height="12" rx="1" fill="#f9f9f9" stroke="#e2e2e2" strokeWidth="1"/>
+      <path d="M130 28 L144 36 L144 54 L130 54 Z" fill="#eeeeee" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <circle cx="72" cy="66" r="12" fill="#e8e8e8" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <circle cx="72" cy="66" r="4" fill="#d4d4d4"/>
+      <circle cx="136" cy="66" r="12" fill="#e8e8e8" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <circle cx="136" cy="66" r="4" fill="#d4d4d4"/>
+    </svg>
+  );
+  return (
+    <svg viewBox="0 0 200 76" fill="none" style={s}>
+      <rect x="22" y="42" width="156" height="18" rx="3" fill="#eeeeee" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <path d="M48 42 Q54 20 70 16 L130 16 Q146 20 152 42 Z" fill="#f4f4f4" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <path d="M60 42 Q64 24 76 20 L124 20 Q136 24 140 42 Z" fill="#f9f9f9" stroke="#e2e2e2" strokeWidth="1"/>
+      <circle cx="56" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <circle cx="56" cy="62" r="4" fill="#d4d4d4"/>
+      <circle cx="144" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" strokeWidth="1.5"/>
+      <circle cx="144" cy="62" r="4" fill="#d4d4d4"/>
+    </svg>
+  );
+}
+
+// ─── ICON HELPERS ─────────────────────────────────────────────────────────────
+function LockIcon({open=false,size=14}) {
+  const s={width:size,height:size,display:'block'};
+  const p={fill:'none',stroke:'currentColor',strokeWidth:'1.5',strokeLinecap:'round',strokeLinejoin:'round'};
+  return open
+    ? <svg viewBox="0 0 24 24" style={s} {...p}><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+    : <svg viewBox="0 0 24 24" style={s} {...p}><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+}
+
+function ToastIcon({type}) {
+  const s={width:15,height:15,display:'block',flexShrink:0};
+  const p={fill:'none',stroke:'currentColor',strokeWidth:'1.5',strokeLinecap:'round',strokeLinejoin:'round'};
+  if (type==='success') return <svg viewBox="0 0 24 24" style={s} {...p}><polyline points="20 6 9 17 4 12"/></svg>;
+  if (type==='warning') return <svg viewBox="0 0 24 24" style={s} {...p}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
+  if (type==='error') return <svg viewBox="0 0 24 24" style={s} {...p}><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>;
+  if (type==='auto-bid') return <svg viewBox="0 0 24 24" style={s} {...p}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
+  return <svg viewBox="0 0 24 24" style={s} {...p}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>;
+}
+
 // ─── TOAST STACK ─────────────────────────────────────────────────────────────
 function ToastStack({toasts, remove}) {
-  const icons = {success:'✅', warning:'⚠️', error:'🚫', info:'ℹ️', 'auto-bid':'⚡'};
   return (
     <div className="toast-stack">
       {toasts.map(t => (
         <div key={t.id} className={`toast ${t.type}`}>
-          <span className="t-icon">{icons[t.type] || '📢'}</span>
+          <span className="t-icon"><ToastIcon type={t.type}/></span>
           <div className="t-body">
             <div className="t-title">{t.title}</div>
             {t.msg && <div className="t-msg">{t.msg}</div>}
@@ -496,8 +554,8 @@ function ToastStack({toasts, remove}) {
 // ─── INFO MODAL ───────────────────────────────────────────────────────────────
 function InfoModal({onClose}) {
   const rules = [
-    ['🏛 Open Auction','Everyone can see the highest bid in real time. Bids are unlimited — you place each one manually. Increments are fixed by vehicle type: ₹500 (2W) · ₹1,000 (3W) · ₹2,000 (4W). Optional price ceiling prevents over-bidding.'],
-    ['🔒 Closed Auction','The highest bid is sealed — no participant can see what others are bidding. Max 20 bids total (Auto + Manual). You know only your own bid; you are notified when outbid but rival amounts stay hidden until the session ends.'],
+    ['Open Auction','Everyone can see the highest bid in real time. Bids are unlimited — you place each one manually. Increments are fixed by vehicle type: ₹500 (2W) · ₹1,000 (3W) · ₹2,000 (4W). Optional price ceiling prevents over-bidding.'],
+    ['Closed Auction','The highest bid is sealed — no participant can see what others are bidding. Max 20 bids total (Auto + Manual). You know only your own bid; you are notified when outbid but rival amounts stay hidden until the session ends.'],
     ['Closed — Set Your Max Bid','Enter the maximum amount you\'re willing to pay. The auto-bid system will never exceed this limit. Your max bid is private and sealed from rivals.'],
     ['Closed — Auto Pool (1–15 bids)','Up to 15 bids placed automatically by the system whenever you\'re outbid, staying within your max. Rival bid amounts are never exposed — only the outcome (outbid / leading) is shown.'],
     ['Closed — Manual Reserve (min 5)','At least 5 bids reserved for you to place manually — for decisive moments. Auto + Manual combined cannot exceed 20.'],
@@ -508,7 +566,7 @@ function InfoModal({onClose}) {
     <div className="modal-bg" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal">
         <div className="modal-hd">
-          <span className="modal-title">🔒 Closed & 🏛 Open Auction — How It Works</span>
+          <span className="modal-title">Closed & Open Auction — How It Works</span>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
         <div className="modal-body">
@@ -519,8 +577,8 @@ function InfoModal({onClose}) {
             </div>
           ))}
           <div className="rule-note">
-            🔒 <strong>Closed Auction:</strong> When your auto pool runs out, place manual bids to stay in. Once all {MAX_TOTAL} bids are used, bidding stops permanently for that session. Rival bid amounts remain sealed throughout.<br/><br/>
-            🏛 <strong>Open Auction:</strong> No bid cap — bid as many times as you like. All bids and the current highest bid are publicly visible to everyone in the auction room.
+            <strong>Closed Auction:</strong> When your auto pool runs out, place manual bids to stay in. Once all {MAX_TOTAL} bids are used, bidding stops permanently for that session. Rival bid amounts remain sealed throughout.<br/><br/>
+            <strong>Open Auction:</strong> No bid cap — bid as many times as you like. All bids and the current highest bid are publicly visible to everyone in the auction room.
           </div>
         </div>
       </div>
@@ -546,7 +604,7 @@ function BidSetupPanel({vehicle, session, onUpdate, onEnable, onShowInfo}) {
     <div>
       {/* Closed auction notice */}
       <div style={{background:'var(--g200)',borderRadius:'var(--r)',padding:'8px 10px',marginBottom:'12px',display:'flex',alignItems:'center',gap:'7px',fontSize:'11px',color:'var(--g600)',fontWeight:600,lineHeight:1.5}}>
-        <span style={{fontSize:'14px'}}>🔒</span>
+        <LockIcon size={14}/>
         <span>Closed Auction — max 20 bids. Highest bid is sealed and not visible to other participants.</span>
       </div>
       {/* Max Bid */}
@@ -625,7 +683,7 @@ function BidSetupPanel({vehicle, session, onUpdate, onEnable, onShowInfo}) {
       </div>
 
       <button className="enable-btn" disabled={!canEnable} onClick={onEnable}>
-        <span>🔒</span>
+        <LockIcon size={13}/>
         <span>Join Closed Auction</span>
       </button>
     </div>
@@ -682,11 +740,12 @@ function OpenBidSetupPanel({vehicle, session, onUpdate, onStartOpenBid}) {
       {!session.openMaxBid && <div style={{height:'14px'}}/>}
 
       <div style={{background:'var(--green-l)',border:'1px solid rgba(26,138,60,.2)',borderRadius:'var(--r)',padding:'9px 11px',marginBottom:'12px',fontSize:'11px',color:'var(--green)',fontWeight:600,lineHeight:1.5}}>
-        🏛 This is an Open Auction — bids are unlimited and the current highest bid is visible to everyone. You place each bid manually at the fixed increment. Set an optional ceiling to avoid over-bidding.
+        Open Auction — bids are unlimited and the current highest bid is visible to everyone. You place each bid manually at the fixed increment. Set an optional ceiling to avoid over-bidding.
       </div>
 
       <button className="ob-start-btn" disabled={!!(session.openMaxBid && !maxValid)} onClick={onStartOpenBid}>
-        <span>🏛</span><span>Join Open Auction</span>
+        <LockIcon open={true} size={13}/>
+        <span>Join Open Auction</span>
       </button>
     </div>
   );
@@ -706,7 +765,7 @@ function OpenBidActivePanel({vehicle, session, onPlaceBid, onStop}) {
       <div className={`st-bar ${st === 'active' ? 'active' : 'stopped'}`}>
         <div className={`st-dot ${st === 'active' ? 'active' : 'stopped'}`}/>
         <span className={`st-label ${st === 'active' ? 'active' : 'stopped'}`}>
-          {st === 'active' ? '🏛 Open Auction Active' : '⏹ Session Ended'}
+          {st === 'active' ? 'Open Auction Active' : 'Session Ended'}
         </span>
         <span className="st-detail">{session.openBidsPlaced || 0} bid{(session.openBidsPlaced || 0) !== 1 ? 's' : ''} placed</span>
       </div>
@@ -724,14 +783,14 @@ function OpenBidActivePanel({vehicle, session, onPlaceBid, onStop}) {
 
       {isOutbid && st === 'active' && (
         <div style={{background:'var(--red-l)',border:'1px solid rgba(192,57,43,.2)',borderRadius:'var(--r)',padding:'7px 10px',marginBottom:'8px',fontSize:'11px',color:'var(--red)',fontWeight:700}}>
-          ⚠️ Outbid by {fmt(session.niravBid - session.avinashBid)} — place a bid to take the lead!
+          Outbid by {fmt(session.niravBid - session.avinashBid)} — place a bid to take the lead!
         </div>
       )}
 
       {st === 'active' && (
         <button className="place-bid-btn" disabled={atMax} onClick={onPlaceBid}>
           {atMax
-            ? `🛑 Max Ceiling Reached (${fmt(maxNum)})`
+            ? `Max Ceiling Reached (${fmt(maxNum)})`
             : <><span>Bid {fmt(nextBid)}</span><span style={{fontSize:'11px',fontWeight:600,opacity:.75}}>+{stepLabel}</span></>
           }
         </button>
@@ -749,10 +808,10 @@ function OpenBidActivePanel({vehicle, session, onPlaceBid, onStop}) {
       )}
 
       {st === 'active' && (
-        <button className="act-btn stop" style={{width:'100%',marginBottom:'10px'}} onClick={onStop}>⏹ End Bidding Session</button>
+        <button className="act-btn stop" style={{width:'100%',marginBottom:'10px'}} onClick={onStop}>End Bidding Session</button>
       )}
       {st === 'stopped' && (
-        <div style={{fontSize:'11px',color:'var(--red)',fontWeight:600,padding:'7px 10px',background:'var(--red-l)',borderRadius:'var(--r)',textAlign:'center',marginBottom:'10px'}}>⏹ Open bid session ended</div>
+        <div style={{fontSize:'11px',color:'var(--red)',fontWeight:600,padding:'7px 10px',background:'var(--red-l)',borderRadius:'var(--r)',textAlign:'center',marginBottom:'10px'}}>Open bid session ended</div>
       )}
 
       {session.history.length > 0 && (
@@ -790,7 +849,7 @@ function BidActivePanel({vehicle, session, onPause, onResume, onStop, onManualBi
       <div className={`st-bar ${st}`}>
         <div className={`st-dot ${st}`}/>
         <span className={`st-label ${st}`}>
-          {st === 'active' ? '🔒 Closed Auction Active' : st === 'paused' ? '⏸ Closed Auction Paused' : '⏹ Session Ended'}
+          {st === 'active' ? 'Closed Auction Active' : st === 'paused' ? 'Closed Auction Paused' : 'Session Ended'}
         </span>
         <span className="st-detail">
           {st === 'active' ? `${totalUsed} placed` : st === 'paused' ? 'Paused' : 'Stopped'}
@@ -821,17 +880,17 @@ function BidActivePanel({vehicle, session, onPause, onResume, onStop, onManualBi
       </div>
       {/* Highest bid sealed notice */}
       <div style={{background:'var(--g200)',borderRadius:'var(--r)',padding:'6px 10px',marginBottom:'10px',display:'flex',alignItems:'center',gap:'6px',fontSize:'11px',color:'var(--g500)',fontWeight:600}}>
-        <span>🔒</span><span>Highest bid is sealed — not visible to participants</span>
+        <LockIcon size={13}/><span>Highest bid is sealed — not visible to participants</span>
       </div>
 
       {/* Actions */}
       <div className="act-row">
-        {st === 'active' && <button className="act-btn pause" onClick={onPause}>⏸ Pause</button>}
-        {st === 'paused' && <button className="act-btn resume" onClick={onResume}>▶ Resume</button>}
-        {st !== 'stopped' && <button className="act-btn stop" onClick={onStop}>⏹ Stop</button>}
+        {st === 'active' && <button className="act-btn pause" onClick={onPause}>Pause</button>}
+        {st === 'paused' && <button className="act-btn resume" onClick={onResume}>Resume</button>}
+        {st !== 'stopped' && <button className="act-btn stop" onClick={onStop}>Stop</button>}
         <button className="act-btn manual" disabled={!canManual} onClick={onManualBid}
           title={!isOutbid ? 'Only available when Nirav is leading' : manLeft<=0 ? 'No manual bids left' : 'Place a manual bid above Nirav'}>
-          ✋ Manual {!isOutbid ? '(winning)' : manLeft > 0 ? `(${manLeft})` : '(0)'}
+          Manual {!isOutbid ? '(winning)' : manLeft > 0 ? `(${manLeft})` : '(0)'}
         </button>
       </div>
 
@@ -862,18 +921,16 @@ function AuctionCard({vehicle:v, session, onUpdate, onEnable, onStartOpenBid, on
   const isOpen = v.auctionType === 'open';
 
   const ctaLabel = st === 'idle'
-    ? (isOpen ? '🏛 Join Open Auction →' : '🔒 Join Closed Auction →')
-    : st === 'active' ? (isOpen ? '🏛 Open Auction Active' : '🔒 Closed Auction Active')
-    : st === 'paused' ? '⏸ Closed Auction Paused'
-    : '⏹ Session Ended';
+    ? (isOpen ? 'Join Open Auction →' : 'Join Closed Auction →')
+    : st === 'active' ? (isOpen ? 'Open Auction Active' : 'Closed Auction Active')
+    : st === 'paused' ? 'Closed Auction Paused'
+    : 'Session Ended';
   const ctaCls = `ac-cta ${{idle:'', active: isOpen ? 'st-open' : 'st-active', paused:'st-paused', stopped:'st-stopped'}[st]}`;
-
-  const emojiColors = {'4w':'var(--blue-l)','3w':'var(--amber-l)','2w':'var(--green-l)'};
 
   return (
     <div className={`ac ${open ? 'expanded' : ''}`}>
       <div className="ac-head" onClick={() => setOpen(x => !x)}>
-        <div className="ac-emoji" style={{background: emojiColors[v.cls]}}>{v.img}</div>
+        <div className="ac-emoji"><VehicleThumb cls={v.cls}/></div>
         <div className="ac-info">
           <div className="ac-title">{v.year} {v.make} {v.model}</div>
           <div className="ac-sub">{v.lot} · {v.bank}</div>
@@ -883,7 +940,7 @@ function AuctionCard({vehicle:v, session, onUpdate, onEnable, onStartOpenBid, on
             {v.status === 'live' ? 'LIVE' : v.status === 'upcoming' ? 'SOON' : 'ENDED'}
           </span>
           <span className={`badge ${v.auctionType === 'open' ? 'badge-open-auction' : 'badge-closed-auction'}`}>
-            {v.auctionType === 'open' ? '🏛 OPEN' : '🔒 CLOSED'}
+            {v.auctionType === 'open' ? 'OPEN' : 'CLOSED'}
           </span>
         </div>
       </div>
@@ -904,7 +961,7 @@ function AuctionCard({vehicle:v, session, onUpdate, onEnable, onStartOpenBid, on
                 <>
                   <div className="bid-label">Highest Bid</div>
                   <div className="bid-sealed-val">•••••</div>
-                  <div><span className="sealed-pill">🔒 SEALED</span></div>
+                  <div><span className="sealed-pill">SEALED</span></div>
                 </>
               ) : (
                 <>
@@ -955,7 +1012,7 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
     return (
       <div className="tab-wrap">
         <div className="empty">
-          <div className="empty-icon">🏷️</div>
+          <div className="empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#cccccc" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
           <div className="empty-txt">No active bid sessions yet.<br/>Enable Auto Bid on any auction card to get started.</div>
         </div>
       </div>
@@ -971,8 +1028,6 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
   const tagBg   = t => t==='auto'?'var(--purple-l)':t==='manual'?'var(--blue-l)':t==='comp'?'#fde8e8':'var(--amber-l)';
   const tagColor = t => t==='auto'?'var(--purple)':t==='manual'?'var(--blue)':t==='comp'?'var(--red)':'var(--amber)';
   const tagLabel = t => t==='auto'?'AUTO':t==='manual'?'MANUAL':t==='comp'?'NIRAV':'SYS';
-
-  const emojiColors = {'4w':'var(--blue-l)','3w':'var(--amber-l)','2w':'var(--green-l)'};
 
   return (
     <div className="tab-wrap">
@@ -1001,15 +1056,15 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
           <div key={v.id} className="battle-row">
             {/* Vehicle header */}
             <div className="battle-hdr">
-              <div className="battle-emoji" style={{background:emojiColors[v.cls]}}>{v.img}</div>
+              <div className="battle-emoji"><VehicleThumb cls={v.cls}/></div>
               <div style={{flex:1,minWidth:0}}>
                 <div className="battle-title">{v.year} {v.make} {v.model}</div>
                 <div style={{fontSize:'11px',color:'var(--g400)',fontWeight:500}}>{v.lot} · {v.loc} · Step {fmtShort(v.step)}</div>
               </div>
               <span style={{fontSize:'10px',fontWeight:700,padding:'3px 9px',borderRadius:'2px',background:sessionPillBg,color:sessionPillColor,flexShrink:0}}>
                 {s.mode==='open'
-                  ? (s.status==='active'?'🏛 OPEN AUCTION':'⏹ STOPPED')
-                  : (s.status==='active'?'🔒 CLOSED AUCTION':s.status==='paused'?'⏸ PAUSED':'⏹ STOPPED')}
+                  ? (s.status==='active'?'OPEN AUCTION':'STOPPED')
+                  : (s.status==='active'?'CLOSED AUCTION':s.status==='paused'?'PAUSED':'STOPPED')}
               </span>
             </div>
 
@@ -1026,8 +1081,8 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                   {s.niravBid === 0
                     ? <span className="bid-status-badge idle">WATCHING</span>
                     : avinashWinning
-                      ? <span className="bid-status-badge winning">🏆 WINNING</span>
-                      : <span className="bid-status-badge outbid">⚠️ OUTBID</span>
+                      ? <span className="bid-status-badge winning">WINNING</span>
+                      : <span className="bid-status-badge outbid">OUTBID</span>
                   }
                 </div>
 
@@ -1089,14 +1144,14 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                         <>
                           <button className="place-bid-btn" style={{fontSize:'13px',padding:'8px 10px'}}
                             disabled={s.status !== 'active' || atMax} onClick={() => onPlaceBid(v)}>
-                            {atMax ? '🛑 Max Ceiling Reached' : `Bid ${fmt(nextBid)}`}
+                            {atMax ? 'Max Ceiling Reached' : `Bid ${fmt(nextBid)}`}
                           </button>
-                          <button className="bact stop" style={{width:'100%'}} onClick={() => onStop(v.id)}>⏹ Stop</button>
+                          <button className="bact stop" style={{width:'100%'}} onClick={() => onStop(v.id)}>Stop</button>
                         </>
                       );
                     })()}
                     {s.status === 'stopped' && (
-                      <div style={{fontSize:'11px',color:'var(--red)',fontWeight:600,marginTop:'6px',padding:'6px 8px',background:'var(--red-l)',borderRadius:'var(--r)'}}>⏹ Session ended</div>
+                      <div style={{fontSize:'11px',color:'var(--red)',fontWeight:600,marginTop:'6px',padding:'6px 8px',background:'var(--red-l)',borderRadius:'var(--r)'}}>Session ended</div>
                     )}
                   </div>
                 ) : (
@@ -1105,9 +1160,9 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                     {s.status !== 'stopped' && (
                       <div className="bidder-acts">
                         <div className="bact-row">
-                          {s.status==='active' && <button className="bact pause" onClick={()=>onPause(v.id)}>⏸ Pause</button>}
-                          {s.status==='paused' && <button className="bact resume" onClick={()=>onResume(v.id)}>▶ Resume</button>}
-                          <button className="bact stop" onClick={()=>onStop(v.id)}>⏹ Stop</button>
+                          {s.status==='active' && <button className="bact pause" onClick={()=>onPause(v.id)}>Pause</button>}
+                          {s.status==='paused' && <button className="bact resume" onClick={()=>onResume(v.id)}>Resume</button>}
+                          <button className="bact stop" onClick={()=>onStop(v.id)}>Stop</button>
                         </div>
                         {(() => {
                           const isOutbid = s.niravBid > s.avinashBid;
@@ -1117,14 +1172,14 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                           return (
                             <button className="bact manual" style={{width:'100%'}} disabled={!canPlace} onClick={()=>onManualBid(v)}
                               title={reason || 'Place a manual bid above Nirav'}>
-                              ✋ Manual Bid {canPlace ? `(${manLeft} left)` : reason ? `— ${reason}` : ''}
+                              Manual Bid {canPlace ? `(${manLeft} left)` : reason ? `— ${reason}` : ''}
                             </button>
                           );
                         })()}
                       </div>
                     )}
                     {s.status === 'stopped' && (
-                      <div style={{fontSize:'11px',color:'var(--red)',fontWeight:600,marginTop:'6px',padding:'6px 8px',background:'var(--red-l)',borderRadius:'var(--r)'}}>⏹ Session ended</div>
+                      <div style={{fontSize:'11px',color:'var(--red)',fontWeight:600,marginTop:'6px',padding:'6px 8px',background:'var(--red-l)',borderRadius:'var(--r)'}}>Session ended</div>
                     )}
                   </>
                 )}
@@ -1140,7 +1195,7 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                   {s.niravBid === 0
                     ? <span className="bid-status-badge idle">NO BID YET</span>
                     : niravLeading
-                      ? <span className="bid-status-badge leading">🔴 LEADING</span>
+                      ? <span className="bid-status-badge leading">LEADING</span>
                       : <span className="bid-status-badge idle">OUTBID</span>
                   }
                 </div>
@@ -1166,7 +1221,7 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                         : niravLeading ? 'Placed a sealed bid — you\'ve been outbid'
                         : 'Sealed bid placed'}
                     </div>
-                    {s.niravBid > 0 && <div><span className="sealed-pill">🔒 AMOUNT SEALED</span></div>}
+                    {s.niravBid > 0 && <div><span className="sealed-pill">SEALED</span></div>}
                   </>
                 )}
 
@@ -1185,7 +1240,6 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                     onClick={() => fireRival(v.id)}
                     title={s.mode==='open'?'Nirav places a bid — you must manually respond':s.status==='paused'?'Resume first to see auto-bid respond':'Nirav places a bid above yours — watch auto bid fire back'}
                   >
-                    <span style={{fontSize:'15px'}}>🔴</span>
                     Nirav Places a Bid
                     {s.status==='paused' && <span style={{fontSize:'10px',opacity:.7}}> (paused)</span>}
                   </button>
@@ -1195,8 +1249,8 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                     background: niravLeading?'var(--red-l)':'var(--green-l)',
                     color: niravLeading?'var(--red)':'var(--green)',marginTop:'auto'}}>
                     {niravLeading
-                      ? (s.mode==='open' ? `🔴 Nirav won — final bid ${fmt(s.niravBid)}` : '🔴 Nirav holds the highest sealed bid')
-                      : (s.mode==='open' ? `✅ Avinash won — final bid ${fmt(s.avinashBid)}` : `✅ Avinash holds the highest sealed bid (${fmt(s.avinashBid)})`)}
+                      ? (s.mode==='open' ? `Nirav won — final bid ${fmt(s.niravBid)}` : 'Nirav holds the highest sealed bid')
+                      : (s.mode==='open' ? `Avinash won — final bid ${fmt(s.avinashBid)}` : `Avinash holds the highest sealed bid (${fmt(s.avinashBid)})`)}
                   </div>
                 )}
               </div>
@@ -1224,7 +1278,7 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                 </div>
                 <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'14px',fontWeight:800,color:tagColor(h.type)}}>
                   {h.bid
-                    ? (h.type === 'comp' && sessions[vehicles.find(vv=>vv.lot===h.lot)?.id]?.mode !== 'open' ? '🔒 Sealed' : fmt(h.bid))
+                    ? (h.type === 'comp' && sessions[vehicles.find(vv=>vv.lot===h.lot)?.id]?.mode !== 'open' ? 'Sealed' : fmt(h.bid))
                     : '—'}
                 </div>
                 <div style={{fontSize:'11px',color:'var(--g500)'}}>{h.desc}</div>
@@ -1339,9 +1393,9 @@ function SimulatorTab({addToast}) {
         }
 
         // Fire auto
-        pushMsg('you-auto','⚡ Auto bid fired', nextAuto);
+        pushMsg('you-auto','Auto bid fired', nextAuto);
         setStats(st => ({...st, auto: st.auto + 1}));
-        addToast('auto-bid','⚡ Auto Bid Placed', fmt(nextAuto));
+        addToast('auto-bid','Auto Bid Placed', fmt(nextAuto));
         return {...s, currentBid: nextAuto, autoBidsUsed: s.autoBidsUsed + 1};
       });
     }, delay);
@@ -1365,7 +1419,7 @@ function SimulatorTab({addToast}) {
         <div className="sim-msgs" ref={feedRef}>
           {msgs.length === 0 && (
             <div className="empty" style={{paddingTop:'60px'}}>
-              <div className="empty-icon">🎯</div>
+              <div className="empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#cccccc" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div>
               <div className="empty-txt">Pick a vehicle and start the simulation<br/>to see the live auction feed.</div>
             </div>
           )}
@@ -1430,12 +1484,12 @@ function SimulatorTab({addToast}) {
           )}
 
           <button className={`sim-start-btn ${running ? 'stop-mode' : ''}`} onClick={running ? doStop : doStart}>
-            {running ? '⏹ Stop Simulation' : '▶ Start Simulation'}
+            {running ? 'Stop Simulation' : 'Start Simulation'}
           </button>
 
           {running && sess && sess.status === 'active' && (
             <button className="sim-manual-btn" onClick={doManual} disabled={sess.manualBidsUsed >= sess.manualReserve}>
-              ✋ Place Manual Bid
+              Place Manual Bid
               {sess.manualBidsUsed < sess.manualReserve
                 ? ` (${sess.manualReserve - sess.manualBidsUsed} left)`
                 : ' (none left)'}
@@ -1520,7 +1574,7 @@ function App() {
 
     // Open auction: auto-bid back after short delay (up to openMaxBid ceiling)
     if (s.mode === 'open') {
-      addToast('warning', '🔴 Nirav placed a bid!', `${fmt(niravBid)} on ${v.make} ${v.model}`);
+      addToast('warning', 'Nirav placed a bid', `${fmt(niravBid)} on ${v.make} ${v.model}`);
       setTimeout(() => {
         setSessions(prev => {
           const cur = prev[vId];
@@ -1528,21 +1582,21 @@ function App() {
           const avinashNext = Math.max(cur.avinashBid, cur.niravBid, cur.currentBid) + v.step;
           const ceiling = parseInt(cur.openMaxBid) || 0;
           if (ceiling > 0 && avinashNext > ceiling) return prev;  // ceiling hit — don't auto-bid
-          const autoEntry = {type:'manual', time:ts(), desc:'⚡ Auto bid — Avinash responds', bid:avinashNext, bidder:'Avinash', ts:Date.now()};
+          const autoEntry = {type:'manual', time:ts(), desc:'Auto bid — Avinash responds', bid:avinashNext, bidder:'Avinash', ts:Date.now()};
           return {...prev, [vId]: {...cur, currentBid:avinashNext, avinashBid:avinashNext, openBidsPlaced:(cur.openBidsPlaced||0)+1, history:[...cur.history, autoEntry], rivalLeading:false}};
         });
         // Toast for open auto-bid (use stale s for ceiling check — ceiling doesn't change mid-session)
         const ceiling = parseInt(s.openMaxBid) || 0;
         const avinashNext = niravBid + v.step;
         if (ceiling > 0 && avinashNext > ceiling) {
-          addToast('warning', '🛑 Ceiling Reached', `Your max price ${fmt(ceiling)} — Avinash cannot bid higher`);
+          addToast('warning', 'Ceiling Reached', `Your max price ${fmt(ceiling)} — Avinash cannot bid higher`);
         } else {
-          addToast('success', '🏛 Auto Bid!', `Avinash responds: ${fmt(avinashNext)} on ${v.make} ${v.model}`);
+          addToast('success', 'Auto Bid', `Avinash responds: ${fmt(avinashNext)} on ${v.make} ${v.model}`);
         }
       }, 750);
       return;
     }
-    addToast('warning', '🔒 Sealed bid placed!', `${v.make} ${v.model} — you've been outbid (amount sealed)`);
+    addToast('warning', 'Sealed bid placed', `${v.make} ${v.model} — you've been outbid (amount sealed)`);
 
     // Auto bid: fire back automatically if within pool and max limit
     const maxNum   = parseInt(s.maxBid) || 0;
@@ -1551,20 +1605,20 @@ function App() {
 
     if (canAutoFire) {
       setTimeout(() => {
-        const autoEntry = {type:'auto', time:ts(), desc:'⚡ Auto bid — Avinash responds', bid:nextAuto, bidder:'Avinash', ts:Date.now()};
+        const autoEntry = {type:'auto', time:ts(), desc:'Auto bid — Avinash responds', bid:nextAuto, bidder:'Avinash', ts:Date.now()};
         setSessions(prev => {
           const cur = prev[vId];
           if (!cur || cur.status !== 'active') return prev;
           return {...prev, [vId]: {...cur, currentBid:nextAuto, avinashBid:nextAuto, autoBidsUsed:cur.autoBidsUsed+1, history:[...cur.history, autoEntry], rivalLeading:false}};
         });
-        addToast('auto-bid', '🔒 Sealed auto-bid placed!', `Your bid: ${fmt(nextAuto)} — rival's bid remains sealed`);
+        addToast('auto-bid', 'Sealed auto-bid placed', `Your bid: ${fmt(nextAuto)} — rival's bid remains sealed`);
       }, 750);
     } else {
       setTimeout(() => {
         if (s.autoBidsUsed >= s.autoPool) {
-          addToast('error', '⚠️ Auto Pool Exhausted', `Avinash has no auto bids left — place a manual bid!`);
+          addToast('error', 'Auto Pool Exhausted', `Avinash has no auto bids left — place a manual bid!`);
         } else {
-          addToast('error', '⚠️ Max Limit Reached', `${fmt(nextAuto)} exceeds Avinash's limit. Nirav is winning!`);
+          addToast('error', 'Max Limit Reached', `${fmt(nextAuto)} exceeds Avinash's limit. Nirav is winning!`);
         }
       }, 400);
     }
@@ -1572,7 +1626,7 @@ function App() {
 
   const handleStartOpenBid = v => {
     patchSession(v.id, {status:'active', mode:'open', avinashBid: v.current, niravBid:0, niravBidCount:0, openBidsPlaced:0, rivalLeading:false});
-    addToast('success', '🏛 Open Bidding Started!', `${v.make} ${v.model} — step ${fmtShort(v.step)} per bid`);
+    addToast('success', 'Open Bidding Started', `${v.make} ${v.model} — step ${fmtShort(v.step)} per bid`);
     setTab('my-bids');
   };
 
@@ -1597,7 +1651,7 @@ function App() {
       addToast('error', 'Ceiling Reached', `Max price is ${fmt(maxNum)} — cannot bid higher.`);
       return;
     }
-    addToast('info', '🏛 Bid Placed!', `${fmt(newBid)} on ${v.make} ${v.model}`);
+    addToast('info', 'Bid Placed', `${fmt(newBid)} on ${v.make} ${v.model}`);
   };
 
   const handlePause = vId => {
@@ -1647,25 +1701,24 @@ function App() {
       {/* ── HEADER ── */}
       <header className="hdr">
         <div className="logo">
-          <div className="logo-icon">⚡</div>
+          <div className="logo-icon" style={{color:'#fff',fontWeight:800,fontSize:'14px',fontFamily:"'Barlow Condensed',sans-serif",letterSpacing:'-0.5px'}}>H</div>
           Hammer<span>ly</span>
         </div>
         <div className="hdr-div"/>
         <nav className="hdr-nav">
-          {[['auctions','🏷','Live Auctions'],['my-bids','📋','My Bids'],['simulator','🎯','Simulator']].map(([id,icon,label]) => (
+          {[['auctions','Live Auctions'],['my-bids','My Bids'],['simulator','Simulator']].map(([id,label]) => (
             <button key={id} className={`nav-btn ${tab===id?'on':''}`} onClick={() => setTab(id)}>
-              <span>{icon}</span>
               <span className="nav-label">{label}</span>
               {id==='my-bids' && activeCnt > 0 && <span className="nav-badge">{activeCnt}</span>}
             </button>
           ))}
         </nav>
         <nav className="app-sw">
-          <a href="listings.html">🏛 Auctions</a>
-          <a href="search.html">🔍 Search</a>
-          <span className="cur" style={{cursor:'default'}}>⚡ Auto Bid</span>
-          <a href="swipe-bid.html">👆 Swipe</a>
-          <a href="bulk-bid.html">📦 Bulk Bid</a>
+          <a href="listings.html">Auctions</a>
+          <a href="search.html">Search</a>
+          <span className="cur" style={{cursor:'default'}}>Auto Bid</span>
+          <a href="swipe-bid.html">Swipe</a>
+          <a href="bulk-bid.html">Bulk Bid</a>
         </nav>
         <div className="hdr-div"/>
         <div className="hdr-right">
@@ -1678,7 +1731,7 @@ function App() {
       {tab === 'auctions' && (
         <>
           <div className="hero">
-            <h1>⚡ Smart Auto Bidding</h1>
+            <h1>Smart Auto Bidding</h1>
             <p>Set your limit. Let the system bid for you. Never miss an auction.</p>
             <div className="hero-stats">
               {[

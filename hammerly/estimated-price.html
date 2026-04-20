@@ -8,46 +8,46 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;
-  --teal:#0d9488;--teal-l:#e6faf9;--teal-d:#0f766e;
-  --green:#1a8a3c;--green-d:#14532d;--green-l:#e6f5eb;
-  --amber:#d97706;--amber-l:#fffbeb;--amber-d:#92400e;
-  --red:#c0392b;--red-l:#fdecea;
-  --purple:#7c3aed;--purple-l:#f3f0ff;--purple-d:#5b21b6;
-  --g50:#f9fafb;--g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;
-  --g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --green:#166534;--green-d:#14532d;--green-l:#f0fdf4;
+  --red:#991b1b;--red-l:#fef2f2;
+  --amber:#92400e;--amber-l:#fffbeb;--amber-d:#78350f;
+  --teal:#134e4a;--teal-l:#f0fdfa;--teal-d:#0f3d39;
+  --blue:#1e3a5f;--blue-d:#1e3a5f;--blue-l:#eff6ff;
+  --purple:#4c1d95;--purple-l:#f5f3ff;--purple-d:#3b0764;
+  --g50:#fafafa;--g100:#f5f5f5;--g200:#e8e8e8;--g300:#d4d4d4;
+  --g400:#a3a3a3;--g500:#737373;--g600:#525252;--g700:#404040;--g900:#111111;
   --white:#fff;--r:8px;--rm:12px;--rl:16px;
 }
-body{font-family:'Barlow',sans-serif;background:#f4f5f8;color:var(--g900);min-height:100vh}
+body{font-family:'Barlow',sans-serif;background:#ffffff;color:#111111;min-height:100vh}
 
 /* NAV */
-nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height:52px;position:sticky;top:0;z-index:100}
-.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#fff;letter-spacing:.5px;margin-right:24px;text-decoration:none}
-.nav-brand span{color:var(--amber)}
-.nav-link{color:#aaa;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
-.nav-link:hover{color:#fff}
-.nav-link.active{color:var(--amber);border-bottom:2px solid var(--amber)}
+nav{background:#ffffff;padding:0 24px;display:flex;align-items:center;height:52px;position:sticky;top:0;z-index:100;border-bottom:1px solid #e8e8e8}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#111111;letter-spacing:.5px;margin-right:24px;text-decoration:none}
+.nav-brand span{color:#111111}
+.nav-link{color:#888888;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
+.nav-link:hover{color:#111111}
+.nav-link.active{color:#111111;border-bottom:2px solid #111111}
 
 /* PAGE HEADER */
-.page-header{background:linear-gradient(135deg,#1a0e00 0%,#3a2000 50%,#0a1628 100%);padding:32px;color:#fff}
+.page-header{background:#f7f7f7;padding:32px;border-bottom:1px solid #e8e8e8}
 .page-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .ph-left{}
-.ph-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(217,119,6,.15);border:1px solid rgba(217,119,6,.4);border-radius:20px;padding:4px 12px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fcd34d;margin-bottom:10px}
-.ph-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;line-height:1.1;margin-bottom:6px}
-.ph-title span{color:#fcd34d}
-.ph-sub{font-size:.85rem;color:#94a3b8;max-width:420px;line-height:1.5}
+.ph-badge{display:inline-flex;align-items:center;gap:6px;background:#efefef;border:1px solid #e0e0e0;border-radius:20px;padding:4px 12px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#555555;margin-bottom:10px}
+.ph-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;line-height:1.1;margin-bottom:6px;color:#111111}
+.ph-title span{color:#111111}
+.ph-sub{font-size:.85rem;color:#666666;max-width:420px;line-height:1.5}
 .ph-stats{display:flex;gap:32px;flex-wrap:wrap}
-.ph-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;color:#fcd34d}
-.ph-stat-lbl{font-size:.7rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.ph-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;color:#111111}
+.ph-stat-lbl{font-size:.7rem;color:#999999;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
 
 /* HOW IT WORKS STRIP */
-.hiw-strip{background:#fff;border-bottom:1px solid var(--g200);padding:18px 32px}
+.hiw-strip{background:#fff;border-bottom:1px solid #e8e8e8;padding:18px 32px}
 .hiw-strip-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:0}
 .hiw-s{display:flex;align-items:center;gap:10px;flex:1}
-.hiw-s-num{width:24px;height:24px;border-radius:50%;background:var(--amber);color:#fff;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hiw-s-num{width:24px;height:24px;border-radius:50%;background:#111111;color:#fff;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hiw-s-text{}
-.hiw-s-title{font-size:.8rem;font-weight:700;color:var(--g900)}
-.hiw-s-desc{font-size:.72rem;color:var(--g500)}
+.hiw-s-title{font-size:.8rem;font-weight:700;color:#111111}
+.hiw-s-desc{font-size:.72rem;color:#777777}
 .hiw-arrow{color:var(--g300);font-size:1.2rem;padding:0 12px;flex-shrink:0}
 
 /* BODY LAYOUT */
@@ -57,16 +57,16 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
 .lot-list-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .lot-list-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;color:var(--g900)}
 .lot-count{font-size:.75rem;color:var(--g500);background:var(--g200);border-radius:10px;padding:2px 8px;font-weight:600}
-.lot-search{width:100%;border:1.5px solid var(--g300);border-radius:var(--r);padding:8px 12px;font-family:inherit;font-size:.82rem;color:var(--g900);margin-bottom:12px;transition:border-color .15s}
-.lot-search:focus{outline:none;border-color:var(--amber)}
+.lot-search{width:100%;border:1.5px solid #dddddd;border-radius:var(--r);padding:8px 12px;font-family:inherit;font-size:.82rem;color:#111111;margin-bottom:12px;transition:border-color .15s}
+.lot-search:focus{outline:none;border-color:#111111}
 .lot-cards{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 200px);overflow-y:auto;padding-right:2px}
 .lot-cards::-webkit-scrollbar{width:4px}
 .lot-cards::-webkit-scrollbar-track{background:var(--g100)}
 .lot-cards::-webkit-scrollbar-thumb{background:var(--g300);border-radius:2px}
 
 .lot-card{background:#fff;border:1.5px solid var(--g200);border-radius:var(--rm);padding:12px 14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
-.lot-card:hover{border-color:var(--amber);box-shadow:0 2px 8px rgba(217,119,6,.1)}
-.lot-card.active{border-color:var(--amber);background:#fffdf7;box-shadow:0 2px 8px rgba(217,119,6,.12)}
+.lot-card:hover{border-color:#111111;box-shadow:none}
+.lot-card.active{border-color:#111111;background:#f7f7f7;box-shadow:none}
 .lot-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
 .lot-card-num{font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g400)}
 .lot-card-timer{font-size:.65rem;font-weight:700;color:var(--red);background:var(--red-l);padding:2px 6px;border-radius:4px}
@@ -123,7 +123,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
 .price-track-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:20px;margin-bottom:14px}
 .ptc-title{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:16px}
 .price-track-wrap{position:relative;padding:0 0 36px;margin-bottom:8px}
-.price-track{height:12px;border-radius:6px;background:linear-gradient(90deg, var(--red-l) 0%, var(--red-l) 20%, var(--amber-l) 20%, #fef3c7 45%, #d1fae5 45%, var(--green-l) 75%, var(--green-l) 75%, rgba(26,138,60,.15) 100%);position:relative;overflow:visible}
+.price-track{height:12px;border-radius:6px;background:linear-gradient(90deg,#f5f5f5 0%,#f5f5f5 20%,#efefef 20%,#ebebeb 45%,#e8e8e8 45%,#e0e0e0 75%,#e0e0e0 75%,#d8d8d8 100%);position:relative;overflow:visible}
 .track-zone-labels{display:flex;margin-top:4px;font-size:.62rem;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.05em}
 .tzl{flex:1;text-align:center}
 .track-pins{position:absolute;top:0;left:0;right:0;height:12px}
@@ -132,16 +132,16 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;height
 .track-pin-dot{width:8px;height:8px;border-radius:50%;border:2px solid var(--g400);background:#fff;margin:-4px auto 0}
 .track-pin-label{font-size:.65rem;color:var(--g500);font-weight:600;text-align:center;margin-top:3px;white-space:nowrap;transform:translateX(-50%);position:absolute;left:50%}
 .bid-marker{position:absolute;transform:translateX(-50%);transition:left .6s cubic-bezier(.34,1.56,.64,1)}
-.bid-marker-needle{width:3px;height:28px;background:var(--amber);margin:0 auto;border-radius:2px;margin-top:-8px}
-.bid-marker-dot{width:14px;height:14px;border-radius:50%;background:var(--amber);border:3px solid #fff;box-shadow:0 0 0 2px var(--amber);margin:-2px auto 0}
-.bid-marker-flag{background:var(--amber);color:#fff;font-size:.62rem;font-weight:800;padding:3px 7px;border-radius:4px;white-space:nowrap;margin-top:4px;text-align:center}
+.bid-marker-needle{width:3px;height:28px;background:#111111;margin:0 auto;border-radius:2px;margin-top:-8px}
+.bid-marker-dot{width:14px;height:14px;border-radius:50%;background:#111111;border:3px solid #fff;box-shadow:0 0 0 2px #111111;margin:-2px auto 0}
+.bid-marker-flag{background:#111111;color:#fff;font-size:.62rem;font-weight:800;padding:3px 7px;border-radius:4px;white-space:nowrap;margin-top:4px;text-align:center}
 
 /* BID INPUT */
 .bid-input-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:18px 20px;margin-bottom:14px}
 .bid-input-label{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--g600);margin-bottom:10px;display:block}
 .bid-stepper{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-.stepper-btn{width:38px;height:38px;border-radius:var(--r);border:1.5px solid var(--g300);background:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;color:var(--g700);transition:all .15s;flex-shrink:0}
-.stepper-btn:hover{border-color:var(--amber);color:var(--amber)}
+.stepper-btn{width:38px;height:38px;border-radius:var(--r);border:1.5px solid #dddddd;background:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;color:#444444;transition:all .15s;flex-shrink:0}
+.stepper-btn:hover{border-color:#111111;color:#111111}
 .bid-input-field{flex:1;border:1.5px solid var(--amber);border-radius:var(--r);padding:9px 14px;font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:var(--g900);text-align:center;transition:border-color .15s}
 .bid-input-field:focus{outline:none;border-color:var(--amber)}
 .bid-increment-row{display:flex;gap:6px;flex-wrap:wrap}
@@ -363,14 +363,14 @@ function calcWinProb(bid, r){
 }
 
 function getStatus(p){
-  if(p<25)  return {label:'Low Chance',    cls:'low',    icon:'⚠️', desc:'Unlikely to win at this bid. Most lots at this price go unsold for this bidder.'};
-  if(p<50)  return {label:'Competitive',   cls:'comp',   icon:'🤔', desc:'In the race, but at risk. A rival bid at a small increment could beat you.'};
-  if(p<75)  return {label:'Strong',        cls:'strong', icon:'💪', desc:'Well positioned. Your bid is near the expected sale price.'};
-  return     {label:'Dominant',            cls:'dom',    icon:'🏆', desc:'Your bid is well above the expected price. Very high chance to win.'};
+  if(p<25)  return {label:'Low Chance',    cls:'low',    icon:'!', desc:'Unlikely to win at this bid. Most lots at this price go unsold for this bidder.'};
+  if(p<50)  return {label:'Competitive',   cls:'comp',   icon:'~', desc:'In the race, but at risk. A rival bid at a small increment could beat you.'};
+  if(p<75)  return {label:'Strong',        cls:'strong', icon:'↑', desc:'Well positioned. Your bid is near the expected sale price.'};
+  return     {label:'Dominant',            cls:'dom',    icon:'★', desc:'Your bid is well above the expected price. Very high chance to win.'};
 }
 
 function getRec(bid, r, prob){
-  if(prob>=80) return {title:'You\'re in the winning zone', msg:'This bid is well above the estimated sale price. Your chances are very high.', action:null, cls:'dom', icon:'🏆'};
+  if(prob>=80) return {title:'You\'re in the winning zone', msg:'This bid is well above the estimated sale price. Your chances are very high.', action:null, cls:'dom', icon:'★'};
   if(prob>=55){
     const target = r.high; const diff = target-bid;
     return {title:'Raise slightly to lock it in', msg:`Raise by ${fmt(diff)} to reach the high-confidence zone. At ${fmt(target)}, your win probability jumps to 80%+.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'strong', icon:'💡'};
@@ -384,7 +384,7 @@ function getRec(bid, r, prob){
     return {title:'Raise to reach the estimated price', msg:`The estimated auction price is ${fmt(r.mid)}. Raise your bid by ${fmt(diff)} to hit the mid-point where most lots sell.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'comp', icon:'💡'};
   }
   const target=r.low; const diff=target-bid;
-  return {title:'Bid is too low to be competitive', msg:`The historical floor for this vehicle is around ${fmt(r.low)}. You need to raise by at least ${fmt(diff)} to have a meaningful chance.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'low', icon:'⚠️'};
+  return {title:'Bid is too low to be competitive', msg:`The historical floor for this vehicle is around ${fmt(r.low)}. You need to raise by at least ${fmt(diff)} to have a meaningful chance.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'low', icon:'!'};
 }
 
 /* ── UI ─────────────────────────────────────────────── */

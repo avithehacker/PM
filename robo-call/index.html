@@ -31,26 +31,26 @@ button{cursor:pointer;font-family:'Barlow',sans-serif;border:none;outline:none}
 input,select,textarea{font-family:'Barlow',sans-serif}
 
 /* ── HEADER ── */
-.hdr{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap;text-decoration:none}
-.logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px}
-.logo span{color:var(--gold)}
-.hdr-div{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
-.page-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:3px 10px;font-size:12px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap}
+.hdr{position:sticky;top:0;z-index:300;background:#ffffff;height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;border-bottom:1px solid #e8e8e8;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#111111;letter-spacing:.5px;white-space:nowrap;text-decoration:none}
+.logo-icon{width:30px;height:30px;background:#111111;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo span{color:#111111}
+.hdr-div{width:1px;height:28px;background:#e8e8e8;flex-shrink:0}
+.page-badge{background:#f0f0f0;border:1px solid #e8e8e8;border-radius:var(--r);padding:3px 10px;font-size:12px;font-weight:700;color:#555555;white-space:nowrap}
 .hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.nav-link{padding:6px 13px;border-radius:var(--r);font-size:13px;font-weight:600;color:rgba(255,255,255,.65);transition:all .15s}
-.nav-link:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-link{padding:6px 13px;border-radius:var(--r);font-size:13px;font-weight:600;color:#666666;transition:all .15s}
+.nav-link:hover{background:#f0f0f0;color:#111111}
 
 /* ── HERO ── */
-.hero{background:linear-gradient(135deg,var(--blue-d) 0%,#0d6e3a 100%);padding:52px 28px 56px;text-align:center;color:#fff;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 35%,rgba(26,138,60,.25) 0%,transparent 60%);pointer-events:none}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 16px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.hero{background:#f7f7f7;padding:52px 28px 56px;text-align:center;color:#111111;position:relative;overflow:hidden;border-bottom:1px solid #e8e8e8}
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:#eeeeee;border:1px solid #e0e0e0;border-radius:20px;padding:5px 16px;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#555555;margin-bottom:20px}
 .hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.05;letter-spacing:.3px;margin-bottom:14px}
-.hero h1 span{color:var(--gold)}
-.hero p{font-size:15px;color:rgba(255,255,255,.7);max-width:520px;margin:0 auto 32px;line-height:1.65}
+.hero h1 span{color:#111111}
+.hero p{font-size:15px;color:#555555;max-width:520px;margin:0 auto 32px;line-height:1.65}
 .hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-top:8px}
-.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:var(--gold);display:block}
-.stat-lbl{font-size:11px;color:rgba(255,255,255,.6);font-weight:500;letter-spacing:.3px}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:#111111;display:block}
+.stat-lbl{font-size:11px;color:#888888;font-weight:500;letter-spacing:.3px}
 
 /* ── CALL DASHBOARD ── */
 .dashboard{max-width:1160px;margin:0 auto;padding:32px 28px;display:grid;grid-template-columns:340px 1fr;gap:20px}
@@ -61,10 +61,10 @@ input,select,textarea{font-family:'Barlow',sans-serif}
 .panel-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--g900);margin-bottom:18px;display:flex;align-items:center;gap:8px}
 .field-label{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
 .field-input{width:100%;padding:9px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:13px;font-weight:500;color:var(--g900);outline:none;transition:border-color .15s;margin-bottom:14px}
-.field-input:focus{border-color:var(--blue)}
+.field-input:focus{border-color:#111111}
 .field-select{width:100%;padding:9px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:13px;font-weight:500;color:var(--g900);outline:none;background:var(--white);appearance:none;cursor:pointer;margin-bottom:14px}
 .script-box{width:100%;padding:10px 12px;border:1.5px solid var(--g200);border-radius:var(--r);font-size:12px;color:var(--g700);outline:none;resize:vertical;min-height:90px;line-height:1.55;margin-bottom:14px}
-.script-box:focus{border-color:var(--blue)}
+.script-box:focus{border-color:#111111}
 .call-btn{width:100%;padding:11px;background:var(--green);color:#fff;border-radius:var(--r);font-size:14px;font-weight:700;border:none;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
 .call-btn:hover{background:#156a2e}
 .call-btn.calling{background:var(--red);animation:callPulse 1.2s infinite}
@@ -76,7 +76,7 @@ input,select,textarea{font-family:'Barlow',sans-serif}
 .log-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--g900)}
 .log-filter{display:flex;gap:6px}
 .log-tab{padding:4px 12px;border-radius:var(--r);border:1.5px solid var(--g200);font-size:11px;font-weight:700;color:var(--g600);background:var(--white);cursor:pointer;transition:all .15s}
-.log-tab.on{background:var(--blue-l);border-color:var(--blue);color:var(--blue)}
+.log-tab.on{background:#111111;border-color:#111111;color:#ffffff}
 .log-list{overflow-y:auto;max-height:480px}
 .log-item{padding:14px 20px;border-bottom:1px solid var(--g200);display:flex;align-items:flex-start;gap:14px;transition:background .12s}
 .log-item:hover{background:var(--g100)}
@@ -85,7 +85,7 @@ input,select,textarea{font-family:'Barlow',sans-serif}
 .av-green{background:var(--green-l);color:var(--green)}
 .av-amber{background:var(--amber-l);color:var(--amber)}
 .av-red{background:var(--red-l);color:var(--red)}
-.av-blue{background:var(--blue-l);color:var(--blue)}
+.av-blue{background:#f0f0f0;color:#555555}
 .log-body{flex:1;min-width:0}
 .log-name{font-size:13px;font-weight:700;color:var(--g900);margin-bottom:2px}
 .log-msg{font-size:12px;color:var(--g600);line-height:1.5}
@@ -94,11 +94,11 @@ input,select,textarea{font-family:'Barlow',sans-serif}
 .st-answered{background:var(--green-l);color:var(--green)}
 .st-missed{background:var(--amber-l);color:var(--amber)}
 .st-failed{background:var(--red-l);color:var(--red)}
-.st-scheduled{background:var(--blue-l);color:var(--blue)}
+.st-scheduled{background:#f0f0f0;color:#555555}
 .log-dur{font-size:10px;color:var(--g400)}
 
 /* ── LIVE CALL INDICATOR ── */
-.live-call-bar{background:var(--green);color:#fff;padding:12px 20px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;display:none}
+.live-call-bar{background:#111111;color:#fff;padding:12px 20px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;display:none}
 .live-call-bar.active{display:flex}
 .pulse-ring{width:12px;height:12px;border-radius:50%;background:#fff;position:relative;flex-shrink:0}
 .pulse-ring::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(255,255,255,.5);animation:ringPulse 1.2s infinite}
@@ -115,12 +115,12 @@ input,select,textarea{font-family:'Barlow',sans-serif}
 .feat-desc{font-size:12px;color:var(--g500);line-height:1.6}
 
 /* ── FOOTER ── */
-footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;margin-top:auto}
-.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:rgba(255,255,255,.7)}
-.footer-logo span{color:var(--gold)}
+footer{background:#f7f7f7;border-top:1px solid #e8e8e8;color:#888888;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;margin-top:auto}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#555555}
+.footer-logo span{color:#111111}
 .footer-links{display:flex;gap:20px;flex-wrap:wrap}
-.footer-links a{color:rgba(255,255,255,.45);font-size:12px;font-weight:500;text-decoration:none}
-.footer-links a:hover{color:rgba(255,255,255,.8)}
+.footer-links a{color:#888888;font-size:12px;font-weight:500;text-decoration:none}
+.footer-links a:hover{color:#111111}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeUp .3s ease forwards}
@@ -131,11 +131,11 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;disp
 <!-- ── HEADER ── -->
 <header class="hdr">
   <a href="../auction/index.html" class="logo">
-    <div class="logo-icon">🏛</div>
+    <div class="logo-icon" style="color:#fff;font-weight:800;font-size:14px;font-family:'Barlow Condensed',sans-serif;letter-spacing:-0.5px">H</div>
     Hammer<span>ly</span>
   </a>
   <div class="hdr-div"></div>
-  <div class="page-badge">📞 Robo Call</div>
+  <div class="page-badge">Robo Call</div>
   <div class="hdr-right">
     <a href="../auction/listings.html" class="nav-link">Listings</a>
     <a href="../auto-bid/index.html" class="nav-link">Auto Bid</a>
@@ -169,15 +169,15 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;disp
 
   <!-- Compose -->
   <div class="compose-panel">
-    <div class="panel-title">📞 New Call Campaign</div>
+    <div class="panel-title">New Call Campaign</div>
 
     <div class="field-label">Call Type</div>
     <select class="field-select" id="callType" onchange="updateScript()">
-      <option value="outbid">🔴 Outbid Alert</option>
-      <option value="reminder">⏰ Auction Ending Reminder</option>
-      <option value="winner">🏆 Winner Notification</option>
-      <option value="payment">💳 Payment Due Reminder</option>
-      <option value="custom">✏️ Custom Message</option>
+      <option value="outbid">Outbid Alert</option>
+      <option value="reminder">Auction Ending Reminder</option>
+      <option value="winner">Winner Notification</option>
+      <option value="payment">Payment Due Reminder</option>
+      <option value="custom">Custom Message</option>
     </select>
 
     <div class="field-label">Lot / Vehicle</div>
@@ -209,7 +209,7 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;disp
     </select>
 
     <button class="call-btn" id="callBtn" onclick="startCampaign()">
-      <span id="callBtnIcon">📞</span>
+      <span id="callBtnIcon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.4 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
       <span id="callBtnText">Launch Call Campaign</span>
     </button>
   </div>
@@ -237,32 +237,32 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;disp
     <div class="section-title">Platform Capabilities</div>
     <div class="feature-grid">
       <div class="feat-card">
-        <div class="feat-icon">🔴</div>
+        <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         <div class="feat-title">Outbid Alerts</div>
         <div class="feat-desc">Instantly call bidders the moment they are outbid, giving them time to respond before the auction closes.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">⏰</div>
+        <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
         <div class="feat-title">Countdown Reminders</div>
         <div class="feat-desc">Automated calls 2 hours, 30 minutes, and 5 minutes before an auction ends to maximise bid activity.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🏆</div>
+        <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
         <div class="feat-title">Winner Notifications</div>
         <div class="feat-desc">Congratulate winners and guide them through next steps — payment, paperwork, and vehicle pickup.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">💳</div>
+        <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
         <div class="feat-title">Payment Reminders</div>
         <div class="feat-desc">Escalating call sequences for overdue payments — reducing defaults and improving bank recovery rates.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🌐</div>
+        <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
         <div class="feat-title">Multi-language</div>
         <div class="feat-desc">Calls delivered in Hindi, Marathi, Tamil, Telugu, Kannada, Bengali, and English — auto-detected by region.</div>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">📊</div>
+        <div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
         <div class="feat-title">Live Analytics</div>
         <div class="feat-desc">Real-time dashboards for answer rates, call duration, opt-outs, and conversion from call to bid.</div>
       </div>
@@ -299,15 +299,15 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;disp
   }
 
   const LOG_DATA = [
-    {name:'Rajesh Kumar', phone:'+91 98765 43210', lot:'KOT-667 · Hyundai Creta', type:'Outbid Alert', status:'answered', dur:'1:42', time:'2 min ago', av:'av-red', emoji:'🔴'},
-    {name:'Priya Sharma', phone:'+91 98123 45678', lot:'HDF-2401 · Fortuner', type:'Ending Reminder', status:'answered', dur:'0:55', time:'8 min ago', av:'av-amber', emoji:'⏰'},
-    {name:'Anil Mehta', phone:'+91 99887 76655', lot:'SBI-892 · Swift Dzire', type:'Outbid Alert', status:'missed', dur:'—', time:'15 min ago', av:'av-amber', emoji:'🔴'},
-    {name:'Sunita Rao', phone:'+91 91234 56789', lot:'ICI-739 · Hyundai i20', type:'Winner Notification', status:'answered', dur:'2:18', time:'22 min ago', av:'av-green', emoji:'🏆'},
-    {name:'Vikram Nair', phone:'+91 94567 89012', lot:'AXS-881 · RE Classic', type:'Payment Reminder', status:'answered', dur:'1:05', time:'35 min ago', av:'av-green', emoji:'💳'},
-    {name:'Deepa Iyer', phone:'+91 98034 12345', lot:'KOT-667 · Hyundai Creta', type:'Outbid Alert', status:'failed', dur:'—', time:'41 min ago', av:'av-red', emoji:'🔴'},
-    {name:'Mohit Jain', phone:'+91 97654 32109', lot:'HDF-2401 · Fortuner', type:'Ending Reminder', status:'answered', dur:'1:30', time:'58 min ago', av:'av-amber', emoji:'⏰'},
-    {name:'Kavya Reddy', phone:'+91 93456 78901', lot:'SBI-892 · Swift Dzire', type:'Outbid Alert', status:'scheduled', dur:'—', time:'In 12 min', av:'av-blue', emoji:'🕐'},
-    {name:'Suresh Pillai', phone:'+91 95678 90123', lot:'KOT-667 · Hyundai Creta', type:'Outbid Alert', status:'scheduled', dur:'—', time:'In 25 min', av:'av-blue', emoji:'🕐'},
+    {name:'Rajesh Kumar', phone:'+91 98765 43210', lot:'KOT-667 · Hyundai Creta', type:'Outbid Alert', status:'answered', dur:'1:42', time:'2 min ago', av:'av-red', icon:'OB'},
+    {name:'Priya Sharma', phone:'+91 98123 45678', lot:'HDF-2401 · Fortuner', type:'Ending Reminder', status:'answered', dur:'0:55', time:'8 min ago', av:'av-amber', icon:'ER'},
+    {name:'Anil Mehta', phone:'+91 99887 76655', lot:'SBI-892 · Swift Dzire', type:'Outbid Alert', status:'missed', dur:'—', time:'15 min ago', av:'av-amber', icon:'OB'},
+    {name:'Sunita Rao', phone:'+91 91234 56789', lot:'ICI-739 · Hyundai i20', type:'Winner Notification', status:'answered', dur:'2:18', time:'22 min ago', av:'av-green', icon:'WN'},
+    {name:'Vikram Nair', phone:'+91 94567 89012', lot:'AXS-881 · RE Classic', type:'Payment Reminder', status:'answered', dur:'1:05', time:'35 min ago', av:'av-green', icon:'PR'},
+    {name:'Deepa Iyer', phone:'+91 98034 12345', lot:'KOT-667 · Hyundai Creta', type:'Outbid Alert', status:'failed', dur:'—', time:'41 min ago', av:'av-red', icon:'OB'},
+    {name:'Mohit Jain', phone:'+91 97654 32109', lot:'HDF-2401 · Fortuner', type:'Ending Reminder', status:'answered', dur:'1:30', time:'58 min ago', av:'av-amber', icon:'ER'},
+    {name:'Kavya Reddy', phone:'+91 93456 78901', lot:'SBI-892 · Swift Dzire', type:'Outbid Alert', status:'scheduled', dur:'—', time:'In 12 min', av:'av-blue', icon:'OB'},
+    {name:'Suresh Pillai', phone:'+91 95678 90123', lot:'KOT-667 · Hyundai Creta', type:'Outbid Alert', status:'scheduled', dur:'—', time:'In 25 min', av:'av-blue', icon:'OB'},
   ];
 
   let activeLogFilter = 'all';
@@ -323,13 +323,13 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;disp
     const items = activeLogFilter === 'all' ? LOG_DATA : LOG_DATA.filter(l => l.status === activeLogFilter);
     list.innerHTML = items.map(l => `
       <div class="log-item fade-in">
-        <div class="log-avatar ${l.av}">${l.emoji}</div>
+        <div class="log-avatar ${l.av}" style="font-size:10px;font-weight:800;letter-spacing:.5px">${l.icon}</div>
         <div class="log-body">
           <div class="log-name">${l.name} <span style="font-weight:400;color:var(--g500)">${l.phone}</span></div>
           <div class="log-msg">${l.type} · ${l.lot}</div>
           <div class="log-meta">
             <span class="log-status st-${l.status}">${l.status.charAt(0).toUpperCase()+l.status.slice(1)}</span>
-            ${l.dur !== '—' ? `<span class="log-dur">⏱ ${l.dur}</span>` : ''}
+            ${l.dur !== '—' ? `<span class="log-dur">${l.dur}</span>` : ''}
             <span>${l.time}</span>
           </div>
         </div>
@@ -345,7 +345,7 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;disp
     const bar = document.getElementById('liveBar');
     if (btn.classList.contains('calling')) {
       btn.classList.remove('calling');
-      document.getElementById('callBtnIcon').textContent = '📞';
+      document.getElementById('callBtnIcon').innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.4 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
       document.getElementById('callBtnText').textContent = 'Launch Call Campaign';
       bar.classList.remove('active');
       clearInterval(callTimer);
@@ -353,7 +353,7 @@ footer{background:var(--g900);color:rgba(255,255,255,.45);padding:24px 28px;disp
       return;
     }
     btn.classList.add('calling');
-    document.getElementById('callBtnIcon').textContent = '⏹';
+    document.getElementById('callBtnIcon').innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>';
     document.getElementById('callBtnText').textContent = 'End Campaign';
     bar.classList.add('active');
     callSec = 0;

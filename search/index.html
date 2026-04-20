@@ -8,12 +8,12 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;--blue-m:#1a6fc4;
+      --blue:#111111;--blue-d:#111111;--blue-l:#f0f0f0;--blue-m:#333333;
       --green:#1a8a3c;--green-l:#e6f5eb;
       --red:#c0392b;--red-l:#fdecea;
       --amber:#d97706;
-      --g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;--g400:#9ca3af;
-      --g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+      --g100:#f5f5f5;--g200:#e8e8e8;--g300:#d4d4d4;--g400:#a3a3a3;
+      --g500:#737373;--g600:#525252;--g700:#404040;--g900:#111111;
       --white:#fff;
       --hh:56px;
       --shadow-sm:0 1px 3px rgba(0,0,0,.08);
@@ -28,15 +28,15 @@
     a{text-decoration:none}
 
     /* ══ HEADER ══ */
-    header{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:14px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-    .logo{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap}
-    .logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-    .logo span{color:#f0c040}
-    .hdr-divider{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
+    header{position:sticky;top:0;z-index:300;background:#ffffff;height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:14px;border-bottom:1px solid #e8e8e8;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    .logo{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#111111;letter-spacing:.5px;white-space:nowrap}
+    .logo-icon{width:30px;height:30px;background:#111111;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+    .logo span{color:#111111}
+    .hdr-divider{width:1px;height:28px;background:#e8e8e8;flex-shrink:0}
     .search-container{flex:1;position:relative}
-    .search-bar{width:100%;padding:8px 34px 8px 36px;border-radius:var(--r);border:none;outline:none;font-size:13px;font-family:'Barlow',sans-serif;font-weight:500;background:rgba(255,255,255,.95);color:var(--g900);box-shadow:0 2px 8px rgba(0,0,0,.25);transition:box-shadow .15s}
+    .search-bar{width:100%;padding:8px 34px 8px 36px;border-radius:var(--r);border:1.5px solid #e8e8e8;outline:none;font-size:13px;font-family:'Barlow',sans-serif;font-weight:500;background:#f7f7f7;color:var(--g900);box-shadow:none;transition:border-color .15s}
     .search-bar::placeholder{color:var(--g400)}
-    .search-bar:focus{box-shadow:0 4px 16px rgba(0,0,0,.35)}
+    .search-bar:focus{background:#fff;border-color:#111111;box-shadow:none}
     .search-clear{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:var(--g200);border:none;color:var(--g600);cursor:pointer;font-size:13px;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;line-height:1;transition:background .15s}
     .search-clear:hover{background:var(--g300);color:var(--g900)}
     /* ══ AUTOCOMPLETE ══ */
@@ -46,13 +46,13 @@
     .sugg-section{border-top:1px solid var(--g200)}
     .sugg-section:first-child{border-top:none}
     .sugg-lbl{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--g400)}
-    .sugg-clear-all{background:none;border:none;font-size:11px;font-weight:600;color:var(--blue);cursor:pointer;text-transform:none;letter-spacing:0;padding:0;font-family:'Barlow',sans-serif}
+    .sugg-clear-all{background:none;border:none;font-size:11px;font-weight:600;color:#555555;cursor:pointer;text-transform:none;letter-spacing:0;padding:0;font-family:'Barlow',sans-serif}
     .sugg-clear-all:hover{text-decoration:underline}
     .sugg-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:500;color:var(--g900);transition:background .08s;position:relative}
     .sugg-item:hover,.sugg-item.focused{background:var(--g100)}
     .sugg-icon{font-size:15px;width:22px;text-align:center;flex-shrink:0;color:var(--g500)}
     .sugg-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .sugg-text b{color:var(--blue);font-weight:700}
+    .sugg-text b{color:#111111;font-weight:700}
     .sugg-fill{opacity:0;background:none;border:none;cursor:pointer;font-size:16px;padding:2px 6px;border-radius:var(--r);transition:opacity .1s,background .1s;flex-shrink:0;line-height:1;color:var(--g400);transform:rotate(-45deg);display:inline-block}
     .sugg-fill:hover{background:var(--g200);color:var(--blue)}
     .sugg-item:hover .sugg-fill,.sugg-item.focused .sugg-fill{opacity:1}
@@ -63,45 +63,45 @@
     /* ══ INTENT PILLS ══ */
     .intent-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
     .intent-row:empty{display:none}
-    .intent-pill{display:inline-flex;align-items:center;gap:3px;background:var(--blue-l);border:1px solid rgba(0,87,168,.2);color:var(--blue-d);padding:3px 9px;border-radius:2px;font-size:11px;font-weight:700}
+    .intent-pill{display:inline-flex;align-items:center;gap:3px;background:#f0f0f0;border:1px solid #e0e0e0;color:#111111;padding:3px 9px;border-radius:2px;font-size:11px;font-weight:700}
     /* Highlight matched text in card titles */
     .car-title mark{background:rgba(240,192,64,.4);color:inherit;border-radius:2px;padding:0 2px;font-style:normal}
     .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--g400);font-size:14px;pointer-events:none}
     .header-actions{display:flex;align-items:center;gap:10px;margin-left:auto}
     .app-switcher{display:flex;align-items:center;gap:3px}
-    .app-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r);color:rgba(255,255,255,.6);font-size:12px;font-weight:600;text-decoration:none;transition:all .15s;white-space:nowrap}
-    .app-link:hover{background:rgba(255,255,255,.1);color:#fff}
-    .app-link.current{background:rgba(255,255,255,.15);color:#fff;cursor:default}
+    .app-link{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--r);color:#666666;font-size:12px;font-weight:600;text-decoration:none;transition:all .15s;white-space:nowrap}
+    .app-link:hover{background:#f0f0f0;color:#111111}
+    .app-link.current{background:#f0f0f0;color:#111111;cursor:default}
     .app-link.current::after{content:'';display:block;position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:#f0c040;border-radius:2px}
     .app-link{position:relative}
-    .location-select{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 10px;border-radius:var(--r);outline:none;cursor:pointer;font-family:'Barlow',sans-serif;font-size:12px;font-weight:600}
+    .location-select{background:#f7f7f7;border:1px solid #e8e8e8;color:#111111;padding:6px 10px;border-radius:var(--r);outline:none;cursor:pointer;font-family:'Barlow',sans-serif;font-size:12px;font-weight:600}
     .location-select option{color:var(--g900);background:#fff}
-    .btn-login{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:6px 14px;border-radius:var(--r);cursor:pointer;font-weight:600;font-size:12px;font-family:'Barlow',sans-serif;transition:all .15s}
-    .btn-login:hover{background:rgba(255,255,255,.15)}
+    .btn-login{background:transparent;color:#555555;border:1.5px solid #e8e8e8;padding:6px 14px;border-radius:var(--r);cursor:pointer;font-weight:600;font-size:12px;font-family:'Barlow',sans-serif;transition:all .15s}
+    .btn-login:hover{background:#f0f0f0}
     .live-pill{background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:1px;animation:blink 2s infinite;white-space:nowrap}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
 
     /* ══ HERO ══ */
-    .listing-hero{background:linear-gradient(135deg,var(--blue-d) 0%,var(--blue-m) 100%);padding:26px 28px 22px;color:#fff;border-bottom:1px solid rgba(0,0,0,.12)}
+    .listing-hero{background:#f7f7f7;padding:26px 28px 22px;color:#111111;border-bottom:1px solid #e8e8e8}
     .listing-hero h1{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;letter-spacing:.3px;margin-bottom:4px}
-    .listing-hero p{color:rgba(255,255,255,.7);font-size:13px}
+    .listing-hero p{color:#666666;font-size:13px}
 
     /* ══ LAYOUT ══ */
     .container{display:flex;width:100%;padding:20px 24px;gap:20px;align-items:flex-start}
 
     /* ══ SIDEBAR ══ */
     .sidebar{width:230px;flex-shrink:0;background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;box-shadow:var(--shadow-sm);position:sticky;top:calc(var(--hh) + 16px)}
-    .sidebar-hdr{background:var(--g900);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
-    .sidebar-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:.4px}
-    .clear-btn{background:transparent;border:none;color:rgba(255,255,255,.55);font-size:11px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;padding:0;transition:color .15s}
-    .clear-btn:hover{color:#fff}
+    .sidebar-hdr{background:#f7f7f7;border-bottom:1px solid #e8e8e8;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+    .sidebar-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#111111;letter-spacing:.4px}
+    .clear-btn{background:transparent;border:none;color:#888888;font-size:11px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;padding:0;transition:color .15s}
+    .clear-btn:hover{color:#111111}
     .filter-body{padding:14px}
     .filter-group{margin-bottom:14px;border-bottom:1px solid var(--g200);padding-bottom:14px}
     .filter-group:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
     .filter-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:8px;font-size:12px;text-transform:uppercase;color:var(--g500);letter-spacing:.6px}
     .filter-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--g700);line-height:1;padding:2px 0;min-height:28px}
     .filter-label:last-child{margin-bottom:0}
-    .filter-label input{accent-color:var(--blue);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+    .filter-label input{accent-color:#111111;width:15px;height:15px;cursor:pointer;flex-shrink:0}
 
     /* ══ MAIN CONTENT ══ */
     .main-content{flex:1;min-width:0}
@@ -114,7 +114,7 @@
     /* filter toggle — mobile only */
     .filter-toggle-btn{display:none;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:700;color:var(--g700);cursor:pointer;font-family:'Barlow',sans-serif;white-space:nowrap;transition:all .15s}
     .filter-toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
-    .filter-toggle-btn.active{background:var(--g900);border-color:var(--g900);color:#fff}
+    .filter-toggle-btn.active{background:#111111;border-color:#111111;color:#fff}
 
     /* ══ GRID ══ */
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
@@ -122,12 +122,17 @@
     /* ══ CARDS ══ */
     .card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,transform .2s,border-color .2s;display:flex;flex-direction:column}
     .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--g300)}
-    .card-img-wrapper{position:relative;height:148px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .card-emoji{font-size:56px;line-height:1;user-select:none}
+    .card-img-wrapper{position:relative;height:148px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#f0f0f0}
+    .card-img-wrapper.suv{background:linear-gradient(135deg,#e8e8e8 0%,#f2f2f2 100%)}
+    .card-img-wrapper.car{background:linear-gradient(135deg,#ebebeb 0%,#f5f5f5 100%)}
+    .card-img-wrapper.hatchback{background:linear-gradient(135deg,#e5e5e5 0%,#f0f0f0 100%)}
+    .card-img-wrapper.sedan{background:linear-gradient(135deg,#eeeeee 0%,#f7f7f7 100%)}
+    .card-silhouette{display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:10px}
+    .card-silhouette svg{width:82%;max-width:200px;height:auto}
     .card-type-tag{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.45);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:.4px}
     .badges{position:absolute;top:8px;left:8px;display:flex;gap:4px;flex-wrap:wrap}
     .badge{background:var(--blue);color:#fff;padding:2px 7px;border-radius:2px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
-    .badge-premium{background:var(--blue-d)}
+    .badge-premium{background:#111111}
     .badge-hot{background:var(--red)}
     .badge-cond{background:var(--g700)}
     .timer-badge{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.72);color:#fff;padding:3px 8px;border-radius:2px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px}
@@ -144,8 +149,8 @@
     .bid-box-right{text-align:right}
     .est-label{font-size:10px;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
     .market-value{font-size:13px;font-weight:600;color:var(--g400);text-decoration:line-through}
-    .bid-btn{background:var(--blue);color:#fff;border:none;padding:9px 16px;border-radius:var(--r);font-weight:700;cursor:pointer;width:100%;transition:background .15s;font-size:13px;font-family:'Barlow',sans-serif;letter-spacing:.2px}
-    .bid-btn:hover{background:var(--blue-d)}
+    .bid-btn{background:#111111;color:#fff;border:none;padding:9px 16px;border-radius:var(--r);font-weight:700;cursor:pointer;width:100%;transition:background .15s;font-size:13px;font-family:'Barlow',sans-serif;letter-spacing:.2px}
+    .bid-btn:hover{background:#333333}
 
     /* ══ SKELETON ══ */
     .skeleton{background:linear-gradient(110deg,var(--g200) 8%,var(--g100) 18%,var(--g200) 33%);border-radius:var(--r);background-size:200% 100%;animation:1.5s shine linear infinite}
@@ -195,17 +200,17 @@
 <body>
 
   <header>
-    <span class="logo"><div class="logo-icon">🏛</div>Hammer<span>ly</span></span>
+    <span class="logo"><div class="logo-icon" style="color:#fff;font-weight:800;font-size:14px;font-family:'Barlow Condensed',sans-serif;letter-spacing:-0.5px">H</div>Hammer<span>ly</span></span>
     <div class="hdr-divider"></div>
     <nav class="app-switcher">
-      <a href="../bulk-bid/index.html" class="app-link">🏛 Auctions</a>
-      <span class="app-link current" style="cursor:default">🔍 Search</span>
-      <a href="../auto-bid/index.html" class="app-link">⚡ Auto Bid</a>
-      <a href="../swipe-bid/index.html" class="app-link">👆 Swipe</a>
+      <a href="../bulk-bid/index.html" class="app-link">Auctions</a>
+      <span class="app-link current" style="cursor:default">Search</span>
+      <a href="../auto-bid/index.html" class="app-link">Auto Bid</a>
+      <a href="../swipe-bid/index.html" class="app-link">Swipe</a>
     </nav>
     <div class="hdr-divider"></div>
     <div class="search-container">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
       <input type="text" id="searchInput" class="search-bar"
         placeholder="e.g. 'diesel SUV Mumbai' or 'Nexon under 8 lakh'..." autocomplete="off">
       <button id="searchClear" class="search-clear" onclick="clearSearch()">✕</button>
@@ -225,7 +230,7 @@
   </header>
 
   <div class="listing-hero">
-    <h1>🔍 Live Vehicle Auctions</h1>
+    <h1>Live Vehicle Auctions</h1>
     <p>Search and filter bank-authorized vehicles across India — bid live, track timers, instant results</p>
   </div>
 
@@ -287,18 +292,18 @@
   <script>
     // --- MOCK DATA ---
     const baseModels = [
-      { make: "Maruti Suzuki", model: "Swift",       type: "Hatchback",   priceBase: 520000,  emoji: "🚗", color: "#fce4ec", fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
-      { make: "Mahindra",      model: "Thar",         type: "SUV",         priceBase: 1500000, emoji: "🚙", color: "#e8f5e9", fuels: ["Diesel", "Petrol"], transmissions: ["Manual", "Automatic"] },
-      { make: "Hyundai",       model: "Creta",        type: "Compact SUV", priceBase: 1150000, emoji: "🚙", color: "#e3f2fd", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
-      { make: "Tata",          model: "Nexon",        type: "Compact SUV", priceBase: 900000,  emoji: "🚙", color: "#fff3e0", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
-      { make: "Honda",         model: "City",         type: "Sedan",       priceBase: 1050000, emoji: "🚗", color: "#f3e5f5", fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
-      { make: "Toyota",        model: "Fortuner",     type: "SUV",         priceBase: 3600000, emoji: "🚙", color: "#eceff1", fuels: ["Diesel"],           transmissions: ["Manual", "Automatic"] },
-      { make: "Kia",           model: "Seltos",       type: "Compact SUV", priceBase: 1200000, emoji: "🚙", color: "#fbe9e7", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
-      { make: "Maruti Suzuki", model: "Baleno",       type: "Hatchback",   priceBase: 700000,  emoji: "🚗", color: "#e8eaf6", fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
-      { make: "Tata",          model: "Harrier",      type: "SUV",         priceBase: 1650000, emoji: "🚙", color: "#ede7f6", fuels: ["Diesel"],           transmissions: ["Manual", "Automatic"] },
-      { make: "Hyundai",       model: "i20",          type: "Hatchback",   priceBase: 750000,  emoji: "🚗", color: "#e8f5e9", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
-      { make: "Honda",         model: "Amaze",        type: "Sedan",       priceBase: 750000,  emoji: "🚗", color: "#e1f5fe", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
-      { make: "Mahindra",      model: "XUV700",       type: "SUV",         priceBase: 2000000, emoji: "🚙", color: "#f9fbe7", fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] }
+      { make: "Maruti Suzuki", model: "Swift",    type: "Hatchback",   cls: "hatchback", priceBase: 520000,  fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Mahindra",      model: "Thar",     type: "SUV",         cls: "suv",       priceBase: 1500000, fuels: ["Diesel", "Petrol"], transmissions: ["Manual", "Automatic"] },
+      { make: "Hyundai",       model: "Creta",    type: "Compact SUV", cls: "suv",       priceBase: 1150000, fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Tata",          model: "Nexon",    type: "Compact SUV", cls: "suv",       priceBase: 900000,  fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Honda",         model: "City",     type: "Sedan",       cls: "sedan",     priceBase: 1050000, fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Toyota",        model: "Fortuner", type: "SUV",         cls: "suv",       priceBase: 3600000, fuels: ["Diesel"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Kia",           model: "Seltos",   type: "Compact SUV", cls: "suv",       priceBase: 1200000, fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Maruti Suzuki", model: "Baleno",   type: "Hatchback",   cls: "hatchback", priceBase: 700000,  fuels: ["Petrol"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Tata",          model: "Harrier",  type: "SUV",         cls: "suv",       priceBase: 1650000, fuels: ["Diesel"],           transmissions: ["Manual", "Automatic"] },
+      { make: "Hyundai",       model: "i20",      type: "Hatchback",   cls: "hatchback", priceBase: 750000,  fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Honda",         model: "Amaze",    type: "Sedan",       cls: "sedan",     priceBase: 750000,  fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] },
+      { make: "Mahindra",      model: "XUV700",   type: "SUV",         cls: "suv",       priceBase: 2000000, fuels: ["Petrol", "Diesel"], transmissions: ["Manual", "Automatic"] }
     ];
 
     const locations = ["Delhi", "Mumbai", "Bangalore", "Chennai"];
@@ -330,12 +335,19 @@
           location: locations[Math.floor(Math.random() * locations.length)],
           fuel: base.fuels[Math.floor(Math.random() * base.fuels.length)],
           transmission: base.transmissions[Math.floor(Math.random() * base.transmissions.length)],
-          condition, emoji: base.emoji, bgColor: base.color,
+          condition, cls: base.cls,
           bids: Math.floor(Math.random() * 45) + 1,
           timeLeft, tags: tags.slice(0, 2)
         });
       }
       return data;
+    };
+
+    const VEH_SVG = {
+      car:      `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="42" width="156" height="18" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><path d="M48 42 Q54 20 70 16 L130 16 Q146 20 152 42 Z" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><path d="M60 42 Q64 24 76 20 L124 20 Q136 24 140 42 Z" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><circle cx="56" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="56" cy="62" r="4" fill="#d4d4d4"/><circle cx="144" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="144" cy="62" r="4" fill="#d4d4d4"/></svg>`,
+      suv:      `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="38" width="164" height="22" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><path d="M34 38 Q38 14 56 10 L144 10 Q162 14 166 38 Z" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><path d="M48 38 Q52 18 64 13 L136 13 Q148 18 152 38 Z" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><circle cx="54" cy="62" r="13" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="54" cy="62" r="5" fill="#d4d4d4"/><circle cx="146" cy="62" r="13" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="146" cy="62" r="5" fill="#d4d4d4"/></svg>`,
+      hatchback:`<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="24" y="44" width="152" height="16" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><path d="M50 44 Q54 24 68 18 L132 18 Q148 22 150 44 Z" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><path d="M62 44 Q66 28 76 22 L124 22 Q136 26 138 44 Z" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><circle cx="58" cy="62" r="11" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="58" cy="62" r="4" fill="#d4d4d4"/><circle cx="142" cy="62" r="11" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="142" cy="62" r="4" fill="#d4d4d4"/></svg>`,
+      sedan:    `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="44" width="160" height="16" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><path d="M44 44 Q50 26 68 20 L132 20 Q150 24 156 44 Z" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><path d="M58 44 Q62 28 76 23 L124 23 Q138 27 142 44 Z" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><circle cx="54" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="54" cy="62" r="4" fill="#d4d4d4"/><circle cx="146" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="146" cy="62" r="4" fill="#d4d4d4"/></svg>`
     };
 
     const allCars = generateMockData(40);
@@ -509,17 +521,17 @@
       const row = document.getElementById('intentPills');
       if (!intent || !intent.raw) { row.innerHTML = ''; return; }
       const pills = [];
-      if (intent.type)         pills.push(`🚗 ${intent.type}`);
-      if (intent.fuel)         pills.push(`⛽ ${intent.fuel}`);
-      if (intent.transmission) pills.push(`⚙️ ${intent.transmission}`);
-      if (intent.location)     pills.push(`📍 ${intent.location}`);
-      if (intent.year)         pills.push(`📅 ${intent.year}`);
+      if (intent.type)         pills.push(`${intent.type}`);
+      if (intent.fuel)         pills.push(`${intent.fuel}`);
+      if (intent.transmission) pills.push(`${intent.transmission}`);
+      if (intent.location)     pills.push(`${intent.location}`);
+      if (intent.year)         pills.push(`${intent.year}`);
       if (intent.priceMin > 0 && intent.priceMax < Infinity)
-        pills.push(`💰 ₹${intent.priceMin/100000}L – ₹${intent.priceMax/100000}L`);
+        pills.push(`₹${intent.priceMin/100000}L – ₹${intent.priceMax/100000}L`);
       else if (intent.priceMax < Infinity)
-        pills.push(`💰 Under ₹${intent.priceMax/100000}L`);
+        pills.push(`Under ₹${intent.priceMax/100000}L`);
       else if (intent.priceMin > 0)
-        pills.push(`💰 Above ₹${intent.priceMin/100000}L`);
+        pills.push(`Above ₹${intent.priceMin/100000}L`);
       row.innerHTML = pills.map(p => `<span class="intent-pill">${p}</span>`).join('');
     };
 
@@ -551,12 +563,12 @@
         if (recent.length) {
           html += `<div class="sugg-section">
             <div class="sugg-lbl">Recent searches <button class="sugg-clear-all" onmousedown="event.preventDefault();clearAllRecent()">Clear all</button></div>
-            ${recent.map(s => mkItem(s, '🕐', null, true, true)).join('')}
+            ${recent.map(s => mkItem(s, '', null, true, true)).join('')}
           </div>`;
         }
         html += `<div class="sugg-section">
           <div class="sugg-lbl">Trending</div>
-          ${TRENDING.map(s => mkItem(s, '📈', null, true, false)).join('')}
+          ${TRENDING.map(s => mkItem(s, '', null, true, false)).join('')}
         </div>`;
       } else {
         // Typing: show recent matches first, then vehicles, then queries
@@ -572,19 +584,19 @@
         }
         if (recentHits.length) {
           html += `<div class="sugg-section">
-            ${recentHits.slice(0,3).map(s => mkItem(s, '🕐', q, true, true)).join('')}
+            ${recentHits.slice(0,3).map(s => mkItem(s, '', q, true, true)).join('')}
           </div>`;
         }
         if (carHits.length) {
           html += `<div class="sugg-section">
             ${recentHits.length ? '<div class="sugg-lbl">Vehicles</div>' : ''}
-            ${carHits.slice(0,4).map(s => mkItem(s, '🚘', q, true, false)).join('')}
+            ${carHits.slice(0,4).map(s => mkItem(s, '', q, true, false)).join('')}
           </div>`;
         }
         if (uniquePreset.length) {
           html += `<div class="sugg-section">
             ${(recentHits.length || carHits.length) ? '<div class="sugg-lbl">Searches</div>' : ''}
-            ${uniquePreset.slice(0,4).map(s => mkItem(s, '🔍', q, true, false)).join('')}
+            ${uniquePreset.slice(0,4).map(s => mkItem(s, '', q, true, false)).join('')}
           </div>`;
         }
       }
@@ -653,16 +665,16 @@
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-          <div class="card-img-wrapper" style="background:${car.bgColor}">
+          <div class="card-img-wrapper ${car.cls}">
+            <div class="card-silhouette">${VEH_SVG[car.cls]||VEH_SVG.car}</div>
             <div class="badges">${badgesHtml}</div>
             <div class="timer-badge ${isUrgent?'urgent':''}" id="timer-${car.id}">⏱ ${formatTime(car.timeLeft)}</div>
-            <span class="card-emoji">${car.emoji}</span>
             <span class="card-type-tag">${car.type}</span>
           </div>
           <div class="card-body">
             <div class="car-title">${hlText(car.title, keywords)}</div>
             <div class="car-details">
-              <span>📍 ${car.location}</span>
+              <span>${car.location}</span>
               <span>${car.fuel}</span>
               <span>${car.transmission}</span>
               <span>${car.condition}</span>
@@ -730,7 +742,7 @@
         ? `${results.length} vehicle${results.length !== 1 ? 's' : ''} found`
         : `Showing all ${results.length} vehicles`;
       document.getElementById('resultsFallback').innerText =
-        isFallback ? '⚠️ No exact match — showing nearest results.' : '';
+        isFallback ? 'No exact match — showing nearest results.' : '';
       renderCards(results, query ? intent.keywords : []);
       initialLoadDone = true;
     };

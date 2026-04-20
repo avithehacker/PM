@@ -8,47 +8,46 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#0057a8;--blue-d:#003d7a;--blue-l:#e8f1fb;--blue-m:#1a6fc4;
-  --teal:#0d9488;--teal-l:#e6faf9;--teal-d:#0f766e;
-  --green:#1a8a3c;--green-l:#e6f5eb;
-  --red:#c0392b;--red-l:#fdecea;
-  --amber:#d97706;--amber-l:#fffbeb;
-  --purple:#7c3aed;--purple-l:#f3f0ff;--purple-d:#5b21b6;
-  --gold:#f0c040;
-  --g50:#f9fafb;--g100:#f5f6f8;--g200:#eaecf0;--g300:#d1d5db;
-  --g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g900:#111827;
+  --green:#166534;--green-l:#f0fdf4;
+  --red:#991b1b;--red-l:#fef2f2;
+  --amber:#92400e;--amber-l:#fffbeb;
+  --teal:#134e4a;--teal-l:#f0fdfa;--teal-d:#0f3d39;
+  --blue:#1e3a5f;--blue-d:#1e3a5f;--blue-l:#eff6ff;
+  --purple:#4c1d95;--purple-l:#f5f3ff;--purple-d:#3b0764;
+  --g50:#fafafa;--g100:#f5f5f5;--g200:#e8e8e8;--g300:#d4d4d4;
+  --g400:#a3a3a3;--g500:#737373;--g600:#525252;--g700:#404040;--g900:#111111;
   --white:#fff;
   --r:8px;--rm:12px;--rl:16px;
 }
-body{font-family:'Barlow',sans-serif;background:#f4f5f8;color:var(--g900);min-height:100vh}
+body{font-family:'Barlow',sans-serif;background:#ffffff;color:#111111;min-height:100vh}
 
 /* NAV */
-nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;height:52px;position:sticky;top:0;z-index:100}
-.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#fff;letter-spacing:.5px;margin-right:24px;text-decoration:none}
-.nav-brand span{color:var(--teal)}
-.nav-link{color:#aaa;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
-.nav-link:hover{color:#fff}
-.nav-link.active{color:var(--teal);border-bottom:2px solid var(--teal)}
+nav{background:#ffffff;padding:0 24px;display:flex;align-items:center;gap:0;height:52px;position:sticky;top:0;z-index:100;border-bottom:1px solid #e8e8e8}
+.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#111111;letter-spacing:.5px;margin-right:24px;text-decoration:none}
+.nav-brand span{color:#111111}
+.nav-link{color:#888888;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
+.nav-link:hover{color:#111111}
+.nav-link.active{color:#111111;border-bottom:2px solid #111111}
 
 /* HERO */
-.hero{background:linear-gradient(135deg,#0a1628 0%,#0f2a4a 50%,#0a2a27 100%);color:#fff;padding:56px 32px 48px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(13,148,136,.2);border:1px solid rgba(13,148,136,.4);border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5eead4;margin-bottom:20px}
+.hero{background:#f7f7f7;color:#111111;padding:56px 32px 48px;text-align:center;border-bottom:1px solid #e8e8e8}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#efefef;border:1px solid #e0e0e0;border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#555555;margin-bottom:20px}
 .hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2.8rem;letter-spacing:.02em;line-height:1.1;margin-bottom:12px}
-.hero h1 span{color:#5eead4}
-.hero-sub{color:#94a3b8;font-size:1rem;max-width:520px;margin:0 auto 36px}
+.hero h1 span{color:#111111}
+.hero-sub{color:#666666;font-size:1rem;max-width:520px;margin:0 auto 36px}
 .hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
 .hero-stat{text-align:center}
-.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;color:#5eead4;line-height:1}
-.hero-stat-lbl{font-size:.75rem;color:#64748b;margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;color:#111111;line-height:1}
+.hero-stat-lbl{font-size:.75rem;color:#999999;margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
 
 /* HOW IT WORKS */
 .hiw-section{background:#fff;border-bottom:1px solid var(--g200);padding:40px 32px}
 .hiw-inner{max-width:800px;margin:0 auto}
-.section-label{font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.section-label{font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#999999;margin-bottom:6px}
 .section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.6rem;color:var(--g900);margin-bottom:28px}
 .hiw-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .hiw-step{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rl);padding:22px 20px;position:relative}
-.hiw-num{width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.hiw-num{width:32px;height:32px;border-radius:50%;background:#111111;color:#fff;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 .hiw-step h3{font-size:.95rem;font-weight:700;color:var(--g900);margin-bottom:6px}
 .hiw-step p{font-size:.8rem;color:var(--g600);line-height:1.5}
 .hiw-step-icon{font-size:1.6rem;margin-bottom:10px}
@@ -73,23 +72,23 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
 .phone-input-row input:focus{outline:none;border-color:var(--teal)}
 .btn-test{background:var(--teal-l);color:var(--teal-d);border:1.5px solid rgba(13,148,136,.3);border-radius:var(--r);padding:10px 16px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s}
 .btn-test:hover{background:rgba(13,148,136,.15)}
-.btn-test.calling{background:var(--teal);color:#fff;animation:pulse-btn 1s ease-in-out infinite}
+.btn-test.calling{background:#111111;color:#fff;animation:pulse-btn 1s ease-in-out infinite}
 @keyframes pulse-btn{0%,100%{opacity:1}50%{opacity:.7}}
 
-.test-result{background:var(--teal-l);border:1px solid rgba(13,148,136,.25);border-radius:var(--r);padding:10px 14px;font-size:.8rem;color:var(--teal-d);margin-top:10px;display:none}
+.test-result{background:#f5f5f5;border:1px solid #dddddd;border-radius:var(--r);padding:10px 14px;font-size:.8rem;color:#333333;margin-top:10px;display:none}
 .test-result.show{display:flex;align-items:center;gap:8px}
 
 /* ALERT CARDS */
 .alerts-label{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--g500);margin-bottom:12px}
 .alert-card{border:1.5px solid var(--g200);border-radius:var(--rm);padding:14px 16px;margin-bottom:10px;transition:border-color .2s,background .2s;background:#fff}
-.alert-card.on{border-color:var(--teal);background:#fafffe}
+.alert-card.on{border-color:#111111;background:#f7f7f7}
 .alert-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:0}
 .alert-card-info{}
-.alert-card-name{font-size:.85rem;font-weight:700;color:var(--g900)}
-.alert-card-when{font-size:.75rem;color:var(--g500);margin-top:3px}
-.alert-card.on .alert-card-when{color:var(--teal-d)}
-.alert-card-preview{font-size:.75rem;color:var(--g500);font-style:italic;background:var(--g100);border-left:3px solid var(--g300);padding:8px 12px;border-radius:0 6px 6px 0;margin-top:10px;line-height:1.5;display:none}
-.alert-card.on .alert-card-preview{display:block;background:rgba(13,148,136,.05);border-left-color:var(--teal);color:var(--teal-d)}
+.alert-card-name{font-size:.85rem;font-weight:700;color:#111111}
+.alert-card-when{font-size:.75rem;color:#777777;margin-top:3px}
+.alert-card.on .alert-card-when{color:#333333}
+.alert-card-preview{font-size:.75rem;color:#777777;font-style:italic;background:#f0f0f0;border-left:3px solid #cccccc;padding:8px 12px;border-radius:0 6px 6px 0;margin-top:10px;line-height:1.5;display:none}
+.alert-card.on .alert-card-preview{display:block;background:#f5f5f5;border-left-color:#111111;color:#333333}
 
 /* TOGGLE */
 .toggle-wrap{flex-shrink:0;padding-top:2px}
@@ -97,7 +96,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
 .toggle input{opacity:0;width:0;height:0}
 .toggle-slider{position:absolute;inset:0;background:var(--g300);border-radius:11px;cursor:pointer;transition:.2s}
 .toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
-.toggle input:checked+.toggle-slider{background:var(--teal)}
+.toggle input:checked+.toggle-slider{background:#111111}
 .toggle input:checked+.toggle-slider:before{transform:translateX(16px)}
 
 /* RIGHT COLUMN */
@@ -108,7 +107,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
 .stat-box{background:var(--g50);border:1px solid var(--g200);border-radius:var(--r);padding:14px 12px;text-align:center}
 .stat-box-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;line-height:1}
 .stat-box-lbl{font-size:.7rem;color:var(--g500);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
-.stat-box.teal .stat-box-val{color:var(--teal)}
+.stat-box.teal .stat-box-val{color:#134e4a}
 .stat-box.green .stat-box-val{color:var(--green)}
 .stat-box.red .stat-box-val{color:var(--red)}
 .stat-box.amber .stat-box-val{color:var(--amber)}
@@ -127,14 +126,14 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
 .call-time{font-size:.7rem;color:var(--g400);flex-shrink:0}
 
 /* STATUS BAR */
-.status-bar{display:flex;align-items:center;gap:8px;background:rgba(13,148,136,.08);border:1px solid rgba(13,148,136,.2);border-radius:var(--r);padding:10px 14px;margin-bottom:16px}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);animation:pulse 2s ease-in-out infinite}
+.status-bar{display:flex;align-items:center;gap:8px;background:#f5f5f5;border:1px solid #e0e0e0;border-radius:var(--r);padding:10px 14px;margin-bottom:16px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#111111;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.status-text{font-size:.8rem;font-weight:600;color:var(--teal-d)}
+.status-text{font-size:.8rem;font-weight:600;color:#333333}
 
 /* SAVE BTN */
-.btn-save{width:100%;background:var(--teal);color:#fff;border:none;border-radius:var(--r);padding:12px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .15s;margin-top:4px}
-.btn-save:hover{background:var(--teal-d)}
+.btn-save{width:100%;background:#111111;color:#fff;border:none;border-radius:var(--r);padding:12px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .15s;margin-top:4px}
+.btn-save:hover{background:#333333}
 
 /* RESPONSIVE */
 @media(max-width:700px){
@@ -158,7 +157,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-badge">📞 Automated Alert Engine</div>
+  <div class="hero-badge">Automated Alert Engine</div>
   <h1>Never Miss a<br><span>Critical Auction Moment</span></h1>
   <p class="hero-sub">Hammerly's Robo Call Engine monitors auctions 24/7 and calls your phone the instant something important happens — so you can act fast, even when you're away from the screen.</p>
   <div class="hero-stats">
@@ -188,19 +187,19 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
     <div class="section-title">3 Steps to Never Miss a Bid</div>
     <div class="hiw-steps">
       <div class="hiw-step">
-        <div class="hiw-step-icon">📱</div>
+        <div class="hiw-step-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
         <div class="hiw-num">1</div>
         <h3>Save Your Number</h3>
         <p>Enter your mobile number below. Hammerly stores it securely and uses it exclusively for auction alerts you enable.</p>
       </div>
       <div class="hiw-step">
-        <div class="hiw-step-icon">🔔</div>
+        <div class="hiw-step-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
         <div class="hiw-num">2</div>
         <h3>Choose Your Alerts</h3>
         <p>Toggle on only the events that matter to you — outbid, won, reminders, or a daily digest. Each card shows exactly what you'll hear.</p>
       </div>
       <div class="hiw-step">
-        <div class="hiw-step-icon">⚡</div>
+        <div class="hiw-step-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
         <div class="hiw-num">3</div>
         <h3>Get Called Instantly</h3>
         <p>The moment your trigger fires, an automated call reaches you in under 4 seconds with clear vehicle details and next-step instructions.</p>
@@ -218,7 +217,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
     <!-- Phone Setup -->
     <div class="card" style="margin-bottom:16px">
       <div class="card-hdr">
-        <div class="card-hdr-icon" style="background:var(--teal-l)">📱</div>
+        <div class="card-hdr-icon" style="background:#f0f0f0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
         <div class="card-hdr-text">
           <div class="card-hdr-title">Your Alert Number</div>
           <div class="card-hdr-sub">Calls and SMS will be sent to this number</div>
@@ -237,7 +236,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
           </div>
         </div>
         <div class="test-result" id="testResult">
-          <span>✅</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
           <span>Test call placed — you should receive it within 4 seconds.</span>
         </div>
       </div>
@@ -246,7 +245,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
     <!-- Alert Cards -->
     <div class="card">
       <div class="card-hdr">
-        <div class="card-hdr-icon" style="background:#fef9e7">🔔</div>
+        <div class="card-hdr-icon" style="background:#f0f0f0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
         <div class="card-hdr-text">
           <div class="card-hdr-title">Alert Triggers</div>
           <div class="card-hdr-sub">Toggle each event — preview shows the exact call script</div>
@@ -257,7 +256,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
         <div class="alert-card on" id="ac-outbid">
           <div class="alert-card-top">
             <div class="alert-card-info">
-              <div class="alert-card-name">📞 Outbid Alert</div>
+              <div class="alert-card-name">Outbid Alert</div>
               <div class="alert-card-when">Triggers: When someone outbids you on a watched lot</div>
             </div>
             <div class="toggle-wrap">
@@ -272,7 +271,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
         <div class="alert-card on" id="ac-won">
           <div class="alert-card-top">
             <div class="alert-card-info">
-              <div class="alert-card-name">🏆 Winner Notification</div>
+              <div class="alert-card-name">Winner Notification</div>
               <div class="alert-card-when">Triggers: When you win an auction lot</div>
             </div>
             <div class="toggle-wrap">
@@ -287,7 +286,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
         <div class="alert-card" id="ac-remind">
           <div class="alert-card-top">
             <div class="alert-card-info">
-              <div class="alert-card-name">⏰ Auction Starting Soon</div>
+              <div class="alert-card-name">Auction Starting Soon</div>
               <div class="alert-card-when">Triggers: 15 minutes before a watched lot opens</div>
             </div>
             <div class="toggle-wrap">
@@ -302,7 +301,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
         <div class="alert-card" id="ac-sms">
           <div class="alert-card-top">
             <div class="alert-card-info">
-              <div class="alert-card-name">💬 Bid Confirmation SMS</div>
+              <div class="alert-card-name">Bid Confirmation SMS</div>
               <div class="alert-card-when">Triggers: After every bid you place, sent as SMS</div>
             </div>
             <div class="toggle-wrap">
@@ -317,7 +316,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
         <div class="alert-card" id="ac-digest">
           <div class="alert-card-top">
             <div class="alert-card-info">
-              <div class="alert-card-name">🌅 Morning Digest Call</div>
+              <div class="alert-card-name">Morning Digest Call</div>
               <div class="alert-card-when">Triggers: Daily at 8:00 AM — summary of today's lots</div>
             </div>
             <div class="toggle-wrap">
@@ -340,7 +339,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
 
     <div class="card">
       <div class="card-hdr">
-        <div class="card-hdr-icon" style="background:var(--teal-l)">📊</div>
+        <div class="card-hdr-icon" style="background:#f0f0f0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
         <div class="card-hdr-text">
           <div class="card-hdr-title">This Month's Activity</div>
           <div class="card-hdr-sub">Your call and alert statistics</div>
@@ -370,7 +369,7 @@ nav{background:var(--g900);padding:0 24px;display:flex;align-items:center;gap:0;
 
     <div class="card">
       <div class="card-hdr">
-        <div class="card-hdr-icon" style="background:var(--g100)">📋</div>
+        <div class="card-hdr-icon" style="background:#f0f0f0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
         <div class="card-hdr-text">
           <div class="card-hdr-title">Recent Calls</div>
           <div class="card-hdr-sub">Last 7 alert events</div>

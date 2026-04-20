@@ -28,11 +28,11 @@
     a{text-decoration:none}
 
     /* ══ HEADER ══ */
-    header{position:sticky;top:0;z-index:300;background:var(--blue-d);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:14px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
-    .logo{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#fff;letter-spacing:.5px;white-space:nowrap}
-    .logo-icon{width:30px;height:30px;background:var(--blue-m);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-    .logo span{color:#f0c040}
-    .hdr-divider{width:1px;height:28px;background:rgba(255,255,255,.2);flex-shrink:0}
+    header{position:sticky;top:0;z-index:300;background:#ffffff;height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:14px;border-bottom:1px solid #e8e8e8;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    .logo{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:800;color:#111111;letter-spacing:.5px;white-space:nowrap}
+    .logo-icon{width:30px;height:30px;background:#111111;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+    .logo span{color:#111111}
+    .hdr-divider{width:1px;height:28px;background:#e8e8e8;flex-shrink:0}
     .search-container{flex:1;position:relative}
     .search-bar{width:100%;padding:8px 34px 8px 36px;border-radius:var(--r);border:none;outline:none;font-size:13px;font-family:'Barlow',sans-serif;font-weight:500;background:rgba(255,255,255,.95);color:var(--g900);box-shadow:0 2px 8px rgba(0,0,0,.25);transition:box-shadow .15s}
     .search-bar::placeholder{color:var(--g400)}
@@ -91,10 +91,10 @@
 
     /* ══ SIDEBAR ══ */
     .sidebar{width:230px;flex-shrink:0;background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;box-shadow:var(--shadow-sm);position:sticky;top:calc(var(--hh) + 16px)}
-    .sidebar-hdr{background:var(--g900);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
-    .sidebar-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:.4px}
-    .clear-btn{background:transparent;border:none;color:rgba(255,255,255,.55);font-size:11px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;padding:0;transition:color .15s}
-    .clear-btn:hover{color:#fff}
+    .sidebar-hdr{background:#f7f7f7;border-bottom:1px solid #e8e8e8;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+    .sidebar-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#111111;letter-spacing:.4px}
+    .clear-btn{background:transparent;border:none;color:#888888;font-size:11px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;padding:0;transition:color .15s}
+    .clear-btn:hover{color:#111111}
     .filter-body{padding:14px}
     .filter-group{margin-bottom:14px;border-bottom:1px solid var(--g200);padding-bottom:14px}
     .filter-group:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
@@ -114,7 +114,7 @@
     /* filter toggle — mobile only */
     .filter-toggle-btn{display:none;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:700;color:var(--g700);cursor:pointer;font-family:'Barlow',sans-serif;white-space:nowrap;transition:all .15s}
     .filter-toggle-btn:hover{border-color:var(--blue);color:var(--blue)}
-    .filter-toggle-btn.active{background:var(--g900);border-color:var(--g900);color:#fff}
+    .filter-toggle-btn.active{background:#111111;border-color:#111111;color:#fff}
 
     /* ══ GRID ══ */
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
@@ -127,7 +127,7 @@
     .card-type-tag{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.45);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:.4px}
     .badges{position:absolute;top:8px;left:8px;display:flex;gap:4px;flex-wrap:wrap}
     .badge{background:var(--blue);color:#fff;padding:2px 7px;border-radius:2px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
-    .badge-premium{background:var(--blue-d)}
+    .badge-premium{background:#333333}
     .badge-hot{background:var(--red)}
     .badge-cond{background:var(--g700)}
     .timer-badge{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.72);color:#fff;padding:3px 8px;border-radius:2px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px}
@@ -145,7 +145,7 @@
     .est-label{font-size:10px;font-weight:600;color:var(--g400);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
     .market-value{font-size:13px;font-weight:600;color:var(--g400);text-decoration:line-through}
     .bid-btn{background:var(--blue);color:#fff;border:none;padding:9px 16px;border-radius:var(--r);font-weight:700;cursor:pointer;width:100%;transition:background .15s;font-size:13px;font-family:'Barlow',sans-serif;letter-spacing:.2px}
-    .bid-btn:hover{background:var(--blue-d)}
+    .bid-btn:hover{background:#333333}
 
     /* ══ SKELETON ══ */
     .skeleton{background:linear-gradient(110deg,var(--g200) 8%,var(--g100) 18%,var(--g200) 33%);border-radius:var(--r);background-size:200% 100%;animation:1.5s shine linear infinite}
@@ -195,17 +195,17 @@
 <body>
 
   <header>
-    <span class="logo"><div class="logo-icon">🏛</div>Hammer<span>ly</span></span>
+    <span class="logo"><div class="logo-icon" style="color:#fff;font-weight:800;font-size:14px;font-family:'Barlow Condensed',sans-serif;letter-spacing:-0.5px">H</div>Hammer<span>ly</span></span>
     <div class="hdr-divider"></div>
     <nav class="app-switcher">
-      <a href="listings.html" class="app-link">🏛 Auctions</a>
-      <span class="app-link current" style="cursor:default">🔍 Search</span>
-      <a href="auto-bid.html" class="app-link">⚡ Auto Bid</a>
-      <a href="swipe-bid.html" class="app-link">👆 Swipe</a>
+      <a href="listings.html" class="app-link">Auctions</a>
+      <span class="app-link current" style="cursor:default">Search</span>
+      <a href="auto-bid.html" class="app-link">Auto Bid</a>
+      <a href="swipe-bid.html" class="app-link">Swipe</a>
     </nav>
     <div class="hdr-divider"></div>
     <div class="search-container">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
       <input type="text" id="searchInput" class="search-bar"
         placeholder="e.g. 'diesel SUV Mumbai' or 'Nexon under 8 lakh'..." autocomplete="off">
       <button id="searchClear" class="search-clear" onclick="clearSearch()">✕</button>
@@ -225,7 +225,7 @@
   </header>
 
   <div class="listing-hero">
-    <h1>🔍 Live Vehicle Auctions</h1>
+    <h1>Live Vehicle Auctions</h1>
     <p>Search and filter bank-authorized vehicles across India — bid live, track timers, instant results</p>
   </div>
 
@@ -509,17 +509,17 @@
       const row = document.getElementById('intentPills');
       if (!intent || !intent.raw) { row.innerHTML = ''; return; }
       const pills = [];
-      if (intent.type)         pills.push(`🚗 ${intent.type}`);
-      if (intent.fuel)         pills.push(`⛽ ${intent.fuel}`);
-      if (intent.transmission) pills.push(`⚙️ ${intent.transmission}`);
-      if (intent.location)     pills.push(`📍 ${intent.location}`);
-      if (intent.year)         pills.push(`📅 ${intent.year}`);
+      if (intent.type)         pills.push(`${intent.type}`);
+      if (intent.fuel)         pills.push(`${intent.fuel}`);
+      if (intent.transmission) pills.push(`${intent.transmission}`);
+      if (intent.location)     pills.push(`${intent.location}`);
+      if (intent.year)         pills.push(`${intent.year}`);
       if (intent.priceMin > 0 && intent.priceMax < Infinity)
-        pills.push(`💰 ₹${intent.priceMin/100000}L – ₹${intent.priceMax/100000}L`);
+        pills.push(`₹${intent.priceMin/100000}L – ₹${intent.priceMax/100000}L`);
       else if (intent.priceMax < Infinity)
-        pills.push(`💰 Under ₹${intent.priceMax/100000}L`);
+        pills.push(`Under ₹${intent.priceMax/100000}L`);
       else if (intent.priceMin > 0)
-        pills.push(`💰 Above ₹${intent.priceMin/100000}L`);
+        pills.push(`Above ₹${intent.priceMin/100000}L`);
       row.innerHTML = pills.map(p => `<span class="intent-pill">${p}</span>`).join('');
     };
 
@@ -551,12 +551,12 @@
         if (recent.length) {
           html += `<div class="sugg-section">
             <div class="sugg-lbl">Recent searches <button class="sugg-clear-all" onmousedown="event.preventDefault();clearAllRecent()">Clear all</button></div>
-            ${recent.map(s => mkItem(s, '🕐', null, true, true)).join('')}
+            ${recent.map(s => mkItem(s, '', null, true, true)).join('')}
           </div>`;
         }
         html += `<div class="sugg-section">
           <div class="sugg-lbl">Trending</div>
-          ${TRENDING.map(s => mkItem(s, '📈', null, true, false)).join('')}
+          ${TRENDING.map(s => mkItem(s, '', null, true, false)).join('')}
         </div>`;
       } else {
         // Typing: show recent matches first, then vehicles, then queries
@@ -572,19 +572,19 @@
         }
         if (recentHits.length) {
           html += `<div class="sugg-section">
-            ${recentHits.slice(0,3).map(s => mkItem(s, '🕐', q, true, true)).join('')}
+            ${recentHits.slice(0,3).map(s => mkItem(s, '', q, true, true)).join('')}
           </div>`;
         }
         if (carHits.length) {
           html += `<div class="sugg-section">
             ${recentHits.length ? '<div class="sugg-lbl">Vehicles</div>' : ''}
-            ${carHits.slice(0,4).map(s => mkItem(s, '🚘', q, true, false)).join('')}
+            ${carHits.slice(0,4).map(s => mkItem(s, '', q, true, false)).join('')}
           </div>`;
         }
         if (uniquePreset.length) {
           html += `<div class="sugg-section">
             ${(recentHits.length || carHits.length) ? '<div class="sugg-lbl">Searches</div>' : ''}
-            ${uniquePreset.slice(0,4).map(s => mkItem(s, '🔍', q, true, false)).join('')}
+            ${uniquePreset.slice(0,4).map(s => mkItem(s, '', q, true, false)).join('')}
           </div>`;
         }
       }
@@ -662,7 +662,7 @@
           <div class="card-body">
             <div class="car-title">${hlText(car.title, keywords)}</div>
             <div class="car-details">
-              <span>📍 ${car.location}</span>
+              <span>${car.location}</span>
               <span>${car.fuel}</span>
               <span>${car.transmission}</span>
               <span>${car.condition}</span>
@@ -730,7 +730,7 @@
         ? `${results.length} vehicle${results.length !== 1 ? 's' : ''} found`
         : `Showing all ${results.length} vehicles`;
       document.getElementById('resultsFallback').innerText =
-        isFallback ? '⚠️ No exact match — showing nearest results.' : '';
+        isFallback ? 'No exact match — showing nearest results.' : '';
       renderCards(results, query ? intent.keywords : []);
       initialLoadDone = true;
     };
