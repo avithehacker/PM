@@ -49,23 +49,23 @@ a{text-decoration:none}
 .live-pill{background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:1px;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
 .hdr-user{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.8);font-size:12px;font-weight:600}
-.avatar{width:28px;height:28px;border-radius:50%;background:var(--blue-m);display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:700}
+.avatar{width:28px;height:28px;border-radius:50%;background:#111111;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:700}
 
 /* ══ SCREENS ══ */
 .screen{display:none;flex:1;flex-direction:column}
 .screen.active{display:flex}
 
 /* ══ SCREEN 1 — AUCTION LISTINGS ══ */
-.listing-hero{background:linear-gradient(135deg,var(--blue-d) 0%,var(--blue-m) 100%);padding:28px 24px 24px;color:#fff}
+.listing-hero{background:#f7f7f7;padding:28px 24px 24px;color:#111111;border-bottom:1px solid #e8e8e8}
 .listing-hero h1{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;letter-spacing:.3px;margin-bottom:4px}
-.listing-hero p{color:rgba(255,255,255,.7);font-size:13px}
+.listing-hero p{color:#666666;font-size:13px}
 .listing-filters{background:var(--white);border-bottom:1px solid var(--g200);padding:12px 24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .filter-chip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:3px;border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
-.filter-chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
-.filter-chip.on{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+.filter-chip:hover{border-color:#111111;color:#111111;background:#f0f0f0}
+.filter-chip.on{border-color:#111111;color:#ffffff;background:#111111}
 .filter-chip .fc-dot{width:8px;height:8px;border-radius:50%;background:currentColor}
 select.filter-select{padding:6px 28px 6px 10px;border-radius:var(--r);border:1.5px solid var(--g300);font-size:12px;font-weight:600;color:var(--g600);background:var(--white);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;cursor:pointer}
-select.filter-select:focus{outline:none;border-color:var(--blue)}
+select.filter-select:focus{outline:none;border-color:#111111}
 .listings-grid{padding:20px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;flex:1}
 /* Auction Card */
 .auction-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,transform .2s;cursor:pointer}
@@ -84,17 +84,17 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .ac-meta-item{display:flex;flex-direction:column;gap:2px}
 .ac-meta-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400)}
 .ac-meta-val{font-size:13px;font-weight:600;color:var(--g800)}
-.ac-meta-val.highlight{color:var(--blue);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800}
+.ac-meta-val.highlight{color:#111111;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800}
 .ac-categories{padding:0 16px 12px;display:flex;gap:6px;flex-wrap:wrap}
 .cat-tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:2px}
 .ac-footer{padding:12px 16px;border-top:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between}
 .ac-footer-info{font-size:11px;color:var(--g500)}
-.btn-view{display:flex;align-items:center;gap:6px;padding:7px 16px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:700;transition:background .15s}
-.btn-view:hover{background:var(--blue-m)}
+.btn-view{display:flex;align-items:center;gap:6px;padding:7px 16px;background:#111111;color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:700;transition:background .15s}
+.btn-view:hover{background:#333333}
 
 /* ══ SCREEN 2 — VEHICLES INSIDE AUCTION ══ */
 .breadcrumb{background:var(--white);border-bottom:1px solid var(--g200);padding:10px 24px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g500)}
-.breadcrumb a{color:var(--blue);font-weight:600;cursor:pointer}
+.breadcrumb a{color:#111111;font-weight:600;cursor:pointer}
 .breadcrumb a:hover{text-decoration:underline}
 .breadcrumb-sep{color:var(--g300)}
 .auction-detail-bar{background:#f7f7f7;border-bottom:1px solid #e8e8e8;padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -121,26 +121,26 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 /* Group selector chips row */
 .group-row{background:var(--g100);border-bottom:1px solid var(--g200);padding:8px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:40px}
 .gr-chip{display:flex;align-items:center;gap:6px;padding:4px 10px 4px 12px;border-radius:3px;border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:600;color:var(--g700);cursor:pointer;transition:all .15s}
-.gr-chip:hover{border-color:var(--blue);color:var(--blue)}
-.gr-chip.sel{border-color:var(--blue);background:var(--blue-l);color:var(--blue)}
-.gr-chip .gc-count{background:var(--blue);color:#fff;border-radius:2px;font-size:10px;font-weight:700;padding:1px 5px}
+.gr-chip:hover{border-color:#111111;color:#111111}
+.gr-chip.sel{border-color:#111111;background:#f0f0f0;color:#111111}
+.gr-chip .gc-count{background:#111111;color:#fff;border-radius:2px;font-size:10px;font-weight:700;padding:1px 5px}
 .gr-chip:not(.sel) .gc-count{background:var(--g400)}
 .gr-chip .gc-del{opacity:.45;font-size:13px;padding:0 2px;transition:opacity .15s}
 .gr-chip .gc-del:hover{opacity:1;color:var(--red)}
 .gr-new{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:3px;border:1.5px dashed var(--g300);background:transparent;font-size:12px;font-weight:600;color:var(--g400);cursor:pointer;transition:all .15s}
-.gr-new:hover{border-color:var(--blue);color:var(--blue)}
+.gr-new:hover{border-color:#111111;color:#111111}
 /* Vehicles grid */
 .v2-grid{padding:16px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px;flex:1;align-content:start}
 /* Vehicle card v2 */
 .vc2{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,border-color .2s;position:relative}
 .vc2:hover{box-shadow:var(--shadow-md)}
-.vc2.grouped{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
+.vc2.grouped{border-color:#111111;box-shadow:0 0 0 1px #111111}
 .vc2-img{height:148px;display:flex;align-items:center;justify-content:center;position:relative;font-size:50px}
 .vc2-lot{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:2px}
 .vc2-type{position:absolute;top:8px;right:8px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:.3px}
 .vc2-type.fw{background:#1565c0;color:#fff}
 .vc2-type.tw{background:#6a1b9a;color:#fff}
-.vc2-grp-tag{position:absolute;bottom:8px;left:8px;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;display:none}
+.vc2-grp-tag{position:absolute;bottom:8px;left:8px;background:#111111;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;display:none}
 .vc2.grouped .vc2-grp-tag{display:block}
 .vc2-body{padding:11px 13px}
 .vc2-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--g900);margin-bottom:5px;line-height:1.2}
@@ -148,7 +148,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .vc2-pill{background:var(--g100);color:var(--g600);font-size:10px;font-weight:600;padding:2px 7px;border-radius:2px}
 .vc2-bid-row{background:var(--g100);border-radius:var(--r);padding:8px 10px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
 .vc2-bid-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400)}
-.vc2-bid-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--blue-d)}
+.vc2-bid-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#333333}
 .vc2-bid-val.up{color:var(--green)}
 .vc2-bid-base{font-size:11px;color:var(--g400);font-weight:500}
 /* stepper */
@@ -166,7 +166,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#156a2e}
 .btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#a52d20}
 .btn-ghost{background:#fff;color:var(--g600);border:1.5px solid var(--g300)}.btn-ghost:hover{border-color:var(--g500);color:var(--g800)}
-.btn-outline-blue{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}.btn-outline-blue:hover{background:var(--blue-l)}
+.btn-outline-blue{background:#fff;color:#111111;border:1.5px solid #111111}.btn-outline-blue:hover{background:#f0f0f0}
 .btn-sm{padding:5px 10px;font-size:12px}
 .btn-xs{padding:3px 8px;font-size:11px}
 .btn:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
@@ -177,17 +177,17 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .mybids-sidebar{background:var(--white);border-right:1px solid var(--g200);display:flex;flex-direction:column;overflow-y:auto}
 .mbs-header{padding:14px 16px;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:space-between}
 .mbs-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--g900)}
-.mbs-count{background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:700;padding:2px 8px;border-radius:2px}
+.mbs-count{background:#f0f0f0;color:#444444;font-size:12px;font-weight:700;padding:2px 8px;border-radius:2px}
 .mbs-group{padding:12px 16px;border-bottom:1px solid var(--g200);cursor:pointer;transition:background .15s}
 .mbs-group:hover{background:var(--g100)}
-.mbs-group.sel{background:var(--blue-l);border-left:3px solid var(--blue)}
+.mbs-group.sel{background:#f5f5f5;border-left:3px solid #111111}
 .mbs-group:not(.sel){border-left:3px solid transparent}
 .mbs-g-name{font-weight:700;color:var(--g900);font-size:13px;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
 .mbs-g-meta{font-size:11px;color:var(--g500);display:flex;gap:8px}
-.mbs-g-total{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--blue-d);margin-top:4px}
+.mbs-g-total{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#333333;margin-top:4px}
 .mbs-g-status{font-size:10px;font-weight:700;padding:2px 6px;border-radius:2px}
 .mbs-g-status.placed{background:var(--green-l);color:var(--green)}
-.mbs-g-status.active{background:var(--blue-l);color:var(--blue)}
+.mbs-g-status.active{background:#f0f0f0;color:#444444}
 /* Right: Group detail */
 .mybids-detail{display:flex;flex-direction:column;overflow:hidden}
 .mbd-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--g400)}
@@ -197,7 +197,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .mbd-group-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--g900)}
 .mbd-stats{display:flex;gap:16px;margin-left:auto;align-items:center}
 .mbd-stat{text-align:right}
-.mbd-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:var(--blue-d)}
+.mbd-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#333333}
 .mbd-stat-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--g400)}
 /* Bulk controls bar */
 .bulk-ctrl{background:#111111;padding:10px 22px;display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap}
@@ -211,8 +211,8 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .bulk-dn-btn{height:42px;padding:0 16px;background:var(--red);border:1px solid #fff;border-radius:var(--rm);color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
 .bulk-dn-btn:hover{background:#a52d20;transform:translateY(-1px);box-shadow:0 4px 12px rgba(192,57,43,.5)}
 .bulk-sep{width:1px;height:32px;background:rgba(255,255,255,.2)}
-.place-bulk-btn{height:42px;padding:0 24px;background:var(--blue);border:1px solid #fff;border-radius:var(--rm);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:.4px;cursor:pointer;transition:all .15s;text-transform:uppercase;margin-left:auto;box-shadow:0 4px 12px rgba(0,87,168,.5)}
-.place-bulk-btn:hover{background:var(--blue-m);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,87,168,.6)}
+.place-bulk-btn{height:42px;padding:0 24px;background:#111111;border:1px solid #fff;border-radius:var(--rm);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;letter-spacing:.4px;cursor:pointer;transition:all .15s;text-transform:uppercase;margin-left:auto;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.place-bulk-btn:hover{background:#333333;transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.25)}
 .continue-bid-btn{height:38px;padding:0 16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:var(--rm);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
 .continue-bid-btn:hover{background:rgba(255,255,255,.2)}
 /* Vehicle rows in detail */
@@ -230,7 +230,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .mini-stepper button:disabled{opacity:.4;cursor:not-allowed}
 .mini-stepper .msv{background:#fff;border-left:1px solid var(--g300);border-right:1px solid var(--g300);padding:0 8px;font-size:11px;font-weight:600;color:var(--g600);height:26px;display:flex;align-items:center}
 .mbd-vrow-right{padding:10px 14px;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex-shrink:0;min-width:120px;border-left:1px solid var(--g200)}
-.mbd-vrow-bid{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:var(--blue-d)}
+.mbd-vrow-bid{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:#333333}
 .mbd-vrow-bid.up{color:var(--green)}
 .mbd-vrow-base{font-size:10px;color:var(--g400);font-weight:500}
 /* placed badge */
@@ -248,18 +248,18 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
 .modal-footer{padding:12px 18px;border-top:1px solid var(--g200);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
 .form-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g700);margin-bottom:5px}
 .form-input{width:100%;padding:8px 11px;border:1.5px solid var(--g300);border-radius:var(--r);font-size:14px;font-family:'Barlow',sans-serif;outline:none;transition:border-color .15s}
-.form-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,87,168,.1)}
+.form-input:focus{border-color:#111111;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
 /* Confirm list */
-.confirm-row{display:flex;align-items:center;justify-content:space-between;background:var(--g100);border-radius:var(--r);padding:9px 12px;border-left:3px solid var(--blue);margin-bottom:7px}
+.confirm-row{display:flex;align-items:center;justify-content:space-between;background:var(--g100);border-radius:var(--r);padding:9px 12px;border-left:3px solid #111111;margin-bottom:7px}
 .cr-name{font-weight:700;font-size:13px}
 .cr-id{font-size:11px;color:var(--g500);margin-top:2px}
-.cr-bid{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--blue-d)}
+.cr-bid{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#333333}
 .confirm-total{margin-top:12px;background:#111111;border-radius:var(--r);padding:13px 16px;display:flex;justify-content:space-between;align-items:center}
 .ct-lbl{font-weight:700;color:rgba(255,255,255,.8);font-size:12px;text-transform:uppercase}
 .ct-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#fff}
 /* ══ TOAST ══ */
 .toasts{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:7px;pointer-events:none}
-.toast{background:#fff;border-radius:var(--rm);box-shadow:var(--shadow-lg);padding:11px 15px;max-width:300px;display:flex;align-items:center;gap:9px;pointer-events:all;animation:tin .25s ease;border-left:4px solid var(--blue)}
+.toast{background:#fff;border-radius:var(--rm);box-shadow:var(--shadow-lg);padding:11px 15px;max-width:300px;display:flex;align-items:center;gap:9px;pointer-events:all;animation:tin .25s ease;border-left:4px solid #111111}
 @keyframes tin{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
 .toast.out{animation:tout .25s ease forwards}
 @keyframes tout{to{opacity:0;transform:translateX(16px)}}
@@ -394,7 +394,7 @@ select.filter-select:focus{outline:none;border-color:var(--blue)}
     </div>
     <div class="vt-sep"></div>
     <span style="font-size:12px;color:var(--g500);font-weight:500">Active Group:</span>
-    <span style="font-size:12px;font-weight:700;color:var(--blue)" id="activeGrpLabel">None selected</span>
+    <span style="font-size:12px;font-weight:700;color:#111111" id="activeGrpLabel">None selected</span>
   </div>
   <div class="v2-grid" id="vehiclesGrid2" style="overflow-y:auto"></div>
 </div>
@@ -680,7 +680,7 @@ function buildVehicleCard(v) {
       </div>
       <div class="vc2-actions">
         ${!inGrp
-          ? `<select style="flex:1;padding:5px 24px 5px 10px;border-radius:4px;border:1.5px solid ${hasGroups?'var(--blue)':'var(--g300)'};font-family:Barlow,sans-serif;font-size:12px;font-weight:600;color:${hasGroups?'var(--blue)':'var(--g400)'};background:${hasGroups?'var(--blue-l)':'var(--g100)'};cursor:pointer;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5'%3E%3Cpath d='M0 0l4.5 5L9 0z' fill='%230057a8'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 8px center;" onchange="addToGroup('${v.id}',this.value,this)" ${!hasGroups?'disabled':''}>
+          ? `<select style="flex:1;padding:5px 24px 5px 10px;border-radius:4px;border:1.5px solid ${hasGroups?'#111111':'var(--g300)'};font-family:Barlow,sans-serif;font-size:12px;font-weight:600;color:${hasGroups?'#111111':'var(--g400)'};background:${hasGroups?'#f0f0f0':'var(--g100)'};cursor:pointer;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5'%3E%3Cpath d='M0 0l4.5 5L9 0z' fill='%23111111'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 8px center;" onchange="addToGroup('${v.id}',this.value,this)" ${!hasGroups?'disabled':''}>
               <option value="">+ Add to Group</option>
               ${Object.keys(groups).map(gid=>`<option value="${gid}">${groups[gid].name}</option>`).join('')}
             </select>`

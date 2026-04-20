@@ -73,16 +73,19 @@ input,select{font-family:'Barlow',sans-serif}
 
 /* ── CARDS GRID ── */
 .section{max-width:1160px;margin:0 auto;padding:32px 28px}
-.section-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px}
+.section-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
 .section-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--g900)}
 .section-sub{font-size:12px;color:var(--g500);font-weight:500}
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.cards-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.cards-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:12px;padding-bottom:6px;margin:0 -28px;padding-left:28px;padding-right:28px}.rec-card{flex-shrink:0;width:calc(100vw - 80px);max-width:300px;scroll-snap-align:start}}
 
 /* ── REC CARD ── */
 .rec-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:all .2s;cursor:pointer}
 .rec-card:hover{box-shadow:var(--shadow-md);border-color:var(--g300);transform:translateY(-2px)}
 .rec-card.top-pick{border-color:#111111;box-shadow:0 0 0 1px #e8e8e8}
-.rec-img{height:100px;display:flex;align-items:center;justify-content:center;font-size:44px;position:relative}
+.rec-img{height:120px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.rec-img svg{width:75%;max-width:170px;height:auto}
 .rec-img.g1{background:linear-gradient(135deg,#e8e8e8 0%,#f2f2f2 100%)}
 .rec-img.g2{background:linear-gradient(135deg,#e5ecec 0%,#f0f7f7 100%)}
 .rec-img.g3{background:linear-gradient(135deg,#e8f0eb 0%,#f2f7f3 100%)}
@@ -209,7 +212,7 @@ footer{background:#f7f7f7;border-top:1px solid #e8e8e8;color:#888888;padding:24p
       <div class="section-title">Your Matched Vehicles</div>
       <div class="section-sub" id="result-sub">Ranked by AI fit score</div>
     </div>
-    <span style="font-size:12px;font-weight:700;color:var(--purple);background:var(--purple-l);padding:4px 12px;border-radius:3px">6 matches found</span>
+    <span id="match-count" style="font-size:12px;font-weight:700;color:#111111;background:#f0f0f0;padding:4px 12px;border-radius:3px">6 matches found</span>
   </div>
   <div class="cards-grid" id="rec-grid"></div>
 </div>
@@ -265,23 +268,29 @@ footer{background:#f7f7f7;border-top:1px solid #e8e8e8;color:#888888;padding:24p
     el.classList.toggle('on');
   }
 
+  const VEH_SVG = {
+    car:      `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="42" width="156" height="18" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><path d="M48 42 Q54 20 70 16 L130 16 Q146 20 152 42 Z" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><path d="M60 42 Q64 24 76 20 L124 20 Q136 24 140 42 Z" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><circle cx="56" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="56" cy="62" r="4" fill="#d4d4d4"/><circle cx="144" cy="62" r="12" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="144" cy="62" r="4" fill="#d4d4d4"/></svg>`,
+    suv:      `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="38" width="164" height="22" rx="3" fill="#eeeeee" stroke="#d0d0d0" stroke-width="1.5"/><path d="M34 38 Q38 14 56 10 L144 10 Q162 14 166 38 Z" fill="#f4f4f4" stroke="#d0d0d0" stroke-width="1.5"/><path d="M48 38 Q52 18 64 13 L136 13 Q148 18 152 38 Z" fill="#f9f9f9" stroke="#e2e2e2" stroke-width="1"/><circle cx="54" cy="62" r="13" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="54" cy="62" r="5" fill="#d4d4d4"/><circle cx="146" cy="62" r="13" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="146" cy="62" r="5" fill="#d4d4d4"/></svg>`,
+    bike:     `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M65 42 L95 26 L135 26 L148 40" stroke="#d0d0d0" stroke-width="1.5" stroke-linecap="round"/><path d="M95 26 L95 42" stroke="#d0d0d0" stroke-width="1.5"/><path d="M135 26 L140 20 L148 20" stroke="#d0d0d0" stroke-width="1.5" stroke-linecap="round"/><path d="M88 26 Q110 20 128 26" stroke="#d0d0d0" stroke-width="2" stroke-linecap="round"/><circle cx="57" cy="56" r="16" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="57" cy="56" r="5" fill="#d4d4d4"/><circle cx="147" cy="56" r="16" fill="#e8e8e8" stroke="#d0d0d0" stroke-width="1.5"/><circle cx="147" cy="56" r="5" fill="#d4d4d4"/></svg>`
+  };
+
   const RECS = [
-    {id:1, title:'2022 Tata Nexon EV', sub:'Electric · Automatic · 22,100 km', lot:'AXS-1102 · Bangalore', img:'', gradient:'g4', match:96, isTop:true,
+    {id:1, title:'2022 Tata Nexon EV', sub:'Electric · Automatic · 22,100 km', lot:'AXS-1102 · Bangalore', cls:'suv', gradient:'g4', match:96, isTop:true,
      reasons:['Electric — matches your fuel preference','Excellent condition','Well below your ₹8L budget'],
      bid:1850000, score:96},
-    {id:2, title:'2022 Maruti Swift Dzire', sub:'Petrol · Manual · 31,200 km', lot:'SBI-892 · Lucknow', img:'', gradient:'g3', match:91, isTop:false,
+    {id:2, title:'2022 Maruti Swift Dzire', sub:'Petrol · Manual · 31,200 km', lot:'SBI-892 · Lucknow', cls:'car', gradient:'g3', match:91, isTop:false,
      reasons:['Strong petrol match','Good condition, high bid activity (11 bids)','₹60K below reserve — high win probability'],
      bid:520000, score:91},
-    {id:3, title:'2021 Toyota Fortuner', sub:'Diesel · Automatic · 62,000 km', lot:'HDF-2401 · Mumbai', img:'', gradient:'g2', match:85, isTop:false,
+    {id:3, title:'2021 Toyota Fortuner', sub:'Diesel · Automatic · 62,000 km', lot:'HDF-2401 · Mumbai', cls:'suv', gradient:'g2', match:85, isTop:false,
      reasons:['Premium segment, high resale value','Ending soon — strong urgency signal','HDFC Bank lot — verified clean title'],
      bid:2650000, score:85},
-    {id:4, title:'2022 TVS Apache RTR 200', sub:'Petrol · Manual · 18,400 km', lot:'HDF-774 · Ahmedabad', img:'', gradient:'g1', match:79, isTop:false,
+    {id:4, title:'2022 TVS Apache RTR 200', sub:'Petrol · Manual · 18,400 km', lot:'HDF-774 · Ahmedabad', cls:'bike', gradient:'g1', match:79, isTop:false,
      reasons:['Excellent condition, low mileage','2-Wheeler within budget','High reserve gap — low competition'],
      bid:95000, score:79},
-    {id:5, title:'2021 Hyundai i20', sub:'Petrol · Manual · 38,400 km', lot:'ICI-739 · Kolkata', img:'', gradient:'g5', match:74, isTop:false,
+    {id:5, title:'2021 Hyundai i20', sub:'Petrol · Manual · 38,400 km', lot:'ICI-739 · Kolkata', cls:'car', gradient:'g5', match:74, isTop:false,
      reasons:['Petrol, Good condition','Competitive bid count (7 bids)','Ending in 1h 55m — act soon'],
      bid:780000, score:74},
-    {id:6, title:'2021 Honda CB200R', sub:'Petrol · Manual · 19,200 km', lot:'ICI-442 · Chennai', img:'', gradient:'g6', match:68, isTop:false,
+    {id:6, title:'2021 Honda CB200R', sub:'Petrol · Manual · 19,200 km', lot:'ICI-442 · Chennai', cls:'bike', gradient:'g6', match:68, isTop:false,
      reasons:['Excellent condition, low km','High interest (9 bids)','Open auction — auto bid recommended'],
      bid:110000, score:68},
   ];
@@ -309,6 +318,7 @@ footer{background:#f7f7f7;border-top:1px solid #e8e8e8;color:#888888;padding:24p
     grid.innerHTML = RECS.map((r, i) => `
       <div class="rec-card${r.isTop ? ' top-pick' : ''} fade-in" style="animation-delay:${i * 0.07}s">
         <div class="rec-img ${r.gradient}">
+          ${VEH_SVG[r.cls] || VEH_SVG.car}
           <span class="match-badge">${r.match}% match</span>
           ${r.isTop ? '<span class="top-badge">Top Pick</span>' : ''}
         </div>
@@ -333,15 +343,13 @@ footer{background:#f7f7f7;border-top:1px solid #e8e8e8;color:#888888;padding:24p
           </div>
           <div style="display:flex;gap:8px;margin-top:12px">
             <a href="../auto-bid/index.html" style="flex:1;padding:8px;background:#111111;color:#fff;border-radius:var(--r);font-size:12px;font-weight:700;text-align:center;display:block">Auto Bid</a>
-            <a href="../bulk-bid/index.html" style="flex:1;padding:8px;background:var(--white);color:var(--blue-d);border:1.5px solid var(--blue-d);border-radius:var(--r);font-size:12px;font-weight:700;text-align:center;display:block">Bulk Add</a>
+            <a href="../bulk-bid/index.html" style="flex:1;padding:8px;background:var(--white);color:#111111;border:1.5px solid #e8e8e8;border-radius:var(--r);font-size:12px;font-weight:700;text-align:center;display:block">Bulk Add</a>
           </div>
         </div>
       </div>
     `).join('');
   }
 
-  // Auto-run on load for demo
-  setTimeout(runAI, 600);
 </script>
 </body>
 </html>

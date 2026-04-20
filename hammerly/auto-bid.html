@@ -46,21 +46,21 @@ input,select{font-family:'Barlow',sans-serif}
 .hdr-right{display:flex;align-items:center;gap:10px}
 .live-pill{background:#e53935;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;letter-spacing:1px;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
-.avatar{width:28px;height:28px;border-radius:50%;background:var(--blue-m);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700}
+.avatar{width:28px;height:28px;border-radius:50%;background:#111111;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700}
 
 /* ══ HERO ══ */
-.hero{background:linear-gradient(135deg,var(--blue-d) 0%,var(--blue-m) 100%);padding:28px 24px 24px;color:#fff}
+.hero{background:#f7f7f7;padding:28px 24px 24px;color:#111111;border-bottom:1px solid #e8e8e8}
 .hero h1{font-family:'Barlow Condensed',sans-serif;font-size:27px;font-weight:800;letter-spacing:.3px;margin-bottom:4px}
-.hero p{color:rgba(255,255,255,.7);font-size:13px;margin-bottom:16px}
+.hero p{color:#666666;font-size:13px;margin-bottom:16px}
 .hero-stats{display:flex;gap:28px;flex-wrap:wrap}
-.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#f0c040;display:block}
-.hero-stat-lbl{font-size:11px;color:rgba(255,255,255,.6);font-weight:500;letter-spacing:.3px}
+.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#111111;display:block}
+.hero-stat-lbl{font-size:11px;color:#888888;font-weight:500;letter-spacing:.3px}
 
 /* ══ FILTERS ══ */
 .filters{background:var(--white);border-bottom:1px solid var(--g200);padding:12px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .chip{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:3px;border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:600;color:var(--g600);cursor:pointer;transition:all .15s}
-.chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
-.chip.on{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+.chip:hover{border-color:#111111;color:#111111;background:#f0f0f0}
+.chip.on{background:#111111;color:#ffffff;border-color:#111111}
 .chip-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
 .filter-count{margin-left:auto;font-size:12px;color:var(--g500);font-weight:500}
 
@@ -70,7 +70,7 @@ input,select{font-family:'Barlow',sans-serif}
 /* ══ AUCTION CARD ══ */
 .ac{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,border-color .2s}
 .ac:hover{box-shadow:var(--shadow-md)}
-.ac.expanded{border-color:var(--blue-m);box-shadow:var(--shadow-md)}
+.ac.expanded{border-color:#333333;box-shadow:var(--shadow-md)}
 .ac-head{padding:14px 16px 12px;border-bottom:1px solid var(--g200);display:flex;align-items:flex-start;gap:12px;cursor:pointer;user-select:none}
 .ac-head:hover{background:var(--g100)}
 .ac-emoji{width:80px;height:52px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:#f7f7f7;padding:4px}
@@ -88,10 +88,10 @@ input,select{font-family:'Barlow',sans-serif}
 .ac-val{font-size:13px;font-weight:600;color:var(--g700)}
 .bid-box{background:var(--g100);border-radius:var(--r);padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .bid-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g400);margin-bottom:2px}
-.bid-current{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--blue-d)}
+.bid-current{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#111111}
 .bid-step{font-size:11px;font-weight:600;color:var(--g500);margin-top:1px}
-.ac-cta{width:100%;padding:9px 16px;border-radius:var(--r);background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s}
-.ac-cta:hover{background:var(--blue-m)}
+.ac-cta{width:100%;padding:9px 16px;border-radius:var(--r);background:#111111;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s}
+.ac-cta:hover{background:#333333}
 .ac-cta.st-active{background:var(--teal)}
 .ac-cta.st-active:hover{background:#0a8075}
 .ac-cta.st-paused{background:var(--amber)}
@@ -107,11 +107,11 @@ input,select{font-family:'Barlow',sans-serif}
 .mb-wrap{position:relative;flex:1}
 .mb-prefix{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--g400);pointer-events:none}
 .mb-inp{width:100%;padding:8px 12px 8px 28px;border:1.5px solid var(--g300);border-radius:var(--r);font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--g900);background:var(--white)}
-.mb-inp:focus{outline:none;border-color:var(--blue)}
+.mb-inp:focus{outline:none;border-color:#111111}
 .mb-inp.valid{border-color:var(--green)}
 .mb-inp.invalid{border-color:var(--red)}
 .info-btn{width:34px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);color:var(--g500);font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s}
-.info-btn:hover{border-color:var(--blue);color:var(--blue)}
+.info-btn:hover{border-color:#111111;color:#111111}
 .mb-hint{font-size:11px;font-weight:600;margin-bottom:10px}
 
 /* sliders */
@@ -123,16 +123,16 @@ input,select{font-family:'Barlow',sans-serif}
 .sl-val{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800}
 .sl-denom{font-size:11px;font-weight:500;color:var(--g400)}
 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;outline:none;cursor:pointer}
-input[type=range].blue-r{background:linear-gradient(to right,var(--purple) var(--fill,50%),var(--g200) var(--fill,50%))}
-input[type=range].amber-r{background:linear-gradient(to right,var(--blue) var(--fill,50%),var(--g200) var(--fill,50%))}
+input[type=range].blue-r{background:linear-gradient(to right,#111111 var(--fill,50%),var(--g200) var(--fill,50%))}
+input[type=range].amber-r{background:linear-gradient(to right,#555555 var(--fill,50%),var(--g200) var(--fill,50%))}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;border:2px solid var(--white);box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}
-input[type=range].blue-r::-webkit-slider-thumb{background:var(--purple)}
-input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
-.total-bar{background:var(--blue-l);border-radius:var(--r);padding:8px 10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+input[type=range].blue-r::-webkit-slider-thumb{background:#111111}
+input[type=range].amber-r::-webkit-slider-thumb{background:#555555}
+.total-bar{background:#f0f0f0;border-radius:var(--r);padding:8px 10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .total-bar.warn{background:var(--amber-l)}
-.total-bar-lbl{font-size:11px;font-weight:600;color:var(--blue-d)}
+.total-bar-lbl{font-size:11px;font-weight:600;color:#333333}
 .total-bar.warn .total-bar-lbl{color:var(--amber)}
-.total-bar-val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--blue-d)}
+.total-bar-val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#333333}
 .total-bar.warn .total-bar-val{color:var(--amber)}
 .enable-btn{width:100%;padding:10px;border-radius:var(--r);background:var(--teal);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
 .enable-btn:hover:not(:disabled){background:#0a8075}
@@ -170,8 +170,8 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .act-btn.resume:hover{background:var(--teal);color:#fff}
 .act-btn.stop{background:var(--red-l);color:var(--red);border-color:rgba(192,57,43,.3)}
 .act-btn.stop:hover{background:var(--red);color:#fff}
-.act-btn.manual{background:var(--blue-l);color:var(--blue);border-color:rgba(0,87,168,.3)}
-.act-btn.manual:hover:not(:disabled){background:var(--blue);color:#fff}
+.act-btn.manual{background:#f0f0f0;color:#444444;border-color:#cccccc}
+.act-btn.manual:hover:not(:disabled){background:#555555;color:#fff}
 .act-btn:disabled{opacity:.4;cursor:not-allowed}
 
 /* mini history */
@@ -180,14 +180,14 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .hist-row:last-child{border-bottom:none}
 .htag{font-size:9px;font-weight:700;padding:2px 5px;border-radius:2px;letter-spacing:.3px;width:48px;text-align:center;flex-shrink:0}
 .htag.auto{background:var(--purple-l);color:var(--purple)}
-.htag.manual{background:var(--blue-l);color:var(--blue)}
+.htag.manual{background:#f0f0f0;color:#555555}
 .htag.comp{background:var(--g200);color:var(--g600)}
 .htag.sys{background:var(--amber-l);color:var(--amber)}
 .htime{font-size:10px;color:var(--g400);width:38px;flex-shrink:0}
 .hdesc{flex:1;font-size:11px;color:var(--g700);font-weight:500}
 .hamt{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;flex-shrink:0}
 .hamt.auto{color:var(--purple)}
-.hamt.manual{color:var(--blue)}
+.hamt.manual{color:#555555}
 .hamt.comp{color:var(--g600)}
 
 /* ══ TOAST STACK ══ */
@@ -197,7 +197,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .toast.success{border-left-color:var(--green)}
 .toast.warning{border-left-color:var(--amber)}
 .toast.error{border-left-color:var(--red)}
-.toast.info{border-left-color:var(--blue)}
+.toast.info{border-left-color:#555555}
 .toast.auto-bid{border-left-color:var(--purple)}
 .t-icon{font-size:14px;flex-shrink:0;margin-top:1px}
 .t-body{flex:1}
@@ -217,7 +217,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .modal-close:hover{background:var(--g200)}
 .modal-body{padding:16px 20px}
 .rule-row{display:flex;gap:11px;margin-bottom:13px}
-.rule-num{width:24px;height:24px;border-radius:50%;background:var(--blue-l);color:var(--blue);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rule-num{width:24px;height:24px;border-radius:50%;background:#f0f0f0;color:#555555;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .rule-text{font-size:13px;color:var(--g700);line-height:1.55}
 .rule-text strong{color:var(--g900)}
 .rule-note{background:var(--amber-l);border:1px solid rgba(217,119,6,.25);border-radius:var(--r);padding:10px 12px;margin-top:10px;font-size:12px;color:var(--amber);font-weight:600;line-height:1.5}
@@ -245,7 +245,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 /* bidder label row */
 .bidder-name-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .bidder-name{font-size:13px;font-weight:800;color:var(--g900);display:flex;align-items:center;gap:6px}
-.bidder-you{font-size:9px;font-weight:700;padding:2px 5px;border-radius:2px;background:var(--blue-l);color:var(--blue);vertical-align:middle}
+.bidder-you{font-size:9px;font-weight:700;padding:2px 5px;border-radius:2px;background:#f0f0f0;color:#555555;vertical-align:middle}
 .bid-status-badge{font-size:10px;font-weight:800;padding:3px 8px;border-radius:2px;letter-spacing:.5px;white-space:nowrap}
 .bid-status-badge.winning{background:#d1fae5;color:#065f46}
 .bid-status-badge.outbid{background:var(--red-l);color:var(--red)}
@@ -258,7 +258,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .bidder-amount.outbid{color:var(--red)}
 .bidder-amount.leading{color:var(--red)}
 .bidder-amount.idle{color:var(--g400)}
-.bidder-amount.you{color:var(--blue-d)}
+.bidder-amount.you{color:#333333}
 .bidder-sub{font-size:10px;font-weight:600;color:var(--g400);margin-bottom:10px}
 
 /* avinash stats */
@@ -277,8 +277,8 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .bact.resume:hover{background:var(--teal);color:#fff}
 .bact.stop{background:var(--red-l);color:var(--red);border-color:rgba(192,57,43,.25)}
 .bact.stop:hover{background:var(--red);color:#fff}
-.bact.manual{background:var(--blue-l);color:var(--blue);border-color:rgba(0,87,168,.25)}
-.bact.manual:hover:not(:disabled){background:var(--blue);color:#fff}
+.bact.manual{background:#f0f0f0;color:#444444;border-color:#cccccc}
+.bact.manual:hover:not(:disabled){background:#555555;color:#fff}
 .bact:disabled{opacity:.35;cursor:not-allowed}
 
 /* rival card */
@@ -293,7 +293,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .sess-stats{display:flex;gap:14px;margin-bottom:12px}
 .sess-bid-row{background:var(--g100);border-radius:var(--r);padding:7px 10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .sess-bid-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--g400)}
-.sess-bid-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--blue-d)}
+.sess-bid-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#333333}
 .sstat-num{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;display:block}
 .sstat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--g400)}
 .hist-table{background:var(--white);border:1px solid var(--g200);border-radius:var(--rm);overflow:hidden}
@@ -314,19 +314,19 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 @keyframes msg-in{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 .sim-msg.comp{background:var(--g100)}
 .sim-msg.you-auto{background:var(--purple-l)}
-.sim-msg.you-manual{background:var(--blue-l)}
+.sim-msg.you-manual{background:#f0f0f0}
 .sim-msg.system{background:var(--amber-l)}
 .sim-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px;letter-spacing:.3px;width:52px;text-align:center;flex-shrink:0}
 .sim-tag.comp{background:var(--g200);color:var(--g600)}
 .sim-tag.you-auto{background:var(--purple-l);color:var(--purple);border:1px solid rgba(124,58,237,.25)}
-.sim-tag.you-manual{background:var(--blue-l);color:var(--blue);border:1px solid rgba(0,87,168,.25)}
+.sim-tag.you-manual{background:#f0f0f0;color:#555555;border:1px solid #dddddd}
 .sim-tag.system{background:var(--amber-l);color:var(--amber);border:1px solid rgba(217,119,6,.25)}
 .sim-t{font-size:10px;color:var(--g400);font-weight:500;width:40px;flex-shrink:0}
 .sim-text{flex:1;font-size:12px;color:var(--g700);font-weight:500}
 .sim-amt{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;flex-shrink:0}
 .sim-amt.comp{color:var(--g700)}
 .sim-amt.you-auto{color:var(--purple)}
-.sim-amt.you-manual{color:var(--blue)}
+.sim-amt.you-manual{color:#555555}
 .sim-footer{padding:9px 14px;border-top:1px solid var(--g200);background:var(--g100);display:flex;justify-content:space-between;flex-shrink:0}
 .sim-footer-item{font-size:11px;color:var(--g500);font-weight:600}
 .sim-ctrl-card{background:var(--white);border:1.5px solid var(--g200);border-radius:var(--rm);overflow:hidden}
@@ -336,11 +336,11 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .sim-ctrl-body{padding:14px 16px}
 .field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g500);display:block;margin-bottom:5px}
 .vehicle-sel{width:100%;padding:8px 10px;border:1.5px solid var(--g300);border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;color:var(--g700);background:var(--white);margin-bottom:12px}
-.vehicle-sel:focus{outline:none;border-color:var(--blue)}
+.vehicle-sel:focus{outline:none;border-color:#111111}
 .speed-row{display:flex;gap:6px;margin-bottom:12px}
 .speed-btn{flex:1;padding:6px 4px;border-radius:var(--r);border:1.5px solid var(--g300);background:var(--white);font-size:12px;font-weight:700;color:var(--g600);transition:all .15s}
-.speed-btn.on{border-color:var(--blue);background:var(--blue-l);color:var(--blue)}
-.speed-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.speed-btn.on{border-color:#111111;background:#111111;color:#fff}
+.speed-btn:hover:not(:disabled){border-color:#111111;color:#111111}
 .speed-btn:disabled{opacity:.5;cursor:not-allowed}
 .sim-info-box{background:var(--g100);border-radius:var(--r);padding:10px 11px;margin-bottom:12px}
 .sim-info-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
@@ -351,8 +351,8 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .sim-start-btn:hover{background:#0a8075}
 .sim-start-btn.stop-mode{background:var(--red)}
 .sim-start-btn.stop-mode:hover{background:#a83020}
-.sim-manual-btn{width:100%;padding:8px;border-radius:var(--r);border:1.5px solid var(--blue);background:var(--blue-l);color:var(--blue);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px;transition:all .15s}
-.sim-manual-btn:hover:not(:disabled){background:var(--blue);color:#fff}
+.sim-manual-btn{width:100%;padding:8px;border-radius:var(--r);border:1.5px solid #555555;background:#f5f5f5;color:#444444;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px;transition:all .15s}
+.sim-manual-btn:hover:not(:disabled){background:#555555;color:#fff}
 .sim-manual-btn:disabled{opacity:.4;cursor:not-allowed}
 .sim-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .sstat{background:var(--g100);border-radius:var(--r);padding:8px 10px;text-align:center}
@@ -375,7 +375,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--blue)}
 .mode-tabs{display:flex;border:1.5px solid var(--g300);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
 .mode-tab{flex:1;padding:8px 10px;font-size:12px;font-weight:700;background:var(--white);color:var(--g500);border:none;transition:all .15s;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
 .mode-tab:first-child{border-right:1.5px solid var(--g300)}
-.mode-tab.auto.on{background:var(--blue-l);color:var(--blue)}
+.mode-tab.auto.on{background:#111111;color:#fff}
 .mode-tab.open.on{background:var(--green-l);color:var(--green)}
 .ob-info-box{background:var(--g100);border-radius:var(--r);padding:10px 12px;margin-bottom:12px}
 .ob-info-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0}
@@ -664,7 +664,7 @@ function BidSetupPanel({vehicle, session, onUpdate, onEnable, onShowInfo}) {
               <div className="sl-sub">You place these yourself</div>
             </div>
             <div>
-              <span className="sl-val" style={{color:'var(--blue)'}}>{session.manualReserve}</span>
+              <span className="sl-val" style={{color:'#444444'}}>{session.manualReserve}</span>
               <span className="sl-denom"> / {MAX_TOTAL - session.autoPool}</span>
             </div>
           </div>
@@ -712,7 +712,7 @@ function OpenBidSetupPanel({vehicle, session, onUpdate, onStartOpenBid}) {
         </div>
         <div className="ob-info-row">
           <span className="ob-info-lbl">Bid Increment</span>
-          <span className="ob-info-val" style={{color:'var(--blue)',fontSize:'12px'}}>{stepLabel}</span>
+          <span className="ob-info-val" style={{color:'#444444',fontSize:'12px'}}>{stepLabel}</span>
         </div>
       </div>
 
@@ -773,7 +773,7 @@ function OpenBidActivePanel({vehicle, session, onPlaceBid, onStop}) {
       <div style={{background:'var(--g100)',borderRadius:'var(--r)',padding:'10px 12px',marginBottom:'10px',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
         <div>
           <div style={{fontSize:'10px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.5px',color:'var(--g400)',marginBottom:'2px'}}>Your Bid</div>
-          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'20px',fontWeight:800,color:'var(--blue-d)'}}>{fmt(session.avinashBid)}</div>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'20px',fontWeight:800,color:'#333333'}}>{fmt(session.avinashBid)}</div>
         </div>
         <div style={{textAlign:'right'}}>
           <div style={{fontSize:'10px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.5px',color:'var(--g400)',marginBottom:'2px'}}>Next Bid</div>
@@ -864,8 +864,8 @@ function BidActivePanel({vehicle, session, onPause, onResume, onStop, onManualBi
           <div className="ucard-lbl" style={{color:'var(--purple)'}}>Auto</div>
         </div>
         <div className="ucard">
-          <div><span className="ucard-num" style={{color:'var(--blue)'}}>{session.manualBidsUsed}</span><span className="ucard-denom">/{session.manualReserve}</span></div>
-          <div className="ucard-lbl" style={{color:'var(--blue)'}}>Manual</div>
+          <div><span className="ucard-num" style={{color:'#444444'}}>{session.manualBidsUsed}</span><span className="ucard-denom">/{session.manualReserve}</span></div>
+          <div className="ucard-lbl" style={{color:'#444444'}}>Manual</div>
         </div>
         <div className="ucard">
           <div><span className="ucard-num" style={{color:'var(--g700)'}}>{remaining}</span><span className="ucard-denom">/{totalCap}</span></div>
@@ -876,7 +876,7 @@ function BidActivePanel({vehicle, session, onPause, onResume, onStop, onManualBi
       {/* Current bid row — always show user's own bid; highest bid is sealed */}
       <div style={{background:'var(--g100)',borderRadius:'var(--r)',padding:'8px 10px',marginBottom:'10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
         <span style={{fontSize:'11px',color:'var(--g500)',fontWeight:600}}>Your bid</span>
-        <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'17px',fontWeight:800,color:'var(--blue-d)'}}>{fmt(session.avinashBid)}</span>
+        <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:'17px',fontWeight:800,color:'#333333'}}>{fmt(session.avinashBid)}</span>
       </div>
       {/* Highest bid sealed notice */}
       <div style={{background:'var(--g200)',borderRadius:'var(--r)',padding:'6px 10px',marginBottom:'10px',display:'flex',alignItems:'center',gap:'6px',fontSize:'11px',color:'var(--g500)',fontWeight:600}}>
@@ -1025,8 +1025,8 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
     setTimeout(() => setFiringId(null), 450);
   };
 
-  const tagBg   = t => t==='auto'?'var(--purple-l)':t==='manual'?'var(--blue-l)':t==='comp'?'#fde8e8':'var(--amber-l)';
-  const tagColor = t => t==='auto'?'var(--purple)':t==='manual'?'var(--blue)':t==='comp'?'var(--red)':'var(--amber)';
+  const tagBg   = t => t==='auto'?'var(--purple-l)':t==='manual'?'#f0f0f0':t==='comp'?'#fde8e8':'var(--amber-l)';
+  const tagColor = t => t==='auto'?'var(--purple)':t==='manual'?'#555555':t==='comp'?'var(--red)':'var(--amber)';
   const tagLabel = t => t==='auto'?'AUTO':t==='manual'?'MANUAL':t==='comp'?'NIRAV':'SYS';
 
   return (
@@ -1104,7 +1104,7 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                       <span className="bstat-l">Bids Placed</span>
                     </div>
                     <div className="bstat">
-                      <span className="bstat-n" style={{color:'var(--blue)',fontSize:'12px'}}>{fmtShort(v.step)}</span>
+                      <span className="bstat-n" style={{color:'#444444',fontSize:'12px'}}>{fmtShort(v.step)}</span>
                       <span className="bstat-l">Per Bid</span>
                     </div>
                     <div className="bstat">
@@ -1119,7 +1119,7 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                       <span className="bstat-l">Auto</span>
                     </div>
                     <div className="bstat">
-                      <span className="bstat-n" style={{color:'var(--blue)'}}>{s.manualBidsUsed}<span style={{fontSize:'11px',color:'var(--g400)',fontWeight:400}}>/{s.manualReserve}</span></span>
+                      <span className="bstat-n" style={{color:'#444444'}}>{s.manualBidsUsed}<span style={{fontSize:'11px',color:'var(--g400)',fontWeight:400}}>/{s.manualReserve}</span></span>
                       <span className="bstat-l">Manual</span>
                     </div>
                     <div className="bstat">
@@ -1434,9 +1434,9 @@ function SimulatorTab({addToast}) {
         </div>
         {sess && (
           <div className="sim-footer">
-            <span className="sim-footer-item">Bid: <strong style={{color:'var(--blue-d)',fontFamily:"'Barlow Condensed',sans-serif"}}>{fmt(sess.currentBid)}</strong></span>
+            <span className="sim-footer-item">Bid: <strong style={{color:'#333333',fontFamily:"'Barlow Condensed',sans-serif"}}>{fmt(sess.currentBid)}</strong></span>
             <span className="sim-footer-item" style={{color:'var(--purple)'}}>Auto: {sess.autoBidsUsed}/{sess.autoPool}</span>
-            <span className="sim-footer-item" style={{color:'var(--blue)'}}>Manual: {sess.manualBidsUsed}/{sess.manualReserve}</span>
+            <span className="sim-footer-item" style={{color:'#555555'}}>Manual: {sess.manualBidsUsed}/{sess.manualReserve}</span>
             <span className="sim-footer-item">
               <span style={{width:8,height:8,borderRadius:'50%',display:'inline-block',marginRight:4,background:sess.status==='active'?'var(--teal)':sess.status==='paused'?'var(--amber)':'var(--red)'}}/>
               {sess.status.toUpperCase()}
@@ -1478,7 +1478,7 @@ function SimulatorTab({addToast}) {
               </div>
               <div className="sim-info-row">
                 <span className="sim-info-lbl">Manual Left</span>
-                <span className="sim-info-val" style={{color:'var(--blue)'}}>{sess.manualReserve - sess.manualBidsUsed}</span>
+                <span className="sim-info-val" style={{color:'#555555'}}>{sess.manualReserve - sess.manualBidsUsed}</span>
               </div>
             </div>
           )}
@@ -1502,7 +1502,7 @@ function SimulatorTab({addToast}) {
               <div className="sstat-l">Auto Bids</div>
             </div>
             <div className="sstat">
-              <div className="sstat-n" style={{color:'var(--blue)'}}>{stats.manual}</div>
+              <div className="sstat-n" style={{color:'#555555'}}>{stats.manual}</div>
               <div className="sstat-l">Manual Bids</div>
             </div>
             <div className="sstat">

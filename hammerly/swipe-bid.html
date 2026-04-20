@@ -1,702 +1,823 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Hammerly — Swipe Bid</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        base: '#121212',
-                        surface: '#181818',
-                        elevated: '#282828',
-                        highlight: '#3E3E3E',
-                        brand: '#1DB954',
-                        brandHover: '#1ed760',
-                        urgent: '#f59e0b',
-                        danger: '#ef4444'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', '-apple-system', 'sans-serif'],
-                    }
-                }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Hammerly — Swipe Bid</title>
+  <meta name="description" content="Hammerly gesture-based bidding — swipe up to place your bid instantly." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Barlow', 'sans-serif'], condensed: ['Barlow Condensed', 'sans-serif'] },
+          colors: {
+            copart: {
+              navy:    '#111111',
+              navydk:  '#333333',
+              blue:    '#555555',
+              green:   '#1a8a3c',
+              greenlt: '#22a34a',
+              red:     '#C62828',
+              gray:    '#f7f7f7',
+              border:  '#e8e8e8',
+              muted:   '#888888',
+              text:    '#111111',
             }
+          }
         }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
-        body { background-color: #121212; color: #fff; overflow: hidden; font-family: 'Inter', sans-serif; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
-        * { user-select: none; -webkit-user-select: none; }
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+      }
+    };
+  </script>
 
-        /* Utility for dragging */
-        .touch-none { touch-action: none !important; }
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.18.0/dist/framer-motion.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-        /* Surge mode pulse */
-        @keyframes surgePulse {
-            0% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(29, 185, 84, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0); }
-        }
-        .surge-active { animation: surgePulse 1s infinite; }
-    </style>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    html, body, #root { height: 100%; margin: 0; padding: 0; }
+    body { font-family: 'Barlow', sans-serif; background: #f7f7f7; overflow: hidden; }
+    ::-webkit-scrollbar { width: 0; height: 0; }
 
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script type="importmap">
-    {
-        "imports": {
-            "react": "https://esm.sh/react@18.2.0",
-            "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-            "framer-motion": "https://esm.sh/framer-motion@10.16.4?deps=react@18.2.0",
-            "zustand": "https://esm.sh/zustand@4.4.1?deps=react@18.2.0",
-            "@use-gesture/react": "https://esm.sh/@use-gesture/react@10.3.0?deps=react@18.2.0",
-            "lucide-react": "https://esm.sh/lucide-react@0.292.0?deps=react@18.2.0"
-        }
+    /* Swipe track glow */
+    .track-active { box-shadow: 0 0 0 3px rgba(0,0,0,0.18); }
+    .track-success { box-shadow: 0 0 0 3px rgba(0,0,0,0.30); }
+
+    /* Shimmer thumb */
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
     }
-    </script>
+    .shimmer-blue {
+      background: linear-gradient(90deg, #111111 20%, #444444 50%, #111111 80%);
+      background-size: 200% auto;
+      animation: shimmer 2s linear infinite;
+    }
+
+    /* Pulse ring */
+    @keyframes pulseRing {
+      0%   { transform: scale(1);   opacity: 0.5; }
+      100% { transform: scale(1.9); opacity: 0;   }
+    }
+    .pulse-ring { animation: pulseRing 2s ease-out infinite; }
+
+    /* Checkmark */
+    @keyframes drawCheck {
+      from { stroke-dashoffset: 50; }
+      to   { stroke-dashoffset: 0;  }
+    }
+    .check-path {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawCheck 0.4s ease-in-out 0.05s forwards;
+    }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { animation: spin 0.75s linear infinite; }
+
+    /* Ripple */
+    @keyframes ripple {
+      0%   { transform: scale(0); opacity: 0.5; }
+      100% { transform: scale(5); opacity: 0; }
+    }
+    .ripple-anim { animation: ripple 0.65s ease-out forwards; }
+
+    /* Float particles */
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-90px) scale(0.2); opacity: 0; }
+    }
+    .float-dot { animation: floatUp 1s ease-out forwards; }
+
+    /* Dot Pulse */
+    @keyframes dotPulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      30% { transform: scale(1.6); opacity: 1; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+    .dot-success { animation: dotPulse 0.5s ease-out forwards; }
+    /* Removed transition from .grid-dot to prevent fighting with react state making it jerky */
+
+    /* Chip selected border anim */
+    .chip-selected {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 2px #111111;
+    }
+
+    /* Toggle switch */
+    .toggle-track {
+      transition: background 0.22s ease;
+    }
+    .toggle-thumb {
+      transition: transform 0.22s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* Live dot */
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.8); }
+    }
+    .live-dot { animation: livePulse 1.1s ease-in-out infinite; }
+
+    /* Bottom panel shadow */
+    .bid-panel { box-shadow: 0 -4px 24px rgba(0,0,0,0.10); }
+
+    @keyframes slideInUp {
+      from { transform: translateY(8px); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+    .slide-in { animation: slideInUp 0.22s ease-out forwards; }
+  </style>
 </head>
-<body class="bg-base text-white h-screen w-screen overflow-hidden flex flex-col">
-    <div id="root" class="h-full w-full"></div>
+<body>
+<div id="root"></div>
 
-    <script type="text/babel" data-type="module">
-        import React, { useState, useEffect, useRef, useMemo } from 'react';
-        import { createRoot } from 'react-dom/client';
-        import { motion, AnimatePresence, useAnimation, useMotionValue, useTransform } from 'framer-motion';
-        import { useDrag } from '@use-gesture/react';
-        import { create } from 'zustand';
-        import { Home, Search, Library, Heart, X, Zap, ArrowUp, ChevronDown, ChevronUp, Clock, ShieldAlert, SkipForward, SkipBack, PlayCircle, Loader2, Car } from 'lucide-react';
+<script type="text/babel" data-presets="react">
+  const { useState, useRef, useCallback, useEffect } = React;
+  const { motion, AnimatePresence } = window.Motion;
 
-        // --- MOCK DATA ---
-        const CAR_IMAGES = [
-            'https://images.unsplash.com/photo-1560958089-b8a1929cea89?q=80&w=800&auto=format&fit=crop', // Tesla
-            'https://images.unsplash.com/photo-1584345604476-8cc5e3e505ad?q=80&w=800&auto=format&fit=crop', // Mustang
-            'https://images.unsplash.com/photo-1503376710356-6e8690e8ba3b?q=80&w=800&auto=format&fit=crop', // Porsche
-            'https://images.unsplash.com/photo-1692257256561-6dff61cbdb19?q=80&w=800&auto=format&fit=crop', // Rivian
-            'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=800&auto=format&fit=crop', // Jeep
-            'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=800&auto=format&fit=crop', // Corvette
-            'https://images.unsplash.com/photo-1616423640778-28d1b53229bd?q=80&w=800&auto=format&fit=crop', // Tacoma
-            'https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?q=80&w=800&auto=format&fit=crop'  // G-Wagon
-        ];
+  /* ── CONSTANTS ── */
+  const TRACK_HEIGHT      = 220;   // shorter track = less distance to swipe
+  const THUMB_SIZE        = 58;
+  const MAX_DRAG          = TRACK_HEIGHT - THUMB_SIZE - 16; // ~146px effective drag (8px padding top/bottom)
+  const SUCCESS_THRESHOLD = 0.65;  // trigger at 65% (was 80%) — snappier
+  const RESISTANCE        = 0.88;  // near-linear movement (was 0.70) — feels direct
+  const API_DELAY         = 900;   // faster mock API (was 1800ms)
+  const FAIL_RATE         = 0.12;
 
-        const generateMocks = (count=20) => {
-            return Array.from({length: count}).map((_, i) => ({
-                id: `lot-${1000 + i}`,
-                title: `${[2019, 2020, 2021, 2022, 2023][Math.floor(Math.random()*5)]} ${['Tesla Model 3', 'Ford Mustang', 'Porsche 911', 'Rivian R1T', 'Jeep Wrangler', 'Chevy Corvette', 'Toyota Tacoma', 'MB G-Class'][i%8]}`,
-                img: CAR_IMAGES[i%8],
-                loc: ['CA-LOS ANGELES','TX-DALLAS','FL-MIAMI','NY-NEWBURGH'][Math.floor(Math.random()*4)],
-                damage: ['Front End', 'Rear End', 'Water/Flood', 'Hail', 'Normal Wear'][Math.floor(Math.random()*5)],
-                odo: Math.floor(Math.random() * 80000 + 1000) + ' mi',
-                vin: '1G1RC6E4XG' + Math.floor(Math.random()*1000000),
-                basePrice: Math.floor(Math.random() * 50000) + 5000,
-                currentBid: 0,
-                timeLeft: Math.floor(Math.random() * 600) + 30, // seconds
-                bids: []
-            })).map(c => ({...c, currentBid: c.basePrice}));
-        };
+  const BID_CHIPS = [1000, 2000, 3000]; // ₹ increment options
+  const BASE_CURRENT_BID = 64500;       // starting current highest bid
 
-        // --- STORE ---
-        const initialVehicles = generateMocks(24);
-        const useStore = create((set, get) => ({
-            vehicles: initialVehicles,
-            activeLotId: initialVehicles[0].id,
-            isSheetExpanded: false,
-            watchlist: [],
-            dismissed: [],
-            toasts: [],
-            surgeMode: false,
-            view: 'home',
+  /* ── MOCK API ── */
+  const mockPlaceBid = (amount) =>
+    new Promise((res, rej) =>
+      setTimeout(() =>
+        Math.random() < FAIL_RATE ? rej(new Error('Connection timeout')) : res({ amount }),
+        API_DELAY));
 
-            setView: (view) => set({ view, isSheetExpanded: false }),
-            setActiveLot: (id) => set({ activeLotId: id }),
-            setSheetExpanded: (val) => set({ isSheetExpanded: val }),
-            addToWatchlist: (id) => {
-                const { watchlist, vehicles } = get();
-                if(!watchlist.find(v => v.id === id)) {
-                    const v = vehicles.find(v => v.id === id);
-                    if(v) set({ watchlist: [v, ...watchlist] });
-                    get().addToast(`Added ${v.title} to Watchlist`, 'success');
-                }
-            },
-            dismissLot: (id) => set(state => ({ dismissed: [...state.dismissed, id] })),
+  const vibrate = (p) => { try { navigator.vibrate?.(p); } catch {} };
 
-            placeBid: (id, amount) => set(state => {
-                const vehicles = state.vehicles.map(v => {
-                    if(v.id === id) {
-                        return {
-                            ...v,
-                            currentBid: v.currentBid + amount,
-                            bids: [{ amount: v.currentBid + amount, time: new Date(), by: 'YOU' }, ...v.bids]
-                        };
+  /* ── MICROCOPY ── */
+  const getMicrocopy = (state, progress, amt) => {
+    if (state === 'loading') return 'Processing bid…';
+    if (state === 'success') return 'Bid Placed Successfully!';
+    if (state === 'error')   return 'Failed – Tap to retry';
+    if (state === 'swiping') {
+      if (progress >= SUCCESS_THRESHOLD) return 'Release to confirm';
+      if (progress >= 0.35)              return 'Almost there…';
+      return 'Keep swiping up…';
+    }
+    return `Swipe up to bid  +₹${amt.toLocaleString('en-IN')}`;
+  };
+
+  /* ══════════════════════════════════════
+     ICONS
+  ══════════════════════════════════════ */
+  const IconChevronLeft = () => (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M11 4l-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+  const IconShare = () => (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M13 6l-4-4-4 4M9 2v9M4 13h10a1 1 0 001-1V9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+  const IconHeart = () => (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M9 15s-6-4.5-6-8.5A4 4 0 019 3.7 4 4 0 0115 6.5c0 4-6 8.5-6 8.5z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+  const IconArrowUp = () => (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <path d="M11 17V5M11 5l-5 5M11 5l5 5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+  const IconCheck = () => (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <path className="check-path" d="M6 14l5.5 5.5L22 9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+  const IconSpinner = () => (
+    <svg className="spinner" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.25)" strokeWidth="3"/>
+      <path d="M12 3 A9 9 0 0 1 21 12" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+    </svg>
+  );
+  const IconAlert = () => (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <path d="M11 7v5M11 15h.01" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
+    </svg>
+  );
+
+  /* ══════════════════════════════════════
+     BID TOAST  – animated list item
+  ══════════════════════════════════════ */
+  function BidToast({ toast }) {
+    const isError = toast.isError;
+    return (
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 15, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.15 } }}
+        className={`rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-lg pointer-events-auto
+          ${isError ? 'bg-red-600' : 'bg-copart-green'}`}
+      >
+        <span className="text-lg">{isError ? '⚠️' : '✅'}</span>
+        <div className="flex-1">
+          <p className="text-white text-xs font-bold leading-tight">
+            {isError ? 'Bid Failed' : 'Bid Placed!'}
+          </p>
+          <p className="text-white/90 text-[10px] leading-tight">
+            {isError
+              ? 'Connection error – please retry'
+              : `₹${toast.amount.toLocaleString('en-IN')} · Highest bidder`}
+          </p>
+        </div>
+      </motion.div>
+    );
+  }
+
+  /* ══════════════════════════════════════
+     COUNTDOWN
+  ══════════════════════════════════════ */
+  function Countdown() {
+    const [s, setS] = useState(8 * 60 + 23);
+    useEffect(() => {
+      const id = setInterval(() => setS(v => Math.max(0, v - 1)), 1000);
+      return () => clearInterval(id);
+    }, []);
+    const mm = String(Math.floor(s / 60)).padStart(2, '0');
+    const ss = String(s % 60).padStart(2, '0');
+    return <span className="tabular-nums font-semibold" style={{color:'#111111'}}>{mm}:{ss}</span>;
+  }
+
+  /* ══════════════════════════════════════
+     TOGGLE SWITCH  (Swipe ↔ Tap mode)
+  ══════════════════════════════════════ */
+  function ModeToggle({ mode, onChange }) {
+    const isSwipe = mode === 'swipe';
+    return (
+      <div className="flex items-center gap-2.5">
+        <span className={`text-xs font-semibold ${!isSwipe ? 'text-copart-blue' : 'text-copart-muted'}`}>Tap</span>
+        <button
+          onClick={() => onChange(isSwipe ? 'tap' : 'swipe')}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full toggle-track border ${isSwipe ? 'bg-copart-navy border-copart-navy' : 'bg-copart-border border-copart-border'}`}
+          aria-label="Toggle bid mode"
+          id="mode-toggle"
+        >
+          <span
+            className={`inline-block h-4 w-4 rounded-full bg-white shadow-sm toggle-thumb ${isSwipe ? 'translate-x-6' : 'translate-x-1'}`}
+          />
+        </button>
+        <span className={`text-xs font-semibold ${isSwipe ? 'text-copart-blue' : 'text-copart-muted'}`}>Swipe</span>
+      </div>
+    );
+  }
+
+  /* ══════════════════════════════════════
+     PRICING CHIPS
+  ══════════════════════════════════════ */
+  function PricingChips({ selected, onSelect, disabled }) {
+    return (
+      <div className="flex gap-2 justify-center">
+        {BID_CHIPS.map(amt => {
+          const active = selected === amt;
+          return (
+            <button
+              key={amt}
+              onClick={() => !disabled && onSelect(amt)}
+              id={`chip-${amt}`}
+              className={[
+                'px-4 py-2 rounded-lg text-sm font-bold border transition-all duration-150',
+                active
+                  ? 'bg-copart-navy text-white border-copart-navy chip-selected'
+                  : 'bg-white text-copart-navy border-copart-border hover:border-copart-navy',
+                disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer active:scale-95',
+              ].join(' ')}
+            >
+              +₹{(amt / 1000).toFixed(0)}K
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
+  /* ══════════════════════════════════════
+     SWIPE TRACK
+     loading state removed — thumb only shows: idle → swiping → success → error
+  ══════════════════════════════════════ */
+  function SwipeTrack({ state, progress, bidAmt, onPointerDown, dots }) {
+    const isSuccess = state === 'success';
+    const isLoading = state === 'loading';
+    const isError   = state === 'error';
+    const atThresh  = progress >= SUCCESS_THRESHOLD;
+
+    const microcopy = getMicrocopy(state, progress, bidAmt);
+    const fillPct   = progress * 100;
+    const thumbBot  = progress * MAX_DRAG;
+
+    const trackCls = [
+      'relative rounded-3xl border-2 overflow-hidden cursor-pointer select-none transition-all duration-300 w-full',
+      isSuccess ? 'border-gray-300 bg-gray-50 track-success'
+      : atThresh ? 'border-gray-400 bg-gray-50 track-active'
+      : 'border-gray-200 bg-gray-50',
+    ].join(' ');
+
+    const thumbBg = isSuccess  ? 'bg-gradient-to-r from-copart-navy to-copart-blue text-white'
+      : isError    ? 'bg-red-600 text-white'
+      : atThresh   ? 'bg-copart-navy text-white'
+      : 'bg-copart-navy text-white';
+
+    return (
+      <div className="flex flex-col items-center gap-3 w-full px-2">
+        {/* Microcopy (wrapped in fixed height to prevent layout shift) */}
+        <div className="h-4 flex items-end justify-center w-full">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={microcopy}
+              initial={{ opacity: 0, y: 3 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -3 }}
+              transition={{ duration: 0.18 }}
+              className={[
+                'text-xs font-semibold text-center tracking-wide',
+                isSuccess  ? 'text-copart-navy'
+                : isError  ? 'text-red-600'
+                : isLoading? 'text-copart-muted'
+                : atThresh ? 'text-copart-blue'
+                : 'text-copart-muted',
+              ].join(' ')}
+            >
+              {microcopy}
+            </motion.p>
+          </AnimatePresence>
+        </div>
+
+        {/* Track */}
+        <div
+          id="swipe-track"
+          className={trackCls}
+          style={{ height: TRACK_HEIGHT }}
+          onPointerDown={onPointerDown}
+          onTouchStart={(e) => { e.preventDefault(); onPointerDown(e.touches[0]); }}
+        >
+          {/* Dotted Grid Background */}
+          <div className="absolute inset-0 px-2 py-4 flex flex-col justify-between pointer-events-none z-0">
+            {Array.from({ length: 9 }).map((_, r) => {
+              const size = 6; // all dots have the same static base size
+
+              return (
+                <div key={r} className="flex justify-between w-full items-center" style={{ height: size }}>
+                  {Array.from({ length: 11 }).map((_, c) => {
+                    // uniform scale and opacity mapping strictly to global progress
+                    let scale = 1 + (progress * 1.5);
+                    let opacity = 0.2 + (progress * 0.5);
+                    let dotClass = 'grid-dot';
+                    let delay = 0;
+
+                    if (isSuccess) {
+                      dotClass += ' dot-success';
+                      delay = (r * 0.02) + (c * 0.01);
                     }
-                    return v;
-                });
-                return { vehicles };
-            }),
 
-            addToast: (msg, type='info') => {
-                const id = Date.now();
-                set(state => ({ toasts: [...state.toasts, {id, msg, type}] }));
-                setTimeout(() => {
-                    set(state => ({ toasts: state.toasts.filter(t => t.id !== id) }));
-                }, 3000);
-            },
-
-            // Navigation Helpers
-            nextLot: () => {
-                const { activeLotId, vehicles } = get();
-                if(!activeLotId) return;
-                const idx = vehicles.findIndex(v => v.id === activeLotId);
-                if (idx < vehicles.length - 1) set({ activeLotId: vehicles[idx+1].id });
-            },
-            prevLot: () => {
-                const { activeLotId, vehicles } = get();
-                if(!activeLotId) return;
-                const idx = vehicles.findIndex(v => v.id === activeLotId);
-                if (idx > 0) set({ activeLotId: vehicles[idx-1].id });
-            },
-
-            tick: () => set(state => {
-                let surgeDetected = false;
-                const updated = state.vehicles.map(v => {
-                    if (v.timeLeft <= 0) return v;
-                    let newTime = v.timeLeft - 1;
-                    let newBid = v.currentBid;
-                    let newBids = v.bids;
-
-                    if(Math.random() < 0.05 || (newTime < 60 && Math.random() < 0.15)) {
-                        newBid += [50, 100, 200][Math.floor(Math.random()*3)];
-                        newBids = [{ amount: newBid, time: new Date(), by: 'Dealer_' + Math.floor(Math.random()*1000) }, ...newBids];
-                        if(state.activeLotId === v.id) surgeDetected = true;
-                    }
-
-                    return { ...v, timeLeft: newTime, currentBid: newBid, bids: newBids };
-                });
-
-                return { vehicles: updated, surgeMode: surgeDetected };
-            })
-        }));
-
-        window.store = useStore;
-
-        // --- COMPONENTS ---
-
-        // App Wrapper
-        const App = () => {
-            useEffect(() => {
-                const timer = setInterval(() => useStore.getState().tick(), 1000);
-
-                // Keyboard Shortcuts
-                const handleKeyDown = (e) => {
-                    // Ignore if typing in input
-                    if(e.target.tagName === 'INPUT') return;
-
-                    const state = useStore.getState();
-                    if(e.code === 'Space') {
-                        e.preventDefault();
-                        if(state.activeLotId) {
-                            state.placeBid(state.activeLotId, 100);
-                            state.addToast('Bid placed (Shortcut)!', 'success');
-                        }
-                    } else if (e.code === 'ArrowRight') {
-                        state.nextLot();
-                    } else if (e.key === 'l' || e.key === 'L') {
-                        if(state.activeLotId) {
-                            state.addToWatchlist(state.activeLotId);
-                        }
-                    }
-                };
-                window.addEventListener('keydown', handleKeyDown);
-                return () => {
-                    clearInterval(timer);
-                    window.removeEventListener('keydown', handleKeyDown);
-                };
-            }, []);
-
-            return (
-                <div className="h-full w-full flex bg-base text-white">
-                    <Sidebar />
-                    <div className="flex-1 flex flex-col relative h-full">
-                        <MainContent />
-                        <BottomPlayer />
-                        <ToastContainer />
-                    </div>
+                    return (
+                      <div
+                        key={c}
+                        className={dotClass}
+                        style={{
+                          width: size,
+                          height: size,
+                          borderRadius: '50%',
+                          backgroundColor: '#bbbbbb', // neutral dots
+                          opacity: isSuccess ? 1 : opacity,
+                          transform: `scale(${isSuccess ? 1 : scale})`,
+                          animationDelay: isSuccess ? `${delay}s` : '0s'
+                        }}
+                      />
+                    );
+                  })}
                 </div>
-            );
-        };
+              );
+            })}
+          </div>
 
-        const ToastContainer = () => {
-            const toasts = useStore(s => s.toasts);
-            return (
-                <div className="fixed top-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
-                    <AnimatePresence>
-                        {toasts.map(t => (
-                            <motion.div key={t.id}
-                                initial={{ opacity: 0, y: -20, scale: 0.9 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                className={`px-4 py-3 rounded-md shadow-2xl font-bold text-sm flex items-center gap-2 ${t.type==='success'?'bg-brand text-black':'bg-surface text-white border border-elevated'}`}
-                            >
-                                {t.type==='success' ? <Heart size={16}/> : <Zap size={16} className="text-brand"/>}
-                                {t.msg}
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </div>
-            );
-        };
+          {/* Fill bar overlay (gives a subtle wash tracking the thumb) */}
+          <div
+            className="absolute bottom-0 left-0 right-0 pointer-events-none z-0"
+            style={{
+              height: `${fillPct}%`,
+              background: '#111111', // dark fill wash
+              opacity: 0.1 + progress * 0.15,
+              borderRadius: '1.5rem',
+            }}
+          />
 
-        const Sidebar = () => {
-            const { view, setView } = useStore();
-            return (
-                <div className="hidden md:flex flex-col w-64 bg-black p-4 gap-6 z-10">
-                    <div className="text-xl font-black tracking-tighter mt-2 mb-4 px-2 flex items-center gap-2">
-                        <Zap className="text-brand" /> Hammerly SwipeBid
-                    </div>
-
-                    <nav className="flex flex-col gap-2">
-                        <NavItem icon={<Home size={24}/>} label="Home" active={view==='home'} onClick={()=>setView('home')} />
-                        <NavItem icon={<Search size={24}/>} label="Search" active={view==='search'} onClick={()=>setView('search')} />
-                    </nav>
-
-                    <div className="bg-surface rounded-lg mt-2 flex-1 p-2 flex flex-col">
-                        <NavItem icon={<Library size={24}/>} label="Your Watchlist" active={view==='watchlist'} onClick={()=>setView('watchlist')} />
-
-                        <div className="mt-4 px-2 overflow-y-auto hide-scroll text-sm font-medium text-gray-400 gap-3 flex flex-col">
-                            <span className="hover:text-white cursor-pointer transition">Salvage Titles</span>
-                            <span className="hover:text-white cursor-pointer transition">Clean Title SUVs</span>
-                            <span className="hover:text-white cursor-pointer transition">EVs &amp; Hybrids</span>
-                            <span className="hover:text-white cursor-pointer transition">Classic Muscle</span>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const NavItem = ({ icon, label, active, onClick }) => (
-            <div onClick={onClick} className={`flex items-center gap-4 px-2 py-3 cursor-pointer rounded-md transition font-bold ${active ? 'text-white' : 'text-gray-400 hover:text-white'}`}>
-                {icon}
-                <span>{label}</span>
+          {/* ── THUMB ── */}
+          <motion.div
+            id="swipe-thumb"
+            className="absolute left-2 right-2 z-10"
+            style={{ bottom: thumbBot + 8, height: THUMB_SIZE }}
+            animate={isSuccess ? { scale: [1, 1.02, 1] } : {}}
+            transition={{ duration: 0.35 }}
+          >
+            {/* Pulse ring removed for absolute stability while waiting */}
+            <div
+              className={`absolute inset-0 rounded-xl flex items-center justify-center shadow-md border border-gray-200 ${thumbBg}`}
+              style={{
+                boxShadow: isSuccess
+                  ? '0 4px 16px rgba(0,0,0,0.35)'
+                  : '0 4px 16px rgba(0,0,0,0.15)',
+              }}
+            >
+              {isSuccess  ? <IconCheck /> :
+               isError    ? <IconAlert /> :
+               <div className="flex items-center justify-center gap-2">
+                 <IconArrowUp />
+                 <span className="font-bold text-[15px] tracking-wide">Place the Bid</span>
+               </div>}
             </div>
-        );
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
 
-        const MainContent = () => {
-            const view = useStore(s => s.view);
-            return (
-                <div className="flex-1 overflow-y-auto hide-scroll pb-24 relative bg-gradient-to-b from-elevated/40 to-base">
-                    {/* Header bg blur */}
-                    <div className="absolute top-0 w-full h-48 bg-gradient-to-b from-[#2E2E2E] to-transparent pointer-events-none opacity-40"></div>
+  /* ══════════════════════════════════════
+     TAP-TO-BID BUTTON  (secondary mode)
+     – always re-enables after bid so user can bid again
+  ══════════════════════════════════════ */
+  function TapBidButton({ state, bidAmt, onTap }) {
+    const isLoading = state === 'loading';
+    const isError   = state === 'error';
+    const disabled  = isLoading;
 
-                    <div className="relative z-10 p-4 md:p-8 h-full">
-                        {view === 'home' && <HomeFeed />}
-                        {view === 'watchlist' && <WatchlistView />}
-                        {view === 'search' && <SearchView />}
-                    </div>
-                </div>
-            );
-        };
+    return (
+      <motion.button
+        id="tap-bid-btn"
+        onClick={onTap}
+        disabled={disabled}
+        whileTap={!disabled ? { scale: 0.965 } : {}}
+        className={[
+          'w-full py-4 rounded-xl text-sm font-bold tracking-wide transition-all duration-200 relative overflow-hidden',
+          isError    ? 'bg-red-600 text-white'
+          : isLoading ? 'bg-copart-navy/70 text-white cursor-not-allowed'
+          : 'bg-copart-navy text-white active:bg-copart-navydk',
+        ].join(' ')}
+      >
+        {isLoading && (
+          <span className="absolute inset-0 flex items-center justify-center">
+            <IconSpinner />
+          </span>
+        )}
+        <span className={isLoading ? 'opacity-0' : ''}>
+          {isError ? '⚠ Failed – Tap to Retry' : `Place Bid  ₹${bidAmt.toLocaleString('en-IN')}`}
+        </span>
+      </motion.button>
+    );
+  }
 
-        const HomeFeed = () => {
-            const { vehicles, dismissed, activeLotId } = useStore();
-            const [refreshing, setRefreshing] = useState(false);
+  /* ══════════════════════════════════════
+     BIDDER CORE  (owns all state + gesture)
+     ✅ Continuous bidding: auto-resets to idle after success
+     ✅ Toast-based feedback: no alerts, no permanent locks
+  ══════════════════════════════════════ */
+  function BidderCore({ bidIncrement, currentBid, mode, onBidSuccess, onBidError }) {
+    const [state,    setState]    = useState('idle');
+    const [progress, setProgress] = useState(0);
+    const [dots,     setDots]     = useState([]);
 
-            const handleRefresh = () => {
-                setRefreshing(true);
-                setTimeout(() => setRefreshing(false), 1500);
-            };
+    const dragging  = useRef(false);
+    const startY    = useRef(0);
+    const rawDrag   = useRef(0);
+    const inFlight  = useRef(false);  // prevents double-fire within a single bid attempt
+    const resetTimer = useRef(null);
 
-            const displayVehicles = useMemo(() => {
-                return vehicles.filter(v => !dismissed.includes(v.id));
-            }, [vehicles, dismissed]);
+    const nextBidTotal = currentBid + bidIncrement;
 
-            // Simple pull to refresh logic wrapper can be added, but let's stick to gestures on cards.
-            return (
-                <div className="h-full flex flex-col relative">
-                    <div className="flex justify-between flex-wrap gap-4 items-end mb-6">
-                        <h1 className="text-3xl md:text-5xl font-black tracking-tighter">Live Auctions</h1>
-                        <div className="flex gap-2 text-sm font-bold">
-                            <span className="px-3 py-1 bg-surface rounded-full text-brand border border-brand/20">All</span>
-                            <span className="px-3 py-1 bg-surface rounded-full hover:bg-elevated cursor-pointer">Sedans</span>
-                            <span className="px-3 py-1 bg-surface rounded-full hover:bg-elevated cursor-pointer">SUVs</span>
-                        </div>
-                    </div>
+    /* ── shared reset: completely instant ── */
+    const resetToIdle = useCallback(() => {
+      setState('idle');
+      setProgress(0);
+      setDots([]);
+      inFlight.current = false;
+    }, []);
 
-                    {refreshing && <div className="text-center w-full py-4 text-brand"><Loader2 className="animate-spin mx-auto"/></div>}
+    /* ── execute bid: ULTRA-FAST OPTIMISTIC — 0 wait time ── */
+    const executeBid = useCallback((amount) => {
+      if (inFlight.current) return;
+      inFlight.current = true;
 
-                    {/* Desktop Masonry / Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        <AnimatePresence mode="popLayout">
-                            {displayVehicles.map(v => (
-                                <VehicleCard key={v.id} vehicle={v} />
-                            ))}
-                        </AnimatePresence>
-                    </div>
-                </div>
-            );
-        };
+      // 1. Instant haptic
+      vibrate([25]);
 
-        const WatchlistView = () => {
-            const watchlist = useStore(s => s.watchlist);
-            return (
-                <div>
-                    <h1 className="text-5xl font-black tracking-tighter mb-6">Watchlist</h1>
-                    {watchlist.length === 0 ? (
-                        <div className="text-center text-gray-500 mt-20">
-                            <Heart size={48} className="mx-auto mb-4 opacity-20" />
-                            <p className="font-bold">No vehicles saved yet.</p>
-                            <p className="text-sm">Swipe right on a vehicle to add it here.</p>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {watchlist.map(v => <VehicleCard key={v.id} vehicle={v} />)}
-                        </div>
-                    )}
-                </div>
-            );
-        }
+      // 2. Update bid total + global toast directly
+      onBidSuccess(amount);
 
-        const SearchView = () => {
-            return (
-                <div>
-                    <h1 className="text-5xl font-black tracking-tighter mb-6">Search</h1>
-                    <div className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-black" size={24}/>
-                        <input type="text" placeholder="What vehicle are you looking for?" className="w-full bg-white text-black font-bold py-4 pl-12 pr-4 rounded-full outline-none focus:ring-4 ring-brand/50 text-xl" />
-                    </div>
+      // 3. Reset thumb instantly (0ms UI lock)
+      resetToIdle();
 
-                    <h2 className="text-xl font-bold mt-10 mb-4">Trending Combos</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {['Clean Titles', 'Tesla Models', 'Flood Vehicles', 'Under $5000'].map(t => (
-                            <div key={t} className="aspect-video bg-gradient-to-br from-brand/80 to-blue-600 rounded-xl p-4 font-bold text-lg flex items-end cursor-pointer hover:scale-105 transition-transform">
-                                {t}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            );
-        }
+      // 4. Fire API entirely in background
+      mockPlaceBid(amount).catch(() => {
+        vibrate([100]);
+        onBidError();
+      });
+    }, [onBidSuccess, onBidError, resetToIdle]);
 
-        // The Gesture Card
-        const VehicleCard = ({ vehicle }) => {
-            const { addToWatchlist, dismissLot, setActiveLot, placeBid, activeLotId } = useStore();
-            const isActive = activeLotId === vehicle.id;
+    /* cleanup timer no longer needed */
+    useEffect(() => {}, []);
 
-            // Framer motion values for gestures
-            const x = useMotionValue(0);
-            const y = useMotionValue(0);
-            const rotate = useTransform(x, [-200, 200], [-10, 10]);
+    /* ── POINTER MOVE ── */
+    const onPointerMove = useCallback((e) => {
+      if (!dragging.current) return;
+      e.preventDefault();
+      const cy = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
+      const raw = Math.max(0, Math.min(startY.current - cy, MAX_DRAG / RESISTANCE));
+      const resisted = raw * RESISTANCE;
+      rawDrag.current = resisted;
+      const p = Math.min(resisted / MAX_DRAG, 1);
+      setProgress(prev => {
+        if (p >= SUCCESS_THRESHOLD && prev < SUCCESS_THRESHOLD) vibrate(35);
+        return p;
+      });
+    }, []);
 
-            const [isZoomed, setZoomed] = useState(false);
+    /* ── POINTER UP ── */
+    const onPointerUp = useCallback(() => {
+      if (!dragging.current) return;
+      dragging.current = false;
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup',   onPointerUp);
+      window.removeEventListener('touchmove',   onPointerMove);
+      window.removeEventListener('touchend',    onPointerUp);
+      const p = rawDrag.current / MAX_DRAG;
+      if (p >= SUCCESS_THRESHOLD) {
+        executeBid(nextBidTotal);
+      } else {
+        setProgress(0);
+        setState('idle');
+      }
+    }, [onPointerMove, executeBid, nextBidTotal]);
 
-            // Time formatting
-            const mins = Math.floor(vehicle.timeLeft / 60);
-            const secs = vehicle.timeLeft % 60;
-            const timeStr = `${mins}:${secs.toString().padStart(2, '0')}`;
-            const isUrgent = vehicle.timeLeft < 60;
+    /* ── POINTER DOWN (swipe start) ── */
+    const onPointerDown = useCallback((e) => {
+      // No state blocking at all — always responsive
+      if (e.preventDefault) e.preventDefault();
+      dragging.current  = true;
+      startY.current    = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
+      rawDrag.current   = 0;
+      setState('swiping');
+      window.addEventListener('pointermove', onPointerMove, { passive: false });
+      window.addEventListener('pointerup',   onPointerUp);
+      window.addEventListener('touchmove',   onPointerMove, { passive: false });
+      window.addEventListener('touchend',    onPointerUp);
+    }, [state, onPointerMove, onPointerUp]);
 
-            const bind = useDrag(({ movement: [mx, my], down, direction: [dx, dy], velocity: [vx, vy], memo = [x.get(), y.get()] }) => {
-                if (isZoomed) return memo; // Don't swipe if zoomed
+    /* reset when mode toggle switches */
+    useEffect(() => {
+      resetToIdle();
+    }, [mode]);
 
-                if (down) {
-                    x.set(mx);
-                    y.set(my);
-                } else {
-                    // Gesture release logic
-                    if (mx > 100 && vx > 0.5) { // Swipe Right
-                        addToWatchlist(vehicle.id);
-                        x.set(0); y.set(0);
-                    } else if (mx < -100 && vx < -0.5) { // Swipe Left
-                        dismissLot(vehicle.id);
-                    } else if (my < -100 && vy < -0.5) { // Swipe Up (Bid)
-                        placeBid(vehicle.id, 100);
-                        useStore.getState().addToast(`Bid placed on ${vehicle.title}!`, 'success');
-                        x.set(0); y.set(0);
-                    } else if (my > 100 && vy > 0.5) { // Swipe Down (Expand/Select)
-                        setActiveLot(vehicle.id);
-                        useStore.getState().setSheetExpanded(true);
-                        x.set(0); y.set(0);
-                    } else {
-                        // Snap back
-                        x.set(0); y.set(0);
-                    }
-                }
-                return memo;
-            });
+    /* ── tap handler (tap mode + swipe fallback link) ── */
+    const handleTap = useCallback(() => {
+      executeBid(nextBidTotal);
+    }, [executeBid, nextBidTotal]);
 
-            return (
-                <motion.div
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1, x, y, rotate }}
-                    exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
-                    whileDrag={{ cursor: 'grabbing', zIndex: 50, scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    {...bind()}
-                    className={`relative bg-surface rounded-xl overflow-hidden cursor-grab touch-none ${isActive ? 'ring-2 ring-brand ring-offset-2 ring-offset-base' : ''} shadow-lg`}
-                    onClick={() => setActiveLot(vehicle.id)}
-                    onDoubleClick={() => setZoomed(!isZoomed)}
-                >
-                    {/* Urgency Badge */}
-                    <div className={`absolute top-2 right-2 z-10 px-2 py-1 rounded bg-black/60 backdrop-blur-md text-xs font-black flex items-center gap-1 ${isUrgent ? 'text-danger animate-pulse' : 'text-white'}`}>
-                        <Clock size={12}/> {timeStr}
-                    </div>
+    return mode === 'swipe' ? (
+      <div className="flex flex-col items-center gap-2">
+        <SwipeTrack
+          state={state}
+          progress={progress}
+          bidAmt={bidIncrement}
+          onPointerDown={onPointerDown}
+          dots={dots}
+        />
+        <button
+          onClick={handleTap}
+          disabled={state !== 'idle' && state !== 'error'}
+          className="text-[11px] underline underline-offset-2 mt-1 text-copart-muted hover:text-copart-blue transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {state === 'error' ? 'Tap to Retry' : 'Tap to Bid Instead'}
+        </button>
+      </div>
+    ) : (
+      <TapBidButton state={state} bidAmt={nextBidTotal} onTap={handleTap} />
+    );
+  }
 
-                    <div className="relative h-48 sm:h-56 w-full overflow-hidden">
-                        <motion.img
-                            animate={{ scale: isZoomed ? 1.5 : 1 }}
-                            src={vehicle.img}
-                            alt={vehicle.title}
-                            className="w-full h-full object-cover select-none pointer-events-none"
-                            draggable="false"
-                        />
-                        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-surface to-transparent pointer-events-none"></div>
+  /* ══════════════════════════════════════
+     SPEC ROW
+  ══════════════════════════════════════ */
+  const SpecRow = ({ label, value, highlight }) => (
+    <div className="flex justify-between items-center py-2 border-b border-copart-border last:border-0">
+      <span className="text-xs text-copart-muted">{label}</span>
+      <span className={`text-xs font-semibold ${highlight ? 'text-copart-red' : 'text-copart-text'}`}>{value}</span>
+    </div>
+  );
 
-                        {/* Play button icon overlay to hint clicking / active */}
-                        {isActive && (
-                            <div className="absolute inset-0 bg-black/20 flex items-center justify-center pointer-events-none">
-                                <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2 }}>
-                                    <div className="bg-brand/80 backdrop-blur rounded-full p-3 shadow-[0_0_15px_#1DB954]">
-                                        <Zap size={24} className="text-black" />
-                                    </div>
-                                </motion.div>
-                            </div>
-                        )}
-                    </div>
+  /* ══════════════════════════════════════
+     VEHICLE IMAGE BANNER
+  ══════════════════════════════════════ */
+  function VehicleBanner() {
+    return (
+      <div className="relative overflow-hidden" style={{ height: 190, background: '#f0f0f0' }}>
+        {/* Simulated car silhouette */}
+        <div className="absolute inset-0 flex items-center justify-center"
+          style={{ background: 'linear-gradient(135deg, #e8e8e8 0%, #f0f0f0 50%, #e8e8e8 100%)' }}>
+          <svg viewBox="0 0 340 130" width="310" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.6">
+            {/* Simple SUV/hatchback silhouette */}
+            <rect x="20" y="70" width="300" height="35" rx="6" fill="#cccccc"/>
+            <path d="M60 70 Q80 35 130 28 L210 28 Q250 28 280 70Z" fill="#cccccc"/>
+            <circle cx="85"  cy="108" r="22" fill="#f0f0f0" stroke="#bbbbbb" strokeWidth="5"/>
+            <circle cx="255" cy="108" r="22" fill="#f0f0f0" stroke="#bbbbbb" strokeWidth="5"/>
+            <circle cx="85"  cy="108" r="8"  fill="#cccccc"/>
+            <circle cx="255" cy="108" r="8"  fill="#cccccc"/>
+            <rect x="130" y="32" width="80" height="32" rx="4" fill="#f0f0f0" opacity="0.7"/>
+            <rect x="50"  y="55" width="50" height="18" rx="3" fill="#f0f0f0" opacity="0.6"/>
+            <rect x="240" y="55" width="50" height="18" rx="3" fill="#f0f0f0" opacity="0.6"/>
+          </svg>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-white/30 to-transparent" />
 
-                    <div className="p-4 flex flex-col gap-2 pointer-events-none">
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <h3 className="font-bold text-lg truncate w-40 sm:w-48 leading-tight">{vehicle.title}</h3>
-                                <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">{vehicle.loc}</p>
-                            </div>
-                            <div className="text-right">
-                                <div className="text-[10px] text-gray-500 font-bold uppercase">Current Bid</div>
-                                <div className="text-brand font-mono font-black text-xl">${vehicle.currentBid.toLocaleString()}</div>
-                            </div>
-                        </div>
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex gap-2">
+          <span className="bg-copart-red text-white text-[10px] font-bold px-2 py-1 rounded">SALVAGE</span>
+          <span className="bg-black/50 text-white text-[10px] font-medium px-2 py-1 rounded backdrop-blur-sm">📷 38 Photos</span>
+        </div>
+        <div className="absolute top-3 right-3 bg-black/50 text-white text-[10px] font-medium px-2 py-1 rounded backdrop-blur-sm">
+          LOT #99940955
+        </div>
 
-                        <div className="flex gap-2 flex-wrap text-[10px] font-bold mt-2">
-                            <span className="px-2 py-0.5 bg-elevated rounded text-gray-300 border border-gray-600">Lot #{vehicle.id.split('-')[1]}</span>
-                            <span className="px-2 py-0.5 bg-danger/20 text-danger rounded border border-danger/30">{vehicle.damage}</span>
-                            <span className="px-2 py-0.5 bg-brand/20 text-brand rounded border border-brand/30">{vehicle.odo}</span>
-                        </div>
-                    </div>
+        {/* Live indicator */}
+        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/60 px-2.5 py-1.5 rounded-full backdrop-blur-sm">
+          <span className="live-dot w-2 h-2 rounded-full bg-red-400 inline-block" />
+          <span className="text-white text-[10px] font-semibold">LIVE AUCTION</span>
+        </div>
+      </div>
+    );
+  }
 
-                    {/* Gesture Hints Overlay (reveals on drag) */}
-                    <motion.div style={{ opacity: useTransform(x, [0, 100], [0, 1]) }} className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-brand/90 to-transparent flex items-center justify-end pr-6 pointer-events-none">
-                        <Heart size={32} className="text-white"/>
-                    </motion.div>
-                    <motion.div style={{ opacity: useTransform(x, [0, -100], [0, 1]) }} className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-danger/90 to-transparent flex items-center justify-start pl-6 pointer-events-none">
-                        <X size={32} className="text-white"/>
-                    </motion.div>
-                    <motion.div style={{ opacity: useTransform(y, [0, -100], [0, 1]) }} className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-blue-500/90 to-transparent flex items-start justify-center pt-6 pointer-events-none">
-                        <ArrowUp size={32} className="text-white"/>
-                        <span className="absolute top-16 font-black uppercase tracking-wider">Place Bid</span>
-                    </motion.div>
-                </motion.div>
-            );
-        };
+  /* ══════════════════════════════════════
+     APP ROOT
+  ══════════════════════════════════════ */
+  function App() {
+    const [currentBid,   setCurrentBid]   = useState(BASE_CURRENT_BID);
+    const [bidIncrement, setBidIncrement] = useState(BID_CHIPS[0]);
+    const [bidMode,      setBidMode]      = useState('swipe');
+    const [bidCount,     setBidCount]     = useState(24);
+    const [toasts,       setToasts]       = useState([]); // Array of toasts (max 2)
 
-        const BottomPlayer = () => {
-            const { activeLotId, vehicles, surgeMode, placeBid, setActiveLot, isSheetExpanded, setSheetExpanded } = useStore();
-            const activeCar = vehicles.find(v => v.id === activeLotId);
+    /* ── show a toast, max 2, auto-dismiss after 2s ── */
+    const showToast = useCallback((amount, isError = false) => {
+      const id = Date.now() + Math.random();
+      setToasts(prev => {
+        const newToast = { id, amount, isError };
+        // Prepend new toast, keep at most 2
+        return [newToast, ...prev].slice(0, 2);
+      });
 
-            // If no car is selected, don't show the player on mobile, but maybe show a hint
-            if (!activeCar) return null;
+      // Independent timeout for each toast to auto-dismiss
+      setTimeout(() => {
+        setToasts(prev => prev.filter(t => t.id !== id));
+      }, 2000);
+    }, []);
 
-            const isUrgent = activeCar.timeLeft < 60;
-            const timeStr = `${Math.floor(activeCar.timeLeft/60)}:${(activeCar.timeLeft%60).toString().padStart(2,'0')}`;
+    const handleBidSuccess = useCallback((newTotal) => {
+      setCurrentBid(newTotal);
+      setBidCount(c => c + 1);
+      showToast(newTotal, false);
+    }, [showToast]);
 
-            // Handle horizontal swipes for next/prev car
-            const handleNext = () => {
-                const idx = vehicles.findIndex(v => v.id === activeLotId);
-                if (idx < vehicles.length - 1) setActiveLot(vehicles[idx+1].id);
-            };
+    const handleBidError = useCallback(() => {
+      showToast(0, true);
+    }, [showToast]);
 
-            const handlePrev = () => {
-                const idx = vehicles.findIndex(v => v.id === activeLotId);
-                if (idx > 0) setActiveLot(vehicles[idx-1].id);
-            };
+    return (
+      <div className="relative flex flex-col h-full bg-copart-gray overflow-hidden"
+        style={{ maxWidth: 390, margin: '0 auto' }}>
 
-            const bindSwipe = useDrag(({ movement: [mx, my], direction: [dx, dy], velocity: [vx, vy], down }) => {
-                if(down) return;
-                // Horizontal Swipe = Next / Prev
-                if (mx > 50 && vx > 0.5) handlePrev();
-                else if (mx < -50 && vx < -0.5) handleNext();
-                // Vertical Swipe = Expand / Collapse
-                else if (my < -50 && vy < -0.5 && !isSheetExpanded) setSheetExpanded(true);
-                else if (my > 50 && vy > 0.5 && isSheetExpanded) setSheetExpanded(false);
-            });
+        {/* ── TOP NAV ── */}
+        <div className="flex items-center justify-between px-4 shrink-0" style={{background:'#ffffff', borderBottom:'1px solid #e8e8e8', padding:'10px 16px'}}>
+          <button className="flex items-center gap-1 text-sm font-semibold" style={{color:'#555555'}} onClick={() => { window.location.href = 'index.html'; }}>
+            <IconChevronLeft /> Back
+          </button>
+          <div className="flex items-center gap-2">
+            <span style={{width:28,height:28,background:'#111111',borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontFamily:'Barlow Condensed, sans-serif',fontWeight:800,color:'#fff',letterSpacing:'-0.5px'}}>H</span>
+            <span style={{fontFamily:'Barlow Condensed, sans-serif',fontWeight:800,fontSize:19,color:'#111111',letterSpacing:.5}}>Hammer<span style={{color:'#111111'}}>ly</span></span>
+          </div>
+          <div className="flex gap-3" style={{color:'#555555'}}>
+            <button><IconHeart /></button>
+            <button><IconShare /></button>
+          </div>
+        </div>
 
-            return (
-                <div className="absolute inset-x-0 bottom-0 z-50 flex flex-col justify-end pointer-events-none">
-                    <AnimatePresence>
-                        {isSheetExpanded && (
-                            <VehicleDetailSheet car={activeCar} close={() => setSheetExpanded(false)} handleNext={handleNext} handlePrev={handlePrev} />
-                        )}
-                    </AnimatePresence>
+        {/* ── VEHICLE IMAGE ── */}
+        <VehicleBanner />
 
-                    {/* The Bar */}
-                    <div className="p-2 pointer-events-none">
-                        <motion.div
-                            {...bindSwipe()}
-                            layoutId="playerArea"
-                            className={`bg-elevated w-full rounded-lg overflow-hidden flex flex-col pointer-events-auto touch-none cursor-grab active:cursor-grabbing border border-white/5 ${surgeMode ? 'surge-active' : ''}`}
-                            onClick={() => !isSheetExpanded && setSheetExpanded(true)}
-                        >
-                            {/* Progress bar (Time left) */}
-                            <div className="h-1 bg-[#4D4D4D] w-full">
-                                <motion.div
-                                    className={`h-full ${isUrgent ? 'bg-danger' : 'bg-brand'}`}
-                                    style={{ width: `${Math.max(0, Math.min(100, (activeCar.timeLeft / 600) * 100))}%` }}
-                                />
-                            </div>
+        {/* ── SCROLLABLE CONTENT ── */}
+        <div className="flex-1 overflow-y-auto">
+          {/* Vehicle Title */}
+          <div className="bg-white px-4 py-3 border-b border-copart-border">
+            <h1 className="text-base font-bold text-copart-text leading-snug">2022 Hyundai Creta SX</h1>
+            <p className="text-xs text-copart-muted mt-0.5">CT – Hartford · VIN: KNDJ23AU9M7134891</p>
+          </div>
 
-                            <div className="flex items-center p-2 gap-3">
-                                <div className="relative h-12 w-12 sm:h-14 sm:w-14 shrink-0 rounded overflow-hidden group">
-                                    <img src={activeCar.img} className="w-full h-full object-cover" />
-                                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <ChevronUp size={20} className="text-white"/>
-                                    </div>
-                                </div>
+          {/* Bid info strip */}
+          <div className="border-b border-copart-border px-4 py-3 flex justify-between items-center" style={{background:'#f7f7f7'}}>
+            <div>
+              <p className="text-[10px] text-copart-muted uppercase tracking-wider font-medium">Current Bid</p>
+              <p className="text-2xl font-black" style={{color:'#111111'}}>₹{currentBid.toLocaleString('en-IN')}</p>
+              <p className="text-[10px] text-copart-muted mt-0.5">{bidCount} bids · You haven't bid</p>
+            </div>
+            <div className="text-right">
+              <p className="text-[10px] text-copart-muted uppercase tracking-wider font-medium">Ends in</p>
+              <Countdown />
+              <p className="text-[10px] text-copart-muted mt-0.5">Est. Retail: ₹9,20,000</p>
+            </div>
+          </div>
 
-                                <div className="flex-1 min-w-0">
-                                    <h4 className="font-bold text-sm sm:text-base truncate hover:underline cursor-pointer">{activeCar.title}</h4>
-                                    <div className="text-xs text-brand font-mono font-bold">${activeCar.currentBid.toLocaleString()}</div>
-                                </div>
+          {/* Spec table */}
+          <div className="bg-white mx-3 my-2.5 rounded-xl border border-copart-border px-4 py-1">
+            <SpecRow label="Odometer"     value="38,450 km" />
+            <SpecRow label="Title Code"   value="Repossessed" highlight />
+            <SpecRow label="Primary Dmg"  value="Minor Dents" />
+            <SpecRow label="Engine"       value="1.5L 4-Cylinder" />
+            <SpecRow label="Drive"        value="FWD" />
+            <SpecRow label="Color"        value="Typhoon Silver" />
+            <SpecRow label="Keys"         value="Present" />
+          </div>
+        </div>
 
-                                {/* Controls */}
-                                <div className="flex items-center gap-4 text-gray-300 pr-2">
-                                    <Heart size={20} className="hover:text-white cursor-pointer transition hidden sm:block" onClick={(e)=>{e.stopPropagation(); useStore.getState().addToWatchlist(activeCar.id);}}/>
+        {/* ── FIXED BID PANEL ── */}
+        <div className="bid-panel relative bg-white border-t border-copart-border px-4 pt-3 pb-5 shrink-0 z-10">
 
-                                    <div className="flex items-center gap-1 font-mono text-sm font-bold w-12 justify-center">
-                                        {timeStr}
-                                    </div>
+          {/* ── TOAST CONTAINER ── */}
+          <div className="absolute bottom-full left-3 right-3 mb-3 flex flex-col-reverse gap-2 pointer-events-none z-50">
+            <AnimatePresence mode="popLayout">
+              {toasts.map(t => <BidToast key={t.id} toast={t} />)}
+            </AnimatePresence>
+          </div>
 
-                                    <button
-                                        className="bg-brand text-black font-black uppercase text-xs px-4 py-2 rounded-full hover:bg-brandHover hover:scale-105 active:scale-95 transition flex items-center gap-1 shadow-[0_4px_10px_rgba(29,185,84,0.3)]"
-                                        onClick={(e)=>{ e.stopPropagation(); placeBid(activeCar.id, 100); useStore.getState().addToast('Bid placed!', 'success'); }}
-                                    >
-                                        Bid
-                                    </button>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            );
-        };
+          {/* Row 1: increment label + toggle */}
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-[10px] text-copart-muted uppercase tracking-wider font-semibold">Bid Increment</p>
+              <p className="text-sm font-bold text-copart-text">+₹{bidIncrement.toLocaleString('en-IN')}</p>
+            </div>
+            <ModeToggle mode={bidMode} onChange={setBidMode} />
+          </div>
 
-        const VehicleDetailSheet = ({ car, close, handleNext, handlePrev }) => {
-            const placeBid = useStore(s => s.placeBid);
+          {/* Row 2: Pricing chips */}
+          <PricingChips
+            selected={bidIncrement}
+            onSelect={setBidIncrement}
+            disabled={false}
+          />
 
-            const bind = useDrag(({ movement: [mx, my], direction: [dx, dy], velocity: [vx, vy], down }) => {
-                if(my > 100 && vy > 0.5) close();
-            });
+          <div className="mt-3">
+            {/* Next bid indicator */}
+            <p className="text-center text-[11px] text-copart-muted mb-2.5">
+              Your bid: <span className="font-bold text-copart-text">
+                ₹{(currentBid + bidIncrement).toLocaleString('en-IN')}
+              </span>
+              <span className="mx-1.5 text-copart-border">·</span>
+              Buyer's fee est. <span className="font-semibold">₹3,200</span>
+            </p>
 
-            return (
-                <motion.div
-                    initial={{ y: '100%' }}
-                    animate={{ y: 0 }}
-                    exit={{ y: '100%' }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="absolute inset-0 bg-base z-[60] flex flex-col pointer-events-auto overflow-hidden touch-none"
-                    {...bind()}
-                >
-                    {/* Header Nav */}
-                    <div className="flex items-center justify-between p-4 bg-gradient-to-b from-black/50 to-transparent sticky top-0 z-20">
-                        <button onClick={close} className="p-2 bg-black/50 backdrop-blur rounded-full hover:scale-105 active:scale-95 transition"><ChevronDown size={24}/></button>
-                        <div className="flex gap-4">
-                            <h2 className="font-black text-sm uppercase tracking-widest text-gray-400">LOT #{car.id.split('-')[1]}</h2>
-                        </div>
-                        <div className="flex gap-2">
-                            <button onClick={handlePrev} className="p-2 bg-black/50 backdrop-blur rounded-full hover:scale-105 active:scale-95 transition"><SkipBack size={20}/></button>
-                            <button onClick={handleNext} className="p-2 bg-black/50 backdrop-blur rounded-full hover:scale-105 active:scale-95 transition"><SkipForward size={20}/></button>
-                        </div>
-                    </div>
+            {/* BIDDER CORE: swipe or tap */}
+            <BidderCore
+              key={bidMode}
+              bidIncrement={bidIncrement}
+              currentBid={currentBid}
+              mode={bidMode}
+              onBidSuccess={handleBidSuccess}
+              onBidError={handleBidError}
+            />
+          </div>
 
-                    <div className="flex-1 overflow-y-auto hide-scroll pb-24 touch-pan-y">
-                        {/* Img Gallery Carousel (just an image for now) */}
-                        <div className="w-full h-80 relative bg-black shrink-0 -mt-20">
-                            <img src={car.img} className="w-full h-full object-cover opacity-80" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-base to-transparent"></div>
-                        </div>
+          {/* Copart-style disclaimer */}
+          <p className="text-center text-[10px] text-copart-muted mt-2.5 leading-relaxed">
+            By bidding you agree to the <span className="underline" style={{color:'#111111'}}>Terms of Use</span>.
+            All sales are final.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
-                        <div className="p-6 -mt-10 relative z-10 w-full max-w-4xl mx-auto flex flex-col md:flex-row gap-8">
-
-                            {/* Left Col: Details */}
-                            <div className="flex-1">
-                                <h1 className="text-4xl sm:text-5xl font-black tracking-tighter mb-2 leading-tight">{car.title}</h1>
-                                <p className="text-brand font-mono text-2xl font-black bg-brand/10 inline-block px-3 py-1 rounded mb-6">${car.currentBid.toLocaleString()}</p>
-
-                                <h3 className="text-xl font-bold mb-4">Vehicle Info</h3>
-                                <div className="bg-surface rounded-lg p-4 grid grid-cols-2 gap-4 text-sm mb-6">
-                                    <div><span className="text-gray-400 block mb-1">VIN</span><span className="font-mono font-bold">{car.vin}</span></div>
-                                    <div><span className="text-gray-400 block mb-1">Odometer</span><span className="font-bold">{car.odo}</span></div>
-                                    <div><span className="text-gray-400 block mb-1">Primary Damage</span><span className="font-bold text-danger">{car.damage}</span></div>
-                                    <div><span className="text-gray-400 block mb-1">Location</span><span className="font-bold">{car.loc}</span></div>
-                                </div>
-
-                                <div className="text-gray-400 text-sm leading-relaxed mb-6">
-                                    Vehicle is sold "AS-IS". The damage shown is the primary damage reported but may not cover all existing damages. Please perform all necessary diligence prior to placing a bid.
-                                </div>
-                            </div>
-
-                            {/* Right Col: Bidding & Timeline */}
-                            <div className="md:w-80 flex flex-col gap-4">
-                                <div className="bg-surface rounded-lg p-6 flex flex-col items-center shadow-lg border border-brand/20 relative overflow-hidden">
-                                    {/* Pulse bg */}
-                                    <div className="absolute inset-0 bg-brand/5 animate-pulse pointer-events-none"></div>
-
-                                    <div className="text-danger font-black text-sm uppercase flex items-center gap-1 mb-2">
-                                        <Clock size={16} /> {Math.floor(car.timeLeft/60)}:{(car.timeLeft%60).toString().padStart(2,'0')} Remaining
-                                    </div>
-
-                                    <button
-                                        className="w-full bg-brand text-black font-black text-xl py-4 rounded-full hover:scale-105 active:scale-95 transition mt-4 mb-2 shadow-[0_0_20px_rgba(29,185,84,0.4)] relative"
-                                        onClick={(e) => { e.stopPropagation(); placeBid(car.id, 100); useStore.getState().addToast('Bid placed!', 'success'); }}
-                                    >
-                                        BID +$100
-                                    </button>
-                                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Swipe down to close</p>
-                                </div>
-
-                                {/* Bid History */}
-                                <div className="bg-surface rounded-lg p-4 flex-1">
-                                    <h4 className="font-bold text-sm text-gray-400 uppercase tracking-widest mb-4">Live Bids</h4>
-                                    <div className="flex flex-col gap-3">
-                                        <AnimatePresence>
-                                            {car.bids.slice(0, 5).map((b, i) => (
-                                                <motion.div
-                                                    key={`${i}-${b.amount}`}
-                                                    initial={{ opacity: 0, x: -20 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    className="flex justify-between items-center text-sm font-bold bg-elevated px-3 py-2 rounded"
-                                                >
-                                                    <span className={b.by === 'YOU' ? 'text-brand' : 'text-gray-300'}>{b.by}</span>
-                                                    <span className="font-mono text-white">${b.amount.toLocaleString()}</span>
-                                                </motion.div>
-                                            ))}
-                                            {car.bids.length === 0 && (
-                                                <div className="text-gray-500 italic text-sm text-center py-4">No bids placed yet. Be the first!</div>
-                                            )}
-                                        </AnimatePresence>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </motion.div>
-            );
-        };
-
-        const root = createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode><App /></React.StrictMode>
+  );
+</script>
 </body>
 </html>

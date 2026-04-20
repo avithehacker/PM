@@ -55,7 +55,7 @@
     /* ── HEADER ── */
     .hdr {
       height: var(--hh);
-      background: var(--blue-d);
+      background: #ffffff;
       display: flex;
       align-items: center;
       padding: 0 24px;
@@ -63,7 +63,7 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      box-shadow: 0 2px 10px rgba(0,0,0,.3);
+      border-bottom: 1px solid #e8e8e8;
     }
 
     .logo {
@@ -73,19 +73,19 @@
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 21px;
       font-weight: 800;
-      color: #fff;
+      color: #111111;
       letter-spacing: .3px;
       text-decoration: none;
       flex-shrink: 0;
     }
     .logo-icon {
       width: 30px; height: 30px;
-      background: var(--blue-m);
+      background: #111111;
       border-radius: var(--r);
       display: flex; align-items: center; justify-content: center;
       font-size: 16px;
     }
-    .logo span { color: var(--gold); }
+    .logo span { color: #111111; }
 
     .hdr-search {
       flex: 1;
@@ -95,24 +95,24 @@
     .hdr-search input {
       width: 100%;
       padding: 7px 12px 7px 34px;
-      background: rgba(255,255,255,.12);
-      border: 1.5px solid rgba(255,255,255,.18);
+      background: #f7f7f7;
+      border: 1.5px solid #e8e8e8;
       border-radius: var(--r);
-      color: #fff;
+      color: #111111;
       font-family: 'Barlow', sans-serif;
       font-size: 13px;
       font-weight: 500;
       outline: none;
       transition: all .15s;
     }
-    .hdr-search input::placeholder { color: rgba(255,255,255,.45); }
-    .hdr-search input:focus { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
+    .hdr-search input::placeholder { color: #888888; }
+    .hdr-search input:focus { background: #ffffff; border-color: #111111; }
     .hdr-search .search-icon {
       position: absolute;
       left: 10px; top: 50%;
       transform: translateY(-50%);
       font-size: 14px;
-      color: rgba(255,255,255,.5);
+      color: #888888;
       pointer-events: none;
     }
 
@@ -126,15 +126,15 @@
       border-radius: var(--r);
       font-size: 13px;
       font-weight: 600;
-      color: rgba(255,255,255,.65);
+      color: #888888;
       transition: all .15s;
       text-decoration: none;
     }
-    .nav-link:hover { color: #fff; background: rgba(255,255,255,.1); }
+    .nav-link:hover { color: #111111; background: #f0f0f0; }
     .nav-link.active {
-      color: #fff;
-      background: rgba(255,255,255,.15);
-      box-shadow: inset 0 -2px 0 var(--gold);
+      color: #111111;
+      background: #f0f0f0;
+      box-shadow: inset 0 -2px 0 #111111;
     }
 
     .hdr-r { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
@@ -154,16 +154,16 @@
       white-space: nowrap;
       text-decoration: none;
     }
-    .btn-blue { background: var(--blue); color: #fff; }
-    .btn-blue:hover { background: var(--blue-m); }
+    .btn-blue { background: #111111; color: #fff; }
+    .btn-blue:hover { background: #333333; }
     .btn-green { background: var(--green); color: #fff; }
     .btn-green:hover { background: #156a2e; }
     .btn-ghost-dark {
-      background: rgba(255,255,255,.12);
-      color: rgba(255,255,255,.9);
-      border: 1.5px solid rgba(255,255,255,.2);
+      background: #f0f0f0;
+      color: #111111;
+      border: 1.5px solid #e8e8e8;
     }
-    .btn-ghost-dark:hover { background: rgba(255,255,255,.2); }
+    .btn-ghost-dark:hover { background: #e8e8e8; }
     .btn-sm { padding: 5px 12px; font-size: 12px; }
 
     /* ── FILTER BAR ── */
@@ -201,17 +201,17 @@
       align-items: center;
       gap: 5px;
     }
-    .filter-tab:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-l); }
-    .filter-tab.on { border-color: var(--blue); color: var(--blue); background: var(--blue-l); }
+    .filter-tab:hover { border-color: #111111; color: #111111; background: #f0f0f0; }
+    .filter-tab.on { border-color: #111111; color: #111111; background: #f0f0f0; }
     .filter-count {
       font-size: 10px;
       font-weight: 700;
       padding: 1px 5px;
       border-radius: 2px;
-      background: var(--blue-l);
-      color: var(--blue);
+      background: #e8e8e8;
+      color: #555555;
     }
-    .filter-tab.on .filter-count { background: var(--blue); color: #fff; }
+    .filter-tab.on .filter-count { background: #111111; color: #fff; }
 
     .filter-divider {
       width: 1px;
@@ -233,7 +233,7 @@
       cursor: pointer;
       outline: none;
     }
-    .sort-select:focus { border-color: var(--blue); }
+    .sort-select:focus { border-color: #111111; }
 
     .filter-results {
       margin-left: auto;
@@ -287,8 +287,8 @@
       transform: translateY(-2px);
     }
     .v-card.featured {
-      border-color: var(--blue-m);
-      box-shadow: 0 0 0 1px var(--blue-l), var(--shadow-sm);
+      border-color: #111111;
+      box-shadow: 0 0 0 1px #e8e8e8, var(--shadow-sm);
     }
 
     .v-card-img {
@@ -298,14 +298,14 @@
       justify-content: center;
       font-size: 48px;
       position: relative;
-      background: linear-gradient(135deg, var(--blue-d) 0%, var(--blue-m) 100%);
+      background: linear-gradient(135deg, #e8e8e8 0%, #f2f2f2 100%);
     }
 
-    .v-card-img.w2  { background: linear-gradient(135deg, #1a2a4a 0%, #0057a8 100%); }
-    .v-card-img.w3  { background: linear-gradient(135deg, #3a2000 0%, #d97706 100%); }
-    .v-card-img.w4a { background: linear-gradient(135deg, #1a3a5c 0%, #0d9488 100%); }
-    .v-card-img.w4b { background: linear-gradient(135deg, #1c3a2a 0%, #1a8a3c 100%); }
-    .v-card-img.w4c { background: linear-gradient(135deg, #2a1a3a 0%, #7c3aed 100%); }
+    .v-card-img.w2  { background: linear-gradient(135deg, #ebebeb 0%, #f5f5f5 100%); }
+    .v-card-img.w3  { background: linear-gradient(135deg, #f0ede8 0%, #f7f5f2 100%); }
+    .v-card-img.w4a { background: linear-gradient(135deg, #e5ecec 0%, #f0f7f7 100%); }
+    .v-card-img.w4b { background: linear-gradient(135deg, #e8f0eb 0%, #f2f7f3 100%); }
+    .v-card-img.w4c { background: linear-gradient(135deg, #ebebf0 0%, #f5f5f7 100%); }
 
     .v-badge {
       position: absolute;
@@ -432,7 +432,7 @@
     .v-btn-bid {
       flex: 1;
       padding: 9px 12px;
-      background: var(--blue);
+      background: #111111;
       color: #fff;
       border: none;
       border-radius: var(--r);
@@ -442,7 +442,7 @@
       cursor: pointer;
       transition: background .15s;
     }
-    .v-btn-bid:hover { background: var(--blue-m); }
+    .v-btn-bid:hover { background: #333333; }
     .v-btn-bid:disabled {
       background: var(--g200);
       color: var(--g500);
