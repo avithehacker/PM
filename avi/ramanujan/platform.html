@@ -307,6 +307,52 @@
         .api-line .val { color: #333; }
         .api-line .route { color: #1a1a1a; font-weight: 500; }
 
+        /* ── Download ── */
+        .dl-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .dl-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1a1a1a;
+            background: #ffffff;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .dl-btn:hover {
+            border-color: #1a1a1a;
+            background: #f7f7f7;
+        }
+
+        .dl-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .dl-label {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            display: block;
+        }
+
+        .dl-sub {
+            font-size: 0.7rem;
+            color: #aaa;
+            font-weight: 300;
+            margin-top: 1px;
+            display: block;
+        }
+
         /* ── Availability strip ── */
         .avail-grid {
             display: grid;
@@ -519,7 +565,34 @@
         </section>
 
 
-        <!-- 3. AVAILABILITY -->
+        <!-- 3. DOWNLOAD -->
+        <section>
+            <h2>Download</h2>
+            <p class="prose" style="margin-bottom: 20px;">The desktop app is available now. Install it to try the routing engine locally — works offline with a local model, or connect your API keys for cloud models.</p>
+            <div class="dl-row">
+                <a href="https://github.com/avithehacker/ai-desktop/releases/download/v1.0.0/Ramanujan-mac.dmg" class="dl-btn">
+                    <span class="dl-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    </span>
+                    <span>
+                        <span class="dl-label">Mac</span>
+                        <span class="dl-sub">Apple Silicon · DMG · 190 MB</span>
+                    </span>
+                </a>
+                <a href="https://github.com/avithehacker/ai-desktop/releases/download/v1.0.0/Ramanujan-windows.exe" class="dl-btn">
+                    <span class="dl-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12V6.75l6-1.32v6.57H3zm17 0v-7.5l-9 1.63V12h9zM3 13h6v6.43l-6-1.33V13zm9 .56L21 15.19V19l-9-1.63V13.56z"/></svg>
+                    </span>
+                    <span>
+                        <span class="dl-label">Windows</span>
+                        <span class="dl-sub">x64 · EXE · 157 MB</span>
+                    </span>
+                </a>
+            </div>
+        </section>
+
+
+        <!-- 5. AVAILABILITY -->
         <section>
             <h2>Availability</h2>
             <div class="avail-grid">
@@ -547,7 +620,7 @@
         </section>
 
 
-        <!-- 4. NOTE -->
+        <!-- 6. NOTE -->
         <section>
             <h2>Status</h2>
             <p class="prose">This is a product concept. The routing logic and daily benchmarking engine are the core — the interfaces above are how it reaches you. <strong>Everything here is a work in progress.</strong> If this solves a problem you have, reach out.</p>
