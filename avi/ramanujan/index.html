@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Ramanujan — Avinash Singh</title>
+    <meta name="description" content="An AI router that finds the best model for every task, every day.">
+    <link rel="icon" type="image/png" href="https://github.com/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #ffffff;
+            color: #1a1a1a;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 80px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* ── Back link ── */
+        .back-link {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #555;
+            text-decoration: underline;
+            text-decoration-color: rgba(0,0,0,0.3);
+            text-underline-offset: 3px;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: text-decoration-color 0.2s, color 0.2s;
+        }
+        .back-link:hover { color: #111; text-decoration-color: #111; }
+
+        /* ── Header ── */
+        header { margin-bottom: 64px; }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 300;
+        }
+
+        /* ── Sections ── */
+        section { margin-bottom: 56px; }
+
+        h2 {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            padding-bottom: 8px;
+        }
+
+        /* ── Body text ── */
+        .prose {
+            font-size: 0.88rem;
+            color: #444;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .prose strong {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        /* ── Statement ── */
+        .statement {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.45rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #222;
+            margin-bottom: 14px;
+        }
+
+        /* ── Flow ── */
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin: 28px 0;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .f-node {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #333;
+            padding: 8px 16px;
+            border: 1px solid rgba(0,0,0,0.12);
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .f-node.em {
+            border-color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .f-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .f-stack .f-node {
+            font-size: 0.7rem;
+            padding: 6px 13px;
+        }
+
+        .f-arr {
+            font-size: 0.75rem;
+            color: #bbb;
+            padding: 0 8px;
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        /* ── Routing table ── */
+        .route-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            gap: 16px;
+        }
+
+        .route-row:last-child { border-bottom: none; }
+
+        .route-task {
+            font-size: 0.85rem;
+            color: #1a1a1a;
+            font-weight: 400;
+            min-width: 0;
+        }
+
+        .route-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .route-model {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #111;
+        }
+
+        .route-why {
+            font-size: 0.72rem;
+            color: #aaa;
+            font-weight: 300;
+        }
+
+        /* ── Token comparison ── */
+        .token-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .token-row:last-child { border-bottom: none; }
+
+        .token-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #bbb;
+            min-width: 52px;
+        }
+
+        .token-bar-wrap {
+            flex: 1;
+            height: 4px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .token-bar {
+            height: 100%;
+            border-radius: 2px;
+            background: #1a1a1a;
+            transition: width 1s ease;
+        }
+
+        .token-count {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #333;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .token-savings {
+            font-size: 0.75rem;
+            color: #888;
+            font-weight: 300;
+            margin-top: 10px;
+        }
+
+        /* ── Daily cycle ── */
+        .cycle {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .cycle-step {
+            display: flex;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            align-items: flex-start;
+        }
+
+        .cycle-step:last-child { border-bottom: none; }
+
+        .cycle-time {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: #bbb;
+            min-width: 54px;
+            padding-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .cycle-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .cycle-desc {
+            font-size: 0.78rem;
+            color: #888;
+            font-weight: 300;
+        }
+
+        /* ── Origin ── */
+        .origin-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: #444;
+            line-height: 1.55;
+            margin-bottom: 10px;
+        }
+
+        .origin-note {
+            font-size: 0.78rem;
+            color: #aaa;
+            font-weight: 300;
+        }
+
+        /* ── Footer ── */
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            font-size: 0.75rem;
+            color: #ccc;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 60px 24px; }
+            h1 { font-size: 2.2rem; }
+            .flow { flex-direction: column; align-items: flex-start; }
+            .f-arr { transform: rotate(90deg); }
+            .route-row { flex-direction: column; gap: 4px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <header>
+            <a href="../../projects.html" class="back-link">← Back</a>
+            <h1>Ramanujan</h1>
+            <p class="subtitle">Uses the best AI model for every task, every day.</p>
+        </header>
+
+
+        <!-- 1. THE PROBLEM -->
+        <section>
+            <h2>The Problem</h2>
+            <p class="statement">You're using one model for everything.<br>That's not smart. That's expensive.</p>
+            <p class="prose">Claude is better at coding. ChatGPT is better at images. Perplexity is better at research. A local model is free for simple tasks. <strong>You're paying API rates for work a $0 model could handle.</strong></p>
+        </section>
+
+
+        <!-- 2. HOW IT WORKS -->
+        <section>
+            <h2>How It Works</h2>
+            <div class="flow">
+                <div class="f-node">Your prompt</div>
+                <span class="f-arr">→</span>
+                <div class="f-node em">Classify</div>
+                <span class="f-arr">→</span>
+                <div class="f-node em">Route</div>
+                <span class="f-arr">→</span>
+                <div class="f-stack">
+                    <div class="f-node">Best model today</div>
+                    <div class="f-node">Local (if sufficient)</div>
+                </div>
+                <span class="f-arr">→</span>
+                <div class="f-node">Output</div>
+            </div>
+            <p class="prose">Every prompt is classified by task type. Ramanujan then checks its daily-updated routing table and sends it to <strong>whichever model ranks highest for that task today</strong> — or handles it locally if a local model is sufficient.</p>
+        </section>
+
+
+        <!-- 3. DAILY RESEARCH -->
+        <section>
+            <h2>Daily Research Cycle</h2>
+            <div class="cycle">
+                <div class="cycle-step">
+                    <span class="cycle-time">Night</span>
+                    <div class="cycle-body">
+                        <div class="cycle-title">Benchmark</div>
+                        <div class="cycle-desc">Runs standard prompts across all major models. Scores quality, speed, and cost per task category.</div>
+                    </div>
+                </div>
+                <div class="cycle-step">
+                    <span class="cycle-time">Morning</span>
+                    <div class="cycle-body">
+                        <div class="cycle-title">Update routing table</div>
+                        <div class="cycle-desc">Writes today's best model per task. A new GPT release yesterday changes tomorrow's routes.</div>
+                    </div>
+                </div>
+                <div class="cycle-step">
+                    <span class="cycle-time">Always</span>
+                    <div class="cycle-body">
+                        <div class="cycle-title">Route on demand</div>
+                        <div class="cycle-desc">Every incoming prompt hits the freshest routing data. No manual config. No stale defaults.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 4. ROUTING TABLE -->
+        <section>
+            <h2>Today's Routes</h2>
+            <div class="route-row">
+                <span class="route-task">Image generation</span>
+                <div class="route-right">
+                    <span class="route-model">ChatGPT / DALL-E</span>
+                    <span class="route-why">Best quality today</span>
+                </div>
+            </div>
+            <div class="route-row">
+                <span class="route-task">Code &amp; debugging</span>
+                <div class="route-right">
+                    <span class="route-model">Claude</span>
+                    <span class="route-why">Top on SWE benchmarks</span>
+                </div>
+            </div>
+            <div class="route-row">
+                <span class="route-task">Research &amp; citations</span>
+                <div class="route-right">
+                    <span class="route-model">Perplexity</span>
+                    <span class="route-why">Live web access</span>
+                </div>
+            </div>
+            <div class="route-row">
+                <span class="route-task">Long-form writing</span>
+                <div class="route-right">
+                    <span class="route-model">GPT-4o</span>
+                    <span class="route-why">Coherence at length</span>
+                </div>
+            </div>
+            <div class="route-row">
+                <span class="route-task">Simple Q&amp;A, summaries</span>
+                <div class="route-right">
+                    <span class="route-model">Local model</span>
+                    <span class="route-why">Free. Fast. Enough.</span>
+                </div>
+            </div>
+            <p class="prose" style="margin-top: 16px; font-size: 0.78rem;">Routes change as models improve. What's best today may not be best next week — Ramanujan always knows.</p>
+        </section>
+
+
+        <!-- 5. TOKEN OPTIMIZATION -->
+        <section>
+            <h2>Token Optimization</h2>
+            <p class="prose" style="margin-bottom: 20px;">Beyond routing, Ramanujan compresses prompts before they're sent. Redundant context, filler, repetition — removed. <strong>Same output. Fewer tokens.</strong></p>
+
+            <div class="token-row">
+                <span class="token-label">Before</span>
+                <div class="token-bar-wrap">
+                    <div class="token-bar" style="width: 100%; background: rgba(0,0,0,0.12);"></div>
+                </div>
+                <span class="token-count">840 tokens</span>
+            </div>
+            <div class="token-row">
+                <span class="token-label">After</span>
+                <div class="token-bar-wrap">
+                    <div class="token-bar" style="width: 40%;"></div>
+                </div>
+                <span class="token-count">340 tokens</span>
+            </div>
+            <p class="token-savings">60% fewer tokens. Same quality output. Cost drops proportionally.</p>
+        </section>
+
+
+        <!-- 6. RESULT -->
+        <section>
+            <h2>The Result</h2>
+            <p class="statement">Better answers.<br>Lower bill.<br>Zero extra config.</p>
+            <p class="prose">You write prompts the way you always have. Ramanujan handles which model, how many tokens, and when to go local versus API. <strong>Invisibly. Daily.</strong></p>
+        </section>
+
+
+        <!-- 7. ORIGIN -->
+        <section>
+            <h2>Why Ramanujan</h2>
+            <p class="origin-quote">"He found answers others couldn't —<br>without the tools others had."</p>
+            <p class="origin-note">Srinivasa Ramanujan solved hard problems with minimal resources. This project tries to do the same: get the best output from AI, without spending more than necessary.</p>
+        </section>
+
+
+        <footer>
+            &copy; 2026 Avinash Singh
+        </footer>
+
+    </div>
+</body>
+
+</html>

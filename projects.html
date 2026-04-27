@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Side Projects — Avinash Singh</title>
+    <meta name="description" content="Side projects by Avinash Singh — things built for curiosity, not for work.">
+    <link rel="icon" type="image/png" href="https://github.com/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #1a1a1a;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 80px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        header {
+            margin-bottom: 60px;
+        }
+
+        .back-link {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #555;
+            text-decoration: underline;
+            text-decoration-color: rgba(0, 0, 0, 0.3);
+            text-underline-offset: 3px;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: text-decoration-color 0.2s, color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #111;
+            text-decoration-color: #111;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            letter-spacing: 0.02em;
+            font-weight: 300;
+        }
+
+        section {
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 8px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 20px;
+        }
+
+        .link-item {
+            display: block;
+            text-decoration: none;
+            color: #111;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .link-item:hover {
+            color: #000;
+        }
+
+        .link-item:hover .link-title {
+            text-decoration-color: #111;
+        }
+
+        .link-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            display: block;
+            margin-bottom: 4px;
+            text-decoration: underline;
+            text-decoration-color: rgba(0, 0, 0, 0.25);
+            text-underline-offset: 3px;
+        }
+
+        .link-desc {
+            font-size: 0.8rem;
+            color: #555;
+            font-weight: 400;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            font-size: 0.75rem;
+            color: #ccc;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 60px 24px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Back</a>
+            <h1>Side Projects</h1>
+            <p class="subtitle">Things I build for myself — curiosity, not deadlines.</p>
+        </header>
+
+        <section>
+            <h2>Built</h2>
+            <ul>
+                <li>
+                    <a href="avi/ramanujan/index.html" class="link-item">
+                        <span class="link-title">Project Ramanujan</span>
+                        <span class="link-desc">An AI token router that picks the cheapest model capable of answering your prompt — local first, API as fallback.</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <footer>
+            &copy; 2026 Avinash Singh
+        </footer>
+    </div>
+</body>
+
+</html>
