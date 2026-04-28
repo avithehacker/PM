@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramanujan Platform — Avinash Singh</title>
+    <meta name="description" content="One AI routing engine. Every interface.">
+    <link rel="icon" type="image/png" href="https://github.com/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #ffffff;
+            color: #1a1a1a;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 80px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .back-link {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #555;
+            text-decoration: underline;
+            text-decoration-color: rgba(0, 0, 0, 0.3);
+            text-underline-offset: 3px;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: text-decoration-color 0.2s, color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #111;
+            text-decoration-color: #111;
+        }
+
+        header {
+            margin-bottom: 64px;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 300;
+        }
+
+        section {
+            margin-bottom: 56px;
+        }
+
+        h2 {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            padding-bottom: 8px;
+        }
+
+        .prose {
+            font-size: 0.88rem;
+            color: #444;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .prose strong {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        .statement {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.45rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #222;
+            margin-bottom: 14px;
+        }
+
+        /* ── Platform cards ── */
+        .platform-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .platform-item {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .platform-item:last-child {
+            border-bottom: none;
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .platform-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: #1a1a1a;
+        }
+
+        .platform-tag {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #bbb;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+            padding: 3px 8px;
+        }
+
+        .platform-tag.soon {
+            color: #aaa;
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .platform-desc {
+            font-size: 0.82rem;
+            color: #666;
+            font-weight: 300;
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+
+        /* ── Surface mockups ── */
+        .mock {
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 0.75rem;
+        }
+
+        .mock-bar {
+            background: #f7f7f7;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mock-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.12);
+        }
+
+        .mock-bar-title {
+            font-size: 0.65rem;
+            color: #aaa;
+            letter-spacing: 0.05em;
+            margin-left: 4px;
+        }
+
+        .mock-body {
+            padding: 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mock-msg {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .mock-who {
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: #bbb;
+            text-transform: uppercase;
+            min-width: 42px;
+            padding-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .mock-text {
+            font-size: 0.78rem;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .mock-route {
+            font-size: 0.65rem;
+            color: #bbb;
+            margin-top: 3px;
+        }
+
+        /* Terminal mockup */
+        .mock-term {
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .mock-term .mock-bar {
+            background: #2a2a2a;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .mock-term .mock-dot {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .mock-term .mock-bar-title {
+            color: #555;
+        }
+
+        .mock-term .mock-body {
+            padding: 14px 16px;
+            gap: 6px;
+        }
+
+        .term-line {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.72rem;
+            line-height: 1.6;
+        }
+
+        .term-prompt {
+            color: #555;
+        }
+
+        .term-cmd {
+            color: #e0e0e0;
+        }
+
+        .term-out {
+            color: #777;
+        }
+
+        .term-hi {
+            color: #e0e0e0;
+        }
+
+        /* VS Code mockup */
+        .mock-vscode .mock-bar {
+            background: #2d2d2d;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mock-vscode .mock-bar-title {
+            color: #666;
+        }
+
+        .mock-vscode .mock-dot {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .mock-vscode {
+            background: #1e1e1e;
+        }
+
+        .mock-vscode .mock-body {
+            padding: 0;
+        }
+
+        .vscode-layout {
+            display: grid;
+            grid-template-columns: 1fr 220px;
+        }
+
+        .vscode-editor {
+            padding: 14px 16px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .vscode-line {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.7rem;
+            line-height: 1.7;
+            color: #666;
+        }
+
+        .vscode-line .kw {
+            color: #569cd6;
+        }
+
+        .vscode-line .fn {
+            color: #dcdcaa;
+        }
+
+        .vscode-line .str {
+            color: #ce9178;
+        }
+
+        .vscode-line .cm {
+            color: #4a4a4a;
+        }
+
+        .vscode-panel {
+            padding: 14px 14px;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .vscode-panel-title {
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .vscode-row {
+            font-size: 0.65rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .vscode-row span {
+            color: #aaa;
+        }
+
+        /* API mockup */
+        .mock-api .mock-body {
+            background: #fafafa;
+            padding: 14px 16px;
+        }
+
+        .api-line {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.72rem;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .api-line .key {
+            color: #777;
+        }
+
+        .api-line .val {
+            color: #333;
+        }
+
+        .api-line .route {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        /* ── Download ── */
+        .dl-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .dl-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1a1a1a;
+            background: #ffffff;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .dl-btn:hover {
+            border-color: #1a1a1a;
+            background: #f7f7f7;
+        }
+
+        .dl-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .dl-label {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            display: block;
+        }
+
+        .dl-sub {
+            font-size: 0.7rem;
+            color: #aaa;
+            font-weight: 300;
+            margin-top: 1px;
+            display: block;
+        }
+
+        /* ── Availability strip ── */
+        .avail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .avail-item {
+            padding: 16px 14px;
+            border: 1px solid rgba(0, 0, 0, 0.07);
+            border-radius: 7px;
+            text-align: center;
+        }
+
+        .avail-icon {
+            font-size: 1rem;
+            margin-bottom: 6px;
+            display: block;
+            color: #aaa;
+        }
+
+        .avail-name {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: #555;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .avail-status {
+            font-size: 0.62rem;
+            color: #bbb;
+            font-weight: 300;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            font-size: 0.75rem;
+            color: #ccc;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 60px 24px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .avail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .vscode-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .vscode-panel {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <header>
+            <a href="index.html" class="back-link">← Ramanujan</a>
+            <h1>Platform</h1>
+            <p class="subtitle">One routing engine. Every interface you already use.</p>
+        </header>
+
+
+        <!-- 1. IDEA -->
+        <section>
+            <h2>The Idea</h2>
+            <p class="statement">You shouldn't have to open a new app<br>to use a better model.</p>
+            <p class="prose">Ramanujan lives where you already work — your browser, terminal, editor, or any product
+                built on top of it. The routing engine runs underneath. <strong>You just prompt.</strong></p>
+        </section>
+
+
+        <!-- 2. SURFACES -->
+        <section>
+            <h2>Surfaces</h2>
+            <div class="platform-list">
+
+                <!-- Web App -->
+                <div class="platform-item">
+                    <div class="platform-header">
+                        <span class="platform-name">Web App</span>
+                        <span class="platform-tag soon">Coming soon</span>
+                    </div>
+                    <p class="platform-desc">A chat interface — familiar like ChatGPT or Claude. Type naturally.
+                        Ramanujan decides which model answers. You see what was routed, why, and what it cost.</p>
+                    <div class="mock">
+                        <div class="mock-bar">
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                            <span class="mock-bar-title">ramanujan.app</span>
+                        </div>
+                        <div class="mock-body">
+                            <div class="mock-msg">
+                                <span class="mock-who">You</span>
+                                <span class="mock-text">Generate a logo concept for a fintech startup</span>
+                            </div>
+                            <div class="mock-msg">
+                                <span class="mock-who">R</span>
+                                <div>
+                                    <span class="mock-text">Here's a concept direction…</span>
+                                    <div class="mock-route">Routed to ChatGPT / DALL-E · image task · 2.1¢</div>
+                                </div>
+                            </div>
+                            <div class="mock-msg">
+                                <span class="mock-who">You</span>
+                                <span class="mock-text">Now write the Python script that resizes it to 512×512</span>
+                            </div>
+                            <div class="mock-msg">
+                                <span class="mock-who">R</span>
+                                <div>
+                                    <span class="mock-text">from PIL import Image…</span>
+                                    <div class="mock-route">Routed to Claude · code task · 0.4¢</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terminal -->
+                <div class="platform-item">
+                    <div class="platform-header">
+                        <span class="platform-name">Terminal</span>
+                        <span class="platform-tag soon">Coming soon</span>
+                    </div>
+                    <p class="platform-desc">Install once. Prompt from anywhere in your workflow. Pipe output. Chain
+                        with scripts. Works exactly like a CLI should.</p>
+                    <div class="mock mock-term">
+                        <div class="mock-bar">
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                            <span class="mock-bar-title">zsh</span>
+                        </div>
+                        <div class="mock-body">
+                            <div class="term-line"><span class="term-prompt">~ $</span> <span class="term-cmd">ram
+                                    "explain this stack trace"</span></div>
+                            <div class="term-line term-out">→ routing: <span class="term-hi">Claude</span> (code /
+                                debug)</div>
+                            <div class="term-line term-out">→ tokens: <span class="term-hi">210 → 88</span> after
+                                compression</div>
+                            <div class="term-line term-out"></div>
+                            <div class="term-line term-out">The error occurs because…</div>
+                            <div class="term-line" style="margin-top:8px"><span class="term-prompt">~ $</span> <span
+                                    class="term-cmd">cat error.log | ram "summarise"</span></div>
+                            <div class="term-line term-out">→ routing: <span class="term-hi">Local model</span> (summary
+                                · $0.00)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VS Code -->
+                <div class="platform-item">
+                    <div class="platform-header">
+                        <span class="platform-name">VS Code Extension</span>
+                        <span class="platform-tag soon">Coming soon</span>
+                    </div>
+                    <p class="platform-desc">Inline suggestions and a side panel. Highlight code, ask a question, get an
+                        answer — routed to the right model without leaving the editor.</p>
+                    <div class="mock mock-vscode">
+                        <div class="mock-bar">
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                            <span class="mock-bar-title">main.py — VS Code</span>
+                        </div>
+                        <div class="mock-body">
+                            <div class="vscode-layout">
+                                <div class="vscode-editor">
+                                    <div class="vscode-line"><span class="kw">def</span> <span
+                                            class="fn">process_order</span>(order_id):</div>
+                                    <div class="vscode-line"> db = <span class="fn">get_connection</span>()</div>
+                                    <div class="vscode-line"> result = db.<span class="fn">query</span>(<span
+                                            class="str">"SELECT…"</span>)</div>
+                                    <div class="vscode-line"
+                                        style="background:rgba(255,255,255,0.04); border-radius:2px; padding: 0 4px; margin: 2px -4px;">
+                                        <span class="cm">&#x25BA; Ask Ramanujan: explain this</span></div>
+                                    <div class="vscode-line"> <span class="kw">return</span> result</div>
+                                </div>
+                                <div class="vscode-panel">
+                                    <div class="vscode-panel-title">Ramanujan</div>
+                                    <div class="vscode-row">Task <span>Code review</span></div>
+                                    <div class="vscode-row">Model <span>Claude</span></div>
+                                    <div class="vscode-row">Tokens <span>180 → 62</span></div>
+                                    <div class="vscode-row">Cost <span>0.1¢</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API -->
+                <div class="platform-item">
+                    <div class="platform-header">
+                        <span class="platform-name">API</span>
+                        <span class="platform-tag soon">Coming soon</span>
+                    </div>
+                    <p class="platform-desc">Drop Ramanujan into any product. One endpoint replaces all your model
+                        integrations. You send a prompt. The API returns the response, the model used, and the token
+                        cost.</p>
+                    <div class="mock mock-api">
+                        <div class="mock-bar">
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                            <div class="mock-dot"></div>
+                            <span class="mock-bar-title">POST /v1/prompt</span>
+                        </div>
+                        <div class="mock-body">
+                            <div class="api-line"><span class="key">{</span></div>
+                            <div class="api-line">&nbsp;&nbsp;<span class="key">"prompt":</span> <span class="val">"Fix
+                                    the bug in this function"</span>,</div>
+                            <div class="api-line">&nbsp;&nbsp;<span class="key">"context":</span> <span
+                                    class="val">"code"</span></div>
+                            <div class="api-line"><span class="key">}</span></div>
+                            <div class="api-line" style="margin-top:10px; color:#bbb;">// response</div>
+                            <div class="api-line"><span class="key">{</span></div>
+                            <div class="api-line">&nbsp;&nbsp;<span class="key">"output":</span> <span
+                                    class="val">"Here's the fixed version…"</span>,</div>
+                            <div class="api-line">&nbsp;&nbsp;<span class="key">"routed_to":</span> <span
+                                    class="route">"claude-sonnet"</span>,</div>
+                            <div class="api-line">&nbsp;&nbsp;<span class="key">"tokens":</span> <span
+                                    class="val">74</span>,</div>
+                            <div class="api-line">&nbsp;&nbsp;<span class="key">"cost_usd":</span> <span
+                                    class="val">0.0003</span></div>
+                            <div class="api-line"><span class="key">}</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- 3. DOWNLOAD -->
+        <section>
+            <h2>Download</h2>
+            <p class="prose" style="margin-bottom: 20px;">The desktop app is available now. Install it to try the
+                routing engine locally — works offline with a local model, or connect your API keys for cloud models.
+            </p>
+            <div class="dl-row">
+                <a href="https://github.com/avithehacker/ai-desktop/releases/download/v1.0.0/Ramanujan-mac.dmg"
+                    class="dl-btn">
+                    <span class="dl-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                        </svg>
+                    </span>
+                    <span>
+                        <span class="dl-label">Mac</span>
+                        <span class="dl-sub">Apple Silicon · DMG · 190 MB</span>
+                    </span>
+                </a>
+                <a href="https://github.com/avithehacker/ai-desktop/releases/download/v1.0.0/Ramanujan-windows.exe"
+                    class="dl-btn">
+                    <span class="dl-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M3 12V6.75l6-1.32v6.57H3zm17 0v-7.5l-9 1.63V12h9zM3 13h6v6.43l-6-1.33V13zm9 .56L21 15.19V19l-9-1.63V13.56z" />
+                        </svg>
+                    </span>
+                    <span>
+                        <span class="dl-label">Windows</span>
+                        <span class="dl-sub">x64 · EXE · 157 MB</span>
+                    </span>
+                </a>
+            </div>
+        </section>
+
+
+        <!-- 5. AVAILABILITY -->
+        <section>
+            <h2>Availability</h2>
+            <div class="avail-grid">
+                <div class="avail-item">
+                    <span class="avail-icon">⊞</span>
+                    <span class="avail-name">Web</span>
+                    <span class="avail-status">In design</span>
+                </div>
+                <div class="avail-item">
+                    <span class="avail-icon">&gt;_</span>
+                    <span class="avail-name">Terminal</span>
+                    <span class="avail-status">In design</span>
+                </div>
+                <div class="avail-item">
+                    <span class="avail-icon">{ }</span>
+                    <span class="avail-name">VS Code</span>
+                    <span class="avail-status">In design</span>
+                </div>
+                <div class="avail-item">
+                    <span class="avail-icon">⌁</span>
+                    <span class="avail-name">API</span>
+                    <span class="avail-status">In design</span>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 6. NOTE -->
+        <section>
+            <h2>Status</h2>
+            <p class="prose">This is a product concept. The routing logic and daily benchmarking engine are the core —
+                the interfaces above are how it reaches you. <strong>Everything here is a work in progress.</strong> If
+                this solves a problem you have, reach out.</p>
+        </section>
+
+
+        <footer>
+            &copy; 2026 Avinash Singh
+        </footer>
+
+    </div>
+</body>
+
+</html>
