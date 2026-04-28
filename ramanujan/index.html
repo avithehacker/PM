@@ -359,146 +359,54 @@
         <header>
             <a href="../projects.html" class="back-link">← Back</a>
             <h1>Ramanujan</h1>
-            <p class="subtitle">Uses the best AI model for every task, every day.</p>
+            <p class="subtitle">One AI. Every task. Just works.</p>
         </header>
 
 
-        <!-- 1. THE PROBLEM -->
+        <!-- 1. WHAT -->
         <section>
-            <h2>The Problem</h2>
-            <p class="statement">You're using one model for everything.<br>That's not smart. That's expensive.</p>
-            <p class="prose">Claude is better at coding. ChatGPT is better at images. Perplexity is better at research. A local model is free for simple tasks. <strong>You're paying API rates for work a $0 model could handle.</strong></p>
+            <p class="statement">You prompt.<br>It figures out the rest.</p>
         </section>
 
 
-        <!-- 2. HOW IT WORKS -->
+        <!-- 2. WHAT IT HANDLES -->
         <section>
-            <h2>How It Works</h2>
-            <div class="flow">
-                <div class="f-node">Your prompt</div>
-                <span class="f-arr">→</span>
-                <div class="f-node em">Classify</div>
-                <span class="f-arr">→</span>
-                <div class="f-node em">Route</div>
-                <span class="f-arr">→</span>
-                <div class="f-stack">
-                    <div class="f-node">Best model today</div>
-                    <div class="f-node">Local (if sufficient)</div>
-                </div>
-                <span class="f-arr">→</span>
-                <div class="f-node">Output</div>
-            </div>
-            <p class="prose">Every prompt is classified by task type. Ramanujan then checks its daily-updated routing table and sends it to <strong>whichever model ranks highest for that task today</strong> — or handles it locally if a local model is sufficient.</p>
-        </section>
-
-
-        <!-- 3. DAILY RESEARCH -->
-        <section>
-            <h2>Daily Research Cycle</h2>
-            <div class="cycle">
-                <div class="cycle-step">
-                    <span class="cycle-time">Night</span>
-                    <div class="cycle-body">
-                        <div class="cycle-title">Benchmark</div>
-                        <div class="cycle-desc">Runs standard prompts across all major models. Scores quality, speed, and cost per task category.</div>
-                    </div>
-                </div>
-                <div class="cycle-step">
-                    <span class="cycle-time">Morning</span>
-                    <div class="cycle-body">
-                        <div class="cycle-title">Update routing table</div>
-                        <div class="cycle-desc">Writes today's best model per task. A new GPT release yesterday changes tomorrow's routes.</div>
-                    </div>
-                </div>
-                <div class="cycle-step">
-                    <span class="cycle-time">Always</span>
-                    <div class="cycle-body">
-                        <div class="cycle-title">Route on demand</div>
-                        <div class="cycle-desc">Every incoming prompt hits the freshest routing data. No manual config. No stale defaults.</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- 4. ROUTING TABLE -->
-        <section>
-            <h2>Today's Routes</h2>
+            <h2>What it handles</h2>
             <div class="route-row">
                 <span class="route-task">Image generation</span>
-                <div class="route-right">
-                    <span class="route-model">ChatGPT / DALL-E</span>
-                    <span class="route-why">Best quality today</span>
-                </div>
+                <div class="route-right"><span class="route-why">✓</span></div>
             </div>
             <div class="route-row">
                 <span class="route-task">Code &amp; debugging</span>
-                <div class="route-right">
-                    <span class="route-model">Claude</span>
-                    <span class="route-why">Top on SWE benchmarks</span>
-                </div>
+                <div class="route-right"><span class="route-why">✓</span></div>
             </div>
             <div class="route-row">
                 <span class="route-task">Research &amp; citations</span>
-                <div class="route-right">
-                    <span class="route-model">Perplexity</span>
-                    <span class="route-why">Live web access</span>
-                </div>
+                <div class="route-right"><span class="route-why">✓</span></div>
             </div>
             <div class="route-row">
                 <span class="route-task">Long-form writing</span>
-                <div class="route-right">
-                    <span class="route-model">GPT-4o</span>
-                    <span class="route-why">Coherence at length</span>
-                </div>
+                <div class="route-right"><span class="route-why">✓</span></div>
             </div>
             <div class="route-row">
-                <span class="route-task">Simple Q&amp;A, summaries</span>
-                <div class="route-right">
-                    <span class="route-model">Local model</span>
-                    <span class="route-why">Free. Fast. Enough.</span>
-                </div>
+                <span class="route-task">Quick answers &amp; summaries</span>
+                <div class="route-right"><span class="route-why">✓</span></div>
             </div>
-            <p class="prose" style="margin-top: 16px; font-size: 0.78rem;">Routes change as models improve. What's best today may not be best next week — Ramanujan always knows.</p>
         </section>
 
 
-        <!-- 5. TOKEN OPTIMIZATION -->
+        <!-- 3. TOKEN -->
         <section>
-            <h2>Token Optimization</h2>
-            <p class="prose" style="margin-bottom: 20px;">Beyond routing, Ramanujan compresses prompts before they're sent. Redundant context, filler, repetition — removed. <strong>Same output. Fewer tokens.</strong></p>
-
-            <div class="token-row">
-                <span class="token-label">Before</span>
-                <div class="token-bar-wrap">
-                    <div class="token-bar" style="width: 100%; background: rgba(0,0,0,0.12);"></div>
-                </div>
-                <span class="token-count">840 tokens</span>
-            </div>
-            <div class="token-row">
-                <span class="token-label">After</span>
-                <div class="token-bar-wrap">
-                    <div class="token-bar" style="width: 40%;"></div>
-                </div>
-                <span class="token-count">340 tokens</span>
-            </div>
-            <p class="token-savings">60% fewer tokens. Same quality output. Cost drops proportionally.</p>
+            <h2>Cost</h2>
+            <p class="statement" style="font-size: 1.2rem;">80% less than what you pay today.</p>
+            <p class="prose">Same output. No extra steps.</p>
         </section>
 
 
-        <!-- 6. RESULT -->
-        <section>
-            <h2>The Result</h2>
-            <p class="statement">Better answers.<br>Lower bill.<br>Zero extra config.</p>
-            <p class="prose">You write prompts the way you always have. Ramanujan handles which model, how many tokens, and when to go local versus API. <strong>Invisibly. Daily.</strong></p>
-        </section>
-
-
-        <!-- 7. PLATFORM -->
+        <!-- 3. PLATFORM -->
         <section>
             <h2>Platform</h2>
-            <p class="statement">Ramanujan goes where you already work.</p>
-            <p class="prose" style="margin-bottom: 20px;">Web app, terminal, VS Code extension, API — one routing engine across every interface. You prompt the same way you always have.</p>
+            <p class="prose" style="margin-bottom: 20px;">Desktop app, web, terminal, VS Code, API.</p>
             <a href="platform.html" style="
                 display: inline-block;
                 font-size: 0.78rem;
@@ -512,38 +420,10 @@
         </section>
 
 
-        <!-- 8. DOWNLOAD -->
-        <section>
-            <h2>Download</h2>
-            <p class="prose" style="margin-bottom: 20px;">Early build. Install and try it — local models work offline, cloud models need an API key.</p>
-            <div class="dl-row">
-                <a href="https://github.com/avithehacker/ai-desktop/releases/download/v1.0.0/Ramanujan-mac.dmg" class="dl-btn">
-                    <span class="dl-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    </span>
-                    <span>
-                        <span class="dl-label">Mac</span>
-                        <span class="dl-sub">Apple Silicon · DMG · 190 MB</span>
-                    </span>
-                </a>
-                <a href="https://github.com/avithehacker/ai-desktop/releases/download/v1.0.0/Ramanujan-windows.exe" class="dl-btn">
-                    <span class="dl-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12V6.75l6-1.32v6.57H3zm17 0v-7.5l-9 1.63V12h9zM3 13h6v6.43l-6-1.33V13zm9 .56L21 15.19V19l-9-1.63V13.56z"/></svg>
-                    </span>
-                    <span>
-                        <span class="dl-label">Windows</span>
-                        <span class="dl-sub">x64 · EXE · 157 MB</span>
-                    </span>
-                </a>
-            </div>
-        </section>
-
-
-        <!-- 9. ORIGIN -->
+        <!-- 5. ORIGIN -->
         <section>
             <h2>Why Ramanujan</h2>
             <p class="origin-quote">"He found answers others couldn't —<br>without the tools others had."</p>
-            <p class="origin-note">Srinivasa Ramanujan solved hard problems with minimal resources. This project tries to do the same: get the best output from AI, without spending more than necessary.</p>
         </section>
 
 
