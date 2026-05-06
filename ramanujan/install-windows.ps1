@@ -3,7 +3,7 @@
 
 $ErrorActionPreference = 'Stop'
 
-$RELEASE_URL = "https://github.com/avithehacker/ai-desktop/releases/download/v1.0.0/Ramanujan-windows.exe"
+$RELEASE_URL = "https://github.com/avithehacker/ai-desktop/releases/download/v1.1.0/Ramanujan.Setup.1.0.0.exe"
 $TMP_EXE     = "$env:TEMP\Ramanujan-setup.exe"
 
 Write-Host ""

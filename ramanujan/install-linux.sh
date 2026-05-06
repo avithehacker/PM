@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-RELEASE_URL="https://github.com/avithehacker/ai-desktop/releases/download/v1.0.0/Ramanujan-1.0.0.AppImage"
+RELEASE_URL="https://github.com/avithehacker/ai-desktop/releases/download/v1.1.0/Ramanujan-1.0.0.AppImage"
 INSTALL_DIR="$HOME/.local/bin"
 APP_PATH="$INSTALL_DIR/Ramanujan"
 DESKTOP_DIR="$HOME/.local/share/applications"
