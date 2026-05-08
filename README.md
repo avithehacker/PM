@@ -9,7 +9,8 @@ Portfolio and project pages, hosted on GitHub Pages at [avithehacker.github.io/P
 ```
 PM/
 ├── index.html              # Portfolio homepage
-├── projects.html           # Projects listing
+├── projects.html           # Experiments listing (built projects)
+├── drafts.html             # First Draft — work prototypes and product docs
 ├── style.css               # Global styles
 │
 ├── ramanujan/              # Ramanujan project pages
@@ -17,9 +18,10 @@ PM/
 │   ├── platform.html       # Platform page — all surfaces + downloads
 │   └── install.sh          # Mac one-liner installer (handles quarantine)
 │
+├── e2r/                    # E2R Collections Digital Twin
+├── gainsight/              # GainPulse — customer success platform (separate repo, linked)
 ├── avi/                    # Old pages (archived)
 ├── doc/                    # Documents
-├── drafts.html             # Work in progress
 └── .github/workflows/      # GitHub Pages auto-deploy
 ```
 
@@ -67,3 +69,33 @@ Live at: **avithehacker.github.io/PM**
 ## The ai-desktop repo
 
 The actual app code lives at [github.com/avithehacker/ai-desktop](https://github.com/avithehacker/ai-desktop). That repo contains the Electron app, CLI, VS Code extension, and HTTP API. This PM repo only contains the portfolio and marketing pages.
+
+---
+
+## Experiments page (`projects.html`)
+
+The Experiments page lists things built outside of work — for curiosity or to solve a real problem.
+
+### What's listed and why
+
+**Project Ramanujan**
+An AI router that runs prompts through local models first and only calls the cloud when needed. Listed here because it's a fully working product with a desktop app, CLI, VS Code extension, and HTTP API — not just a prototype.
+- Links to: `ramanujan/index.html`
+
+**GainPulse**
+A customer success platform that does what expensive enterprise tools do — health scoring, churn signals, NPS, playbooks — at a fraction of the cost. Listed here because it solves a real problem for CS teams priced out of the big platforms.
+- Links to: [avithehacker.github.io/gainsight](https://avithehacker.github.io/gainsight/) (separate repo, deployed on GitHub Pages)
+
+**E2R Collections Digital Twin**
+Tracks the full lifecycle of a repossessed vehicle — from missed EMIs through repossession, yard intake, inspection, and back to auction. Moved here from First Draft because it's a complete, working dashboard, not just an early sketch.
+- Links to: `e2r/index.html`
+
+---
+
+## Changelog
+
+### May 8, 2026
+- Added GainPulse to Experiments page with a description focused on what it does for the user, not what it's built with
+- Added E2R Collections Digital Twin to Experiments page — moved out of First Draft since it's a complete working product
+- Removed E2R from `drafts.html` to avoid duplication
+- Updated README structure to reflect current state of the repo
