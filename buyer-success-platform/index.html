@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BuyerPulse — Auction Ops</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════
+       SIDEBAR
+  ══════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <div class="brand-logo">BP</div>
+      <div class="brand-name">BuyerPulse</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Main Menu</p>
+      <ul class="nav-list">
+
+        <li class="nav-item active" data-page="dashboard">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </span>
+          <span class="nav-label">Dashboard</span>
+        </li>
+
+        <li class="nav-item" data-page="buyers">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <span class="nav-label">Buyers</span>
+        </li>
+
+        <li class="nav-item" data-page="health">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </span>
+          <span class="nav-label">Health Scores</span>
+        </li>
+
+        <li class="nav-item" data-page="risk">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+          <span class="nav-label">Risk Center</span>
+          <span class="nav-badge">12</span>
+        </li>
+
+        <li class="nav-item" data-page="followups">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.13 12a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.08 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
+          </span>
+          <span class="nav-label">Follow Ups</span>
+          <span class="nav-badge">5</span>
+        </li>
+
+        <li class="nav-item" data-page="notifications">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </span>
+          <span class="nav-label">Notifications</span>
+          <span class="nav-badge alert">3</span>
+        </li>
+
+        <li class="nav-item" data-page="analytics">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </span>
+          <span class="nav-label">Analytics</span>
+        </li>
+
+        <li class="nav-item nav-item-ai" data-page="ai">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+          </span>
+          <span class="nav-label">AI Insights</span>
+          <span class="nav-badge ai-badge">NEW</span>
+        </li>
+
+      </ul>
+    </nav>
+
+    <!-- Profile -->
+    <div class="sidebar-profile">
+      <div class="profile-avatar">AS</div>
+      <div class="profile-info">
+        <div class="profile-name">Avinash Singh</div>
+        <div class="profile-role">Ops Manager</div>
+      </div>
+      <button class="profile-menu-btn" title="Account settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ══════════════════════════════
+       MAIN WRAPPER
+  ══════════════════════════════ -->
+  <div class="main-wrapper">
+
+    <!-- TOP NAVBAR -->
+    <header class="navbar">
+
+      <div class="navbar-left">
+        <button class="hamburger" id="hamburger" aria-label="Toggle sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="navbar-breadcrumb">
+          <span class="breadcrumb-root">BuyerPulse</span>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" id="breadcrumbCurrent">Dashboard</span>
+        </div>
+      </div>
+
+      <div class="navbar-right">
+        <div class="navbar-search">
+          <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="search-input" placeholder="Search buyers, lots…" />
+        </div>
+
+        <div class="notif-bell-wrap" id="notifBellWrap">
+          <button class="icon-btn" id="notifBell" title="Notifications" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-badge" id="notifBadge"></span>
+          </button>
+
+          <div class="notif-dropdown" id="notifDropdown" aria-hidden="true">
+            <div class="notif-dd-header">
+              <div class="notif-dd-title-row">
+                <span class="notif-dd-title">Notifications</span>
+                <span class="notif-dd-unread" id="notifDDUnread"></span>
+              </div>
+              <button class="notif-mark-all-btn" id="notifMarkAll">Mark all read</button>
+            </div>
+            <div class="notif-dd-list" id="notifDDList"></div>
+            <div class="notif-dd-footer">
+              <button class="notif-view-all-btn" id="notifViewAll">View all notifications</button>
+            </div>
+          </div>
+        </div>
+
+        <button class="icon-btn" title="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+
+        <div class="navbar-avatar" title="Avinash Singh">AS</div>
+      </div>
+
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="content">
+
+      <!-- ── DASHBOARD PAGE ────────────── -->
+      <section class="page active" id="page-dashboard">
+
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h1 class="welcome-heading">Good morning, Avinash 👋</h1>
+            <p class="welcome-sub">Here's what's happening across your buyer portfolio today.</p>
+          </div>
+          <div class="welcome-meta">
+            <span class="welcome-date" id="welcomeDate"></span>
+            <span class="welcome-tag">Live Operations</span>
+          </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="stat-grid" id="statGrid">
+          <!-- Injected by JS -->
+        </div>
+
+        <!-- Info Cards Row -->
+        <div class="info-row">
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <h3 class="info-card-title">Portfolio Health</h3>
+              <span class="chip chip-green">Stable</span>
+            </div>
+            <p class="info-card-body">
+              71% of your active buyers are in the healthy range. 12 buyers have dropped below the risk threshold this week and need attention.
+            </p>
+            <div class="info-card-footer">
+              <div class="health-bar-wrap">
+                <div class="health-bar-track">
+                  <div class="health-bar-fill" style="width: 71%"></div>
+                </div>
+                <span class="health-bar-label">71 / 100 avg score</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <h3 class="info-card-title">Today's Auctions</h3>
+              <span class="chip chip-blue">47 Live</span>
+            </div>
+            <p class="info-card-body">
+              47 auction lots are active right now. Peak bidding window is 2:00 PM – 5:00 PM. 3 lots require manual intervention before closing.
+            </p>
+            <div class="info-card-footer">
+              <div class="mini-stat-row">
+                <div class="mini-stat"><span class="mini-val">47</span><span class="mini-lbl">Live</span></div>
+                <div class="mini-stat"><span class="mini-val">23</span><span class="mini-lbl">Closing</span></div>
+                <div class="mini-stat"><span class="mini-val">3</span><span class="mini-lbl">Flagged</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <h3 class="info-card-title">Pending Follow Ups</h3>
+              <span class="chip chip-yellow">5 Due</span>
+            </div>
+            <p class="info-card-body">
+              5 follow-up tasks are due today. 2 are overdue from yesterday. Assign or complete them before the afternoon sync.
+            </p>
+            <div class="info-card-footer">
+              <div class="mini-stat-row">
+                <div class="mini-stat"><span class="mini-val">5</span><span class="mini-lbl">Due Today</span></div>
+                <div class="mini-stat"><span class="mini-val">2</span><span class="mini-lbl">Overdue</span></div>
+                <div class="mini-stat"><span class="mini-val">14</span><span class="mini-lbl">This Week</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section-label-row">
+          <h2 class="section-label">Quick Actions</h2>
+        </div>
+
+        <div class="quick-actions">
+          <button class="qa-btn">
+            <span class="qa-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            </span>
+            <span>Add Buyer</span>
+          </button>
+          <button class="qa-btn">
+            <span class="qa-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </span>
+            <span>Log Activity</span>
+          </button>
+          <button class="qa-btn">
+            <span class="qa-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.13 12a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.08 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
+            </span>
+            <span>Schedule Call</span>
+          </button>
+          <button class="qa-btn">
+            <span class="qa-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </span>
+            <span>Review Risk</span>
+          </button>
+          <button class="qa-btn">
+            <span class="qa-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </span>
+            <span>View Auctions</span>
+          </button>
+          <button class="qa-btn">
+            <span class="qa-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </span>
+            <span>Run Report</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ── BUYERS PAGE ───────────────── -->
+      <section class="page" id="page-buyers">
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-header-text">
+            <h2 class="page-title">Buyers</h2>
+            <p class="page-subtitle" id="buyerSubtitle">Loading buyers…</p>
+          </div>
+          <button class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Buyer
+          </button>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="table-toolbar">
+          <div class="toolbar-search-wrap">
+            <svg class="toolbar-search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input
+              type="text"
+              id="buyerSearch"
+              class="toolbar-search-input"
+              placeholder="Search by name or city…"
+              autocomplete="off"
+            />
+            <button class="search-clear-btn" id="searchClearBtn" title="Clear search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <div class="risk-filter-group" id="riskFilterGroup">
+            <button class="risk-pill active" data-risk="all">All</button>
+            <button class="risk-pill" data-risk="Low">Low</button>
+            <button class="risk-pill" data-risk="Medium">Medium</button>
+            <button class="risk-pill" data-risk="High">High</button>
+            <button class="risk-pill" data-risk="Critical">Critical</button>
+          </div>
+        </div>
+
+        <!-- Results summary bar -->
+        <div class="results-summary" id="resultsSummary"></div>
+
+        <!-- Table -->
+        <div class="table-container">
+          <table class="data-table" id="buyerTable">
+            <thead>
+              <tr>
+                <th>Buyer Name</th>
+                <th>Status</th>
+                <th>Health Score</th>
+                <th>EMD Balance</th>
+                <th>Last Active</th>
+                <th>Risk Level</th>
+              </tr>
+            </thead>
+            <tbody id="buyerTableBody"></tbody>
+          </table>
+
+          <!-- Empty state -->
+          <div class="table-empty-state" id="tableEmptyState">
+            <div class="table-empty-state-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <h4>No buyers found</h4>
+            <p>No buyers match your current filters. Try adjusting your search or risk filter.</p>
+            <button class="btn-ghost" id="clearFiltersBtn">Clear all filters</button>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-bar" id="paginationBar">
+          <span class="pagination-info" id="paginationInfo"></span>
+          <div class="pagination-controls" id="paginationControls"></div>
+        </div>
+
+      </section>
+
+      <!-- ── HEALTH SCORES PAGE ──────── -->
+      <section class="page" id="page-health">
+
+        <div class="page-header">
+          <div class="page-header-text">
+            <h2 class="page-title">Health Scores</h2>
+            <p class="page-subtitle">Buyer health across your portfolio</p>
+          </div>
+          <div class="score-legend">
+            <span class="legend-item"><span class="legend-dot ld-healthy"></span>Healthy (75+)</span>
+            <span class="legend-item"><span class="legend-dot ld-warning"></span>Warning (50–74)</span>
+            <span class="legend-item"><span class="legend-dot ld-risky"></span>Risky (&lt;50)</span>
+          </div>
+        </div>
+
+        <!-- Summary stat cards -->
+        <div class="hs-summary" id="hsSummary"></div>
+
+        <!-- Distribution bars + Portfolio snapshot -->
+        <div class="hs-insights-row">
+          <div class="hs-insight-card">
+            <div class="hs-insight-head">
+              <h3>Score Distribution</h3>
+              <span class="chip chip-blue">25 buyers</span>
+            </div>
+            <div class="dist-bars-list" id="distBarsList"></div>
+          </div>
+          <div class="hs-insight-card">
+            <div class="hs-insight-head">
+              <h3>Portfolio Snapshot</h3>
+            </div>
+            <div id="portfolioSnap"></div>
+          </div>
+        </div>
+
+        <!-- Individual health cards -->
+        <div class="hs-roster-bar">
+          <h3 class="hs-roster-label">Individual Scores</h3>
+          <div class="hs-filter-row" id="hsFilterRow"></div>
+        </div>
+
+        <div class="health-grid" id="healthGrid"></div>
+
+      </section>
+
+      <section class="page" id="page-risk">
+
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Risk Center</h2>
+            <p class="page-subtitle">Flagged buyers requiring immediate attention</p>
+          </div>
+          <button class="btn-danger" id="rcResolveAll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polyline points="20 6 9 17 4 12"/></svg>
+            Resolve All Critical
+          </button>
+        </div>
+
+        <!-- Summary cards -->
+        <div class="rc-summary" id="rcSummary"></div>
+
+        <!-- Toolbar: filters + count -->
+        <div class="rc-toolbar">
+          <div class="rc-filter-row" id="rcFilterRow"></div>
+          <span class="rc-count" id="rcCount"></span>
+        </div>
+
+        <!-- Risk feed -->
+        <div class="rc-feed" id="rcFeed"></div>
+
+      </section>
+
+      <section class="page" id="page-followups">
+
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Follow Ups</h2>
+            <p class="page-subtitle">Track and manage buyer follow-up tasks</p>
+          </div>
+          <button class="btn-primary" id="fuAddBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Follow Up
+          </button>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="fu-stats" id="fuStats"></div>
+
+        <!-- Kanban board — columns rendered by JS -->
+        <div class="kanban-board" id="kanbanBoard"></div>
+
+      </section>
+
+      <section class="page" id="page-notifications">
+
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Notifications</h2>
+            <p class="page-subtitle">System alerts and buyer activity events</p>
+          </div>
+          <button class="btn-ghost" id="pageMarkAllRead">Mark all read</button>
+        </div>
+
+        <div class="notif-page-tabs" id="notifPageTabs"></div>
+        <div class="notif-page-list" id="notifPageList"></div>
+
+      </section>
+
+      <section class="page" id="page-analytics">
+
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Analytics</h2>
+            <p class="page-subtitle">Buyer performance and auction insights</p>
+          </div>
+          <div class="an-date-filter" id="anDateFilter"></div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="an-kpi-grid" id="anKpiGrid"></div>
+
+        <!-- Row 1: Line chart (wide) + Donut (narrow) -->
+        <div class="an-row an-row-asym">
+          <div class="an-chart-card">
+            <div class="an-chart-header">
+              <div class="an-chart-title">Portfolio Health Trend</div>
+              <div class="an-chart-sub" id="anHealthSub">Avg health score over last 30 days</div>
+            </div>
+            <div class="an-chart-body" id="anHealthChart"></div>
+          </div>
+          <div class="an-chart-card">
+            <div class="an-chart-header">
+              <div class="an-chart-title">Risk Distribution</div>
+              <div class="an-chart-sub">Buyers by risk level</div>
+            </div>
+            <div class="an-chart-body" id="anRiskChart"></div>
+          </div>
+        </div>
+
+        <!-- Row 2: Bar chart + Top Buyers table -->
+        <div class="an-row an-row-equal">
+          <div class="an-chart-card">
+            <div class="an-chart-header">
+              <div class="an-chart-title">Auction Activity</div>
+              <div class="an-chart-sub" id="anActivitySub">Bids placed per period</div>
+            </div>
+            <div class="an-chart-body" id="anBidChart"></div>
+          </div>
+          <div class="an-chart-card">
+            <div class="an-chart-header">
+              <div class="an-chart-title">Top Buyers</div>
+              <div class="an-chart-sub" id="anBuyersSub">Ranked by bidding activity</div>
+            </div>
+            <div class="an-chart-body" id="anTopBuyers"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════
+           AI INSIGHTS PAGE
+      ══════════════════════════════ -->
+      <section class="page" id="page-ai">
+
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">AI Insights</h2>
+            <p class="page-subtitle">AI-generated operational summaries and recommendations</p>
+          </div>
+          <button class="btn-ai-generate" id="aiGenerateBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+            Generate Summary
+          </button>
+        </div>
+
+        <!-- AI thinking overlay -->
+        <div class="ai-thinking-overlay" id="aiThinkingOverlay">
+          <div class="ai-thinking-inner">
+            <div class="ai-thinking-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="ai-thinking-label">Analyzing portfolio data…</div>
+          </div>
+        </div>
+
+        <!-- Last generated timestamp -->
+        <div class="ai-meta-bar" id="aiMetaBar"></div>
+
+        <!-- Cards grid -->
+        <div class="ai-cards-grid" id="aiCardsGrid"></div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ══════════════════════════════
+       BUYER DETAIL DRAWER
+  ══════════════════════════════ -->
+  <!-- Follow Up Modal -->
+  <div class="fu-modal-overlay" id="fuModalOverlay"></div>
+  <div class="fu-modal" id="fuModal" role="dialog" aria-modal="true" aria-labelledby="fuModalTitle">
+    <div class="fu-modal-header">
+      <span class="fu-modal-title" id="fuModalTitle">Add Follow Up</span>
+      <button class="fu-modal-close" id="fuModalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="fu-modal-body">
+      <form id="fuForm" novalidate>
+
+        <div class="fu-field">
+          <label for="fuBuyer">Buyer</label>
+          <div class="fu-select-wrap">
+            <select id="fuBuyer" required></select>
+            <svg class="fu-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+
+        <div class="fu-field-row">
+          <div class="fu-field">
+            <label for="fuType">Task Type</label>
+            <div class="fu-select-wrap">
+              <select id="fuType" required></select>
+              <svg class="fu-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="fu-field">
+            <label for="fuPriority">Priority</label>
+            <div class="fu-select-wrap">
+              <select id="fuPriority" required></select>
+              <svg class="fu-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="fu-field-row">
+          <div class="fu-field">
+            <label for="fuAssignee">Assign To</label>
+            <div class="fu-select-wrap">
+              <select id="fuAssignee" required></select>
+              <svg class="fu-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="fu-field">
+            <label for="fuDueDate">Due Date</label>
+            <input type="date" id="fuDueDate" required />
+          </div>
+        </div>
+
+        <div class="fu-field">
+          <label for="fuNotes">Notes <span class="fu-label-opt">(optional)</span></label>
+          <textarea id="fuNotes" placeholder="Add context or instructions…" rows="3"></textarea>
+        </div>
+
+        <div class="fu-modal-footer">
+          <button type="button" class="btn-ghost" id="fuCancelBtn">Cancel</button>
+          <button type="submit" class="btn-primary">Add Task</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <aside class="drawer" id="buyerDrawer" role="dialog" aria-modal="true" aria-hidden="true">
+
+    <!-- Header: avatar + name + close -->
+    <div class="drawer-header">
+      <div class="drawer-identity">
+        <div class="drawer-avatar" id="drawerAvatar"></div>
+        <div class="drawer-name-block">
+          <div class="drawer-name" id="drawerName"></div>
+          <div class="drawer-meta" id="drawerMeta"></div>
+        </div>
+      </div>
+      <button class="drawer-close" id="drawerClose" aria-label="Close drawer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Score strip: health · EMD · risk -->
+    <div class="drawer-strip" id="drawerStrip"></div>
+
+    <!-- Tabs -->
+    <div class="drawer-tabs" id="drawerTabs">
+      <button class="dtab active" data-tab="details">Details</button>
+      <button class="dtab" data-tab="activity">Activity</button>
+      <button class="dtab" data-tab="followups">Follow Ups</button>
+      <button class="dtab" data-tab="payments">Payments</button>
+      <button class="dtab" data-tab="notes">Notes</button>
+    </div>
+
+    <!-- Tab content -->
+    <div class="drawer-body" id="drawerBody"></div>
+
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>
