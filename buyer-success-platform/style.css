@@ -2743,6 +2743,12 @@ button:focus-visible, a:focus-visible {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Clip ripple FX — exclude icon-btn so notif-badge stays visible */
+.risk-pill, .hf-btn, .an-date-btn, .page-btn, .qa-btn,
+.dtab, .nav-item, .profile-menu-btn {
+  overflow: hidden;
+}
+
 /* ── Better table header ─────────────────────── */
 .data-table thead th {
   font-size: 10.5px;

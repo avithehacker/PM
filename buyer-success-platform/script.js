@@ -741,12 +741,7 @@ function initBuyersPage() {
     openDrawer(parseInt(row.dataset.id, 10));
   });
 
-  /* Show skeleton rows briefly before first render */
-  const tbody = document.getElementById('buyerTableBody');
-  if (tbody) {
-    tbody.innerHTML = Array(6).fill('<tr class="skeleton-row"><td colspan="6"></td></tr>').join('');
-  }
-  setTimeout(applyAndRender, 400);
+  applyAndRender();
 }
 
 function resetFilters() {
@@ -778,26 +773,20 @@ const STATS = [
 function renderStats() {
   const grid = document.getElementById('statGrid');
   if (!grid) return;
-
-  /* Brief skeleton flash for perceived performance */
-  grid.innerHTML = Array(4).fill('<div class="skeleton-card"></div>').join('');
-
-  setTimeout(() => {
-    const arrowMap = { up: '▲', down: '▼', flat: '—' };
-    grid.innerHTML = STATS.map(s => `
-      <div class="stat-card">
-        <div class="stat-card-top">
-          <span class="stat-card-label">${s.label}</span>
-          <span class="stat-card-icon ${s.iconColor}">${s.icon}</span>
-        </div>
-        <div class="stat-card-value">${s.value}</div>
-        <div class="stat-card-delta ${s.dir}">
-          <span class="delta-arrow">${arrowMap[s.dir]}</span>
-          ${s.delta} <span class="delta-note">${s.deltaNote}</span>
-        </div>
+  const arrowMap = { up: '▲', down: '▼', flat: '—' };
+  grid.innerHTML = STATS.map(s => `
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <span class="stat-card-label">${s.label}</span>
+        <span class="stat-card-icon ${s.iconColor}">${s.icon}</span>
       </div>
-    `).join('');
-  }, 350);
+      <div class="stat-card-value">${s.value}</div>
+      <div class="stat-card-delta ${s.dir}">
+        <span class="delta-arrow">${arrowMap[s.dir]}</span>
+        ${s.delta} <span class="delta-note">${s.deltaNote}</span>
+      </div>
+    </div>
+  `).join('');
 }
 
 function renderWelcomeDate() {
@@ -2722,7 +2711,7 @@ function initAIPage() {
 function initRipple() {
   document.addEventListener('pointerdown', e => {
     const btn = e.target.closest('button, .nav-item, .risk-pill, .hf-btn, .an-date-btn, .page-btn, .qa-btn');
-    if (!btn || btn.disabled) return;
+    if (!btn || btn.disabled || btn.classList.contains('icon-btn')) return;
 
     const rect = btn.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height) * 1.6;
@@ -2740,7 +2729,6 @@ function initRipple() {
 
     const prevPos = getComputedStyle(btn).position;
     if (prevPos === 'static') btn.style.position = 'relative';
-    btn.style.overflow = 'hidden';
     btn.appendChild(ripple);
     setTimeout(() => ripple.remove(), 480);
   });
