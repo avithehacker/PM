@@ -1,7 +1,7 @@
 # BuyerPulse — Buyer Success Platform
 
 **Product Type:** Internal Operations Dashboard (Prototype)  
-**Built by:** Avinash Singh, Ops Manager  
+**Built by:** Avinash Singh, Product Manager  
 **Stack:** HTML · CSS · Vanilla JavaScript (no frameworks, no backend)  
 **Status:** Demo / Frontend-only  
 
