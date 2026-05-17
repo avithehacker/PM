@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BuyerPulse — Product Brief</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #4F63E8;
+      --blue-dim: #EEF0FA;
+      --green: #16A34A;
+      --red: #DC2626;
+      --amber: #D97706;
+      --text: #0F172A;
+      --sub: #475569;
+      --muted: #94A3B8;
+      --border: #E2E5F0;
+      --surface: #F8F9FC;
+    }
+
+    html { font-size: 10pt; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: #fff;
+      line-height: 1.65;
+      padding: 0;
+    }
+
+    /* ─── COVER PAGE ─── */
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 72px;
+      background: linear-gradient(140deg, #1a2260 0%, #2c3590 60%, #4F63E8 100%);
+      color: #fff;
+      page-break-after: always;
+    }
+
+    .cover-logo {
+      width: 56px; height: 56px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 40px;
+    }
+
+    .cover-tag {
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 16px;
+    }
+
+    .cover-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52pt;
+      font-weight: 400;
+      line-height: 1.05;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .cover-subtitle {
+      font-size: 14pt;
+      color: rgba(255,255,255,0.75);
+      font-weight: 300;
+      margin-bottom: 48px;
+      max-width: 420px;
+    }
+
+    .cover-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+
+    .cover-pill {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.25);
+      font-size: 8pt;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 48px;
+      margin-top: auto;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .cover-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .cover-meta-label { font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+    .cover-meta-value { font-size: 10pt; font-weight: 500; }
+
+    /* ─── BODY PAGES ─── */
+    .page {
+      padding: 52px 72px;
+      page-break-after: always;
+      max-width: 100%;
+    }
+
+    .page:last-child { page-break-after: auto; }
+
+    /* Section header */
+    .section-tag {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: 24pt;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    h2 {
+      font-size: 14pt;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 10px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 18px;
+      background: var(--blue);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    p {
+      font-size: 9.5pt;
+      color: var(--sub);
+      margin-bottom: 10px;
+      line-height: 1.7;
+    }
+
+    .lead {
+      font-size: 11pt;
+      color: var(--sub);
+      margin-bottom: 28px;
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 560px;
+    }
+
+    /* ─── DIVIDER ─── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
+    /* ─── FEATURE CARDS GRID ─── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 16px;
+    }
+
+    .feature-card-num {
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .feature-card-title {
+      font-size: 10pt;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .feature-card-desc {
+      font-size: 8.5pt;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    /* ─── TABLE ─── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+      margin: 14px 0;
+    }
+
+    thead th {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 7.5pt;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    tbody td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      color: var(--sub);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) td { background: #FAFBFF; }
+
+    /* ─── PILL BADGES ─── */
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-blue   { background: #EEF0FA; color: #4F63E8; }
+    .badge-green  { background: #DCFCE7; color: #16A34A; }
+    .badge-red    { background: #FEE2E2; color: #DC2626; }
+    .badge-amber  { background: #FEF3C7; color: #D97706; }
+    .badge-gray   { background: #F1F5F9; color: #64748B; }
+
+    /* ─── PROBLEM CARDS ─── */
+    .problem-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .problem-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .problem-num {
+      font-size: 22pt;
+      font-weight: 700;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .problem-title {
+      font-size: 10pt;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .problem-desc {
+      font-size: 8.5pt;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    /* ─── KPI ROW ─── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .kpi-card {
+      background: var(--blue-dim);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .kpi-value {
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--blue);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .kpi-label {
+      font-size: 7.5pt;
+      color: var(--sub);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── DATA MODEL BLOCK ─── */
+    .code-block {
+      background: #0F172A;
+      color: #CBD5E1;
+      border-radius: 10px;
+      padding: 18px 20px;
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 8pt;
+      line-height: 1.8;
+      margin: 14px 0;
+    }
+
+    .code-key   { color: #93C5FD; }
+    .code-type  { color: #6EE7B7; }
+    .code-str   { color: #FCA5A5; }
+
+    /* ─── DESIGN TOKEN TABLE ─── */
+    .token-swatch {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.1);
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    /* ─── AI CARDS ─── */
+    .ai-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .ai-card {
+      border: 1px solid #C7D2FE;
+      border-radius: 10px;
+      padding: 16px;
+      background: #EEF2FF;
+    }
+
+    .ai-card-title {
+      font-size: 9pt;
+      font-weight: 600;
+      color: #3730A3;
+      margin-bottom: 6px;
+    }
+
+    .ai-card-desc {
+      font-size: 8pt;
+      color: #4338CA;
+      line-height: 1.6;
+    }
+
+    /* ─── FOOTER ─── */
+    .page-footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 7.5pt;
+      color: var(--muted);
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { padding: 48px 64px; }
+      .cover { padding: 56px 64px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ COVER ═══════════════════════ -->
+<div class="cover">
+  <div class="cover-logo">BP</div>
+  <div class="cover-tag">Product Brief · 2026</div>
+  <div class="cover-title">BuyerPulse</div>
+  <div class="cover-subtitle">Buyer Success &amp; Auction Operations Platform — from insight to action in one dashboard.</div>
+  <div class="cover-pills">
+    <span class="cover-pill">Operations Dashboard</span>
+    <span class="cover-pill">Buyer Health Scoring</span>
+    <span class="cover-pill">Risk Management</span>
+    <span class="cover-pill">Follow-Up Kanban</span>
+    <span class="cover-pill">AI Insights</span>
+    <span class="cover-pill">Analytics</span>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Author</span>
+      <span class="cover-meta-value">Avinash Singh</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Role</span>
+      <span class="cover-meta-value">Ops Manager</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Type</span>
+      <span class="cover-meta-value">Frontend Prototype</span>
+    </div>
+    <div class="cover-meta-item">
+      <span class="cover-meta-label">Stack</span>
+      <span class="cover-meta-value">HTML · CSS · Vanilla JS</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PAGE 1 — OVERVIEW & PROBLEM ═══════════════════════ -->
+<div class="page">
+
+  <div class="section-tag">Overview</div>
+  <h1>What is BuyerPulse?</h1>
+  <p class="lead">
+    BuyerPulse is an internal auction operations dashboard for buyer success teams managing large dealer portfolios in vehicle auction platforms. It consolidates buyer health monitoring, risk management, follow-up task tracking, analytics, and AI-generated summaries into a single interface.
+  </p>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-value">25</div>
+      <div class="kpi-label">Mock Buyers</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">8</div>
+      <div class="kpi-label">Modules</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">5</div>
+      <div class="kpi-label">Drawer Tabs</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">0</div>
+      <div class="kpi-label">Dependencies</div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="section-tag">Problem Statement</div>
+  <h2>Why BuyerPulse?</h2>
+  <p>Auction operations teams managing hundreds of active dealer-buyers face compounding, disconnected problems that slow down proactive management.</p>
+
+  <div class="problem-row">
+    <div class="problem-card">
+      <div class="problem-num">01</div>
+      <div class="problem-title">Fragmented Data</div>
+      <div class="problem-desc">Buyer health, EMD balances, bid history, and follow-up tasks live across separate tools — CRM, spreadsheets, and auction software.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">02</div>
+      <div class="problem-title">Reactive Risk Management</div>
+      <div class="problem-desc">Teams only identify at-risk buyers after defaults or no-shows — not before. No early-warning system exists.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">03</div>
+      <div class="problem-title">Manual Follow-Up Tracking</div>
+      <div class="problem-desc">Call logs and task assignments are managed via email threads or shared sheets, with no accountability or due-date visibility.</div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">04</div>
+      <div class="problem-title">No Unified Portfolio View</div>
+      <div class="problem-desc">Managers lack a live dashboard to understand where attention is needed right now across the full buyer base.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>BuyerPulse — Product Brief</span>
+    <span>Avinash Singh · 2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PAGE 2 — FEATURES ═══════════════════════ -->
+<div class="page">
+
+  <div class="section-tag">Features</div>
+  <h1>Platform Modules</h1>
+  <p class="lead">Eight interconnected modules — each solving a discrete ops workflow.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-num">Module 01</div>
+      <div class="feature-card-title">Dashboard</div>
+      <div class="feature-card-desc">Live KPI stat cards, portfolio health bar, auction status, pending follow-ups, and quick action buttons. Morning briefing at a glance.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-num">Module 02</div>
+      <div class="feature-card-title">Buyers</div>
+      <div class="feature-card-desc">Paginated buyer roster with live search, risk filter pills, and a slide-in detail drawer with 5 tabs: Details, Activity, Follow Ups, Payments, Notes.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-num">Module 03</div>
+      <div class="feature-card-title">Health Scores</div>
+      <div class="feature-card-desc">Portfolio-wide health scoring — score distribution histogram, portfolio snapshot, individual buyer health cards with gauge and filter row.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-num">Module 04</div>
+      <div class="feature-card-title">Risk Center</div>
+      <div class="feature-card-desc">Triage view for flagged buyers. Risk feed cards with reason, EMD exposure, and action buttons: Contact, Suspend, Resolve. Bulk resolve for Critical tier.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-num">Module 05</div>
+      <div class="feature-card-title">Follow Ups</div>
+      <div class="feature-card-desc">Three-column kanban (To Do → In Progress → Done). Task cards with type, priority, due date, and assignee. Add Follow Up modal with full form.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-num">Module 06</div>
+      <div class="feature-card-title">Notifications</div>
+      <div class="feature-card-desc">Bell dropdown with unread badge, tabbed notification page (All / Unread / Alerts / Updates), Mark All Read, and View All actions.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-num">Module 07</div>
+      <div class="feature-card-title">Analytics</div>
+      <div class="feature-card-desc">Pure CSS/SVG charts — health trend line chart, risk distribution donut, auction activity bar chart, and top buyers table. 7D / 30D / 90D date filter.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-num">Module 08</div>
+      <div class="feature-card-title">AI Insights</div>
+      <div class="feature-card-desc">AI-generated operational summaries with thinking overlay animation, character-by-character typing effect, expand/collapse cards, and 3-variant rotation.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>BuyerPulse — Product Brief</span>
+    <span>Avinash Singh · 2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PAGE 3 — BUYERS & DRAWER ═══════════════════════ -->
+<div class="page">
+
+  <div class="section-tag">Module Detail</div>
+  <h1>Buyers &amp; Detail Drawer</h1>
+  <p class="lead">The buyers module is the operational core — search, filter, and drill into any dealer's full profile in seconds.</p>
+
+  <h2>Buyer Table</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Column</th><th>Description</th><th>Data Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Buyer Name</td><td>Dealer / company name and city</td><td>string</td></tr>
+      <tr><td>Status</td><td>Active · Inactive · Watchlist · Suspended</td><td>enum</td></tr>
+      <tr><td>Health Score</td><td>0–100 score with colour-coded badge (green / amber / red)</td><td>number</td></tr>
+      <tr><td>EMD Balance</td><td>Earnest Money Deposit in ₹, formatted to lakhs</td><td>number</td></tr>
+      <tr><td>Last Active</td><td>Relative time — "Today", "3 days ago", "2 weeks ago"</td><td>date</td></tr>
+      <tr><td>Risk Level</td><td>Low · Medium · High · Critical</td><td>enum</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Detail Drawer Tabs</h2>
+  <table>
+    <thead>
+      <tr><th>Tab</th><th>Content</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Details</strong></td><td>Email, phone, account manager, member since, total bids, auctions won, win rate, current status</td></tr>
+      <tr><td><strong>Activity</strong></td><td>Chronological bid history — lot number, auction name, bid amount (₹), date, result (Won / Lost / Outbid / Withdrawn)</td></tr>
+      <tr><td><strong>Follow Ups</strong></td><td>Timeline of calls, emails, meetings, and notes — type icon, description, assigned manager, date</td></tr>
+      <tr><td><strong>Payments</strong></td><td>Invoice table — invoice ID, amount, due date, status badge (Paid / Pending / Overdue / Partially Paid)</td></tr>
+      <tr><td><strong>Notes</strong></td><td>Free-text account notes with author attribution and date</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Sample Buyer Portfolio</h2>
+  <table>
+    <thead>
+      <tr><th>Buyer</th><th>City</th><th>Score</th><th>EMD</th><th>Risk</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Agarwal Auto Traders</td><td>Bhopal</td><td>93</td><td>₹5.0L</td><td><span class="badge badge-green">Low</span></td><td>Active</td></tr>
+      <tr><td>Balaji Vehicle Traders</td><td>Hyderabad</td><td>91</td><td>₹4.0L</td><td><span class="badge badge-green">Low</span></td><td>Active</td></tr>
+      <tr><td>Kerala Auto Exchange</td><td>Kochi</td><td>89</td><td>₹4.5L</td><td><span class="badge badge-green">Low</span></td><td>Active</td></tr>
+      <tr><td>Shriram Automall India</td><td>Mumbai</td><td>88</td><td>₹2.5L</td><td><span class="badge badge-green">Low</span></td><td>Active</td></tr>
+      <tr><td>Mahindra First Choice</td><td>Delhi</td><td>74</td><td>₹1.25L</td><td><span class="badge badge-amber">Medium</span></td><td>Active</td></tr>
+      <tr><td>Vinayak Motors Pvt. Ltd.</td><td>Bangalore</td><td>44</td><td>₹50K</td><td><span class="badge badge-amber">High</span></td><td>Watchlist</td></tr>
+      <tr><td>Priya Logistics Pvt.</td><td>Kolkata</td><td>38</td><td>₹25K</td><td><span class="badge badge-red">Critical</span></td><td>Watchlist</td></tr>
+      <tr><td>Patel Motors &amp; Auctions</td><td>Vadodara</td><td>22</td><td>₹0</td><td><span class="badge badge-red">Critical</span></td><td>Suspended</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span>BuyerPulse — Product Brief</span>
+    <span>Avinash Singh · 2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PAGE 4 — AI INSIGHTS ═══════════════════════ -->
+<div class="page">
+
+  <div class="section-tag">Module Detail</div>
+  <h1>AI Insights</h1>
+  <p class="lead">A simulated AI operations layer — typing animation, thinking overlay, and structured summaries — that communicates the intended product experience in demos without a live model.</p>
+
+  <h2>How It Works</h2>
+  <table>
+    <thead>
+      <tr><th>Step</th><th>What Happens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1. Generate</td><td>User clicks "Generate Summary". The button disables and the thinking overlay activates.</td></tr>
+      <tr><td>2. Thinking</td><td>Animated three-dot loader with "Analyzing portfolio data…" label plays for 1.8 seconds.</td></tr>
+      <tr><td>3. Render</td><td>Six insight cards slide in one by one, each starting the typing animation immediately.</td></tr>
+      <tr><td>4. Typing</td><td>Text types character-by-character at ~11ms per char, with longer pauses at punctuation (55ms at ".", 28ms at ",").</td></tr>
+      <tr><td>5. Expand / Collapse</td><td>Each card has a toggle to show full detail or collapse to a one-line summary.</td></tr>
+      <tr><td>6. Variants</td><td>Three summary variants rotate on each generation for demo freshness.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Summary Cards</h2>
+  <div class="ai-grid">
+    <div class="ai-card">
+      <div class="ai-card-title">Portfolio Health</div>
+      <div class="ai-card-desc">Overall health trend, declining buyers, recommended interventions.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-title">Risk Alerts</div>
+      <div class="ai-card-desc">Critical buyer count, total EMD exposure, escalation recommendations.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-title">EMD Intelligence</div>
+      <div class="ai-card-desc">Top depositors, at-risk balances, suggested top-up nudges.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-title">Auction Performance</div>
+      <div class="ai-card-desc">Win rates by buyer tier, high-activity buyers, bid coaching opportunities.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-title">Engagement Insights</div>
+      <div class="ai-card-desc">Inactive buyer list, follow-up backlog, outreach recommendations.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-card-title">Weekly Forecast</div>
+      <div class="ai-card-desc">Predicted auction activity, expected risk movements for next 7 days.</div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="section-tag">Design Decision</div>
+  <h2>AI as UX Metaphor</h2>
+  <p>The AI Insights page is not connected to any language model. The typing animation and thinking overlay create the <em>feel</em> of AI reasoning — communicating product intent and user experience in a demo context without requiring infrastructure. This is a deliberate prototyping technique: the interaction design validates the concept independently of the ML layer.</p>
+
+  <div class="page-footer">
+    <span>BuyerPulse — Product Brief</span>
+    <span>Avinash Singh · 2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PAGE 5 — DESIGN SYSTEM ═══════════════════════ -->
+<div class="page">
+
+  <div class="section-tag">Design System</div>
+  <h1>UI &amp; Design Language</h1>
+  <p class="lead">A full design system in CSS custom properties — light mode, consistent elevation, and purposeful motion.</p>
+
+  <h2>Colour Tokens</h2>
+  <table>
+    <thead>
+      <tr><th>Token</th><th>Value</th><th>Usage</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="token-swatch" style="background:#4F63E8"></span><code>--color-primary</code></td><td>#4F63E8</td><td>Buttons, active states, links, chart bars</td></tr>
+      <tr><td><span class="token-swatch" style="background:#EEF0FA"></span><code>--bg-base</code></td><td>#EEF0FA</td><td>Page background</td></tr>
+      <tr><td><span class="token-swatch" style="background:#FFFFFF; border-color:#ccc"></span><code>--bg-surface</code></td><td>#FFFFFF</td><td>Cards, drawers, modals</td></tr>
+      <tr><td><span class="token-swatch" style="background:#F4F5FC"></span><code>--bg-elevated</code></td><td>#F4F5FC</td><td>Table headers, secondary panels</td></tr>
+      <tr><td><span class="token-swatch" style="background:#0F172A"></span><code>--text-primary</code></td><td>#0F172A</td><td>Headings, body copy</td></tr>
+      <tr><td><span class="token-swatch" style="background:#475569"></span><code>--text-secondary</code></td><td>#475569</td><td>Labels, sub-text</td></tr>
+      <tr><td><span class="token-swatch" style="background:#94A3B8"></span><code>--text-muted</code></td><td>#94A3B8</td><td>Placeholders, timestamps</td></tr>
+      <tr><td><span class="token-swatch" style="background:#16A34A"></span><code>--color-success</code></td><td>#16A34A</td><td>Healthy scores, positive deltas, Low risk</td></tr>
+      <tr><td><span class="token-swatch" style="background:#DC2626"></span><code>--color-danger</code></td><td>#DC2626</td><td>Critical risk, overdue, suspended status</td></tr>
+      <tr><td><span class="token-swatch" style="background:#D97706"></span><code>--color-warning</code></td><td>#D97706</td><td>Medium risk, due-soon, warning states</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Typography</h2>
+  <table>
+    <thead>
+      <tr><th>Element</th><th>Font</th><th>Weight</th><th>Size</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Page Titles</td><td>Inter</td><td>600</td><td>1.5–1.8rem</td></tr>
+      <tr><td>Section Labels</td><td>Inter</td><td>600</td><td>0.7rem, uppercase, 0.2em spacing</td></tr>
+      <tr><td>Body / Descriptions</td><td>Inter</td><td>300–400</td><td>0.85–0.9rem</td></tr>
+      <tr><td>Stat Card Values</td><td>Inter</td><td>700</td><td>1.6–2rem</td></tr>
+      <tr><td>Meta / Timestamps</td><td>Inter</td><td>300</td><td>0.75rem</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Motion &amp; Interaction</h2>
+  <table>
+    <thead>
+      <tr><th>Pattern</th><th>Implementation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Ripple effect</td><td>Pointer-down → appended &lt;span&gt; with <code>@keyframes ripplePop</code></td></tr>
+      <tr><td>Card hover lift</td><td><code>box-shadow</code> transition on <code>:hover</code>, 200ms ease</td></tr>
+      <tr><td>Page transitions</td><td><code>opacity + translateY</code> fade-in on page switch via <code>@keyframes pageEnter</code></td></tr>
+      <tr><td>Drawer slide-in</td><td><code>translateX(100%)</code> → <code>translateX(0)</code> with overlay backdrop</td></tr>
+      <tr><td>AI typing</td><td>Async character loop, 11ms base delay, 55ms at ".", 28ms at ","</td></tr>
+      <tr><td>AI thinking dots</td><td><code>@keyframes aiDotPulse</code> — staggered scale pulses on three spans</td></tr>
+      <tr><td>Skeleton shimmer</td><td><code>@keyframes shimmer</code> — <code>background-position</code> scroll on gradient</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span>BuyerPulse — Product Brief</span>
+    <span>Avinash Singh · 2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PAGE 6 — TECH & DEPLOYMENT ═══════════════════════ -->
+<div class="page">
+
+  <div class="section-tag">Technical Details</div>
+  <h1>Architecture &amp; Deployment</h1>
+  <p class="lead">Zero dependencies. Instantly deployable. Entirely self-contained in three files.</p>
+
+  <h2>File Structure</h2>
+  <table>
+    <thead>
+      <tr><th>File</th><th>Size (approx)</th><th>Responsibility</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>index.html</code></td><td>~670 lines</td><td>All page sections, drawer, kanban, modal markup. Semantic HTML with ARIA attributes.</td></tr>
+      <tr><td><code>style.css</code></td><td>~2,900 lines</td><td>Full design system. CSS custom properties, animations, responsive breakpoints, dark/light theming.</td></tr>
+      <tr><td><code>script.js</code></td><td>~2,770 lines</td><td>All logic, mock data, page renderers, AI generation, ripple, pagination, search, kanban.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>script.js Module Map</h2>
+  <table>
+    <thead>
+      <tr><th>Function / Section</th><th>Responsibility</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>MOCK_BUYERS[]</code></td><td>25 buyer records — Indian dealer names, cities, scores, EMD, risk levels</td></tr>
+      <tr><td><code>getBuyerExtended(buyer)</code></td><td>Derives contact, bids, follow-ups, payments, notes from buyer.id deterministically</td></tr>
+      <tr><td><code>openDrawer() / closeDrawer()</code></td><td>Slide-in drawer lifecycle — aria, scroll lock, row highlight</td></tr>
+      <tr><td><code>renderDetailsTab()</code> etc.</td><td>Five tab renderers returning HTML strings</td></tr>
+      <tr><td><code>initBuyersPage()</code></td><td>Table render, live search (debounced), risk filter, pagination</td></tr>
+      <tr><td><code>initHealthPage()</code></td><td>Health score cards, distribution histogram, portfolio snapshot</td></tr>
+      <tr><td><code>initRiskPage()</code></td><td>Risk feed with severity filter and resolve/contact/suspend actions</td></tr>
+      <tr><td><code>initFollowUps()</code></td><td>Kanban board, card move, Add Follow Up modal with form validation</td></tr>
+      <tr><td><code>initNotifications()</code></td><td>Bell dropdown, notification page tabs, mark-read, unread badge</td></tr>
+      <tr><td><code>initAnalytics()</code></td><td>KPI cards, SVG charts (line, donut, bar), date-period switcher</td></tr>
+      <tr><td><code>generateAISummaries()</code></td><td>Thinking overlay, card slide-in, async typing animation, variant rotation</td></tr>
+      <tr><td><code>initRipple()</code></td><td>Global pointer-down ripple effect — excludes icon-btn to protect notification badge</td></tr>
+      <tr><td><code>renderStats()</code></td><td>Dashboard KPI stat cards with delta indicators</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Design Principles</h2>
+  <table>
+    <thead>
+      <tr><th>Principle</th><th>Implementation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>No framework</td><td>Plain HTML/CSS/JS — zero build step, instant GitHub Pages deploy, shareable as a link</td></tr>
+      <tr><td>Deterministic data</td><td>All extended data derives from <code>buyer.id</code> via modular arithmetic — no <code>Math.random()</code> in data generation</td></tr>
+      <tr><td>CSS variables</td><td>All colours, shadows, spacing in <code>:root</code> — enables full theming with a single class swap</td></tr>
+      <tr><td>Accessible markup</td><td>ARIA roles, aria-hidden, aria-expanded, aria-modal on drawers and dropdowns</td></tr>
+      <tr><td>No inline style mutations</td><td>Ripple clipping via CSS <code>overflow: hidden</code>, not JS, preventing permanent side-effects</td></tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <h2>Deployment</h2>
+  <p>Published via GitHub Pages on the <strong>avithehacker/PM</strong> repository. Listed in <code>drafts.html</code> under the First Draft prototypes section.</p>
+  <p><strong>Live URL:</strong> <code>https://avithehacker.github.io/PM/buyer-success-platform/</code></p>
+
+  <div class="page-footer">
+    <span>BuyerPulse — Product Brief</span>
+    <span>Avinash Singh · 2026</span>
+  </div>
+</div>
+
+</body>
+</html>
