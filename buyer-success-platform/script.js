@@ -62,7 +62,7 @@ const BID_RESULTS = ['Won', 'Lost', 'Won', 'Outbid', 'Won', 'Lost', 'Withdrawn',
 const FU_TYPES    = ['Call', 'Email', 'Meeting', 'Note', 'Call', 'Email'];
 const FU_DESCS    = [
   'Discussed pending EMD top-up. Buyer confirmed deposit within 3 business days.',
-  'Sent payment reminder for 2 overdue invoices totalling ₹1,25,000.',
+  'Sent payment reminder for 2 overdue invoices totalling ₹125K.',
   'Completed onboarding call. Buyer is familiar with the platform and keen on fleet segment.',
   'Health score flagged — 3 consecutive no-shows in auction. Sent formal warning communication.',
   'Introduced buyer to new lot category: commercial vehicles registered post-2020.',
@@ -398,7 +398,7 @@ function renderPaymentsTab(buyer, ext) {
         </div>
         <div class="detail-row">
           <span class="detail-label">Minimum Required</span>
-          <span class="detail-value">₹25,000</span>
+          <span class="detail-value">₹25K</span>
         </div>
         <div class="detail-row">
           <span class="detail-label">Account Status</span>
@@ -536,7 +536,8 @@ function getInitials(name) {
 }
 
 function formatEMD(amount) {
-  return amount ? '₹' + amount.toLocaleString('en-IN') : null;
+  if (!amount) return null;
+  return '₹' + Math.round(amount / 1000) + 'K';
 }
 
 function relativeTime(dateStr) {
@@ -1564,9 +1565,8 @@ function getRiskyBuyers() {
 }
 
 function fmtEMD(v) {
-  if (v === 0)        return '—';
-  if (v >= 100000)    return '₹' + (v / 100000).toFixed(1) + 'L';
-  return '₹' + (v / 1000).toFixed(0) + 'K';
+  if (v === 0) return '—';
+  return '₹' + Math.round(v / 1000) + 'K';
 }
 
 function renderRCSummary() {
@@ -2555,8 +2555,8 @@ const AI_CARDS = [
     title: 'Payment Status',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>',
     variants: [
-      'Payment compliance rate is 87% this period, above the 85% threshold target. 4 buyers have outstanding payment delays: 2 are 7–14 days overdue (moderate), 1 is 15–29 days overdue (high priority), and 1 is 30+ days overdue (escalation recommended). Total overdue value exposure is estimated at ₹18.4L. EMD balances are healthy across 94% of active accounts.',
-      'Payment health is stable with 28 of 32 buyers current on all obligations. ₹18.4L in outstanding balances requires active follow-up. The 30+ day overdue account (Sunder Enterprises) has been unresponsive to 3 contact attempts — recommend legal/compliance escalation. Two payment chase follow-up tasks are already in progress per the Kanban board.',
+      'Payment compliance rate is 87% this period, above the 85% threshold target. 4 buyers have outstanding payment delays: 2 are 7–14 days overdue (moderate), 1 is 15–29 days overdue (high priority), and 1 is 30+ days overdue (escalation recommended). Total overdue value exposure is estimated at ₹184K. EMD balances are healthy across 94% of active accounts.',
+      'Payment health is stable with 28 of 32 buyers current on all obligations. ₹184K in outstanding balances requires active follow-up. The 30+ day overdue account (Sunder Enterprises) has been unresponsive to 3 contact attempts — recommend legal/compliance escalation. Two payment chase follow-up tasks are already in progress per the Kanban board.',
       'This period saw 4 successful payment recoveries, improving the on-time rate to 87%. Two buyers are on payment plans that expire within 10 days — confirm renewals proactively. EMD auto-debit for 3 accounts is scheduled for next week. Recommend sending pre-debit notices at least 48 hours in advance to reduce disputes.',
     ],
   },

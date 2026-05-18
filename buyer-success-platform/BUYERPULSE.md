@@ -36,7 +36,7 @@ The home view gives an immediate operational snapshot:
 - **KPI stat cards** — four key metrics with directional deltas:
   - Active Buyers (142, ▲ 8 this week)
   - Average Health Score (71/100, ▼ 3 pts)
-  - EMD at Risk (₹4.2L, ▲ from last week)
+  - EMD at Risk (₹420K, ▲ from last week)
   - Auctions Today (47 live lots)
 - **Portfolio Health card** — health bar showing 71% of buyers in the healthy band; 12 below threshold.
 - **Today's Auctions card** — 47 live lots, peak bidding window 2–5 PM, 3 flagged for manual intervention.
@@ -76,9 +76,9 @@ Full paginated buyer roster with live filtering:
 **25 mock buyers** — all authentic Indian automotive dealers across 20+ cities (Mumbai, Delhi, Bangalore, Chennai, Hyderabad, Kolkata, Ahmedabad, Jaipur, Surat, Lucknow, Nagpur, Indore, Bhopal, Patna, Vadodara, Bhubaneswar, Chandigarh, Coimbatore, Kochi, Guwahati, Visakhapatnam, Rajkot, Mysore, Dehradun).
 
 Sample buyers:
-- Shriram Automall India (Mumbai) — Score 88, EMD ₹2.5L, Low risk
-- Agarwal Auto Traders (Bhopal) — Score 93, EMD ₹5L, Low risk
-- Kerala Auto Exchange (Kochi) — Score 89, EMD ₹4.5L, Low risk
+- Shriram Automall India (Mumbai) — Score 88, EMD ₹250K, Low risk
+- Agarwal Auto Traders (Bhopal) — Score 93, EMD ₹500K, Low risk
+- Kerala Auto Exchange (Kochi) — Score 89, EMD ₹450K, Low risk
 - Patel Motors & Auctions (Vadodara) — Score 22, EMD ₹0, Critical risk, Suspended
 - Priya Logistics Pvt. (Kolkata) — Score 38, EMD ₹25K, Critical risk, Watchlist
 
@@ -231,7 +231,7 @@ AI-generated operational summaries with a typing animation effect:
   city:       string,       // Indian city
   status:     'Active' | 'Inactive' | 'Watchlist' | 'Suspended',
   score:      number,       // 0–100 health score
-  emd:        number,       // EMD balance in ₹
+  emd:        number,       // EMD balance in ₹, displayed as ₹XK
   lastActive: 'YYYY-MM-DD',
   risk:       'Low' | 'Medium' | 'High' | 'Critical'
 }
