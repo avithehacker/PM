@@ -6,6 +6,7 @@
 <title>Auctimeter 2.0 — E2R Collections Digital Twin</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -159,6 +160,56 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
 /* ── FOOTER ── */
 .page-footer{margin-top:32px;padding-top:14px;border-top:1px solid var(--border);color:var(--muted);font-size:11.5px;text-align:center}
 
+/* ── SUB-NAV ── */
+.sb-sub-group{background:rgba(0,0,0,.18)}
+.sb-sub-item{display:flex;align-items:center;gap:10px;padding:8px 20px 8px 36px;color:rgba(255,255,255,.6);cursor:pointer;transition:.15s;border-left:3px solid transparent;font-size:12.5px}
+.sb-sub-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.sb-sub-item.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:#60a5fa;font-weight:600}
+.sb-sub-item i{font-size:14px;flex-shrink:0}
+.sb-chevron{margin-left:auto;font-size:11px;transition:transform .2s}
+.sb-item.expanded .sb-chevron{transform:rotate(-180deg)}
+
+/* ── UPLOAD ZONE ── */
+.drop-zone{border:2px dashed var(--border);border-radius:10px;padding:40px 20px;text-align:center;cursor:pointer;transition:.2s;background:#fafbfc}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--navy);background:var(--blue-bg)}
+.drop-zone i{font-size:40px;color:var(--muted);display:block;margin-bottom:12px}
+.stepper{display:flex;gap:0;margin-bottom:22px}
+.step{flex:1;text-align:center;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;top:16px;left:50%;width:100%;height:2px;background:var(--border);z-index:0}
+.step.done::after{background:var(--green)}
+.step-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:13px;font-weight:700;position:relative;z-index:1}
+.step.active .step-dot{background:var(--navy);color:#fff}
+.step.done .step-dot{background:var(--green);color:#fff}
+.step.idle .step-dot{background:var(--border);color:var(--muted)}
+.step-label{font-size:11px;color:var(--muted);font-weight:500}
+.step.active .step-label,.step.done .step-label{color:var(--text);font-weight:600}
+.col-tag{display:inline-block;padding:3px 9px;border-radius:4px;font-size:11.5px;font-weight:600;margin:3px}
+.chart-wrap-sm{position:relative;height:180px}
+.stat-box{background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.07);text-align:center}
+.stat-box .sv{font-size:24px;font-weight:700;color:var(--navy)}
+.stat-box .sl{font-size:12px;color:var(--muted);margin-top:2px}
+.badge-rc-complete{background:var(--green-bg);color:var(--green);font-size:11px;padding:2px 8px;border-radius:4px}
+.badge-rc-progress{background:var(--blue-bg);color:var(--blue);font-size:11px;padding:2px 8px;border-radius:4px}
+.badge-rc-notstarted{background:var(--grey-bg);color:var(--grey);font-size:11px;padding:2px 8px;border-radius:4px}
+.btn-amber{background:var(--amber);color:#fff} .btn-amber:hover{background:#b45309}
+.vc-card{background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:16px;display:flex;flex-direction:column;gap:8px}
+.vc-model{font-size:12.5px;color:var(--muted)}
+.vc-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px}
+.vc-label{color:var(--muted)}
+.vc-val{font-weight:600;color:var(--text)}
+.notif-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center}
+.notif-item:last-child{border-bottom:none}
+.notif-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.notif-dot.sent{background:var(--green)} .notif-dot.pending{background:var(--amber)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle{position:relative;width:38px;height:20px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:20px;transition:.2s}
+.toggle-slider::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:.2s}
+.toggle input:checked+.toggle-slider{background:var(--navy)}
+.toggle input:checked+.toggle-slider::after{transform:translateX(18px)}
+
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   #sidebar{transform:translateX(-100%);transition:.25s}
@@ -207,6 +258,12 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
   <div id="pg-inspect" class="page"></div>
   <div id="pg-auction" class="page"></div>
   <div id="pg-payments" class="page"></div>
+  <div id="pg-pay-dashboard" class="page"></div>
+  <div id="pg-pay-upload" class="page"></div>
+  <div id="pg-pay-tracker" class="page"></div>
+  <div id="pg-pay-notifications" class="page"></div>
+  <div id="pg-pay-vehicles" class="page"></div>
+  <div id="pg-pay-reports" class="page"></div>
   <div id="pg-release" class="page"></div>
 </main>
 
@@ -281,6 +338,34 @@ let PAY=[
 let REL=[
   {id:'REL001',vi:'V007',buyer:'Deepak Joshi',am:72000,ps:'Paid',ns:'Complete',rc:'Complete',hv:'Complete'},
   {id:'REL002',vi:'V005',buyer:'Suresh Dealers Pvt Ltd',am:26000,ps:'Paid',ns:'In Progress',rc:'Not Started',hv:'Not Started'}
+];
+
+// ── PAYCOLLECT DATA ───────────────────────────────────────────────────
+const DEMANDS = [
+  {id:'D001',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-001',reg:'MH12AB1234',make:'Honda',model:'City ZX CVT',variant:'City ZX CVT',year:2021,type:'4W Sedan',chassis:'MAHHG2GAPLH123456',engine:'L15Z11A23456',colour:'Lunar Silver',yard:'Mumbai Central Yard',platform:'Bidkaro',reserve:380000,hammer:420000,bids:7,buyer:'Rajesh Mehta',company:'Mehta Auto Traders',mobile:'9876543210',emd:42000,balanceDue:378000,balancePaid:0,dueDate:'22-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D002',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-002',reg:'DL08CD5678',make:'Tata',model:'Harrier XT+',variant:'Harrier XT+',year:2020,type:'4W SUV',chassis:'MAT607651LRC12345',engine:'TATA475IDI98765',colour:'Calypso Red',yard:'Delhi North Yard',platform:'eDiig',reserve:750000,hammer:850000,bids:11,buyer:'Suresh Kumar Yadav',company:'Yadav Motors Pvt Ltd',mobile:'9845012345',emd:85000,balanceDue:765000,balancePaid:0,dueDate:'21-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D003',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-003',reg:'KA04EF9012',make:'Maruti Suzuki',model:'Ertiga VXI CNG',variant:'Ertiga VXI CNG',year:2018,type:'4W MPV',chassis:'MA3EWDE1S0B123456',engine:'K15BN1A23456',colour:'Auburn Red',yard:'Bangalore Koramangala Yard',platform:'CarTrade',reserve:320000,hammer:380000,bids:5,buyer:'Pradeep Agarwal',company:'Agarwal Fleet Services',mobile:'9812234567',emd:38000,balanceDue:171000,balancePaid:171000,dueDate:'26-May-2026',status:'partial',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'Partial payment received'},
+  {id:'D004',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-004',reg:'TN09GH3456',make:'Hyundai',model:'Creta SX Opt',variant:'Creta SX Opt',year:2021,type:'4W SUV',chassis:'MALBM51BPMH98765',engine:'G4FJ1A56789',colour:'Typhoon Silver',yard:'Chennai Ambattur Yard',platform:'CarDekho',reserve:850000,hammer:920000,bids:14,buyer:'Vikram Singh Rawat',company:'Rawat Automobiles',mobile:'9823345678',emd:92000,balanceDue:828000,balancePaid:0,dueDate:'28-May-2026',status:'pending',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D005',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-005',reg:'GJ05IJ7890',make:'Toyota',model:'Innova Crysta GX',variant:'Innova Crysta GX',year:2019,type:'4W MUV',chassis:'MBJ12FX30H0098765',engine:'2GD1A98765',colour:'Super White',yard:'Ahmedabad Narol Yard',platform:'Bidkaro',reserve:1000000,hammer:1150000,bids:9,buyer:'Dinesh Prakash Choudhary',company:'Choudhary Transport Co',mobile:'9834456789',emd:115000,balanceDue:1035000,balancePaid:0,dueDate:'28-May-2026',status:'pending',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D006',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-006',reg:'MH02OP2345',make:'Maruti Suzuki',model:'Dzire ZXI+',variant:'Dzire ZXI+',year:2020,type:'4W Sedan',chassis:'MA3EKLF1SL098765',engine:'K12M1A98765',colour:'Midnight Black',yard:'Pune Chakan Yard',platform:'eDiig',reserve:480000,hammer:560000,bids:8,buyer:'Deepak Ramesh Joshi',company:'Joshi Car Dealers',mobile:'9845567890',emd:56000,balanceDue:504000,balancePaid:0,dueDate:'27-May-2026',status:'pending',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D007',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-007',reg:'WB24QR5678',make:'Hyundai',model:'i20 Asta',variant:'i20 Asta',year:2019,type:'4W Hatchback',chassis:'MALBF51BPKH34567',engine:'G4FA1A34567',colour:'Polar White',yard:'Kolkata Kasba Yard',platform:'CarTrade',reserve:350000,hammer:415000,bids:6,buyer:'Subhash Chandra Das',company:'Das Auto Gallery',mobile:'9878890123',emd:41500,balanceDue:373500,balancePaid:0,dueDate:'22-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D008',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-008',reg:'DL05QR6789',make:'Hyundai',model:'Grand i10 Sportz',variant:'Grand i10 Sportz',year:2019,type:'4W Hatchback',chassis:'MALBF11BPKH78901',engine:'G4LA1A78901',colour:'Fiery Red',yard:'Delhi Mayapuri Yard',platform:'CarDekho',reserve:310000,hammer:370000,bids:4,buyer:'Pooja Deepak Sharma',company:'Sharma Auto Works',mobile:'9867789012',emd:37000,balanceDue:166500,balancePaid:166500,dueDate:'26-May-2026',status:'partial',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'Partial payment received'},
+  {id:'D009',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-009',reg:'RJ14KL2345',make:'Kia',model:'Seltos GTX+ DCT',variant:'Seltos GTX+ DCT',year:2022,type:'4W SUV',chassis:'KNAKC81GPNK234567',engine:'G4FG1A234567',colour:'Glacier White Pearl',yard:'Jaipur Sanganer Yard',platform:'Bidkaro',reserve:1150000,hammer:1280000,bids:16,buyer:'Mohan Lal Sharma',company:'Sharma Premium Cars',mobile:'9845567891',emd:128000,balanceDue:0,balancePaid:1152000,dueDate:'13-May-2026',status:'paid',notified:true,payMode:'NEFT',utr:'HDFC20260513N0012',paidDate:'13-May-2026',rc:'Complete',remarks:''},
+  {id:'D010',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-010',reg:'UP32MN6789',make:'Honda',model:'City V CVT',variant:'City V CVT',year:2019,type:'4W Sedan',chassis:'MAHHG2GA6KH345678',engine:'L15Z11A345678',colour:'Radiant Red',yard:'Lucknow Amausi Yard',platform:'eDiig',reserve:480000,hammer:520000,bids:7,buyer:'Arvind Kumar Patel',company:'Patel Auto Enterprises',mobile:'9856678901',emd:52000,balanceDue:0,balancePaid:468000,dueDate:'12-May-2026',status:'paid',notified:true,payMode:'RTGS',utr:'HDFC20260512R0034',paidDate:'12-May-2026',rc:'In Progress',remarks:''},
+  {id:'D011',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-011',reg:'MH01OP1234',make:'Maruti Suzuki',model:'Swift ZXI',variant:'Swift ZXI',year:2020,type:'4W Hatchback',chassis:'MA3EKLF1SL456789',engine:'K12M1A456789',colour:'Speedy Blue',yard:'Pune Wagholi Yard',platform:'CarTrade',reserve:420000,hammer:490000,bids:5,buyer:'Ravi Shankar Gupta',company:'Gupta Auto Center',mobile:'9867789013',emd:49000,balanceDue:441000,balancePaid:0,dueDate:'14-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D012',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-012',reg:'KL07CD3456',make:'Honda',model:'Amaze VX CVT',variant:'Amaze VX CVT',year:2020,type:'4W Sedan',chassis:'MAHHG3BA6LH567890',engine:'L12B1A567890',colour:'Meteoroid Grey',yard:'Kochi Kakkanad Yard',platform:'CarDekho',reserve:420000,hammer:480000,bids:8,buyer:'Thomas Joseph Mathew',company:'TJM Auto Solutions',mobile:'9889901235',emd:48000,balanceDue:0,balancePaid:432000,dueDate:'11-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605111234',paidDate:'11-May-2026',rc:'Complete',remarks:''},
+  {id:'D013',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-013',reg:'MH04XY5678',make:'Mahindra',model:'Scorpio S10 4WD',variant:'Scorpio S10 4WD',year:2019,type:'4W SUV',chassis:'MA1PF2GAPJG678901',engine:'mHawk140A678901',colour:'Dsat Silver',yard:'Nashik Satpur Yard',platform:'Bidkaro',reserve:850000,hammer:980000,bids:12,buyer:'Sachin Ramesh Sharma',company:'Sharma Motors',mobile:'9891234568',emd:98000,balanceDue:882000,balancePaid:0,dueDate:'15-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D014',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-014',reg:'DL10AB7890',make:'Toyota',model:'Fortuner Legender',variant:'Fortuner Legender',year:2018,type:'4W SUV',chassis:'MBJ12FX40J0789012',engine:'1GD1A789012',colour:'Phantom Brown',yard:'Delhi Kapashera Yard',platform:'eDiig',reserve:1700000,hammer:1850000,bids:19,buyer:'Amit Vikas Kapoor',company:'Kapoor Luxury Autos',mobile:'9872345679',emd:185000,balanceDue:0,balancePaid:1665000,dueDate:'12-May-2026',status:'paid',notified:true,payMode:'RTGS',utr:'HDFC20260512R0056',paidDate:'12-May-2026',rc:'In Progress',remarks:''},
+  {id:'D015',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-015',reg:'HR26AB9999',make:'Hero',model:'Splendor Plus IBS',variant:'Splendor Plus IBS',year:2021,type:'2W Commuter',chassis:'MBLHA10ECMB890123',engine:'HA10EA1890123',colour:'Black & Candy Blazing Red',yard:'Gurugram Sector-37 Yard',platform:'CarTrade',reserve:50000,hammer:61000,bids:4,buyer:'Harpreet Gurjit Singh',company:'Singh Transport',mobile:'9891234569',emd:6100,balanceDue:0,balancePaid:54900,dueDate:'11-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605112345',paidDate:'11-May-2026',rc:'Complete',remarks:''},
+  {id:'D016',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-016',reg:'UP80KL3456',make:'Tata',model:'Nexon XZA+ Dark',variant:'Nexon XZA+ Dark',year:2021,type:'4W SUV',chassis:'MAT607851MRC901234',engine:'TATA1197IDI901234',colour:'Pure Grey',yard:'Lucknow Chinhat Yard',platform:'CarDekho',reserve:780000,hammer:870000,bids:10,buyer:'Anil Kumar Singh',company:'AKS Auto Deals',mobile:'9878890124',emd:87000,balanceDue:783000,balancePaid:0,dueDate:'15-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D017',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-017',reg:'AP09ST9012',make:'Bajaj',model:'Pulsar 150 Neon',variant:'Pulsar 150 Neon',year:2020,type:'2W Sport',chassis:'MD2DHDHZZLCJ012345',engine:'DHDHZ1A012345',colour:'Neon Blue',yard:'Hyderabad Balanagar Yard',platform:'Bidkaro',reserve:60000,hammer:74000,bids:5,buyer:'Venkat Suresh Reddy',company:'Reddy Two-Wheelers',mobile:'9889901236',emd:7400,balanceDue:66600,balancePaid:0,dueDate:'03-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D018',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-018',reg:'PB10CD1234',make:'TVS',model:'Apache RTR 160 4V',variant:'Apache RTR 160 4V',year:2019,type:'2W Sport',chassis:'MD626BF39K2B123456',engine:'AU41A123456',colour:'Pearl White',yard:'Ludhiana Focal Point Yard',platform:'eDiig',reserve:55000,hammer:67000,bids:4,buyer:'Gurpreet Kaur',company:'Kaur Auto Agency',mobile:'9872345680',emd:6700,balanceDue:60300,balancePaid:0,dueDate:'04-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D019',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-019',reg:'MH14EF1234',make:'Maruti Suzuki',model:'Alto K10 VXI+',variant:'Alto K10 VXI+',year:2019,type:'4W Hatchback',chassis:'MA3CNBE1SKB234567',engine:'K10C1A234567',colour:'Silky Silver',yard:'Pune Bhosari Yard',platform:'CarTrade',reserve:240000,hammer:285000,bids:6,buyer:'Santosh Dnyandev Patil',company:'Patil Car Trading',mobile:'9823345679',emd:28500,balanceDue:0,balancePaid:256500,dueDate:'02-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605021234',paidDate:'02-May-2026',rc:'Complete',remarks:''},
+  {id:'D020',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-020',reg:'GJ01GH5678',make:'Ford',model:'EcoSport Titanium',variant:'EcoSport Titanium',year:2019,type:'4W SUV',chassis:'MAJ4W2BS8KBJ345678',engine:'Dragon1A345678',colour:'Canyon Ridge',yard:'Ahmedabad Vatva Yard',platform:'CarDekho',reserve:580000,hammer:640000,bids:8,buyer:'Bhavesh Rajesh Shah',company:'Shah Auto World',mobile:'9834456790',emd:64000,balanceDue:576000,balancePaid:0,dueDate:'04-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D021',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-021',reg:'RJ22IJ9012',make:'Renault',model:'Kwid RXT Opt',variant:'Kwid RXT Opt',year:2020,type:'4W Hatchback',chassis:'MEEHM8152LB456789',engine:'D4F1A456789',colour:'Electric Blue',yard:'Jaipur Malviya Nagar Yard',platform:'Bidkaro',reserve:220000,hammer:260000,bids:4,buyer:'Ramesh Shankar Meena',company:'Meena Motors',mobile:'9845567892',emd:26000,balanceDue:234000,balancePaid:0,dueDate:'05-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D022',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-022',reg:'TN01MN7890',make:'Honda',model:'Activa 6G Deluxe',variant:'Activa 6G Deluxe',year:2022,type:'2W Scooter',chassis:'ME4JF503NNA567890',engine:'JF50E1A567890',colour:'Pearl Sunbeam Yellow',yard:'Chennai Ambattur Yard',platform:'eDiig',reserve:58000,hammer:68000,bids:5,buyer:'Murugan Selvam',company:'Selvam Two-Wheelers',mobile:'9812234568',emd:6800,balanceDue:0,balancePaid:61200,dueDate:'02-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605022345',paidDate:'02-May-2026',rc:'Complete',remarks:''},
+  {id:'D023',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-023',reg:'KA01ST0123',make:'Royal Enfield',model:'Classic 350 Signals',variant:'Classic 350 Signals',year:2021,type:'2W Cruiser',chassis:'ME3C5D61MMC678901',engine:'UC411C1A678901',colour:'Triton Blue',yard:'Bangalore Peenya Yard',platform:'CarTrade',reserve:120000,hammer:145000,bids:7,buyer:'Rajan Kumar Naidu',company:'Naidu Bikes Palace',mobile:'9856678902',emd:14500,balanceDue:130500,balancePaid:0,dueDate:'04-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
+  {id:'D024',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-024',reg:'MH09UV4567',make:'Tata',model:'Tigor EV XZ+',variant:'Tigor EV XZ+',year:2021,type:'4W EV Sedan',chassis:'MAT607651MRC789012',engine:'TATAEV1A789012',colour:'Signature Teal Blue',yard:'Thane Majiwada Yard',platform:'CarDekho',reserve:720000,hammer:810000,bids:9,buyer:'Mahesh Ganesh Shetty',company:'Shetty Auto Finance',mobile:'9867789014',emd:81000,balanceDue:729000,balancePaid:0,dueDate:'05-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''}
 ];
 
 // ── UTILS ─────────────────────────────────────────────────────────────
@@ -376,20 +461,76 @@ const NAV=[
   {id:'yard',ico:'bi bi-house-gear',lbl:'Yard Management'},
   {id:'inspect',ico:'bi bi-clipboard-check',lbl:'Inspection'},
   {id:'auction',ico:'bi bi-tags',lbl:'Auction'},
-  {id:'payments',ico:'bi bi-credit-card',lbl:'Payments'},
+  {id:'payments',ico:'bi bi-credit-card',lbl:'Payments',sub:[
+    {id:'pay-dashboard',ico:'bi bi-speedometer2',lbl:'Pay Dashboard'},
+    {id:'pay-upload',ico:'bi bi-cloud-arrow-up',lbl:'Upload Auction Data'},
+    {id:'pay-tracker',ico:'bi bi-grid-3x3',lbl:'Payment Tracker'},
+    {id:'pay-notifications',ico:'bi bi-bell',lbl:'Buyer Notifications'},
+    {id:'pay-vehicles',ico:'bi bi-car-front-fill',lbl:'Vehicle-wise View'},
+    {id:'pay-reports',ico:'bi bi-bar-chart-line',lbl:'Reports & Analytics'},
+  ]},
   {id:'release',ico:'bi bi-arrow-right-circle',lbl:'Vehicle Release'}
 ];
 let chs=[];
 
+function toggleSub(id){
+  const sub=document.getElementById('sub-'+id);
+  const item=document.querySelector('.sb-item[data-page="'+id+'"]');
+  if(!sub)return;
+  if(sub.style.display==='none'||sub.style.display===''){
+    sub.style.display='block';
+    if(item)item.classList.add('expanded');
+    const n=NAV.find(x=>x.id===id);
+    if(n&&n.sub&&n.sub.length)nav(n.sub[0].id);
+  } else {
+    sub.style.display='none';
+    if(item)item.classList.remove('expanded');
+  }
+}
+
 function nav(pg){
+  // Redirect bare 'payments' to first sub-page
+  if(pg==='payments'){
+    const sub=document.getElementById('sub-payments');
+    if(sub){sub.style.display='block';}
+    const pi=document.querySelector('.sb-item[data-page="payments"]');
+    if(pi)pi.classList.add('expanded');
+    nav('pay-dashboard');
+    return;
+  }
   document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.sb-item,.sb-sub-item').forEach(e=>e.classList.remove('active'));
   const pe=document.getElementById('pg-'+pg);if(pe)pe.classList.add('active');
-  const ne=document.querySelector(`.sb-item[data-page="${pg}"]`);if(ne)ne.classList.add('active');
-  const n=NAV.find(x=>x.id===pg);document.getElementById('header-title').textContent=n?n.lbl:'';
+  const ne=document.querySelector(`.sb-item[data-page="${pg}"]`)||document.querySelector(`.sb-sub-item[data-page="${pg}"]`);
+  if(ne)ne.classList.add('active');
+  // If sub-page, highlight parent + keep sub open
+  if(pg.startsWith('pay-')){
+    const pi=document.querySelector('.sb-item[data-page="payments"]');
+    if(pi){pi.classList.add('active');pi.classList.add('expanded');}
+    const sub=document.getElementById('sub-payments');
+    if(sub)sub.style.display='block';
+  }
+  // Update header title
+  const allNav=NAV.flatMap(n=>n.sub?[n,...n.sub]:[n]);
+  const found=allNav.find(x=>x.id===pg);
+  document.getElementById('header-title').textContent=found?found.lbl:'';
   chs.forEach(c=>{try{c.destroy();}catch(e){}});chs=[];
-  const R={dashboard:rDash,emi:rEMI,repodec:rRepoDec,repo:rRepo,yard:rYard,inspect:rInspect,auction:rAuction,payments:rPay,release:rRelease};
-  if(R[pg])R[pg]();
+  // Render
+  if(pg==='dashboard')rDash();
+  else if(pg==='emi')rEMI();
+  else if(pg==='repodec')rRepoDec();
+  else if(pg==='repo')rRepo();
+  else if(pg==='yard')rYard();
+  else if(pg==='inspect')rInspect();
+  else if(pg==='auction')rAuction();
+  else if(pg==='payments')rPay();
+  else if(pg==='release')rRelease();
+  else if(pg==='pay-dashboard')renderPayDashboard();
+  else if(pg==='pay-upload')renderPayUpload();
+  else if(pg==='pay-tracker')renderPayTracker();
+  else if(pg==='pay-notifications')renderPayNotifications();
+  else if(pg==='pay-vehicles')renderPayVehicles();
+  else if(pg==='pay-reports')renderPayReports();
   document.getElementById('sidebar').classList.remove('open');
 }
 
@@ -1524,6 +1665,800 @@ function openOfflinePay(){
   `);
 }
 
+// ── PAYCOLLECT HELPERS ────────────────────────────────────────────────
+let pcCharts={};
+let pcFilter={tracker:'all',vehicles:'all'};
+let pcPayId=null, pcRemId=null;
+const pcFmt=n=>'₹'+Number(n).toLocaleString('en-IN');
+const pcFmtL=n=>{if(n>=10000000)return '₹'+(n/10000000).toFixed(2)+'Cr';if(n>=100000)return '₹'+(n/100000).toFixed(1)+'L';return '₹'+Number(n).toLocaleString('en-IN');}
+function pcStatusBadge(s){const map={paid:'badge-paid',pending:'badge-pending',overdue:'badge-overdue',partial:'badge-partial'};const icons={paid:'bi-check-circle',pending:'bi-clock',overdue:'bi-exclamation-triangle',partial:'bi-half'};return `<span class="badge ${map[s]||'badge-grey'}"><i class="bi ${icons[s]||'bi-dash'}"></i> ${s.charAt(0).toUpperCase()+s.slice(1)}</span>`;}
+function pcPlatformBadge(p){const cls={Bidkaro:'bp-bidkaro',eDiig:'bp-ediig',CarTrade:'bp-cartrade',CarDekho:'bp-cardekho'};return `<span class="badge-platform ${cls[p]||''}">${p}</span>`;}
+function pcRcBadge(r){if(!r||r==='Not Started')return `<span class="badge-rc-notstarted">Not Started</span>`;if(r==='Complete')return `<span class="badge-rc-complete">Complete</span>`;return `<span class="badge-rc-progress">In Progress</span>`;}
+function pcNotifBadge(n){return n?`<span class="badge" style="background:#dcfce7;color:#16a34a;font-size:11px"><i class="bi bi-check"></i> Yes</span>`:`<span class="badge badge-grey" style="font-size:11px"><i class="bi bi-x"></i> No</span>`;}
+
+function pcBuildActions(d){
+  let btns='';
+  if(d.status!=='paid') btns+=`<button class="btn btn-success btn-xs" onclick="openPCPaymentModal('${d.id}')"><i class="bi bi-credit-card"></i> Pay</button>`;
+  btns+=`<button class="btn btn-outline btn-xs" onclick="openPCDetailsModal('${d.id}')"><i class="bi bi-eye"></i></button>`;
+  if(d.status!=='paid') btns+=`<button class="btn btn-amber btn-xs" onclick="openPCReminderModal('${d.id}')"><i class="bi bi-bell"></i></button>`;
+  return btns;
+}
+
+// ── S8a: PAY DASHBOARD ────────────────────────────────────────────────
+function renderPayDashboard(){
+  const pg=document.getElementById('pg-pay-dashboard');
+  const overdue=DEMANDS.filter(d=>d.status==='overdue');
+  const today=new Date('2026-05-23');
+  const platforms=['Bidkaro','eDiig','CarTrade','CarDekho'];
+
+  const overdueRows=overdue.map(d=>{
+    const due=new Date(d.dueDate.split('-').reverse().join('-'));
+    const days=Math.max(0,Math.floor((today-due)/(1000*60*60*24)));
+    return `<tr>
+      <td><strong>${d.reg}</strong></td>
+      <td>${d.make} ${d.model}</td>
+      <td>${d.buyer}</td>
+      <td>${d.mobile}</td>
+      <td>${pcFmt(d.hammer)}</td>
+      <td style="color:var(--red);font-weight:600">${pcFmt(d.balanceDue)}</td>
+      <td>${d.dueDate}</td>
+      <td><span style="color:var(--red);font-weight:700">${days} days</span></td>
+      <td style="display:flex;gap:5px">
+        <button class="btn btn-success btn-xs" onclick="openPCPaymentModal('${d.id}')"><i class="bi bi-credit-card"></i> Collect</button>
+        <button class="btn btn-amber btn-xs" onclick="openPCReminderModal('${d.id}')"><i class="bi bi-bell"></i> Remind</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  const platRows=platforms.map(p=>{
+    const rows=DEMANDS.filter(d=>d.platform===p);
+    const total=rows.reduce((a,d)=>a+d.hammer,0);
+    const collected=rows.filter(d=>d.status==='paid').reduce((a,d)=>a+d.balancePaid+d.emd,0);
+    const pct=total>0?Math.round(collected/total*100):0;
+    return `<tr>
+      <td>${pcPlatformBadge(p)}</td>
+      <td>${rows.length}</td>
+      <td>${pcFmtL(total)}</td>
+      <td style="color:var(--green);font-weight:600">${pcFmtL(collected)}</td>
+      <td><div style="display:flex;align-items:center;gap:8px"><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:${pct}%;background:var(--green)"></div></div>${pct}%</div></td>
+      <td>${pcFmtL(total-collected)}</td>
+    </tr>`;
+  }).join('');
+
+  const activities=[
+    {icon:'bi-check-circle',color:'#dcfce7',ic:'#16a34a',text:'<b>Mohan Lal Sharma</b> paid ₹11.52L for Kia Seltos (RJ14KL2345)',time:'13-May-2026, 14:32'},
+    {icon:'bi-check-circle',color:'#dcfce7',ic:'#16a34a',text:'<b>Amit Vikas Kapoor</b> paid ₹16.65L for Toyota Fortuner (DL10AB7890)',time:'12-May-2026, 11:18'},
+    {icon:'bi-exclamation-triangle',color:'#fee2e2',ic:'#dc2626',text:'<b>Suresh Kumar Yadav</b> — Harrier XT+ (DL08CD5678) payment overdue',time:'21-May-2026'},
+    {icon:'bi-bell',color:'#fef3c7',ic:'#d97706',text:'Reminder sent to <b>Rajesh Mehta</b> for Honda City (MH12AB1234)',time:'22-May-2026, 09:00'},
+    {icon:'bi-cloud-upload',color:'#dbeafe',ic:'#2563eb',text:'Auction <b>AUC-2026-051</b> data uploaded — 8 demands generated',time:'15-May-2026, 16:45'},
+  ];
+  const actFeed=activities.map(a=>`
+    <div class="activity-item">
+      <div class="activity-dot" style="background:${a.color};color:${a.ic}"><i class="bi ${a.icon}"></i></div>
+      <div><div style="font-size:13px">${a.text}</div><div style="font-size:11.5px;color:var(--muted);margin-top:2px">${a.time}</div></div>
+    </div>`).join('');
+
+  pg.innerHTML=`
+    <div class="page-title">Pay Dashboard</div>
+    <div class="page-desc">Real-time overview of vehicle auction payment collections across HDFC Bank's Asset Recovery portfolio</div>
+    <div class="kpi-row">
+      <div class="kpi-card" style="--kpi-color:#1F4E79">
+        <div class="kpi-icon"><i class="bi bi-car-front"></i></div>
+        <div class="kpi-val">24</div>
+        <div class="kpi-label">Total Vehicles</div>
+        <div class="kpi-sub">3 auctions active</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color:#2563eb">
+        <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
+        <div class="kpi-val">&#8377;1.39 Cr</div>
+        <div class="kpi-label">Total Auction Value</div>
+        <div class="kpi-sub">Hammer price total</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color:#16a34a">
+        <div class="kpi-icon"><i class="bi bi-check-circle"></i></div>
+        <div class="kpi-val">&#8377;44.3L</div>
+        <div class="kpi-label">Collected</div>
+        <div class="kpi-sub">8 vehicles fully paid</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color:#d97706">
+        <div class="kpi-icon"><i class="bi bi-hourglass-split"></i></div>
+        <div class="kpi-val">&#8377;81.2L</div>
+        <div class="kpi-label">Outstanding</div>
+        <div class="kpi-sub">16 vehicles pending</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color:#dc2626">
+        <div class="kpi-icon"><i class="bi bi-exclamation-triangle"></i></div>
+        <div class="kpi-val">&#8377;54.2L</div>
+        <div class="kpi-label">Overdue</div>
+        <div class="kpi-sub">12 vehicles past due date</div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-bottom:20px">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title"><i class="bi bi-pie-chart"></i> Collection Status Distribution</div>
+          <div class="chart-wrap"><canvas id="pc-chartDoughnut"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="bi bi-bar-chart"></i> Collections by Platform</div>
+          <div class="chart-wrap"><canvas id="pc-chartPlatformBar"></canvas></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="height:100%">
+          <div class="card-title"><i class="bi bi-clock-history"></i> Recent Activity</div>
+          ${actFeed}
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title" style="margin-bottom:8px"><i class="bi bi-exclamation-triangle" style="color:var(--red)"></i> Overdue Accounts — Immediate Action Required</div>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px">The following buyers have exceeded their payment due date. Initiate collection or send reminder immediately.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Reg. No.</th><th>Make &amp; Model</th><th>Buyer Name</th><th>Mobile</th><th>Hammer Price</th><th>Balance Due</th><th>Due Date</th><th>Days Overdue</th><th>Actions</th></tr></thead>
+          <tbody>${overdueRows}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="bi bi-graph-up"></i> Platform Performance Summary</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Platform</th><th>Total Lots</th><th>Total Value</th><th>Collected</th><th>Collection %</th><th>Pending</th></tr></thead>
+          <tbody>${platRows}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="page-footer">HDFC Bank — Asset Recovery Division | PayCollect v2.0 | Data as of 23-May-2026</div>
+  `;
+
+  if(pcCharts.doughnut) pcCharts.doughnut.destroy();
+  if(pcCharts.bar) pcCharts.bar.destroy();
+  const statusCounts={paid:0,pending:0,overdue:0,partial:0};
+  DEMANDS.forEach(d=>statusCounts[d.status]++);
+  setTimeout(()=>{
+    const ctx1=document.getElementById('pc-chartDoughnut');
+    const ctx2=document.getElementById('pc-chartPlatformBar');
+    if(ctx1) pcCharts.doughnut=new Chart(ctx1,{type:'doughnut',data:{labels:['Paid','Pending','Overdue','Partial'],datasets:[{data:[statusCounts.paid,statusCounts.pending,statusCounts.overdue,statusCounts.partial],backgroundColor:['#16a34a','#2563eb','#dc2626','#d97706'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:12}}}}}});
+    if(ctx2){const platData=platforms.map(p=>({p,v:DEMANDS.filter(d=>d.platform===p&&d.status==='paid').reduce((a,d)=>a+d.balancePaid+d.emd,0)}));pcCharts.bar=new Chart(ctx2,{type:'bar',data:{labels:platData.map(x=>x.p),datasets:[{label:'Collected (INR)',data:platData.map(x=>x.v),backgroundColor:['#1a56db','#0f766e','#c2410c','#b91c1c'],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'₹'+v.toLocaleString('en-IN')},grid:{color:'#f1f5f9'}},x:{grid:{display:false}}}}});}
+  },50);
+}
+
+// ── S8b: PAY UPLOAD ───────────────────────────────────────────────────
+function renderPayUpload(){
+  const pg=document.getElementById('pg-pay-upload');
+  pg.innerHTML=`
+    <div class="page-title">Upload Auction Data</div>
+    <div class="page-desc">Upload auction result Excel from Bidkaro, eDiig, CarTrade or CarDekho. The system auto-generates payment demands and sends WhatsApp + SMS notifications to all winning buyers.</div>
+    <div class="stepper" id="pc-stepper">
+      <div class="step active" id="pc-step-1"><div class="step-dot">1</div><div class="step-label">Download Template</div></div>
+      <div class="step idle" id="pc-step-2"><div class="step-dot">2</div><div class="step-label">Upload File</div></div>
+      <div class="step idle" id="pc-step-3"><div class="step-dot">3</div><div class="step-label">Review Data</div></div>
+      <div class="step idle" id="pc-step-4"><div class="step-dot">4</div><div class="step-label">Notify Buyers</div></div>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="bi bi-cloud-upload"></i> Upload Auction Result File</div>
+          <div class="drop-zone" id="pc-drop-zone" onclick="document.getElementById('pc-file-input').click()">
+            <i class="bi bi-file-earmark-spreadsheet"></i>
+            <div style="font-weight:600;margin-bottom:6px">Drag &amp; drop your Excel or CSV file here</div>
+            <div style="color:var(--muted);font-size:12.5px;margin-bottom:14px">Supported formats: .xlsx, .csv — Max size 10 MB</div>
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation()"><i class="bi bi-folder2-open"></i> Browse File</button>
+          </div>
+          <input type="file" id="pc-file-input" accept=".xlsx,.csv" style="display:none" onchange="pcHandleFileUpload(this)">
+          <div id="pc-upload-status" style="margin-top:12px;display:none"></div>
+        </div>
+        <div class="card" style="margin-top:16px;display:none" id="pc-preview-card">
+          <div class="card-title"><i class="bi bi-table"></i> File Preview <span id="pc-preview-count" style="font-size:12px;font-weight:400;color:var(--muted)"></span></div>
+          <div class="tbl-wrap" id="pc-preview-wrap"></div>
+          <div style="margin-top:14px;display:flex;gap:10px">
+            <button class="btn btn-success" onclick="pcConfirmImport()"><i class="bi bi-check-circle"></i> Confirm Import</button>
+            <button class="btn btn-outline" onclick="pcCancelImport()"><i class="bi bi-x-circle"></i> Cancel</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title"><i class="bi bi-columns"></i> Required Column Reference</div>
+          <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px">Your Excel must contain the following columns (in any order):</p>
+          <div>
+            <span class="col-tag" style="background:#dbeafe;color:#1d4ed8">Auction ID</span>
+            <span class="col-tag" style="background:#dbeafe;color:#1d4ed8">Lot No</span>
+            <span class="col-tag" style="background:#dcfce7;color:#15803d">Reg. No.</span>
+            <span class="col-tag" style="background:#dcfce7;color:#15803d">Make</span>
+            <span class="col-tag" style="background:#dcfce7;color:#15803d">Model</span>
+            <span class="col-tag" style="background:#dcfce7;color:#15803d">Year</span>
+            <span class="col-tag" style="background:#fef3c7;color:#92400e">Chassis No</span>
+            <span class="col-tag" style="background:#fef3c7;color:#92400e">Engine No</span>
+            <span class="col-tag" style="background:#fef3c7;color:#92400e">Colour</span>
+            <span class="col-tag" style="background:#fce7f3;color:#9d174d">Reserve Price</span>
+            <span class="col-tag" style="background:#fce7f3;color:#9d174d">Hammer Price</span>
+            <span class="col-tag" style="background:#fce7f3;color:#9d174d">EMD Paid</span>
+            <span class="col-tag" style="background:#ede9fe;color:#5b21b6">Buyer Name</span>
+            <span class="col-tag" style="background:#ede9fe;color:#5b21b6">Company</span>
+            <span class="col-tag" style="background:#ede9fe;color:#5b21b6">Mobile</span>
+            <span class="col-tag" style="background:#ffedd5;color:#9a3412">Yard Location</span>
+            <span class="col-tag" style="background:#ffedd5;color:#9a3412">Platform</span>
+            <span class="col-tag" style="background:#e0f2fe;color:#0369a1">Auction Date</span>
+            <span class="col-tag" style="background:#e0f2fe;color:#0369a1">Due Date</span>
+          </div>
+          <div style="margin-top:14px">
+            <button class="btn btn-outline btn-sm" onclick="pcDownloadTemplate()"><i class="bi bi-download"></i> Download Template (.xlsx)</button>
+          </div>
+        </div>
+        <div class="card" id="pc-notify-card">
+          <div class="card-title"><i class="bi bi-send"></i> Buyer Notification Setup</div>
+          <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px">Configure how winning buyers will be notified after import.</p>
+          <div style="background:#f8fafc;border-radius:8px;padding:12px;font-size:12.5px;border:1px solid var(--border);margin-bottom:14px">
+            <div style="font-weight:600;margin-bottom:6px;color:var(--text)"><i class="bi bi-whatsapp" style="color:#25d366"></i> Sample Message Preview</div>
+            <div style="color:var(--text);line-height:1.7">
+              Dear <strong>[Buyer Name]</strong>,<br>
+              Congratulations! You have won Lot [L-XXX] — <strong>[Vehicle Reg.]</strong> ([Make Model]) at HDFC Bank Auction.<br><br>
+              <strong>Hammer Price:</strong> [Amount]<br>
+              <strong>EMD Deducted:</strong> [EMD]<br>
+              <strong>Balance Payable:</strong> [Balance]<br>
+              <strong>Payment Due By:</strong> [Due Date]<br><br>
+              Please transfer via NEFT/RTGS to:<br>
+              A/C: HDFC Bank Asset Recovery — 50200012345678<br>
+              IFSC: HDFC0001234<br><br>
+              For queries call: 1800-HDFC-ARD (Toll Free)
+            </div>
+          </div>
+          <div style="margin-bottom:12px">
+            <div style="font-weight:600;font-size:12.5px;margin-bottom:8px">Notification Channels</div>
+            <label style="display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer;font-size:13px"><input type="checkbox" checked> <i class="bi bi-whatsapp" style="color:#25d366"></i> WhatsApp</label>
+            <label style="display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer;font-size:13px"><input type="checkbox" checked> <i class="bi bi-chat-text"></i> SMS</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="checkbox"> <i class="bi bi-envelope"></i> Email</label>
+          </div>
+          <button class="btn btn-success" onclick="pcSendAllNotifications()"><i class="bi bi-send-fill"></i> Send All Notifications</button>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">HDFC Bank — Asset Recovery Division | PayCollect v2.0 | Data as of 23-May-2026</div>
+  `;
+
+  const dz=document.getElementById('pc-drop-zone');
+  if(dz){
+    dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+    dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+    dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f) pcProcessFile(f);});
+  }
+}
+
+function pcHandleFileUpload(input){if(input.files[0]) pcProcessFile(input.files[0]);}
+function pcProcessFile(file){
+  const status=document.getElementById('pc-upload-status');
+  if(!status)return;
+  status.style.display='block';
+  status.innerHTML=`<div style="display:flex;align-items:center;gap:8px;color:var(--blue)"><i class="bi bi-hourglass-split"></i> Processing: <strong>${file.name}</strong></div>`;
+  setTimeout(()=>{
+    status.innerHTML=`<div style="display:flex;align-items:center;gap:8px;color:var(--green)"><i class="bi bi-check-circle"></i> File loaded: <strong>${file.name}</strong> (${(file.size/1024).toFixed(1)} KB)</div>`;
+    pcShowPreview();
+    pcAdvanceStepper(2);
+  },800);
+}
+function pcShowPreview(){
+  const card=document.getElementById('pc-preview-card');
+  if(!card)return;
+  card.style.display='block';
+  document.getElementById('pc-preview-count').textContent='(showing sample 5 rows)';
+  const sample=DEMANDS.slice(0,5);
+  document.getElementById('pc-preview-wrap').innerHTML=`<table>
+    <thead><tr><th>Lot No</th><th>Reg. No.</th><th>Make</th><th>Model</th><th>Year</th><th>Buyer</th><th>Hammer Price</th><th>Due Date</th></tr></thead>
+    <tbody>${sample.map(d=>`<tr><td>${d.lot}</td><td>${d.reg}</td><td>${d.make}</td><td>${d.model}</td><td>${d.year}</td><td>${d.buyer}</td><td>${pcFmt(d.hammer)}</td><td>${d.dueDate}</td></tr>`).join('')}</tbody>
+  </table>`;
+}
+function pcAdvanceStepper(to){
+  for(let i=1;i<=4;i++){
+    const s=document.getElementById('pc-step-'+i);
+    if(!s)continue;
+    if(i<to){s.className='step done';s.querySelector('.step-dot').innerHTML='<i class="bi bi-check"></i>';}
+    else if(i===to){s.className='step active';}
+    else{s.className='step idle';}
+  }
+}
+function pcConfirmImport(){
+  pcAdvanceStepper(3);
+  toast('24 auction records imported successfully. Payment demands generated.');
+  setTimeout(()=>pcAdvanceStepper(4),500);
+  const card=document.getElementById('pc-preview-card');if(card)card.style.display='none';
+}
+function pcCancelImport(){
+  const card=document.getElementById('pc-preview-card');if(card)card.style.display='none';
+  const st=document.getElementById('pc-upload-status');if(st)st.style.display='none';
+}
+function pcSendAllNotifications(){toast('WhatsApp and SMS notifications sent to all 24 buyers.');}
+function pcDownloadTemplate(){
+  if(typeof XLSX==='undefined'){toast('SheetJS not loaded.');return;}
+  const headers=['Auction ID','Lot No','Reg. No.','Make','Model','Variant','Year','Type','Chassis No','Engine No','Colour','Yard Location','Platform','Reserve Price','Hammer Price','No. of Bids','Buyer Name','Company','Mobile','EMD Paid','Due Date','Auction Date'];
+  const ws=XLSX.utils.aoa_to_sheet([headers]);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'AuctionData');
+  XLSX.writeFile(wb,'PayCollect_Template.xlsx');
+  toast('Template downloaded: PayCollect_Template.xlsx');
+}
+
+// ── S8c: PAY TRACKER ──────────────────────────────────────────────────
+function renderPayTracker(){
+  const pg=document.getElementById('pg-pay-tracker');
+  pg.innerHTML=`
+    <div class="page-title">Payment Tracker</div>
+    <div class="page-desc">Complete vehicle-wise payment tracking with all auction and collection details. Use filters to focus on pending or overdue accounts.</div>
+    <div class="filter-tabs" id="pc-tracker-tabs">
+      <div class="ftab active" data-filter="all">All (24)</div>
+      <div class="ftab" data-filter="pending">Pending (3)</div>
+      <div class="ftab" data-filter="overdue">Overdue (12)</div>
+      <div class="ftab" data-filter="partial">Partial (2)</div>
+      <div class="ftab" data-filter="paid">Paid (7)</div>
+    </div>
+    <div class="search-row">
+      <input type="text" class="search-input" id="pc-tracker-search" placeholder="Search by registration, buyer, chassis, make..." oninput="renderPCTrackerTable()">
+      <button class="btn btn-outline btn-sm" onclick="pcExportTrackerExcel()"><i class="bi bi-file-earmark-excel"></i> Export Excel</button>
+    </div>
+    <div class="tbl-wrap">
+      <table id="pc-tracker-table" style="min-width:2200px">
+        <thead><tr>
+          <th>Auction ID</th><th>Lot No</th><th>Reg. No.</th><th>Make &amp; Model</th><th>Variant</th><th>Year</th><th>Type</th>
+          <th>Chassis No</th><th>Engine No</th><th>Colour</th><th>Yard Location</th><th>Auction Date</th><th>Platform</th>
+          <th>Reserve Price</th><th>Hammer Price</th><th>No. of Bids</th><th>Buyer Name</th><th>Company</th><th>Mobile</th>
+          <th>EMD Paid</th><th>Balance Due</th><th>Due Date</th><th>Payment Mode</th><th>UTR / Ref</th><th>Paid Date</th>
+          <th>Status</th><th>Notified</th><th>RC Transfer</th><th>Remarks</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="pc-tracker-tbody"></tbody>
+      </table>
+    </div>
+    <div class="page-footer">HDFC Bank — Asset Recovery Division | PayCollect v2.0 | Data as of 23-May-2026</div>
+  `;
+  document.querySelectorAll('#pc-tracker-tabs .ftab').forEach(el=>{
+    el.addEventListener('click',()=>{
+      document.querySelectorAll('#pc-tracker-tabs .ftab').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+      pcFilter.tracker=el.dataset.filter;
+      renderPCTrackerTable();
+    });
+  });
+  renderPCTrackerTable();
+}
+
+function renderPCTrackerTable(){
+  const filter=pcFilter.tracker;
+  const search=(document.getElementById('pc-tracker-search')||{value:''}).value.toLowerCase();
+  let data=DEMANDS;
+  if(filter!=='all') data=data.filter(d=>d.status===filter);
+  if(search) data=data.filter(d=>(d.reg+d.buyer+d.company+d.chassis+d.make+d.model+d.auctionId+d.lot).toLowerCase().includes(search));
+  const tbody=document.getElementById('pc-tracker-tbody');
+  if(!tbody)return;
+  tbody.innerHTML=data.map(d=>`<tr>
+    <td>${d.auctionId}</td>
+    <td>${d.lot}</td>
+    <td><strong>${d.reg}</strong></td>
+    <td>${d.make} ${d.model}</td>
+    <td style="color:var(--muted);font-size:12px">${d.variant}</td>
+    <td>${d.year}</td>
+    <td>${d.type}</td>
+    <td style="font-size:11.5px;color:var(--muted)">${d.chassis}</td>
+    <td style="font-size:11.5px;color:var(--muted)">${d.engine}</td>
+    <td>${d.colour}</td>
+    <td>${d.yard}</td>
+    <td>${d.auctionDate}</td>
+    <td>${pcPlatformBadge(d.platform)}</td>
+    <td>${pcFmt(d.reserve)}</td>
+    <td style="font-weight:600">${pcFmt(d.hammer)}</td>
+    <td style="text-align:center">${d.bids}</td>
+    <td>${d.buyer}</td>
+    <td style="font-size:12px;color:var(--muted)">${d.company}</td>
+    <td>${d.mobile}</td>
+    <td>${pcFmt(d.emd)}</td>
+    <td style="font-weight:600;color:${d.balanceDue>0?'var(--red)':'var(--green)'}">${d.balanceDue>0?pcFmt(d.balanceDue):'—'}</td>
+    <td>${d.dueDate}</td>
+    <td>${d.payMode||'—'}</td>
+    <td style="font-size:11.5px">${d.utr||'—'}</td>
+    <td>${d.paidDate||'—'}</td>
+    <td>${pcStatusBadge(d.status)}</td>
+    <td>${pcNotifBadge(d.notified)}</td>
+    <td>${pcRcBadge(d.rc)}</td>
+    <td style="color:var(--muted);font-size:12px">${d.remarks||'—'}</td>
+    <td><div style="display:flex;gap:4px;flex-wrap:nowrap">${pcBuildActions(d)}</div></td>
+  </tr>`).join('');
+}
+
+function pcExportTrackerExcel(){
+  if(typeof XLSX==='undefined'){toast('SheetJS not loaded.');return;}
+  const headers=['Auction ID','Lot No','Reg. No.','Make','Model','Year','Type','Chassis','Engine','Colour','Yard','Auction Date','Platform','Reserve','Hammer','Bids','Buyer','Company','Mobile','EMD','Balance Due','Due Date','Mode','UTR','Paid Date','Status','Notified','RC','Remarks'];
+  const rows=DEMANDS.map(d=>[d.auctionId,d.lot,d.reg,d.make,d.model,d.year,d.type,d.chassis,d.engine,d.colour,d.yard,d.auctionDate,d.platform,d.reserve,d.hammer,d.bids,d.buyer,d.company,d.mobile,d.emd,d.balanceDue,d.dueDate,d.payMode,d.utr,d.paidDate,d.status,d.notified?'Yes':'No',d.rc,d.remarks]);
+  const ws=XLSX.utils.aoa_to_sheet([headers,...rows]);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'PaymentTracker');
+  XLSX.writeFile(wb,'PayCollect_Tracker_23May2026.xlsx');
+  toast('Excel exported: PayCollect_Tracker_23May2026.xlsx');
+}
+
+// ── S8d: PAY NOTIFICATIONS ────────────────────────────────────────────
+function renderPayNotifications(){
+  const pg=document.getElementById('pg-pay-notifications');
+  const notifLog=DEMANDS.map(d=>{
+    const sent=d.notified;
+    return `<div class="notif-item">
+      <div class="notif-dot ${sent?'sent':'pending'}"></div>
+      <div style="flex:1">
+        <div style="display:flex;justify-content:space-between">
+          <strong style="font-size:13px">${d.buyer}</strong>
+          <span style="font-size:11.5px;color:var(--muted)">${d.auctionDate}</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted)">${d.reg} &bull; ${d.make} ${d.model} &bull; ${d.lot}</div>
+        <div style="display:flex;gap:6px;margin-top:3px">
+          ${sent?`<span class="badge" style="background:#dcfce7;color:#16a34a;font-size:10.5px"><i class="bi bi-whatsapp"></i> Sent</span><span class="badge" style="background:#dcfce7;color:#16a34a;font-size:10.5px"><i class="bi bi-chat-text"></i> Sent</span>`:`<span class="badge badge-grey" style="font-size:10.5px"><i class="bi bi-clock"></i> Pending</span>`}
+          ${pcStatusBadge(d.status)}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  pg.innerHTML=`
+    <div class="page-title">Buyer Notifications</div>
+    <div class="page-desc">Track all buyer communications for payment demands. Every winning buyer receives bank payment details via WhatsApp and SMS immediately after auction close.</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><i class="bi bi-chat-left-text"></i> Notification Log — All Buyers</div>
+        ${notifLog}
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title"><i class="bi bi-pie-chart"></i> Delivery Status</div>
+          <div class="chart-wrap-sm"><canvas id="pc-chartNotifPie"></canvas></div>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title"><i class="bi bi-graph-up"></i> Communication Statistics</div>
+          <div class="grid-2" style="margin-bottom:10px">
+            <div class="stat-box"><div class="sv">91.7%</div><div class="sl">Response Rate</div></div>
+            <div class="stat-box"><div class="sv">4.2 days</div><div class="sl">Avg. Payment Days</div></div>
+          </div>
+          <div class="grid-2">
+            <div class="stat-box"><div class="sv">22</div><div class="sl">Notifications Sent</div></div>
+            <div class="stat-box"><div class="sv">2</div><div class="sl">Pending Send</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="bi bi-bell-fill"></i> Reminder Schedule</div>
+          <div class="toggle-row">
+            <div><div style="font-size:13px;font-weight:600">T+0 — Immediate on Auction Close</div><div style="font-size:12px;color:var(--muted)">WhatsApp + SMS to winner immediately</div></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div style="font-size:13px;font-weight:600">T+1 — Next Day Follow-up</div><div style="font-size:12px;color:var(--muted)">Reminder if no payment confirmation</div></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div style="font-size:13px;font-weight:600">T+3 — Mid-period Reminder</div><div style="font-size:12px;color:var(--muted)">Soft escalation to buyer</div></div>
+            <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div style="font-size:13px;font-weight:600">T+7 — Final Notice</div><div style="font-size:12px;color:var(--muted)">Legal/forfeiture warning if not paid</div></div>
+            <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">HDFC Bank — Asset Recovery Division | PayCollect v2.0 | Data as of 23-May-2026</div>
+  `;
+
+  if(pcCharts.notifPie) pcCharts.notifPie.destroy();
+  setTimeout(()=>{
+    const ctx=document.getElementById('pc-chartNotifPie');
+    if(ctx) pcCharts.notifPie=new Chart(ctx,{type:'doughnut',data:{labels:['Sent','Pending'],datasets:[{data:[22,2],backgroundColor:['#16a34a','#d97706'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:12}}}}}});
+  },50);
+}
+
+// ── S8e: PAY VEHICLES ─────────────────────────────────────────────────
+function renderPayVehicles(){
+  const pg=document.getElementById('pg-pay-vehicles');
+  pg.innerHTML=`
+    <div class="page-title">Vehicle-wise View</div>
+    <div class="page-desc">Individual vehicle payment cards showing collection status, buyer details, and RC transfer progress at a glance.</div>
+    <div class="filter-tabs" id="pc-vehicles-tabs">
+      <div class="ftab active" data-filter="all">All</div>
+      <div class="ftab" data-filter="paid">Paid</div>
+      <div class="ftab" data-filter="overdue">Overdue</div>
+      <div class="ftab" data-filter="pending">Pending</div>
+      <div class="ftab" data-filter="partial">Partial</div>
+    </div>
+    <div class="grid-3" id="pc-vehicle-cards"></div>
+    <div class="page-footer">HDFC Bank — Asset Recovery Division | PayCollect v2.0 | Data as of 23-May-2026</div>
+  `;
+  document.querySelectorAll('#pc-vehicles-tabs .ftab').forEach(el=>{
+    el.addEventListener('click',()=>renderPCVehicleCards(el.dataset.filter));
+  });
+  renderPCVehicleCards('all');
+}
+
+function renderPCVehicleCards(filter){
+  pcFilter.vehicles=filter;
+  document.querySelectorAll('#pc-vehicles-tabs .ftab').forEach(el=>{
+    el.classList.toggle('active',el.dataset.filter===filter);
+  });
+  let data=filter==='all'?DEMANDS:DEMANDS.filter(d=>d.status===filter);
+  const container=document.getElementById('pc-vehicle-cards');
+  if(!container)return;
+  container.innerHTML=data.map(d=>{
+    const totalDue=d.hammer-d.emd;
+    const paid=d.balancePaid+(d.status==='paid'?d.emd:0);
+    const pct=d.status==='paid'?100:Math.round((d.balancePaid/totalDue)*100);
+    const barColor={paid:'#16a34a',overdue:'#dc2626',pending:'#2563eb',partial:'#d97706'}[d.status]||'#94a3b8';
+    return `<div class="vc-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="vc-reg">${d.reg}</div><div class="vc-model">${d.make} ${d.model} &bull; ${d.year}</div></div>
+        ${pcStatusBadge(d.status)}
+      </div>
+      <div style="font-size:12px;color:var(--muted)"><i class="bi bi-geo-alt"></i> ${d.yard}</div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:4px 0">
+      <div class="vc-row"><span class="vc-label">Hammer Price</span><span class="vc-val">${pcFmt(d.hammer)}</span></div>
+      <div class="vc-row"><span class="vc-label">${d.status==='paid'?'Collected':'Balance Due'}</span>
+        <span class="vc-val" style="color:${d.status==='paid'?'var(--green)':'var(--red)'}">${d.status==='paid'?pcFmt(d.balancePaid):pcFmt(d.balanceDue)}</span></div>
+      <div class="vc-row"><span class="vc-label">Due Date</span><span class="vc-val">${d.dueDate}</span></div>
+      <div style="margin:4px 0">
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px"><span style="color:var(--muted)">Collection Progress</span><span style="font-weight:600">${pct}%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${barColor}"></div></div>
+      </div>
+      <div style="font-size:12.5px"><i class="bi bi-person"></i> <strong>${d.buyer}</strong></div>
+      <div style="font-size:12px;color:var(--muted)"><i class="bi bi-building"></i> ${d.company}</div>
+      <div style="font-size:12px"><i class="bi bi-telephone"></i> ${d.mobile}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+        ${pcPlatformBadge(d.platform)} ${pcRcBadge(d.rc)}
+      </div>
+      <div style="display:flex;gap:5px;margin-top:6px">
+        ${d.status!=='paid'?`<button class="btn btn-success btn-xs" onclick="openPCPaymentModal('${d.id}')"><i class="bi bi-credit-card"></i> Collect</button>`:''}
+        <button class="btn btn-outline btn-xs" onclick="openPCDetailsModal('${d.id}')"><i class="bi bi-eye"></i> Details</button>
+        ${d.status!=='paid'?`<button class="btn btn-amber btn-xs" onclick="openPCReminderModal('${d.id}')"><i class="bi bi-bell"></i></button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── S8f: PAY REPORTS ──────────────────────────────────────────────────
+function renderPayReports(){
+  const pg=document.getElementById('pg-pay-reports');
+  const totalHammer=DEMANDS.reduce((a,d)=>a+d.hammer,0);
+  const totalPaid=DEMANDS.filter(d=>d.status==='paid').reduce((a,d)=>a+d.balancePaid+d.emd,0);
+  const totalPending=DEMANDS.filter(d=>['pending','partial'].includes(d.status)).reduce((a,d)=>a+d.balanceDue,0);
+  const totalOverdue=DEMANDS.filter(d=>d.status==='overdue').reduce((a,d)=>a+d.balanceDue,0);
+
+  const statBoxes=[
+    {label:'Total Auction Value',val:pcFmtL(totalHammer),icon:'bi-currency-rupee',color:'#1F4E79'},
+    {label:'Total Collected',val:pcFmtL(totalPaid),icon:'bi-check-circle',color:'#16a34a'},
+    {label:'Total Pending',val:pcFmtL(totalPending),icon:'bi-hourglass-split',color:'#d97706'},
+    {label:'Total Overdue',val:pcFmtL(totalOverdue),icon:'bi-exclamation-triangle',color:'#dc2626'},
+  ].map(s=>`<div class="stat-box" style="border-top:3px solid ${s.color}"><i class="bi ${s.icon}" style="font-size:22px;color:${s.color}"></i><div class="sv" style="color:${s.color};font-size:20px">${s.val}</div><div class="sl">${s.label}</div></div>`).join('');
+
+  const auctions=[{id:'AUC-2026-051',date:'15-May-2026'},{id:'AUC-2026-048',date:'05-May-2026'},{id:'AUC-2026-041',date:'25-Apr-2026'}];
+  const auctionRows=auctions.map(a=>{
+    const rows=DEMANDS.filter(d=>d.auctionId===a.id);
+    const hammer=rows.reduce((s,d)=>s+d.hammer,0);
+    const emdTotal=rows.reduce((s,d)=>s+d.emd,0);
+    const balColl=rows.filter(d=>d.status==='paid').reduce((s,d)=>s+d.balancePaid,0)+rows.filter(d=>d.status==='partial').reduce((s,d)=>s+d.balancePaid,0);
+    const totalColl=emdTotal+balColl;
+    const pct=Math.round(totalColl/hammer*100);
+    return `<tr><td><strong>${a.id}</strong></td><td>${a.date}</td><td>${rows.length}</td><td>${pcFmtL(hammer)}</td><td>${pcFmtL(emdTotal)}</td><td>${pcFmtL(balColl)}</td><td style="color:var(--green);font-weight:600">${pcFmtL(totalColl)}</td><td style="color:var(--red);font-weight:600">${pcFmtL(hammer-totalColl)}</td><td><div style="display:flex;align-items:center;gap:8px"><div class="progress-bar" style="width:70px"><div class="progress-fill" style="width:${pct}%;background:var(--green)"></div></div>${pct}%</div></td></tr>`;
+  }).join('');
+
+  const platforms=['Bidkaro','eDiig','CarTrade','CarDekho'];
+  const avgDays={Bidkaro:null,eDiig:3.5,CarTrade:2.8,CarDekho:4.0};
+  const platPerfRows=platforms.map(p=>{
+    const rows=DEMANDS.filter(d=>d.platform===p);
+    const hammer=rows.reduce((s,d)=>s+d.hammer,0);
+    const coll=rows.filter(d=>d.status==='paid').reduce((s,d)=>s+d.balancePaid+d.emd,0);
+    const pct=hammer>0?Math.round(coll/hammer*100):0;
+    const avg=avgDays[p];
+    const statusColor=pct>=50?'var(--green)':'var(--red)';
+    return `<tr><td>${pcPlatformBadge(p)}</td><td>${rows.length}</td><td>${pcFmtL(hammer)}</td><td style="color:var(--green);font-weight:600">${pcFmtL(coll)}</td><td><span style="color:${statusColor};font-weight:700">${pct}%</span></td><td>${avg?avg+' days':'—'}</td><td><span class="badge" style="background:${pct>=50?'var(--green-bg)':'var(--red-bg)'};color:${pct>=50?'var(--green)':'var(--red)'};">${pct>=50?'On Track':'Below Target'}</span></td></tr>`;
+  }).join('');
+
+  pg.innerHTML=`
+    <div class="page-title">Reports &amp; Analytics</div>
+    <div class="page-desc">Executive summary of auction collection performance by platform, vehicle type, and timeline.</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">${statBoxes}</div>
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card">
+        <div class="card-title"><i class="bi bi-bar-chart-fill"></i> Collection by Platform</div>
+        <div class="chart-wrap"><canvas id="pc-chartRptPlatform"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="bi bi-pie-chart-fill"></i> Status Breakdown</div>
+        <div class="chart-wrap"><canvas id="pc-chartRptStatus"></canvas></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title"><i class="bi bi-table"></i> Auction-wise Summary</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Auction ID</th><th>Auction Date</th><th>No. of Lots</th><th>Total Hammer Value</th><th>EMD Collected</th><th>Balance Collected</th><th>Total Collected</th><th>Outstanding</th><th>Collection %</th></tr></thead>
+          <tbody>${auctionRows}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="bi bi-graph-up-arrow"></i> Platform Performance Analysis</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Platform</th><th>Total Lots</th><th>Total Hammer Value</th><th>Collected</th><th>Collection %</th><th>Avg. Days to Pay</th><th>Status</th></tr></thead>
+          <tbody>${platPerfRows}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="page-footer">HDFC Bank — Asset Recovery Division | PayCollect v2.0 | Data as of 23-May-2026</div>
+  `;
+
+  if(pcCharts.rptPlatform) pcCharts.rptPlatform.destroy();
+  if(pcCharts.rptStatus) pcCharts.rptStatus.destroy();
+  setTimeout(()=>{
+    const ctx1=document.getElementById('pc-chartRptPlatform');
+    const ctx2=document.getElementById('pc-chartRptStatus');
+    if(ctx1){
+      const platCollected=platforms.map(p=>{const rows=DEMANDS.filter(d=>d.platform===p&&d.status==='paid');return rows.reduce((s,d)=>s+d.balancePaid+d.emd,0);});
+      pcCharts.rptPlatform=new Chart(ctx1,{type:'bar',data:{labels:platforms,datasets:[
+        {label:'Hammer Value',data:platforms.map(p=>DEMANDS.filter(d=>d.platform===p).reduce((s,d)=>s+d.hammer,0)),backgroundColor:'rgba(31,78,121,.2)',borderColor:'#1F4E79',borderWidth:2,borderRadius:4},
+        {label:'Collected',data:platCollected,backgroundColor:['rgba(26,86,219,.8)','rgba(15,118,110,.8)','rgba(194,65,12,.8)','rgba(185,28,28,.8)'],borderRadius:4}
+      ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:12}}}},scales:{y:{ticks:{callback:v=>'₹'+v.toLocaleString('en-IN')},grid:{color:'#f1f5f9'}},x:{grid:{display:false}}}}});
+    }
+    if(ctx2){
+      const sc={paid:0,pending:0,overdue:0,partial:0};
+      DEMANDS.forEach(d=>sc[d.status]++);
+      pcCharts.rptStatus=new Chart(ctx2,{type:'doughnut',data:{labels:['Paid (7)','Pending (3)','Overdue (12)','Partial (2)'],datasets:[{data:[sc.paid,sc.pending,sc.overdue,sc.partial],backgroundColor:['#16a34a','#2563eb','#dc2626','#d97706'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:12}}}}}});
+    }
+  },50);
+}
+
+// ── PAYCOLLECT MODALS ─────────────────────────────────────────────────
+function openPCPaymentModal(did){
+  const d=DEMANDS.find(x=>x.id===did);
+  if(!d)return;
+  pcPayId=did;
+  sM(`
+    <h3><i class="bi bi-credit-card"></i> Record Payment</h3>
+    <div style="background:#f0f9ff;border-radius:8px;padding:12px;margin-bottom:16px;border:1px solid #bae6fd">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:13px">
+        <div><span style="color:var(--muted)">Buyer:</span> <strong>${d.buyer}</strong></div>
+        <div><span style="color:var(--muted)">Mobile:</span> ${d.mobile}</div>
+        <div><span style="color:var(--muted)">Vehicle:</span> ${d.make} ${d.model}</div>
+        <div><span style="color:var(--muted)">Reg. No.:</span> <strong>${d.reg}</strong></div>
+        <div><span style="color:var(--muted)">Hammer Price:</span> ${pcFmt(d.hammer)}</div>
+        <div><span style="color:var(--muted)">Balance Due:</span> <strong style="color:var(--red)">${pcFmt(d.balanceDue)}</strong></div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Amount Received (INR)</label>
+        <input type="number" class="form-control" id="pc-pay-amount" value="${d.balanceDue}" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Mode</label>
+        <select class="form-control" id="pc-pay-mode">
+          <option>NEFT</option><option>RTGS</option><option>UPI</option><option>Cheque</option><option>Cash</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">UTR / Reference Number</label>
+        <input type="text" class="form-control" id="pc-pay-utr" placeholder="e.g. HDFC20260523N0099">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Date</label>
+        <input type="date" class="form-control" id="pc-pay-date" value="2026-05-23">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Remarks</label>
+      <textarea class="form-control" id="pc-pay-remarks" rows="2" placeholder="Optional remarks..."></textarea>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px">
+      <button class="btn btn-outline" onclick="cM()">Cancel</button>
+      <button class="btn btn-success" onclick="submitPCPayment()"><i class="bi bi-check-circle"></i> Mark as Paid</button>
+    </div>
+  `);
+}
+
+function submitPCPayment(){
+  const d=DEMANDS.find(x=>x.id===pcPayId);
+  if(!d)return;
+  const amt=parseInt(document.getElementById('pc-pay-amount').value)||0;
+  const mode=document.getElementById('pc-pay-mode').value;
+  const utr=document.getElementById('pc-pay-utr').value;
+  const date=document.getElementById('pc-pay-date').value;
+  const remarks=document.getElementById('pc-pay-remarks').value;
+  if(!amt){toast('Please enter a valid amount.');return;}
+  if(!utr){toast('Please enter UTR / Reference number.');return;}
+  d.balancePaid+=amt;
+  d.balanceDue=Math.max(0,d.balanceDue-amt);
+  d.payMode=mode;
+  d.utr=utr;
+  d.paidDate=date;
+  d.remarks=remarks;
+  d.status=d.balanceDue===0?'paid':'partial';
+  if(d.status==='paid') d.rc='In Progress';
+  cM();
+  toast('Payment of '+pcFmt(amt)+' recorded for '+d.buyer+'.');
+  renderPCTrackerTable();
+}
+
+function openPCDetailsModal(did){
+  const d=DEMANDS.find(x=>x.id===did);
+  if(!d)return;
+  sM(`
+    <h3><i class="bi bi-info-circle"></i> Vehicle &amp; Payment Details</h3>
+    <div style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:center">
+      <div><div style="font-size:16px;font-weight:700;color:var(--navy)">${d.reg}</div><div style="color:var(--muted);font-size:13px">${d.make} ${d.model} &bull; ${d.year} &bull; ${d.type}</div></div>
+      <div style="margin-left:auto;display:flex;gap:6px">${pcStatusBadge(d.status)} ${pcPlatformBadge(d.platform)}</div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="dl">Auction ID</div><div class="dv">${d.auctionId}</div></div>
+      <div class="detail-item"><div class="dl">Lot Number</div><div class="dv">${d.lot}</div></div>
+      <div class="detail-item"><div class="dl">Auction Date</div><div class="dv">${d.auctionDate}</div></div>
+      <div class="detail-item"><div class="dl">Yard Location</div><div class="dv">${d.yard}</div></div>
+      <div class="detail-item"><div class="dl">Chassis Number</div><div class="dv" style="font-size:12px">${d.chassis}</div></div>
+      <div class="detail-item"><div class="dl">Engine Number</div><div class="dv" style="font-size:12px">${d.engine}</div></div>
+      <div class="detail-item"><div class="dl">Colour</div><div class="dv">${d.colour}</div></div>
+      <div class="detail-item"><div class="dl">Number of Bids</div><div class="dv">${d.bids}</div></div>
+      <div class="detail-item"><div class="dl">Reserve Price</div><div class="dv">${pcFmt(d.reserve)}</div></div>
+      <div class="detail-item"><div class="dl">Hammer Price</div><div class="dv" style="color:var(--navy)">${pcFmt(d.hammer)}</div></div>
+      <div class="detail-item"><div class="dl">EMD Paid</div><div class="dv">${pcFmt(d.emd)}</div></div>
+      <div class="detail-item"><div class="dl">Balance Due</div><div class="dv" style="color:${d.balanceDue>0?'var(--red)':'var(--green)'}">${d.balanceDue>0?pcFmt(d.balanceDue):'Fully Paid'}</div></div>
+      <div class="detail-item"><div class="dl">Due Date</div><div class="dv">${d.dueDate}</div></div>
+      <div class="detail-item"><div class="dl">Notified</div><div class="dv">${d.notified?'Yes':'No'}</div></div>
+      <div class="detail-item"><div class="dl">Buyer Name</div><div class="dv">${d.buyer}</div></div>
+      <div class="detail-item"><div class="dl">Company</div><div class="dv">${d.company}</div></div>
+      <div class="detail-item"><div class="dl">Mobile</div><div class="dv">${d.mobile}</div></div>
+      <div class="detail-item"><div class="dl">Payment Mode</div><div class="dv">${d.payMode||'—'}</div></div>
+      <div class="detail-item"><div class="dl">UTR / Reference</div><div class="dv" style="font-size:12px">${d.utr||'—'}</div></div>
+      <div class="detail-item"><div class="dl">Paid Date</div><div class="dv">${d.paidDate||'—'}</div></div>
+      <div class="detail-item"><div class="dl">RC Transfer</div><div class="dv">${pcRcBadge(d.rc)}</div></div>
+      <div class="detail-item"><div class="dl">Remarks</div><div class="dv">${d.remarks||'—'}</div></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:14px">
+      <button class="btn btn-outline" onclick="cM()">Close</button>
+    </div>
+  `);
+}
+
+function openPCReminderModal(did){
+  const d=DEMANDS.find(x=>x.id===did);
+  if(!d)return;
+  pcRemId=did;
+  sM(`
+    <h3><i class="bi bi-bell"></i> Send Payment Reminder</h3>
+    <div style="font-size:13px;margin-bottom:12px"><strong>${d.buyer}</strong> &bull; ${d.reg} &bull; ${d.make} ${d.model} &bull; Due: <strong style="color:var(--red)">${d.dueDate}</strong></div>
+    <div style="background:#f0fdf4;border-radius:8px;padding:14px;border:1px solid #bbf7d0;font-size:12.5px;line-height:1.8;margin-bottom:14px">
+      Dear <strong>${d.buyer}</strong>,<br><br>
+      This is a reminder from HDFC Bank — Asset Recovery Division regarding your winning bid at auction <strong>${d.auctionId}</strong>.<br><br>
+      <strong>Vehicle:</strong> ${d.make} ${d.model} (${d.reg})<br>
+      <strong>Hammer Price:</strong> ${pcFmt(d.hammer)}<br>
+      <strong>Balance Payable:</strong> <span style="color:var(--red);font-weight:700">${pcFmt(d.balanceDue)}</span><br>
+      <strong>Due Date:</strong> <span style="color:var(--red)">${d.dueDate}</span><br><br>
+      Please complete your payment immediately to avoid forfeiture of EMD and cancellation of the bid. Contact us at 1800-HDFC-ARD.
+    </div>
+    <div>
+      <div style="font-weight:600;font-size:12.5px;margin-bottom:8px">Send via:</div>
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer;font-size:13px">
+        <input type="checkbox" checked id="pc-rm-whatsapp"> <i class="bi bi-whatsapp" style="color:#25d366"></i> WhatsApp
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px">
+        <input type="checkbox" checked id="pc-rm-sms"> <i class="bi bi-chat-text"></i> SMS
+      </label>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:14px">
+      <button class="btn btn-outline" onclick="cM()">Cancel</button>
+      <button class="btn btn-amber" onclick="submitPCReminder()"><i class="bi bi-send"></i> Send Reminder</button>
+    </div>
+  `);
+}
+
+function submitPCReminder(){
+  const d=DEMANDS.find(x=>x.id===pcRemId);
+  cM();
+  if(d) toast('Reminder sent to '+d.buyer+' ('+d.mobile+') via WhatsApp &amp; SMS.');
+}
+
 // ── S9: VEHICLE RELEASE ───────────────────────────────────────────────
 function rRelease(){
   document.getElementById('pg-release').innerHTML = `
@@ -1615,7 +2550,11 @@ function markHV(rid){
 document.addEventListener('DOMContentLoaded',function(){
   const snav=document.getElementById('snav');
   snav.innerHTML=NAV.map(function(n){
-    return `<div class="sb-item" data-page="${n.id}" onclick="nav('${n.id}')"><i class="${n.ico}"></i> ${n.lbl}</div>`;
+    let html=`<div class="sb-item${n.sub?' has-children':''}" data-page="${n.id}" onclick="${n.sub?`toggleSub('${n.id}')`:`nav('${n.id}')`}"><i class="${n.ico}"></i> <span>${n.lbl}</span>${n.sub?'<i class="bi bi-chevron-down sb-chevron"></i>':''}</div>`;
+    if(n.sub){
+      html+=`<div class="sb-sub-group" id="sub-${n.id}" style="display:none">`+n.sub.map(function(c){return `<div class="sb-sub-item" data-page="${c.id}" onclick="nav('${c.id}')"><i class="${c.ico}"></i> ${c.lbl}</div>`;}).join('')+'</div>';
+    }
+    return html;
   }).join('');
   nav('dashboard');
 });
