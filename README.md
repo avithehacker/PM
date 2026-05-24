@@ -94,6 +94,12 @@ Tracks the full lifecycle of a repossessed vehicle — from missed EMIs through 
 
 ## Changelog
 
+### May 24, 2026
+- Overhauled `e2r/index.html` — CSS variables, Bootstrap Icons, readable markup, responsive layout
+- Added PayCollect as 6 submodules under the Payments module in E2R — Pay Dashboard, Upload Auction Data, Payment Tracker, Buyer Notifications, Vehicle-wise View, Reports & Analytics
+- Added `e2r/E2R.md` — full product documentation, data schema, module breakdown, architecture guide
+- Added PayCollect to First Draft portfolio page (`drafts.html`)
+
 ### May 8, 2026
 - Added GainPulse to Experiments page with a description focused on what it does for the user, not what it's built with
 - Added E2R Collections Digital Twin to Experiments page — moved out of First Draft since it's a complete working product
