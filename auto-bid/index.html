@@ -780,11 +780,11 @@ function OpenBidActivePanel({vehicle, session, onPlaceBid, onStop}) {
       <div style={{background:'var(--g100)',borderRadius:'var(--r)',padding:'10px 12px',marginBottom:'10px',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
         <div>
           <div style={{fontSize:'10px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.5px',color:'var(--g400)',marginBottom:'2px'}}>Your Bid</div>
-          <div style={{fontFamily:\"'Segoe UI',system-ui,sans-serif\",fontSize:'20px',fontWeight:800,color:'var(--navy)'}}>{fmt(session.avinashBid)}</div>
+          <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'20px',fontWeight:800,color:'var(--navy)'}}>{fmt(session.avinashBid)}</div>
         </div>
         <div style={{textAlign:'right'}}>
           <div style={{fontSize:'10px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.5px',color:'var(--g400)',marginBottom:'2px'}}>Next Bid</div>
-          <div style={{fontFamily:\"'Segoe UI',system-ui,sans-serif\",fontSize:'20px',fontWeight:800,color: atMax ? 'var(--g400)' : 'var(--green)'}}>{fmt(nextBid)}</div>
+          <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'20px',fontWeight:800,color: atMax ? 'var(--g400)' : 'var(--green)'}}>{fmt(nextBid)}</div>
         </div>
       </div>
 
@@ -883,7 +883,7 @@ function BidActivePanel({vehicle, session, onPause, onResume, onStop, onManualBi
       {/* Current bid row — always show user's own bid; highest bid is sealed */}
       <div style={{background:'var(--g100)',borderRadius:'var(--r)',padding:'8px 10px',marginBottom:'10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
         <span style={{fontSize:'11px',color:'var(--g500)',fontWeight:600}}>Your bid</span>
-        <span style={{fontFamily:\"'Segoe UI',system-ui,sans-serif\",fontSize:'17px',fontWeight:800,color:'var(--navy)'}}>{fmt(session.avinashBid)}</span>
+        <span style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'17px',fontWeight:800,color:'var(--navy)'}}>{fmt(session.avinashBid)}</span>
       </div>
       {/* Highest bid sealed notice */}
       <div style={{background:'var(--g200)',borderRadius:'var(--r)',padding:'6px 10px',marginBottom:'10px',display:'flex',alignItems:'center',gap:'6px',fontSize:'11px',color:'var(--g500)',fontWeight:600}}>
@@ -980,7 +980,7 @@ function AuctionCard({vehicle:v, session, onUpdate, onEnable, onStartOpenBid, on
             })()}</div>
           <div style={{textAlign:'right'}}>
             <div className="bid-label">Time Left</div>
-            <div style={{fontFamily:\"'Segoe UI',system-ui,sans-serif\",fontSize:'19px',fontWeight:800,color:v.status==='live'?'var(--red)':'var(--g400)'}}>{v.timeLeft}</div>
+            <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'19px',fontWeight:800,color:v.status==='live'?'var(--red)':'var(--g400)'}}>{v.timeLeft}</div>
             <div style={{fontSize:'10px',color:'var(--g400)',fontWeight:600,marginTop:'1px'}}>{v.label}</div>
           </div>
         </div>
@@ -1283,7 +1283,7 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                     {tagLabel(h.type)}
                   </span>
                 </div>
-                <div style={{fontFamily:\"'Segoe UI',system-ui,sans-serif\",fontSize:'14px',fontWeight:800,color:tagColor(h.type)}}>
+                <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'14px',fontWeight:800,color:tagColor(h.type)}}>
                   {h.bid
                     ? (h.type === 'comp' && sessions[vehicles.find(vv=>vv.lot===h.lot)?.id]?.mode !== 'open' ? 'Sealed' : fmt(h.bid))
                     : '—'}
@@ -1441,7 +1441,7 @@ function SimulatorTab({addToast}) {
         </div>
         {sess && (
           <div className="sim-footer">
-            <span className="sim-footer-item">Bid: <strong style={{color:'var(--navy)',fontFamily:\"'Segoe UI',system-ui,sans-serif\"}}>{fmt(sess.currentBid)}</strong></span>
+            <span className="sim-footer-item">Bid: <strong style={{color:'var(--navy)',fontFamily:"'Segoe UI',system-ui,sans-serif"}}>{fmt(sess.currentBid)}</strong></span>
             <span className="sim-footer-item" style={{color:'var(--blue)'}}>Auto: {sess.autoBidsUsed}/{sess.autoPool}</span>
             <span className="sim-footer-item" style={{color:'var(--muted)'}}>Manual: {sess.manualBidsUsed}/{sess.manualReserve}</span>
             <span className="sim-footer-item">
