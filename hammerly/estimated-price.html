@@ -4,211 +4,226 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Hammerly — Bid Intelligence Engine</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --green:#166534;--green-d:#14532d;--green-l:#f0fdf4;
-  --red:#991b1b;--red-l:#fef2f2;
-  --amber:#92400e;--amber-l:#fffbeb;--amber-d:#78350f;
-  --teal:#134e4a;--teal-l:#f0fdfa;--teal-d:#0f3d39;
-  --blue:#1e3a5f;--blue-d:#1e3a5f;--blue-l:#eff6ff;
-  --purple:#4c1d95;--purple-l:#f5f3ff;--purple-d:#3b0764;
-  --g50:#fafafa;--g100:#f5f5f5;--g200:#e8e8e8;--g300:#d4d4d4;
-  --g400:#a3a3a3;--g500:#737373;--g600:#525252;--g700:#404040;--g900:#111111;
-  --white:#fff;--r:8px;--rm:12px;--rl:16px;
+  --sidebar-w:240px; --header-h:58px;
+  --navy:#1F4E79; --navy-dark:#163a5c; --navy-light:#2563a8;
+  --bg:#EEF2F7; --white:#ffffff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
+  --green:#16a34a; --green-bg:#dcfce7;
+  --blue:#2563eb; --blue-bg:#dbeafe;
+  --red:#dc2626; --red-bg:#fee2e2;
+  --amber:#d97706; --amber-bg:#fef3c7;
+  --grey:#6b7280; --grey-bg:#f3f4f6;
 }
-body{font-family:'Barlow',sans-serif;background:#ffffff;color:#111111;min-height:100vh}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+input,select,textarea{font-family:inherit}
 
-/* NAV */
-nav{background:#ffffff;padding:0 24px;display:flex;align-items:center;height:52px;position:sticky;top:0;z-index:100;border-bottom:1px solid #e8e8e8}
-.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#111111;letter-spacing:.5px;margin-right:24px;text-decoration:none}
-.nav-brand span{color:#111111}
-.nav-link{color:#888888;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
-.nav-link:hover{color:#111111}
-.nav-link.active{color:#111111;border-bottom:2px solid #111111}
+/* SIDEBAR */
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--navy);display:flex;flex-direction:column;z-index:200;overflow-y:auto}
+.sb-logo{padding:18px 20px 14px;border-bottom:1px solid rgba(255,255,255,.12)}
+.sb-logo-title{color:#fff;font-size:16px;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;gap:8px}
+.sb-logo-sub{color:rgba(255,255,255,.55);font-size:10.5px;margin-top:2px}
+.sb-nav{padding:10px 0;flex:1}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.75);cursor:pointer;transition:.15s;border-left:3px solid transparent;font-size:13.5px;text-decoration:none}
+.sb-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.sb-item.active{background:rgba(255,255,255,.14);color:#fff;border-left-color:#60a5fa;font-weight:600}
+.sb-item i{font-size:16px;flex-shrink:0}
+.sb-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:11px}
+
+/* HEADER */
+#header{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--header-h);background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1);display:flex;align-items:center;padding:0 24px;z-index:100;gap:16px}
+.header-title{font-size:15px;font-weight:600;color:var(--navy);flex:1}
+.header-badge{background:var(--blue-bg);color:var(--blue);padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:24px;min-height:calc(100vh - var(--header-h))}
 
 /* PAGE HEADER */
-.page-header{background:#f7f7f7;padding:32px;border-bottom:1px solid #e8e8e8}
-.page-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.ph-left{}
-.ph-badge{display:inline-flex;align-items:center;gap:6px;background:#efefef;border:1px solid #e0e0e0;border-radius:20px;padding:4px 12px;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#555555;margin-bottom:10px}
-.ph-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;line-height:1.1;margin-bottom:6px;color:#111111}
-.ph-title span{color:#111111}
-.ph-sub{font-size:.85rem;color:#666666;max-width:420px;line-height:1.5}
-.ph-stats{display:flex;gap:32px;flex-wrap:wrap}
-.ph-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem;color:#111111}
-.ph-stat-lbl{font-size:.7rem;color:#999999;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.page-hero{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:24px 28px;margin-bottom:22px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.ph-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--blue-bg);color:var(--blue);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
+.ph-title{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.ph-sub{font-size:13px;color:var(--muted);max-width:420px;line-height:1.5}
+.ph-stats{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.ph-stat-val{font-size:22px;font-weight:700;color:var(--navy)}
+.ph-stat-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
 
 /* HOW IT WORKS STRIP */
-.hiw-strip{background:#fff;border-bottom:1px solid #e8e8e8;padding:18px 32px}
-.hiw-strip-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:0}
+.hiw-strip{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:16px 20px;margin-bottom:20px}
+.hiw-strip-inner{display:flex;align-items:center;gap:0}
 .hiw-s{display:flex;align-items:center;gap:10px;flex:1}
-.hiw-s-num{width:24px;height:24px;border-radius:50%;background:#111111;color:#fff;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.hiw-s-text{}
-.hiw-s-title{font-size:.8rem;font-weight:700;color:#111111}
-.hiw-s-desc{font-size:.72rem;color:#777777}
-.hiw-arrow{color:var(--g300);font-size:1.2rem;padding:0 12px;flex-shrink:0}
+.hiw-s-num{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hiw-s-title{font-size:.8rem;font-weight:700;color:var(--text)}
+.hiw-s-desc{font-size:.72rem;color:var(--muted)}
+.hiw-arrow{color:var(--border);font-size:1.2rem;padding:0 12px;flex-shrink:0}
+@media(max-width:800px){.hiw-strip-inner{flex-direction:column;gap:12px;align-items:flex-start}.hiw-arrow{display:none}}
 
 /* BODY LAYOUT */
-.page-body{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start}
+.page-body{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start}
+@media(max-width:800px){.page-body{grid-template-columns:1fr}}
 
 /* LOT LIST */
 .lot-list-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.lot-list-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;color:var(--g900)}
-.lot-count{font-size:.75rem;color:var(--g500);background:var(--g200);border-radius:10px;padding:2px 8px;font-weight:600}
-.lot-search{width:100%;border:1.5px solid #dddddd;border-radius:var(--r);padding:8px 12px;font-family:inherit;font-size:.82rem;color:#111111;margin-bottom:12px;transition:border-color .15s}
-.lot-search:focus{outline:none;border-color:#111111}
+.lot-list-title{font-size:14px;font-weight:700;color:var(--navy)}
+.lot-count{font-size:.75rem;color:var(--muted);background:var(--blue-bg);color:var(--blue);border-radius:20px;padding:2px 10px;font-weight:600}
+.lot-search{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:8px 12px;font-family:inherit;font-size:.82rem;color:var(--text);margin-bottom:12px;transition:border-color .15s}
+.lot-search:focus{outline:none;border-color:var(--navy)}
 .lot-cards{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 200px);overflow-y:auto;padding-right:2px}
 .lot-cards::-webkit-scrollbar{width:4px}
-.lot-cards::-webkit-scrollbar-track{background:var(--g100)}
-.lot-cards::-webkit-scrollbar-thumb{background:var(--g300);border-radius:2px}
+.lot-cards::-webkit-scrollbar-track{background:var(--bg)}
+.lot-cards::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-.lot-card{background:#fff;border:1.5px solid var(--g200);border-radius:var(--rm);padding:12px 14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
-.lot-card:hover{border-color:#111111;box-shadow:none}
-.lot-card.active{border-color:#111111;background:#f7f7f7;box-shadow:none}
+.lot-card{background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.lot-card:hover{border-color:var(--navy);box-shadow:0 1px 6px rgba(31,78,121,.12)}
+.lot-card.active{border-color:var(--navy);background:#f0f6ff}
 .lot-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.lot-card-num{font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g400)}
-.lot-card-timer{font-size:.65rem;font-weight:700;color:var(--red);background:var(--red-l);padding:2px 6px;border-radius:4px}
-.lot-card-timer.soon{color:var(--amber);background:var(--amber-l)}
-.lot-card-timer.ok{color:var(--teal);background:var(--teal-l)}
-.lot-card-name{font-weight:700;font-size:.88rem;color:var(--g900);margin-bottom:3px}
-.lot-card-meta{font-size:.72rem;color:var(--g500)}
+.lot-card-num{font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.lot-card-timer{font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:4px}
+.lot-card-timer.urgent{color:var(--red);background:var(--red-bg)}
+.lot-card-timer.soon{color:var(--amber);background:var(--amber-bg)}
+.lot-card-timer.ok{color:var(--green);background:var(--green-bg)}
+.lot-card-name{font-weight:700;font-size:.88rem;color:var(--text);margin-bottom:3px}
+.lot-card-meta{font-size:.72rem;color:var(--muted)}
 .lot-card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
-.lot-card-bid{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;color:var(--g900)}
-.lot-card-bid-lbl{font-size:.65rem;color:var(--g400);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-.est-pill{background:var(--amber-l);border:1px solid rgba(217,119,6,.25);color:var(--amber-d);font-size:.68rem;font-weight:700;border-radius:6px;padding:3px 8px}
+.lot-card-bid{font-size:1.05rem;font-weight:700;color:var(--navy)}
+.lot-card-bid-lbl{font-size:.65rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.est-pill{background:var(--amber-bg);border:1px solid rgba(217,119,6,.25);color:var(--amber);font-size:.68rem;font-weight:700;border-radius:6px;padding:3px 8px}
 
 /* RIGHT PANEL */
-.calc-panel{}
-.calc-empty{background:#fff;border:2px dashed var(--g200);border-radius:var(--rl);padding:56px 32px;text-align:center}
-.calc-empty-icon{font-size:3rem;margin-bottom:14px}
-.calc-empty h3{font-size:1rem;font-weight:700;color:var(--g600);margin-bottom:6px}
-.calc-empty p{font-size:.82rem;color:var(--g400);line-height:1.5;max-width:300px;margin:0 auto}
-.calc-empty .arrow{font-size:2rem;color:var(--amber);margin-bottom:16px}
+.calc-empty{background:var(--white);border:2px dashed var(--border);border-radius:10px;padding:56px 32px;text-align:center}
+.calc-empty-icon{font-size:2.5rem;color:var(--amber);margin-bottom:14px}
+.calc-empty h3{font-size:1rem;font-weight:700;color:var(--muted);margin-bottom:6px}
+.calc-empty p{font-size:.82rem;color:var(--muted);line-height:1.5;max-width:300px;margin:0 auto}
 
-.calc-vehicle-hdr{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
-.cvh-lot{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g400);margin-bottom:4px}
-.cvh-name{font-weight:800;font-size:1.05rem;color:var(--g900)}
-.cvh-meta{font-size:.76rem;color:var(--g500);margin-top:3px}
+.calc-vehicle-hdr{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:14px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.cvh-lot{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.cvh-name{font-weight:700;font-size:1.05rem;color:var(--text)}
+.cvh-meta{font-size:.76rem;color:var(--muted);margin-top:3px}
 .cvh-right{text-align:right}
-.cvh-current-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--g400);margin-bottom:3px}
-.cvh-current-bid{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.4rem;color:var(--g900)}
-.cvh-bids{font-size:.7rem;color:var(--g400);margin-top:2px}
+.cvh-current-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:3px}
+.cvh-current-bid{font-size:1.4rem;font-weight:700;color:var(--navy)}
+.cvh-bids{font-size:.7rem;color:var(--muted);margin-top:2px}
 
-/* WIN PROBABILITY DISPLAY */
-.win-prob-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:24px 20px;margin-bottom:14px}
+/* WIN PROBABILITY */
+.win-prob-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:24px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
 .win-prob-inner{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
 .prob-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
 .prob-ring{width:110px;height:110px;position:relative;flex-shrink:0}
 .prob-ring svg{transform:rotate(-90deg)}
-.prob-ring-bg{fill:none;stroke:var(--g200);stroke-width:10}
+.prob-ring-bg{fill:none;stroke:var(--border);stroke-width:10}
 .prob-ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s ease,stroke .3s}
 .prob-ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.prob-pct{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.8rem;line-height:1;transition:color .3s}
+.prob-pct{font-size:1.8rem;font-weight:700;line-height:1;transition:color .3s}
 .prob-pct-sign{font-size:.9rem;font-weight:700}
-.prob-right{}
-.prob-status-badge{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:5px 14px;font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
-.prob-status-badge.low{background:var(--red-l);color:var(--red);border:1px solid rgba(192,57,43,.2)}
-.prob-status-badge.comp{background:var(--amber-l);color:var(--amber-d);border:1px solid rgba(217,119,6,.2)}
-.prob-status-badge.strong{background:#f0f0f0;color:#333333;border:1px solid #dddddd}
-.prob-status-badge.dom{background:var(--green-l);color:var(--green-d);border:1px solid rgba(26,138,60,.2)}
-.prob-desc{font-size:.82rem;color:var(--g600);line-height:1.5;margin-bottom:12px}
+.prob-status-badge{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:5px 14px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.prob-status-badge.low{background:var(--red-bg);color:var(--red);border:1px solid rgba(220,38,38,.2)}
+.prob-status-badge.comp{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(217,119,6,.2)}
+.prob-status-badge.strong{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+.prob-status-badge.dom{background:var(--green-bg);color:var(--green);border:1px solid rgba(22,163,74,.2)}
+.prob-desc{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:12px}
 .prob-sub-stats{display:flex;gap:16px;flex-wrap:wrap}
 .pss{text-align:center}
-.pss-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;color:var(--g900)}
-.pss-lbl{font-size:.65rem;color:var(--g400);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.pss-val{font-size:1.1rem;font-weight:700;color:var(--navy)}
+.pss-lbl{font-size:.65rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
 
 /* PRICE TRACK */
-.price-track-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:20px;margin-bottom:14px}
-.ptc-title{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--g500);margin-bottom:16px}
+.price-track-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.ptc-title{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
 .price-track-wrap{position:relative;padding:0 0 36px;margin-bottom:8px}
-.price-track{height:12px;border-radius:6px;background:linear-gradient(90deg,#f5f5f5 0%,#f5f5f5 20%,#efefef 20%,#ebebeb 45%,#e8e8e8 45%,#e0e0e0 75%,#e0e0e0 75%,#d8d8d8 100%);position:relative;overflow:visible}
-.track-zone-labels{display:flex;margin-top:4px;font-size:.62rem;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:.05em}
+.price-track{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--red-bg) 0%,var(--red-bg) 20%,var(--amber-bg) 20%,var(--amber-bg) 45%,var(--blue-bg) 45%,var(--blue-bg) 75%,var(--green-bg) 75%,var(--green-bg) 100%);position:relative;overflow:visible}
+.track-zone-labels{display:flex;margin-top:4px;font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 .tzl{flex:1;text-align:center}
 .track-pins{position:absolute;top:0;left:0;right:0;height:12px}
 .track-pin{position:absolute;transform:translateX(-50%);top:-4px}
-.track-pin-line{width:2px;height:20px;background:var(--g400);margin:0 auto}
-.track-pin-dot{width:8px;height:8px;border-radius:50%;border:2px solid var(--g400);background:#fff;margin:-4px auto 0}
-.track-pin-label{font-size:.65rem;color:var(--g500);font-weight:600;text-align:center;margin-top:3px;white-space:nowrap;transform:translateX(-50%);position:absolute;left:50%}
+.track-pin-line{width:2px;height:20px;background:var(--muted);margin:0 auto}
+.track-pin-dot{width:8px;height:8px;border-radius:50%;border:2px solid var(--muted);background:#fff;margin:-4px auto 0}
+.track-pin-label{font-size:.65rem;color:var(--muted);font-weight:600;text-align:center;margin-top:3px;white-space:nowrap;transform:translateX(-50%);position:absolute;left:50%}
 .bid-marker{position:absolute;transform:translateX(-50%);transition:left .6s cubic-bezier(.34,1.56,.64,1)}
-.bid-marker-needle{width:3px;height:28px;background:#111111;margin:0 auto;border-radius:2px;margin-top:-8px}
-.bid-marker-dot{width:14px;height:14px;border-radius:50%;background:#111111;border:3px solid #fff;box-shadow:0 0 0 2px #111111;margin:-2px auto 0}
-.bid-marker-flag{background:#111111;color:#fff;font-size:.62rem;font-weight:800;padding:3px 7px;border-radius:4px;white-space:nowrap;margin-top:4px;text-align:center}
+.bid-marker-needle{width:3px;height:28px;background:var(--navy);margin:0 auto;border-radius:2px;margin-top:-8px}
+.bid-marker-dot{width:14px;height:14px;border-radius:50%;background:var(--navy);border:3px solid #fff;box-shadow:0 0 0 2px var(--navy);margin:-2px auto 0}
+.bid-marker-flag{background:var(--navy);color:#fff;font-size:.62rem;font-weight:700;padding:3px 7px;border-radius:4px;white-space:nowrap;margin-top:4px;text-align:center}
 
 /* BID INPUT */
-.bid-input-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);padding:18px 20px;margin-bottom:14px}
-.bid-input-label{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--g600);margin-bottom:10px;display:block}
+.bid-input-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.bid-input-label{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:block}
 .bid-stepper{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-.stepper-btn{width:38px;height:38px;border-radius:var(--r);border:1.5px solid #dddddd;background:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;color:#444444;transition:all .15s;flex-shrink:0}
-.stepper-btn:hover{border-color:#111111;color:#111111}
-.bid-input-field{flex:1;border:1.5px solid var(--amber);border-radius:var(--r);padding:9px 14px;font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;color:var(--g900);text-align:center;transition:border-color .15s}
+.stepper-btn{width:38px;height:38px;border-radius:6px;border:1.5px solid var(--border);background:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .15s;flex-shrink:0}
+.stepper-btn:hover{border-color:var(--navy);color:var(--navy)}
+.bid-input-field{flex:1;border:1.5px solid var(--amber);border-radius:6px;padding:9px 14px;font-size:1.3rem;font-weight:700;color:var(--text);text-align:center;transition:border-color .15s}
 .bid-input-field:focus{outline:none;border-color:var(--amber)}
 .bid-increment-row{display:flex;gap:6px;flex-wrap:wrap}
-.bid-inc-btn{background:var(--g100);border:1px solid var(--g200);border-radius:6px;padding:5px 10px;font-family:inherit;font-size:.72rem;font-weight:700;color:var(--g600);cursor:pointer;transition:all .15s}
-.bid-inc-btn:hover{background:var(--amber-l);border-color:var(--amber);color:var(--amber-d)}
+.bid-inc-btn{background:var(--grey-bg);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-family:inherit;font-size:.72rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.bid-inc-btn:hover{background:var(--amber-bg);border-color:var(--amber);color:var(--amber)}
 
 /* RECOMMENDATION */
-.rec-card{border-radius:var(--rl);padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px}
-.rec-card.low{background:var(--red-l);border:1px solid rgba(192,57,43,.2)}
-.rec-card.comp{background:var(--amber-l);border:1px solid rgba(217,119,6,.2)}
-.rec-card.strong{background:#f5f5f5;border:1px solid #e0e0e0}
-.rec-card.dom{background:var(--green-l);border:1px solid rgba(26,138,60,.15)}
+.rec-card{border-radius:10px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px}
+.rec-card.low{background:var(--red-bg);border:1px solid rgba(220,38,38,.2)}
+.rec-card.comp{background:var(--amber-bg);border:1px solid rgba(217,119,6,.2)}
+.rec-card.strong{background:var(--blue-bg);border:1px solid rgba(37,99,235,.15)}
+.rec-card.dom{background:var(--green-bg);border:1px solid rgba(22,163,74,.15)}
 .rec-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px}
-.rec-text{}
-.rec-title{font-size:.82rem;font-weight:800;margin-bottom:4px}
+.rec-title{font-size:.82rem;font-weight:700;margin-bottom:4px}
 .rec-card.low .rec-title{color:var(--red)}
-.rec-card.comp .rec-title{color:var(--amber-d)}
-.rec-card.strong .rec-title{color:#333333}
-.rec-card.dom .rec-title{color:var(--green-d)}
-.rec-msg{font-size:.78rem;color:var(--g700);line-height:1.5}
-.rec-action{display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:var(--amber);color:#fff;border:none;border-radius:var(--r);padding:7px 14px;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;transition:opacity .15s}
+.rec-card.comp .rec-title{color:var(--amber)}
+.rec-card.strong .rec-title{color:var(--blue)}
+.rec-card.dom .rec-title{color:var(--green)}
+.rec-msg{font-size:.78rem;color:var(--text);line-height:1.5}
+.rec-action{display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:var(--amber);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-family:inherit;font-size:.78rem;font-weight:600;cursor:pointer;transition:opacity .15s}
 .rec-action:hover{opacity:.88}
 .rec-action.green-btn{background:var(--green)}
 
 /* COMPARABLE TABLE */
-.comp-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);overflow:hidden}
-.comp-card-hdr{padding:12px 16px;border-bottom:1px solid var(--g200);display:flex;align-items:center;gap:10px}
-.comp-card-hdr-icon{width:28px;height:28px;background:var(--green-l);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:.9rem}
-.comp-card-hdr-title{font-size:.85rem;font-weight:700;color:var(--g900)}
-.comp-card-hdr-sub{font-size:.72rem;color:var(--g500);margin-top:1px}
+.comp-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.comp-card-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.comp-card-hdr-icon{width:28px;height:28px;background:var(--green-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--green)}
+.comp-card-hdr-title{font-size:.85rem;font-weight:700;color:var(--text)}
+.comp-card-hdr-sub{font-size:.72rem;color:var(--muted);margin-top:1px}
 .comp-table{width:100%;border-collapse:collapse}
-.comp-table th{font-size:.63rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--g400);text-align:left;padding:8px 14px;border-bottom:1.5px solid var(--g200)}
-.comp-table td{font-size:.78rem;padding:9px 14px;border-bottom:1px solid var(--g100);color:var(--g700)}
+.comp-table th{font-size:.63rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 14px;border-bottom:1.5px solid var(--border)}
+.comp-table td{font-size:.78rem;padding:9px 14px;border-bottom:1px solid var(--bg);color:var(--text)}
 .comp-table tr:last-child td{border-bottom:none}
-.comp-table tr:hover td{background:var(--g50)}
+.comp-table tr:hover td{background:var(--bg)}
 .tag-sold{color:var(--green);font-weight:700}
 .tag-live{color:var(--amber);font-weight:700}
 .delta-pos{color:var(--green);font-weight:700}
 .delta-neg{color:var(--red);font-weight:700}
-.delta-neu{color:var(--g500);font-weight:600}
-
-@media(max-width:800px){
-  .page-body{grid-template-columns:1fr}
-  .lot-cards{max-height:300px}
-  .hiw-strip-inner{flex-direction:column;gap:12px;align-items:flex-start}
-  .hiw-arrow{display:none}
-  .prob-ring-wrap{flex-direction:row}
-}
+.delta-neu{color:var(--muted);font-weight:600}
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="nav-brand">HAMMER<span>LY</span></a>
-  <a href="index.html" class="nav-link">Listings</a>
-  <a href="search.html" class="nav-link">Search</a>
-  <a href="recommendation.html" class="nav-link">AI Match</a>
-  <a href="robo-call.html" class="nav-link">Robo Call</a>
-  <a href="estimated-price.html" class="nav-link active">Price Engine</a>
-</nav>
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-title"><i class="bi bi-hammer"></i> Hammerly</div>
+    <div class="sb-logo-sub">Auction Intelligence Platform</div>
+  </div>
+  <nav class="sb-nav">
+    <a href="index.html" class="sb-item"><i class="bi bi-grid-3x3-gap"></i> Listings</a>
+    <a href="search.html" class="sb-item"><i class="bi bi-search"></i> Search</a>
+    <a href="recommendation.html" class="sb-item"><i class="bi bi-stars"></i> AI Match</a>
+    <a href="robo-call.html" class="sb-item"><i class="bi bi-telephone-outbound"></i> Robo Call</a>
+    <a href="estimated-price.html" class="sb-item active"><i class="bi bi-graph-up-arrow"></i> Price Engine</a>
+  </nav>
+  <div class="sb-footer">Hammerly &copy; 2026 &middot; Prototype</div>
+</aside>
 
-<!-- PAGE HEADER -->
-<div class="page-header">
-  <div class="page-header-inner">
-    <div class="ph-left">
-      <div class="ph-badge">📊 Bid Intelligence Engine</div>
-      <div class="ph-title">Will You <span>Win at This Price?</span></div>
+<!-- HEADER -->
+<header id="header">
+  <div class="header-title"><i class="bi bi-graph-up-arrow" style="color:var(--navy);margin-right:6px"></i>Bid Intelligence Engine</div>
+  <span class="header-badge"><i class="bi bi-cpu"></i> Price Engine</span>
+</header>
+
+<!-- MAIN -->
+<main id="main">
+
+  <div class="page-hero">
+    <div>
+      <div class="ph-eyebrow"><i class="bi bi-bar-chart-line"></i> Bid Intelligence Engine</div>
+      <div class="ph-title">Will You Win at This Price?</div>
       <div class="ph-sub">Select any live lot, enter your planned bid, and see your win probability — plus exactly how much to raise to improve your odds.</div>
     </div>
     <div class="ph-stats">
@@ -226,72 +241,73 @@ nav{background:#ffffff;padding:0 24px;display:flex;align-items:center;height:52p
       </div>
     </div>
   </div>
-</div>
 
-<!-- HOW IT WORKS STRIP -->
-<div class="hiw-strip">
-  <div class="hiw-strip-inner">
-    <div class="hiw-s">
-      <div class="hiw-s-num">1</div>
-      <div class="hiw-s-text">
-        <div class="hiw-s-title">Pick a lot</div>
-        <div class="hiw-s-desc">Select any live auction vehicle from the list</div>
+  <!-- HOW IT WORKS STRIP -->
+  <div class="hiw-strip">
+    <div class="hiw-strip-inner">
+      <div class="hiw-s">
+        <div class="hiw-s-num">1</div>
+        <div>
+          <div class="hiw-s-title">Pick a lot</div>
+          <div class="hiw-s-desc">Select any live auction vehicle from the list</div>
+        </div>
       </div>
-    </div>
-    <div class="hiw-arrow">→</div>
-    <div class="hiw-s">
-      <div class="hiw-s-num">2</div>
-      <div class="hiw-s-text">
-        <div class="hiw-s-title">Enter your bid</div>
-        <div class="hiw-s-desc">Type the amount you're planning to bid</div>
+      <div class="hiw-arrow"><i class="bi bi-arrow-right"></i></div>
+      <div class="hiw-s">
+        <div class="hiw-s-num">2</div>
+        <div>
+          <div class="hiw-s-title">Enter your bid</div>
+          <div class="hiw-s-desc">Type the amount you're planning to bid</div>
+        </div>
       </div>
-    </div>
-    <div class="hiw-arrow">→</div>
-    <div class="hiw-s">
-      <div class="hiw-s-num">3</div>
-      <div class="hiw-s-text">
-        <div class="hiw-s-title">See your win odds</div>
-        <div class="hiw-s-desc">AI shows probability + how much to raise to win</div>
+      <div class="hiw-arrow"><i class="bi bi-arrow-right"></i></div>
+      <div class="hiw-s">
+        <div class="hiw-s-num">3</div>
+        <div>
+          <div class="hiw-s-title">See your win odds</div>
+          <div class="hiw-s-desc">AI shows probability + how much to raise to win</div>
+        </div>
       </div>
-    </div>
-    <div class="hiw-arrow">→</div>
-    <div class="hiw-s">
-      <div class="hiw-s-num">4</div>
-      <div class="hiw-s-text">
-        <div class="hiw-s-title">Place bid confidently</div>
-        <div class="hiw-s-desc">Go back to listings and bid with full context</div>
+      <div class="hiw-arrow"><i class="bi bi-arrow-right"></i></div>
+      <div class="hiw-s">
+        <div class="hiw-s-num">4</div>
+        <div>
+          <div class="hiw-s-title">Place bid confidently</div>
+          <div class="hiw-s-desc">Go back to listings and bid with full context</div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- MAIN BODY -->
-<div class="page-body">
+  <!-- MAIN BODY -->
+  <div class="page-body">
 
-  <!-- LEFT: Lot List -->
-  <div>
-    <div class="lot-list-header">
-      <div class="lot-list-title">Live Auction Lots</div>
-      <span class="lot-count" id="lotCount">18 lots</span>
+    <!-- LEFT: Lot List -->
+    <div>
+      <div class="lot-list-header">
+        <div class="lot-list-title">Live Auction Lots</div>
+        <span class="lot-count" id="lotCount">18 lots</span>
+      </div>
+      <input class="lot-search" id="lotSearch" placeholder="Search vehicle or lot…" oninput="filterLots()"/>
+      <div class="lot-cards" id="lotCards"></div>
     </div>
-    <input class="lot-search" id="lotSearch" placeholder="Search vehicle or lot…" oninput="filterLots()"/>
-    <div class="lot-cards" id="lotCards"></div>
+
+    <!-- RIGHT: Calculator -->
+    <div id="calcPanel">
+      <div class="calc-empty" id="calcEmpty">
+        <div class="calc-empty-icon"><i class="bi bi-arrow-left-circle"></i></div>
+        <div style="font-size:2rem;color:var(--muted);margin-bottom:14px"><i class="bi bi-crosshair"></i></div>
+        <h3>Select a lot to check your win odds</h3>
+        <p>Click any vehicle on the left to see your bid win probability, estimated price range, and how to improve your chances.</p>
+      </div>
+    </div>
+
   </div>
 
-  <!-- RIGHT: Calculator -->
-  <div id="calcPanel">
-    <div class="calc-empty" id="calcEmpty">
-      <div class="arrow">←</div>
-      <div class="calc-empty-icon">🎯</div>
-      <h3>Select a lot to check your win odds</h3>
-      <p>Click any vehicle on the left to see your bid win probability, estimated price range, and how to improve your chances.</p>
-    </div>
-  </div>
-
-</div>
+</main>
 
 <script>
-/* ── DATA ───────────────────────────────────────────── */
+/* ── DATA ─────────────────────────────── */
 const LOTS = [
   {id:1,  lot:'LOT-4821', name:'Maruti Swift VXi',        year:2022, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Mumbai',    km:35200,  price:370000, bank:'HDFC',  cond:'Good',      minLeft:134, bids:7},
   {id:2,  lot:'LOT-3904', name:'Hyundai i20 Sportz',      year:2021, type:'Hatchback', fuel:'Petrol', trans:'Manual',    city:'Pune',      km:42100,  price:415000, bank:'ICICI', cond:'Good',      minLeft:210, bids:5},
@@ -313,7 +329,6 @@ const LOTS = [
   {id:18, lot:'LOT-3404', name:'Toyota Innova Crysta 2.4G', year:2019, type:'MUV',    fuel:'Diesel', trans:'Manual',    city:'Mumbai',    km:88000,  price:1050000,bank:'ICICI', cond:'Good',      minLeft:420, bids:7},
 ];
 
-/* Per-model comparable sales (from recent auctions) */
 const COMPS = {
   1:  [{yr:2022,desc:'Swift VXi · Petrol',km:32400,city:'Mumbai',p:382000,s:'sold'},{yr:2022,desc:'Swift VXi · Petrol',km:41100,city:'Pune',p:365000,s:'sold'},{yr:2021,desc:'Swift ZXi · Petrol',km:38500,city:'Mumbai',p:370000,s:'sold'},{yr:2022,desc:'Swift ZDi · Diesel',km:29800,city:'Delhi',p:398000,s:'sold'},{yr:2022,desc:'Swift VXi · Petrol',km:35900,city:'Bangalore',p:368000,s:'live'}],
   2:  [{yr:2022,desc:'i20 Sportz · Petrol',km:28000,city:'Mumbai',p:428000,s:'sold'},{yr:2021,desc:'i20 Sportz · Petrol',km:42100,city:'Pune',p:395000,s:'sold'},{yr:2022,desc:'i20 Asta · Petrol IVT',km:24000,city:'Delhi',p:455000,s:'sold'},{yr:2021,desc:'i20 Era · Petrol',km:55000,city:'Mumbai',p:360000,s:'sold'},{yr:2022,desc:'i20 Magna · Petrol',km:32000,city:'Bangalore',p:418000,s:'live'}],
@@ -325,7 +340,7 @@ const COMPS = {
   18: [{yr:2022,desc:'Innova 2.4G · Diesel',km:28000,city:'Mumbai',p:1880000,s:'sold'},{yr:2021,desc:'Innova 2.4G · Diesel',km:45000,city:'Delhi',p:1750000,s:'sold'},{yr:2022,desc:'Innova 2.7V · Petrol Auto',km:32000,city:'Pune',p:1920000,s:'sold'},{yr:2019,desc:'Innova 2.4G · Diesel',km:88000,city:'Mumbai',p:1420000,s:'sold'},{yr:2021,desc:'Innova 2.4VX · Diesel Auto',km:38000,city:'Bangalore',p:1810000,s:'live'}],
 };
 
-/* ── UTILS ──────────────────────────────────────────── */
+/* ── UTILS ─────────────────────── */
 function fmt(n){
   if(n>=100000) return '₹'+(n/100000).toFixed(n%100000===0?0:2).replace(/\.?0+$/,'')+'L';
   return '₹'+n.toLocaleString('en-IN');
@@ -336,12 +351,11 @@ function fmtTimer(m){
   if(m<1440) return Math.floor(m/60)+'h '+(m%60)+'m';
   return Math.floor(m/1440)+'d '+Math.floor((m%1440)/60)+'h';
 }
-function timerClass(m){ return m<60?'':'m<240?'soon':'ok'; }
+function timerClass(m){ return m<60?'urgent':m<240?'soon':'ok'; }
 
-/* ── PRICE RANGE ENGINE ─────────────────────────────── */
+/* ── PRICE RANGE ENGINE ─────────────── */
 function getRange(lot){
   const b = lot.price;
-  // tighter range for excellent condition, wider for fair/poor
   const spread = lot.cond==='Excellent'?0.08:lot.cond==='Fair'?0.13:0.10;
   return {
     floor: Math.round(b*0.80/1000)*1000,
@@ -352,7 +366,7 @@ function getRange(lot){
   };
 }
 
-/* ── WIN PROBABILITY ────────────────────────────────── */
+/* ── WIN PROBABILITY ────────────────── */
 function calcWinProb(bid, r){
   if(bid<=r.floor) return 3;
   if(bid<r.low)    return Math.round(3  + (bid-r.floor)/(r.low-r.floor)  * 17);
@@ -363,31 +377,31 @@ function calcWinProb(bid, r){
 }
 
 function getStatus(p){
-  if(p<25)  return {label:'Low Chance',    cls:'low',    icon:'!', desc:'Unlikely to win at this bid. Most lots at this price go unsold for this bidder.'};
-  if(p<50)  return {label:'Competitive',   cls:'comp',   icon:'~', desc:'In the race, but at risk. A rival bid at a small increment could beat you.'};
-  if(p<75)  return {label:'Strong',        cls:'strong', icon:'↑', desc:'Well positioned. Your bid is near the expected sale price.'};
-  return     {label:'Dominant',            cls:'dom',    icon:'★', desc:'Your bid is well above the expected price. Very high chance to win.'};
+  if(p<25)  return {label:'Low Chance',    cls:'low',    icon:'<i class="bi bi-exclamation-triangle-fill"></i>', desc:'Unlikely to win at this bid. Most lots at this price go unsold for this bidder.'};
+  if(p<50)  return {label:'Competitive',   cls:'comp',   icon:'<i class="bi bi-dash-circle-fill"></i>', desc:'In the race, but at risk. A rival bid at a small increment could beat you.'};
+  if(p<75)  return {label:'Strong',        cls:'strong', icon:'<i class="bi bi-arrow-up-circle-fill"></i>', desc:'Well positioned. Your bid is near the expected sale price.'};
+  return     {label:'Dominant',            cls:'dom',    icon:'<i class="bi bi-star-fill"></i>', desc:'Your bid is well above the expected price. Very high chance to win.'};
 }
 
 function getRec(bid, r, prob){
-  if(prob>=80) return {title:'You\'re in the winning zone', msg:'This bid is well above the estimated sale price. Your chances are very high.', action:null, cls:'dom', icon:'★'};
+  if(prob>=80) return {title:'You\'re in the winning zone', msg:'This bid is well above the estimated sale price. Your chances are very high.', action:null, cls:'dom', icon:'<i class="bi bi-star-fill"></i>'};
   if(prob>=55){
     const target = r.high; const diff = target-bid;
-    return {title:'Raise slightly to lock it in', msg:`Raise by ${fmt(diff)} to reach the high-confidence zone. At ${fmt(target)}, your win probability jumps to 80%+.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'strong', icon:'💡'};
+    return {title:'Raise slightly to lock it in', msg:`Raise by ${fmt(diff)} to reach the high-confidence zone. At ${fmt(target)}, your win probability jumps to 80%+.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'strong', icon:'<i class="bi bi-lightbulb-fill"></i>'};
   }
   if(prob>=20){
     const target = r.mid; const diff = target-bid;
     if(diff<=0){
       const target2=r.high; const diff2=target2-bid;
-      return {title:'You\'re near the estimated price', msg:`Raise by ${fmt(diff2)} to move into the strong zone (75%+ win chance).`, action:{label:`Set bid to ${fmt(target2)}`, val:target2}, cls:'comp', icon:'💡'};
+      return {title:'You\'re near the estimated price', msg:`Raise by ${fmt(diff2)} to move into the strong zone (75%+ win chance).`, action:{label:`Set bid to ${fmt(target2)}`, val:target2}, cls:'comp', icon:'<i class="bi bi-lightbulb-fill"></i>'};
     }
-    return {title:'Raise to reach the estimated price', msg:`The estimated auction price is ${fmt(r.mid)}. Raise your bid by ${fmt(diff)} to hit the mid-point where most lots sell.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'comp', icon:'💡'};
+    return {title:'Raise to reach the estimated price', msg:`The estimated auction price is ${fmt(r.mid)}. Raise your bid by ${fmt(diff)} to hit the mid-point where most lots sell.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'comp', icon:'<i class="bi bi-lightbulb-fill"></i>'};
   }
   const target=r.low; const diff=target-bid;
-  return {title:'Bid is too low to be competitive', msg:`The historical floor for this vehicle is around ${fmt(r.low)}. You need to raise by at least ${fmt(diff)} to have a meaningful chance.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'low', icon:'!'};
+  return {title:'Bid is too low to be competitive', msg:`The historical floor for this vehicle is around ${fmt(r.low)}. You need to raise by at least ${fmt(diff)} to have a meaningful chance.`, action:{label:`Set bid to ${fmt(target)}`, val:target}, cls:'low', icon:'<i class="bi bi-exclamation-triangle-fill"></i>'};
 }
 
-/* ── UI ─────────────────────────────────────────────── */
+/* ── UI ─────────────────────────────── */
 let activeLot = null;
 let currentBid = 0;
 
@@ -408,7 +422,7 @@ function renderLotList(lots){
   const container = document.getElementById('lotCards');
   container.innerHTML = lots.map(l=>{
     const r = getRange(l);
-    const tc = l.minLeft<60?'':'l.minLeft<240?'soon':'ok';
+    const tc = timerClass(l.minLeft);
     return `<div class="lot-card${activeLot&&activeLot.id===l.id?' active':''}" onclick="selectLot(${l.id})" id="lcard-${l.id}">
       <div class="lot-card-top">
         <span class="lot-card-num">${l.lot} · ${l.bank}</span>
@@ -444,22 +458,19 @@ function renderCalculator(){
   const rec = getRec(currentBid, r, prob);
   const comps = COMPS[l.id] || genComps(l, r.mid);
 
-  const tc = l.minLeft<60?'var(--red)':l.minLeft<240?'var(--amber)':'var(--teal)';
+  const tc = l.minLeft<60?'var(--red)':l.minLeft<240?'var(--amber)':'var(--green)';
 
-  // Ring: circumference of r=46 circle ≈ 289
   const circ = 289;
   const dash = circ - (prob/100)*circ;
-  const ringColor = prob>=75?'#1a8a3c':prob>=50?'#0057a8':prob>=25?'#d97706':'#c0392b';
+  const ringColor = prob>=75?'var(--green)':prob>=50?'var(--blue)':prob>=25?'var(--amber)':'var(--red)';
 
-  // Track positions (% along track floor→ceil)
   function pos(v){ return Math.max(2,Math.min(97,((v-r.floor)/(r.ceil-r.floor))*100)).toFixed(1); }
   const bidPos = pos(currentBid);
 
   document.getElementById('calcPanel').innerHTML = `
-    <!-- Vehicle header -->
     <div class="calc-vehicle-hdr">
       <div>
-        <div class="cvh-lot">${l.lot} · ${l.bank} Repossession · <span style="color:${tc};font-weight:800">${fmtTimer(l.minLeft)} left</span></div>
+        <div class="cvh-lot">${l.lot} · ${l.bank} Repossession · <span style="color:${tc};font-weight:700">${fmtTimer(l.minLeft)} left</span></div>
         <div class="cvh-name">${l.year} ${l.name}</div>
         <div class="cvh-meta">${fmtKm(l.km)} · ${l.fuel} · ${l.trans} · ${l.city} · ${l.type} · ${l.cond}</div>
       </div>
@@ -470,7 +481,6 @@ function renderCalculator(){
       </div>
     </div>
 
-    <!-- Bid input -->
     <div class="bid-input-card">
       <label class="bid-input-label">Your Planned Bid — adjust to recalculate odds</label>
       <div class="bid-stepper">
@@ -487,7 +497,6 @@ function renderCalculator(){
       </div>
     </div>
 
-    <!-- Win Probability -->
     <div class="win-prob-card">
       <div class="win-prob-inner">
         <div class="prob-ring-wrap">
@@ -516,12 +525,10 @@ function renderCalculator(){
       </div>
     </div>
 
-    <!-- Price Track -->
     <div class="price-track-card">
       <div class="ptc-title">Where your bid sits in the price range</div>
       <div class="price-track-wrap">
         <div class="price-track" id="priceTrack">
-          <!-- Zone pins -->
           <div class="track-pins">
             <div class="track-pin" style="left:${pos(r.low)}%">
               <div class="track-pin-line"></div>
@@ -531,14 +538,13 @@ function renderCalculator(){
             <div class="track-pin" style="left:${pos(r.mid)}%">
               <div class="track-pin-line" style="background:var(--amber)"></div>
               <div class="track-pin-dot" style="border-color:var(--amber)"></div>
-              <div class="track-pin-label" style="color:var(--amber-d);font-weight:800">${fmt(r.mid)}<br>Estimate</div>
+              <div class="track-pin-label" style="color:var(--amber);font-weight:700">${fmt(r.mid)}<br>Estimate</div>
             </div>
             <div class="track-pin" style="left:${pos(r.high)}%">
               <div class="track-pin-line" style="background:var(--green)"></div>
               <div class="track-pin-dot" style="border-color:var(--green)"></div>
-              <div class="track-pin-label" style="color:var(--green-d);font-weight:800">${fmt(r.high)}<br>High</div>
+              <div class="track-pin-label" style="color:var(--green);font-weight:700">${fmt(r.high)}<br>High</div>
             </div>
-            <!-- Your bid marker -->
             <div class="bid-marker" id="bidMarker" style="left:${bidPos}%">
               <div class="bid-marker-needle"></div>
               <div class="bid-marker-dot"></div>
@@ -549,13 +555,12 @@ function renderCalculator(){
         <div class="track-zone-labels" style="margin-top:52px">
           <div class="tzl" style="color:var(--red);flex:1.2">Below range</div>
           <div class="tzl" style="color:var(--amber)">Low zone</div>
-          <div class="tzl" style="color:var(--green)">Win zone</div>
-          <div class="tzl" style="color:var(--green-d);flex:.8">Dominant</div>
+          <div class="tzl" style="color:var(--blue)">Win zone</div>
+          <div class="tzl" style="color:var(--green);flex:.8">Dominant</div>
         </div>
       </div>
     </div>
 
-    <!-- Recommendation -->
     <div class="rec-card ${rec.cls}">
       <div class="rec-icon">${rec.icon}</div>
       <div class="rec-text">
@@ -565,10 +570,9 @@ function renderCalculator(){
       </div>
     </div>
 
-    <!-- Comparables -->
     <div class="comp-card">
       <div class="comp-card-hdr">
-        <div class="comp-card-hdr-icon">🔍</div>
+        <div class="comp-card-hdr-icon"><i class="bi bi-search"></i></div>
         <div>
           <div class="comp-card-hdr-title">Recent Auction Comparables</div>
           <div class="comp-card-hdr-sub">Similar lots sold in last 90 days · vs your bid of ${fmt(currentBid)}</div>
@@ -586,13 +590,13 @@ function renderCalculator(){
               const dc=d>0?'delta-pos':d<0?'delta-neg':'delta-neu';
               const ds=(d>0?'+':'')+pct+'%';
               return `<tr>
-                <td><strong>${c.yr} ${l.name.split(' ').slice(0,2).join(' ')}</strong><br><span style="font-size:.7rem;color:var(--g400)">${c.desc}</span></td>
+                <td><strong>${c.yr} ${l.name.split(' ').slice(0,2).join(' ')}</strong><br><span style="font-size:.7rem;color:var(--muted)">${c.desc}</span></td>
                 <td>${c.yr}</td>
                 <td>${c.km.toLocaleString('en-IN')}</td>
                 <td>${c.city}</td>
                 <td><strong>${fmt(c.p)}</strong></td>
                 <td><span class="${dc}">${ds}</span></td>
-                <td>${c.s==='sold'?'<span class="tag-sold">✓ Sold</span>':'<span class="tag-live">● Live</span>'}</td>
+                <td>${c.s==='sold'?'<span class="tag-sold"><i class="bi bi-check-circle-fill"></i> Sold</span>':'<span class="tag-live"><i class="bi bi-circle-fill"></i> Live</span>'}</td>
               </tr>`;
             }).join('')}
           </tbody>
@@ -626,7 +630,6 @@ function setBid(val){
   renderCalculator();
 }
 
-/* Init */
 renderLotList(LOTS);
 </script>
 </body>

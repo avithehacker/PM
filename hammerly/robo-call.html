@@ -4,99 +4,110 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Hammerly — Robo Call Engine</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --green:#166534;--green-l:#f0fdf4;
-  --red:#991b1b;--red-l:#fef2f2;
-  --amber:#92400e;--amber-l:#fffbeb;
-  --teal:#134e4a;--teal-l:#f0fdfa;--teal-d:#0f3d39;
-  --blue:#1e3a5f;--blue-d:#1e3a5f;--blue-l:#eff6ff;
-  --purple:#4c1d95;--purple-l:#f5f3ff;--purple-d:#3b0764;
-  --g50:#fafafa;--g100:#f5f5f5;--g200:#e8e8e8;--g300:#d4d4d4;
-  --g400:#a3a3a3;--g500:#737373;--g600:#525252;--g700:#404040;--g900:#111111;
-  --white:#fff;
-  --r:8px;--rm:12px;--rl:16px;
+  --sidebar-w:240px; --header-h:58px;
+  --navy:#1F4E79; --navy-dark:#163a5c; --navy-light:#2563a8;
+  --bg:#EEF2F7; --white:#ffffff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
+  --green:#16a34a; --green-bg:#dcfce7;
+  --blue:#2563eb; --blue-bg:#dbeafe;
+  --red:#dc2626; --red-bg:#fee2e2;
+  --amber:#d97706; --amber-bg:#fef3c7;
+  --grey:#6b7280; --grey-bg:#f3f4f6;
 }
-body{font-family:'Barlow',sans-serif;background:#ffffff;color:#111111;min-height:100vh}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+input,select,textarea{font-family:inherit}
 
-/* NAV */
-nav{background:#ffffff;padding:0 24px;display:flex;align-items:center;gap:0;height:52px;position:sticky;top:0;z-index:100;border-bottom:1px solid #e8e8e8}
-.nav-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;color:#111111;letter-spacing:.5px;margin-right:24px;text-decoration:none}
-.nav-brand span{color:#111111}
-.nav-link{color:#888888;text-decoration:none;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:0 14px;height:52px;display:flex;align-items:center;transition:color .15s}
-.nav-link:hover{color:#111111}
-.nav-link.active{color:#111111;border-bottom:2px solid #111111}
+/* SIDEBAR */
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--navy);display:flex;flex-direction:column;z-index:200;overflow-y:auto}
+.sb-logo{padding:18px 20px 14px;border-bottom:1px solid rgba(255,255,255,.12)}
+.sb-logo-title{color:#fff;font-size:16px;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;gap:8px}
+.sb-logo-sub{color:rgba(255,255,255,.55);font-size:10.5px;margin-top:2px}
+.sb-nav{padding:10px 0;flex:1}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.75);cursor:pointer;transition:.15s;border-left:3px solid transparent;font-size:13.5px;text-decoration:none}
+.sb-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.sb-item.active{background:rgba(255,255,255,.14);color:#fff;border-left-color:#60a5fa;font-weight:600}
+.sb-item i{font-size:16px;flex-shrink:0}
+.sb-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:11px}
 
-/* HERO */
-.hero{background:#f7f7f7;color:#111111;padding:56px 32px 48px;text-align:center;border-bottom:1px solid #e8e8e8}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#efefef;border:1px solid #e0e0e0;border-radius:20px;padding:6px 16px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#555555;margin-bottom:20px}
-.hero h1{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2.8rem;letter-spacing:.02em;line-height:1.1;margin-bottom:12px}
-.hero h1 span{color:#111111}
-.hero-sub{color:#666666;font-size:1rem;max-width:520px;margin:0 auto 36px}
+/* HEADER */
+#header{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--header-h);background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1);display:flex;align-items:center;padding:0 24px;z-index:100;gap:16px}
+.header-title{font-size:15px;font-weight:600;color:var(--navy);flex:1}
+.header-badge{background:var(--blue-bg);color:var(--blue);padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:24px;min-height:calc(100vh - var(--header-h))}
+
+/* PAGE HERO */
+.page-hero{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:28px 28px 24px;margin-bottom:22px;text-align:center}
+.page-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--blue-bg);color:var(--blue);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:16px}
+.page-title{font-size:26px;font-weight:700;color:var(--navy);margin-bottom:12px}
+.page-desc{color:var(--muted);font-size:13.5px;max-width:520px;margin:0 auto 28px;line-height:1.65}
 .hero-stats{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
 .hero-stat{text-align:center}
-.hero-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:2rem;color:#111111;line-height:1}
-.hero-stat-lbl{font-size:.75rem;color:#999999;margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+.hero-stat-val{font-size:28px;font-weight:700;color:var(--navy);line-height:1}
+.hero-stat-lbl{font-size:.75rem;color:var(--muted);margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
 
 /* HOW IT WORKS */
-.hiw-section{background:#fff;border-bottom:1px solid var(--g200);padding:40px 32px}
-.hiw-inner{max-width:800px;margin:0 auto}
-.section-label{font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#999999;margin-bottom:6px}
-.section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.6rem;color:var(--g900);margin-bottom:28px}
-.hiw-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.hiw-step{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rl);padding:22px 20px;position:relative}
-.hiw-num{width:32px;height:32px;border-radius:50%;background:#111111;color:#fff;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-.hiw-step h3{font-size:.95rem;font-weight:700;color:var(--g900);margin-bottom:6px}
-.hiw-step p{font-size:.8rem;color:var(--g600);line-height:1.5}
-.hiw-step-icon{font-size:1.6rem;margin-bottom:10px}
+.hiw-section{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:20px;margin-bottom:22px}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.section-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:20px}
+.hiw-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.hiw-step{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:18px;position:relative}
+.hiw-num{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.hiw-step h3{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.hiw-step p{font-size:.78rem;color:var(--muted);line-height:1.5}
+.hiw-step-icon{font-size:1.4rem;color:var(--navy);margin-bottom:8px}
+@media(max-width:700px){.hiw-steps{grid-template-columns:1fr}}
 
 /* MAIN LAYOUT */
-.page-body{max-width:960px;margin:0 auto;padding:32px 24px;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+.page-body{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start;margin-bottom:22px}
+@media(max-width:700px){.page-body{grid-template-columns:1fr}}
 
 /* CARD BASE */
-.card{background:#fff;border:1px solid var(--g200);border-radius:var(--rl);overflow:hidden}
-.card-hdr{padding:16px 20px;border-bottom:1px solid var(--g200);display:flex;align-items:center;gap:10px}
-.card-hdr-icon{width:32px;height:32px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.card-hdr-text{}
-.card-hdr-title{font-size:.9rem;font-weight:700;color:var(--g900)}
-.card-hdr-sub{font-size:.75rem;color:var(--g500);margin-top:2px}
-.card-body{padding:20px}
+.card{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);overflow:hidden}
+.card-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.card-hdr-icon{width:30px;height:30px;border-radius:6px;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--navy);flex-shrink:0}
+.card-hdr-title{font-size:.88rem;font-weight:700;color:var(--text)}
+.card-hdr-sub{font-size:.72rem;color:var(--muted);margin-top:2px}
+.card-body{padding:18px}
 
 /* PHONE SETUP */
 .phone-field{margin-bottom:16px}
-.phone-field label{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--g600);display:block;margin-bottom:6px}
+.phone-field label{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
 .phone-input-row{display:flex;gap:8px}
-.phone-input-row input{flex:1;border:1.5px solid var(--g300);border-radius:var(--r);padding:10px 14px;font-family:inherit;font-size:.9rem;color:var(--g900);transition:border-color .15s}
-.phone-input-row input:focus{outline:none;border-color:var(--teal)}
-.btn-test{background:var(--teal-l);color:var(--teal-d);border:1.5px solid rgba(13,148,136,.3);border-radius:var(--r);padding:10px 16px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s}
-.btn-test:hover{background:rgba(13,148,136,.15)}
-.btn-test.calling{background:#111111;color:#fff;animation:pulse-btn 1s ease-in-out infinite}
+.phone-input-row input{flex:1;border:1.5px solid var(--border);border-radius:6px;padding:9px 12px;font-family:inherit;font-size:.9rem;color:var(--text);transition:border-color .15s}
+.phone-input-row input:focus{outline:none;border-color:var(--navy)}
+.btn-test{background:var(--blue-bg);color:var(--blue);border:1.5px solid rgba(37,99,235,.3);border-radius:6px;padding:9px 14px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s}
+.btn-test:hover{background:rgba(37,99,235,.15)}
+.btn-test.calling{background:var(--navy);color:#fff;animation:pulse-btn 1s ease-in-out infinite}
 @keyframes pulse-btn{0%,100%{opacity:1}50%{opacity:.7}}
 
-.test-result{background:#f5f5f5;border:1px solid #dddddd;border-radius:var(--r);padding:10px 14px;font-size:.8rem;color:#333333;margin-top:10px;display:none}
+.test-result{background:var(--green-bg);border:1px solid rgba(22,163,74,.25);border-radius:6px;padding:9px 14px;font-size:.8rem;color:var(--green);margin-top:10px;display:none}
 .test-result.show{display:flex;align-items:center;gap:8px}
 
 /* ALERT CARDS */
-.alerts-label{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--g500);margin-bottom:12px}
-.alert-card{border:1.5px solid var(--g200);border-radius:var(--rm);padding:14px 16px;margin-bottom:10px;transition:border-color .2s,background .2s;background:#fff}
-.alert-card.on{border-color:#111111;background:#f7f7f7}
-.alert-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:0}
-.alert-card-info{}
-.alert-card-name{font-size:.85rem;font-weight:700;color:#111111}
-.alert-card-when{font-size:.75rem;color:#777777;margin-top:3px}
-.alert-card.on .alert-card-when{color:#333333}
-.alert-card-preview{font-size:.75rem;color:#777777;font-style:italic;background:#f0f0f0;border-left:3px solid #cccccc;padding:8px 12px;border-radius:0 6px 6px 0;margin-top:10px;line-height:1.5;display:none}
-.alert-card.on .alert-card-preview{display:block;background:#f5f5f5;border-left-color:#111111;color:#333333}
+.alerts-label{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.alert-card{border:1.5px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;transition:border-color .2s,background .2s;background:var(--white)}
+.alert-card.on{border-color:var(--navy);background:#f0f6ff}
+.alert-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.alert-card-name{font-size:.85rem;font-weight:700;color:var(--text)}
+.alert-card-when{font-size:.75rem;color:var(--muted);margin-top:3px}
+.alert-card.on .alert-card-when{color:var(--text)}
+.alert-card-preview{font-size:.75rem;color:var(--muted);font-style:italic;background:var(--bg);border-left:3px solid var(--border);padding:8px 12px;border-radius:0 6px 6px 0;margin-top:10px;line-height:1.5;display:none}
+.alert-card.on .alert-card-preview{display:block;background:var(--blue-bg);border-left-color:var(--navy);color:var(--text);font-style:normal}
 
 /* TOGGLE */
 .toggle-wrap{flex-shrink:0;padding-top:2px}
 .toggle{position:relative;display:inline-block;width:38px;height:22px}
 .toggle input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;inset:0;background:var(--g300);border-radius:11px;cursor:pointer;transition:.2s}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:11px;cursor:pointer;transition:.2s}
 .toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s}
-.toggle input:checked+.toggle-slider{background:#111111}
+.toggle input:checked+.toggle-slider{background:var(--navy)}
 .toggle input:checked+.toggle-slider:before{transform:translateX(16px)}
 
 /* RIGHT COLUMN */
@@ -104,341 +115,348 @@ nav{background:#ffffff;padding:0 24px;display:flex;align-items:center;gap:0;heig
 
 /* STATS */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
-.stat-box{background:var(--g50);border:1px solid var(--g200);border-radius:var(--r);padding:14px 12px;text-align:center}
-.stat-box-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;line-height:1}
-.stat-box-lbl{font-size:.7rem;color:var(--g500);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
-.stat-box.teal .stat-box-val{color:#134e4a}
+.stat-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 12px;text-align:center}
+.stat-box-val{font-size:1.6rem;font-weight:700;line-height:1}
+.stat-box-lbl{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.stat-box.navy .stat-box-val{color:var(--navy)}
 .stat-box.green .stat-box-val{color:var(--green)}
 .stat-box.red .stat-box-val{color:var(--red)}
 .stat-box.amber .stat-box-val{color:var(--amber)}
 
 /* CALL LOG */
 .call-log{list-style:none}
-.call-log li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--g100)}
+.call-log li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
 .call-log li:last-child{border-bottom:none}
 .call-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .call-dot.answered{background:var(--green)}
 .call-dot.missed{background:var(--red)}
 .call-dot.sms{background:var(--amber)}
 .call-info{flex:1}
-.call-type{font-size:.8rem;font-weight:600;color:var(--g900)}
-.call-vehicle{font-size:.73rem;color:var(--g500)}
-.call-time{font-size:.7rem;color:var(--g400);flex-shrink:0}
+.call-type{font-size:.8rem;font-weight:600;color:var(--text)}
+.call-vehicle{font-size:.73rem;color:var(--muted)}
+.call-time{font-size:.7rem;color:var(--muted);flex-shrink:0}
 
 /* STATUS BAR */
-.status-bar{display:flex;align-items:center;gap:8px;background:#f5f5f5;border:1px solid #e0e0e0;border-radius:var(--r);padding:10px 14px;margin-bottom:16px}
-.status-dot{width:8px;height:8px;border-radius:50%;background:#111111;animation:pulse 2s ease-in-out infinite}
+.status-bar{display:flex;align-items:center;gap:8px;background:var(--green-bg);border:1px solid rgba(22,163,74,.2);border-radius:6px;padding:9px 14px;margin-bottom:16px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.status-text{font-size:.8rem;font-weight:600;color:#333333}
+.status-text{font-size:.8rem;font-weight:600;color:var(--green)}
 
 /* SAVE BTN */
-.btn-save{width:100%;background:#111111;color:#fff;border:none;border-radius:var(--r);padding:12px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .15s;margin-top:4px}
-.btn-save:hover{background:#333333}
-
-/* RESPONSIVE */
-@media(max-width:700px){
-  .page-body{grid-template-columns:1fr}
-  .hiw-steps{grid-template-columns:1fr}
-  .hero h1{font-size:2rem}
-  .hero-stats{gap:24px}
-}
+.btn-save{width:100%;background:var(--navy);color:#fff;border:none;border-radius:6px;padding:11px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .15s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-save:hover{background:var(--navy-dark)}
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="nav-brand">HAMMER<span>LY</span></a>
-  <a href="index.html" class="nav-link">Listings</a>
-  <a href="search.html" class="nav-link">Search</a>
-  <a href="recommendation.html" class="nav-link">AI Match</a>
-  <a href="robo-call.html" class="nav-link active">Robo Call</a>
-  <a href="estimated-price.html" class="nav-link">Price Engine</a>
-</nav>
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-title"><i class="bi bi-hammer"></i> Hammerly</div>
+    <div class="sb-logo-sub">Auction Intelligence Platform</div>
+  </div>
+  <nav class="sb-nav">
+    <a href="index.html" class="sb-item"><i class="bi bi-grid-3x3-gap"></i> Listings</a>
+    <a href="search.html" class="sb-item"><i class="bi bi-search"></i> Search</a>
+    <a href="recommendation.html" class="sb-item"><i class="bi bi-stars"></i> AI Match</a>
+    <a href="robo-call.html" class="sb-item active"><i class="bi bi-telephone-outbound"></i> Robo Call</a>
+    <a href="estimated-price.html" class="sb-item"><i class="bi bi-graph-up-arrow"></i> Price Engine</a>
+  </nav>
+  <div class="sb-footer">Hammerly &copy; 2026 &middot; Prototype</div>
+</aside>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-badge">Automated Alert Engine</div>
-  <h1>Never Miss a<br><span>Critical Auction Moment</span></h1>
-  <p class="hero-sub">Hammerly's Robo Call Engine monitors auctions 24/7 and calls your phone the instant something important happens — so you can act fast, even when you're away from the screen.</p>
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="hero-stat-val">&lt; 4s</div>
-      <div class="hero-stat-lbl">Alert Response</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-val">94%</div>
-      <div class="hero-stat-lbl">Answer Rate</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-val">5</div>
-      <div class="hero-stat-lbl">Alert Types</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-val">24/7</div>
-      <div class="hero-stat-lbl">Monitoring</div>
+<!-- HEADER -->
+<header id="header">
+  <div class="header-title"><i class="bi bi-telephone-outbound" style="color:var(--navy);margin-right:6px"></i>Robo Call Engine</div>
+  <span class="header-badge"><i class="bi bi-broadcast"></i> Automated Alert Engine</span>
+</header>
+
+<!-- MAIN -->
+<main id="main">
+
+  <div class="page-hero">
+    <div class="page-eyebrow"><i class="bi bi-broadcast"></i> Automated Alert Engine</div>
+    <div class="page-title">Never Miss a Critical Auction Moment</div>
+    <p class="page-desc">Hammerly's Robo Call Engine monitors auctions 24/7 and calls your phone the instant something important happens — so you can act fast, even when you're away from the screen.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-val">&lt; 4s</div>
+        <div class="hero-stat-lbl">Alert Response</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">94%</div>
+        <div class="hero-stat-lbl">Answer Rate</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">5</div>
+        <div class="hero-stat-lbl">Alert Types</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">24/7</div>
+        <div class="hero-stat-lbl">Monitoring</div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- HOW IT WORKS -->
-<div class="hiw-section">
-  <div class="hiw-inner">
+  <!-- HOW IT WORKS -->
+  <div class="hiw-section">
     <div class="section-label">How It Works</div>
     <div class="section-title">3 Steps to Never Miss a Bid</div>
     <div class="hiw-steps">
       <div class="hiw-step">
-        <div class="hiw-step-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        <div class="hiw-step-icon"><i class="bi bi-phone"></i></div>
         <div class="hiw-num">1</div>
         <h3>Save Your Number</h3>
         <p>Enter your mobile number below. Hammerly stores it securely and uses it exclusively for auction alerts you enable.</p>
       </div>
       <div class="hiw-step">
-        <div class="hiw-step-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <div class="hiw-step-icon"><i class="bi bi-bell"></i></div>
         <div class="hiw-num">2</div>
         <h3>Choose Your Alerts</h3>
         <p>Toggle on only the events that matter to you — outbid, won, reminders, or a daily digest. Each card shows exactly what you'll hear.</p>
       </div>
       <div class="hiw-step">
-        <div class="hiw-step-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="hiw-step-icon"><i class="bi bi-lightning-charge"></i></div>
         <div class="hiw-num">3</div>
         <h3>Get Called Instantly</h3>
         <p>The moment your trigger fires, an automated call reaches you in under 4 seconds with clear vehicle details and next-step instructions.</p>
       </div>
     </div>
   </div>
-</div>
 
-<!-- MAIN BODY -->
-<div class="page-body">
+  <!-- MAIN BODY -->
+  <div class="page-body">
 
-  <!-- LEFT: Phone Setup + Alert Cards -->
-  <div>
+    <!-- LEFT: Phone Setup + Alert Cards -->
+    <div>
 
-    <!-- Phone Setup -->
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-hdr">
-        <div class="card-hdr-icon" style="background:#f0f0f0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
-        <div class="card-hdr-text">
-          <div class="card-hdr-title">Your Alert Number</div>
-          <div class="card-hdr-sub">Calls and SMS will be sent to this number</div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="status-bar">
-          <div class="status-dot"></div>
-          <span class="status-text">Engine active — monitoring your watched lots</span>
-        </div>
-        <div class="phone-field">
-          <label>Mobile Number</label>
-          <div class="phone-input-row">
-            <input type="tel" id="phoneInput" placeholder="+91 98765 43210" value="+91 98765 43210"/>
-            <button class="btn-test" id="testBtn" onclick="testCall()">Test Call</button>
+      <!-- Phone Setup -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-hdr">
+          <div class="card-hdr-icon"><i class="bi bi-phone"></i></div>
+          <div class="card-hdr-text">
+            <div class="card-hdr-title">Your Alert Number</div>
+            <div class="card-hdr-sub">Calls and SMS will be sent to this number</div>
           </div>
         </div>
-        <div class="test-result" id="testResult">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          <span>Test call placed — you should receive it within 4 seconds.</span>
+        <div class="card-body">
+          <div class="status-bar">
+            <div class="status-dot"></div>
+            <span class="status-text"><i class="bi bi-check-circle-fill"></i> Engine active — monitoring your watched lots</span>
+          </div>
+          <div class="phone-field">
+            <label>Mobile Number</label>
+            <div class="phone-input-row">
+              <input type="tel" id="phoneInput" placeholder="+91 98765 43210" value="+91 98765 43210"/>
+              <button class="btn-test" id="testBtn" onclick="testCall()"><i class="bi bi-telephone"></i> Test Call</button>
+            </div>
+          </div>
+          <div class="test-result" id="testResult">
+            <i class="bi bi-check-circle-fill"></i>
+            <span>Test call placed — you should receive it within 4 seconds.</span>
+          </div>
         </div>
       </div>
+
+      <!-- Alert Cards -->
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-hdr-icon"><i class="bi bi-bell"></i></div>
+          <div class="card-hdr-text">
+            <div class="card-hdr-title">Alert Triggers</div>
+            <div class="card-hdr-sub">Toggle each event — preview shows the exact call script</div>
+          </div>
+        </div>
+        <div class="card-body">
+
+          <div class="alert-card on" id="ac-outbid">
+            <div class="alert-card-top">
+              <div class="alert-card-info">
+                <div class="alert-card-name">Outbid Alert</div>
+                <div class="alert-card-when">Triggers: When someone outbids you on a watched lot</div>
+              </div>
+              <div class="toggle-wrap">
+                <label class="toggle"><input type="checkbox" checked onchange="toggleCard('outbid',this)"><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+            <div class="alert-card-preview">
+              "Hello, this is Hammerly. You have been outbid on Lot 4821 — 2022 Maruti Swift VXi. Current bid is ₹3,85,000. Auction closes in 8 minutes. Press 1 to place a counter-bid now, or visit Hammerly to act."
+            </div>
+          </div>
+
+          <div class="alert-card on" id="ac-won">
+            <div class="alert-card-top">
+              <div class="alert-card-info">
+                <div class="alert-card-name">Winner Notification</div>
+                <div class="alert-card-when">Triggers: When you win an auction lot</div>
+              </div>
+              <div class="toggle-wrap">
+                <label class="toggle"><input type="checkbox" checked onchange="toggleCard('won',this)"><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+            <div class="alert-card-preview">
+              "Congratulations from Hammerly! You have won Lot 4821 — 2022 Maruti Swift VXi at ₹3,70,000. Your payment window opens in 2 hours. Please log in to Hammerly to complete the purchase."
+            </div>
+          </div>
+
+          <div class="alert-card" id="ac-remind">
+            <div class="alert-card-top">
+              <div class="alert-card-info">
+                <div class="alert-card-name">Auction Starting Soon</div>
+                <div class="alert-card-when">Triggers: 15 minutes before a watched lot opens</div>
+              </div>
+              <div class="toggle-wrap">
+                <label class="toggle"><input type="checkbox" onchange="toggleCard('remind',this)"><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+            <div class="alert-card-preview">
+              "Reminder from Hammerly. Your watched auction — 2019 Honda City V MT — opens in 15 minutes at 2:30 PM. Starting bid is ₹2,90,000. Log in to Hammerly now to be ready."
+            </div>
+          </div>
+
+          <div class="alert-card" id="ac-sms">
+            <div class="alert-card-top">
+              <div class="alert-card-info">
+                <div class="alert-card-name">Bid Confirmation SMS</div>
+                <div class="alert-card-when">Triggers: After every bid you place, sent as SMS</div>
+              </div>
+              <div class="toggle-wrap">
+                <label class="toggle"><input type="checkbox" onchange="toggleCard('sms',this)"><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+            <div class="alert-card-preview">
+              "HAMMERLY: Bid of ₹3,70,000 placed on Lot 4821 (2022 Maruti Swift). You are currently the highest bidder. Auction ends at 3:45 PM. Reply STOP to unsubscribe."
+            </div>
+          </div>
+
+          <div class="alert-card" id="ac-digest">
+            <div class="alert-card-top">
+              <div class="alert-card-info">
+                <div class="alert-card-name">Morning Digest Call</div>
+                <div class="alert-card-when">Triggers: Daily at 8:00 AM — summary of today's lots</div>
+              </div>
+              <div class="toggle-wrap">
+                <label class="toggle"><input type="checkbox" onchange="toggleCard('digest',this)"><span class="toggle-slider"></span></label>
+              </div>
+            </div>
+            <div class="alert-card-preview">
+              "Good morning from Hammerly. You have 3 auctions today. Lot 4821 — Maruti Swift opens at 10 AM, Lot 3904 — Hyundai i20 at 1 PM, and Lot 5102 — Honda City at 3:30 PM. Have a great bidding day!"
+            </div>
+          </div>
+
+          <button class="btn-save" onclick="saveAlerts()"><i class="bi bi-check-circle"></i> Save Alert Preferences</button>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Alert Cards -->
-    <div class="card">
-      <div class="card-hdr">
-        <div class="card-hdr-icon" style="background:#f0f0f0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-        <div class="card-hdr-text">
-          <div class="card-hdr-title">Alert Triggers</div>
-          <div class="card-hdr-sub">Toggle each event — preview shows the exact call script</div>
+    <!-- RIGHT: Stats + Call Log -->
+    <div class="right-col">
+
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-hdr-icon"><i class="bi bi-bar-chart-line"></i></div>
+          <div class="card-hdr-text">
+            <div class="card-hdr-title">This Month's Activity</div>
+            <div class="card-hdr-sub">Your call and alert statistics</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="stat-grid">
+            <div class="stat-box navy">
+              <div class="stat-box-val">14</div>
+              <div class="stat-box-lbl">Total Calls</div>
+            </div>
+            <div class="stat-box green">
+              <div class="stat-box-val">12</div>
+              <div class="stat-box-lbl">Answered</div>
+            </div>
+            <div class="stat-box red">
+              <div class="stat-box-val">2</div>
+              <div class="stat-box-lbl">Missed</div>
+            </div>
+            <div class="stat-box amber">
+              <div class="stat-box-val">86%</div>
+              <div class="stat-box-lbl">Answer Rate</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card-body">
 
-        <div class="alert-card on" id="ac-outbid">
-          <div class="alert-card-top">
-            <div class="alert-card-info">
-              <div class="alert-card-name">Outbid Alert</div>
-              <div class="alert-card-when">Triggers: When someone outbids you on a watched lot</div>
-            </div>
-            <div class="toggle-wrap">
-              <label class="toggle"><input type="checkbox" checked onchange="toggleCard('outbid',this)"><span class="toggle-slider"></span></label>
-            </div>
-          </div>
-          <div class="alert-card-preview">
-            "Hello, this is Hammerly. You have been outbid on Lot 4821 — 2022 Maruti Swift VXi. Current bid is ₹3,85,000. Auction closes in 8 minutes. Press 1 to place a counter-bid now, or visit Hammerly to act."
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-hdr-icon"><i class="bi bi-list-ul"></i></div>
+          <div class="card-hdr-text">
+            <div class="card-hdr-title">Recent Calls</div>
+            <div class="card-hdr-sub">Last 7 alert events</div>
           </div>
         </div>
-
-        <div class="alert-card on" id="ac-won">
-          <div class="alert-card-top">
-            <div class="alert-card-info">
-              <div class="alert-card-name">Winner Notification</div>
-              <div class="alert-card-when">Triggers: When you win an auction lot</div>
-            </div>
-            <div class="toggle-wrap">
-              <label class="toggle"><input type="checkbox" checked onchange="toggleCard('won',this)"><span class="toggle-slider"></span></label>
-            </div>
-          </div>
-          <div class="alert-card-preview">
-            "Congratulations from Hammerly! You have won Lot 4821 — 2022 Maruti Swift VXi at ₹3,70,000. Your payment window opens in 2 hours. Please log in to Hammerly to complete the purchase."
-          </div>
+        <div class="card-body" style="padding:12px 18px">
+          <ul class="call-log">
+            <li>
+              <div class="call-dot answered"></div>
+              <div class="call-info">
+                <div class="call-type">Outbid Alert — Answered</div>
+                <div class="call-vehicle">2022 Maruti Swift VXi · Lot 4821</div>
+              </div>
+              <div class="call-time">2h ago</div>
+            </li>
+            <li>
+              <div class="call-dot answered"></div>
+              <div class="call-info">
+                <div class="call-type">Winner Notification — Answered</div>
+                <div class="call-vehicle">2019 Honda City V · Lot 3711</div>
+              </div>
+              <div class="call-time">Yesterday</div>
+            </li>
+            <li>
+              <div class="call-dot sms"></div>
+              <div class="call-info">
+                <div class="call-type">Bid Confirmation SMS</div>
+                <div class="call-vehicle">2021 Hyundai i20 Sportz · Lot 3904</div>
+              </div>
+              <div class="call-time">Yesterday</div>
+            </li>
+            <li>
+              <div class="call-dot missed"></div>
+              <div class="call-info">
+                <div class="call-type">Outbid Alert — Missed</div>
+                <div class="call-vehicle">2020 Tata Nexon XZ+ · Lot 3501</div>
+              </div>
+              <div class="call-time">2 days ago</div>
+            </li>
+            <li>
+              <div class="call-dot answered"></div>
+              <div class="call-info">
+                <div class="call-type">Morning Digest — Answered</div>
+                <div class="call-vehicle">3 lots scheduled for the day</div>
+              </div>
+              <div class="call-time">3 days ago</div>
+            </li>
+            <li>
+              <div class="call-dot answered"></div>
+              <div class="call-info">
+                <div class="call-type">Auction Reminder — Answered</div>
+                <div class="call-vehicle">2018 Ford EcoSport SE · Lot 3288</div>
+              </div>
+              <div class="call-time">4 days ago</div>
+            </li>
+            <li>
+              <div class="call-dot missed"></div>
+              <div class="call-info">
+                <div class="call-type">Outbid Alert — Missed</div>
+                <div class="call-vehicle">2021 Kia Sonet HTX · Lot 3102</div>
+              </div>
+              <div class="call-time">5 days ago</div>
+            </li>
+          </ul>
         </div>
-
-        <div class="alert-card" id="ac-remind">
-          <div class="alert-card-top">
-            <div class="alert-card-info">
-              <div class="alert-card-name">Auction Starting Soon</div>
-              <div class="alert-card-when">Triggers: 15 minutes before a watched lot opens</div>
-            </div>
-            <div class="toggle-wrap">
-              <label class="toggle"><input type="checkbox" onchange="toggleCard('remind',this)"><span class="toggle-slider"></span></label>
-            </div>
-          </div>
-          <div class="alert-card-preview">
-            "Reminder from Hammerly. Your watched auction — 2019 Honda City V MT — opens in 15 minutes at 2:30 PM. Starting bid is ₹2,90,000. Log in to Hammerly now to be ready."
-          </div>
-        </div>
-
-        <div class="alert-card" id="ac-sms">
-          <div class="alert-card-top">
-            <div class="alert-card-info">
-              <div class="alert-card-name">Bid Confirmation SMS</div>
-              <div class="alert-card-when">Triggers: After every bid you place, sent as SMS</div>
-            </div>
-            <div class="toggle-wrap">
-              <label class="toggle"><input type="checkbox" onchange="toggleCard('sms',this)"><span class="toggle-slider"></span></label>
-            </div>
-          </div>
-          <div class="alert-card-preview">
-            "HAMMERLY: Bid of ₹3,70,000 placed on Lot 4821 (2022 Maruti Swift). You are currently the highest bidder. Auction ends at 3:45 PM. Reply STOP to unsubscribe."
-          </div>
-        </div>
-
-        <div class="alert-card" id="ac-digest">
-          <div class="alert-card-top">
-            <div class="alert-card-info">
-              <div class="alert-card-name">Morning Digest Call</div>
-              <div class="alert-card-when">Triggers: Daily at 8:00 AM — summary of today's lots</div>
-            </div>
-            <div class="toggle-wrap">
-              <label class="toggle"><input type="checkbox" onchange="toggleCard('digest',this)"><span class="toggle-slider"></span></label>
-            </div>
-          </div>
-          <div class="alert-card-preview">
-            "Good morning from Hammerly. You have 3 auctions today. Lot 4821 — Maruti Swift opens at 10 AM, Lot 3904 — Hyundai i20 at 1 PM, and Lot 5102 — Honda City at 3:30 PM. Have a great bidding day!"
-          </div>
-        </div>
-
-        <button class="btn-save" onclick="saveAlerts()">Save Alert Preferences</button>
       </div>
+
     </div>
-
   </div>
 
-  <!-- RIGHT: Stats + Call Log -->
-  <div class="right-col">
-
-    <div class="card">
-      <div class="card-hdr">
-        <div class="card-hdr-icon" style="background:#f0f0f0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
-        <div class="card-hdr-text">
-          <div class="card-hdr-title">This Month's Activity</div>
-          <div class="card-hdr-sub">Your call and alert statistics</div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="stat-grid">
-          <div class="stat-box teal">
-            <div class="stat-box-val">14</div>
-            <div class="stat-box-lbl">Total Calls</div>
-          </div>
-          <div class="stat-box green">
-            <div class="stat-box-val">12</div>
-            <div class="stat-box-lbl">Answered</div>
-          </div>
-          <div class="stat-box red">
-            <div class="stat-box-val">2</div>
-            <div class="stat-box-lbl">Missed</div>
-          </div>
-          <div class="stat-box amber">
-            <div class="stat-box-val">86%</div>
-            <div class="stat-box-lbl">Answer Rate</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-hdr">
-        <div class="card-hdr-icon" style="background:#f0f0f0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
-        <div class="card-hdr-text">
-          <div class="card-hdr-title">Recent Calls</div>
-          <div class="card-hdr-sub">Last 7 alert events</div>
-        </div>
-      </div>
-      <div class="card-body" style="padding:12px 20px">
-        <ul class="call-log">
-          <li>
-            <div class="call-dot answered"></div>
-            <div class="call-info">
-              <div class="call-type">Outbid Alert — Answered</div>
-              <div class="call-vehicle">2022 Maruti Swift VXi · Lot 4821</div>
-            </div>
-            <div class="call-time">2h ago</div>
-          </li>
-          <li>
-            <div class="call-dot answered"></div>
-            <div class="call-info">
-              <div class="call-type">Winner Notification — Answered</div>
-              <div class="call-vehicle">2019 Honda City V · Lot 3711</div>
-            </div>
-            <div class="call-time">Yesterday</div>
-          </li>
-          <li>
-            <div class="call-dot sms"></div>
-            <div class="call-info">
-              <div class="call-type">Bid Confirmation SMS</div>
-              <div class="call-vehicle">2021 Hyundai i20 Sportz · Lot 3904</div>
-            </div>
-            <div class="call-time">Yesterday</div>
-          </li>
-          <li>
-            <div class="call-dot missed"></div>
-            <div class="call-info">
-              <div class="call-type">Outbid Alert — Missed</div>
-              <div class="call-vehicle">2020 Tata Nexon XZ+ · Lot 3501</div>
-            </div>
-            <div class="call-time">2 days ago</div>
-          </li>
-          <li>
-            <div class="call-dot answered"></div>
-            <div class="call-info">
-              <div class="call-type">Morning Digest — Answered</div>
-              <div class="call-vehicle">3 lots scheduled for the day</div>
-            </div>
-            <div class="call-time">3 days ago</div>
-          </li>
-          <li>
-            <div class="call-dot answered"></div>
-            <div class="call-info">
-              <div class="call-type">Auction Reminder — Answered</div>
-              <div class="call-vehicle">2018 Ford EcoSport SE · Lot 3288</div>
-            </div>
-            <div class="call-time">4 days ago</div>
-          </li>
-          <li>
-            <div class="call-dot missed"></div>
-            <div class="call-info">
-              <div class="call-type">Outbid Alert — Missed</div>
-              <div class="call-vehicle">2021 Kia Sonet HTX · Lot 3102</div>
-            </div>
-            <div class="call-time">5 days ago</div>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
-</div>
+</main>
 
 <script>
 function toggleCard(key, cb) {
@@ -449,11 +467,11 @@ function toggleCard(key, cb) {
 function testCall() {
   const btn = document.getElementById('testBtn');
   const result = document.getElementById('testResult');
-  btn.textContent = 'Calling…';
+  btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Calling…';
   btn.classList.add('calling');
   btn.disabled = true;
   setTimeout(() => {
-    btn.textContent = 'Test Call';
+    btn.innerHTML = '<i class="bi bi-telephone"></i> Test Call';
     btn.classList.remove('calling');
     btn.disabled = false;
     result.classList.add('show');
@@ -463,11 +481,11 @@ function testCall() {
 
 function saveAlerts() {
   const btn = event.currentTarget;
-  const orig = btn.textContent;
-  btn.textContent = '✓ Preferences Saved';
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Preferences Saved';
   btn.style.background = 'var(--green)';
   setTimeout(() => {
-    btn.textContent = orig;
+    btn.innerHTML = orig;
     btn.style.background = '';
   }, 2500);
 }
