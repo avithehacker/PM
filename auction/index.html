@@ -4,58 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hammerly — Vehicle Auctions</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue: #0057a8;
-      --blue-d: #003d7a;
-      --blue-l: #e8f1fb;
-      --blue-m: #1a6fc4;
-      --green: #1a8a3c;
-      --green-l: #e6f5eb;
-      --red: #c0392b;
-      --red-l: #fdecea;
-      --amber: #d97706;
-      --amber-l: #fffbeb;
-      --teal: #0d9488;
-      --teal-l: #e6faf9;
-      --gold: #f0c040;
-      --g100: #f5f6f8;
-      --g200: #eaecf0;
-      --g300: #d1d5db;
-      --g400: #9ca3af;
-      --g500: #6b7280;
-      --g600: #4b5563;
-      --g700: #374151;
-      --g900: #111827;
-      --white: #fff;
-      --hh: 56px;
-      --r: 4px;
-      --rm: 6px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.1);
-      --shadow-md: 0 4px 14px rgba(0,0,0,.12);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,.16);
+      --sidebar-w: 240px; --header-h: 58px;
+      --navy: #1F4E79; --navy-dark: #163a5c; --navy-light: #2563a8;
+      --bg: #EEF2F7; --white: #ffffff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0;
+      --green: #16a34a; --green-bg: #dcfce7;
+      --blue: #2563eb; --blue-bg: #dbeafe;
+      --red: #dc2626; --red-bg: #fee2e2;
+      --amber: #d97706; --amber-bg: #fef3c7;
+      --grey: #6b7280; --grey-bg: #f3f4f6;
     }
 
-    body {
-      font-family: 'Barlow', sans-serif;
-      background: var(--g100);
-      color: var(--g900);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
     a { text-decoration: none; color: inherit; }
 
     /* ── HEADER ── */
     .hdr {
-      height: var(--hh);
-      background: #ffffff;
-      border-bottom: 1px solid #e8e8e8;
+      height: var(--header-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       padding: 0 28px;
@@ -63,28 +34,26 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 9px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 21px;
-      font-weight: 800;
-      color: #111111;
-      letter-spacing: .3px;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
       text-decoration: none;
     }
     .logo-icon {
-      width: 30px; height: 30px;
-      background: #111111;
-      border-radius: var(--r);
+      width: 32px; height: 32px;
+      background: var(--navy);
+      border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
+      color: #fff;
       font-size: 16px;
     }
-    .logo span { color: #111111; }
 
     .hdr-nav {
       display: flex;
@@ -94,18 +63,18 @@
     }
     .nav-link {
       padding: 6px 14px;
-      border-radius: var(--r);
+      border-radius: 6px;
       font-size: 13px;
-      font-weight: 600;
-      color: #888888;
+      font-weight: 500;
+      color: var(--muted);
       transition: all .15s;
       text-decoration: none;
     }
-    .nav-link:hover { color: #111111; background: #f0f0f0; }
+    .nav-link:hover { color: var(--navy); background: var(--blue-bg); }
     .nav-link.active {
-      color: #111111;
-      background: #f0f0f0;
-      box-shadow: inset 0 -2px 0 #111111;
+      color: var(--navy);
+      background: var(--blue-bg);
+      font-weight: 600;
     }
 
     .hdr-r { margin-left: auto; display: flex; align-items: center; gap: 8px; }
@@ -114,74 +83,65 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 7px 16px;
-      border-radius: var(--r);
+      padding: 6px 14px;
+      border-radius: 6px;
       border: none;
-      font-family: 'Barlow', sans-serif;
+      font-family: inherit;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       transition: all .15s;
       white-space: nowrap;
       text-decoration: none;
     }
-    .btn-blue { background: #111111; color: #fff; }
-    .btn-blue:hover { background: #333333; }
-    .btn-ghost {
-      background: transparent;
-      color: #111111;
-      border: 1.5px solid #e8e8e8;
-    }
-    .btn-ghost:hover { background: #f0f0f0; color: #111111; }
-    .btn-outline {
-      background: #ffffff;
-      color: #111111;
-      border: 1.5px solid #111111;
-    }
-    .btn-outline:hover { background: #f0f0f0; }
-    .btn-sm { padding: 5px 12px; font-size: 12px; }
-    .btn-lg { padding: 10px 24px; font-size: 15px; font-weight: 700; }
+    .btn-primary { background: var(--navy); color: #fff; }
+    .btn-primary:hover { background: var(--navy-dark); }
+    .btn-outline { background: #fff; color: var(--navy); border: 1px solid var(--navy); }
+    .btn-outline:hover { background: var(--navy); color: #fff; }
+    .btn-success { background: var(--green); color: #fff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-amber { background: var(--amber); color: #fff; }
+    .btn-amber:hover { background: #b45309; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+    .btn-lg { padding: 10px 24px; font-size: 15px; font-weight: 600; }
 
     /* ── HERO ── */
     .hero {
-      background: #f7f7f7;
-      border-bottom: 1px solid #e8e8e8;
+      background: var(--navy);
       padding: 72px 28px 80px;
       text-align: center;
-      color: #111111;
+      color: #fff;
     }
 
     .hero-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: #ffffff;
-      border: 1px solid #e8e8e8;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
       border-radius: 20px;
       padding: 4px 14px;
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .6px;
+      font-weight: 600;
+      letter-spacing: .5px;
       text-transform: uppercase;
-      color: #111111;
+      color: rgba(255,255,255,.9);
       margin-bottom: 24px;
     }
-    .hero-eyebrow::before { content: '●'; font-size: 8px; color: var(--green); }
+    .hero-eyebrow i { color: #86efac; font-size: 9px; }
 
     .hero h1 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(40px, 6vw, 64px);
-      font-weight: 800;
-      color: #111111;
-      line-height: 1.05;
-      letter-spacing: .5px;
+      font-size: clamp(36px, 5.5vw, 58px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
       margin-bottom: 16px;
     }
-    .hero h1 span { color: #111111; }
+    .hero h1 span { color: #93c5fd; }
 
     .hero p {
       font-size: 16px;
-      color: #666666;
+      color: rgba(255,255,255,.75);
       max-width: 520px;
       margin: 0 auto 32px;
       font-weight: 400;
@@ -202,65 +162,68 @@
       align-items: center;
       gap: 0;
       background: #fff;
-      border-radius: var(--rm);
+      border-radius: 8px;
       overflow: hidden;
       max-width: 520px;
       margin: 0 auto;
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
     }
     .hero-search input {
       flex: 1;
       border: none;
       outline: none;
       padding: 13px 18px;
-      font-family: 'Barlow', sans-serif;
+      font-family: inherit;
       font-size: 14px;
-      font-weight: 500;
-      color: var(--g900);
+      font-weight: 400;
+      color: var(--text);
       background: transparent;
     }
-    .hero-search input::placeholder { color: var(--g400); }
+    .hero-search input::placeholder { color: var(--muted); }
     .hero-search button {
       padding: 13px 22px;
-      background: #111111;
+      background: var(--navy);
       color: #fff;
       border: none;
-      font-family: 'Barlow', sans-serif;
+      font-family: inherit;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
       transition: background .15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .hero-search button:hover { background: #333333; }
+    .hero-search button:hover { background: var(--navy-dark); }
 
     /* ── STATS BAR ── */
     .stats-bar {
       background: var(--white);
-      border-bottom: 1px solid var(--g200);
+      border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: center;
       gap: 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05);
     }
     .stat-item {
       flex: 1;
       max-width: 220px;
       text-align: center;
       padding: 22px 16px;
-      border-right: 1px solid var(--g200);
+      border-right: 1px solid var(--border);
     }
     .stat-item:last-child { border-right: none; }
     .stat-n {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-      color: #111111;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--navy);
       line-height: 1;
       margin-bottom: 4px;
     }
     .stat-l {
       font-size: 11px;
       font-weight: 600;
-      color: var(--g500);
+      color: var(--muted);
       text-transform: uppercase;
       letter-spacing: .5px;
     }
@@ -275,20 +238,20 @@
       margin-bottom: 24px;
     }
     .section-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--g900);
-      letter-spacing: .3px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .section-link {
       font-size: 12px;
-      font-weight: 700;
-      color: #111111;
+      font-weight: 600;
+      color: var(--blue);
       text-decoration: none;
-      letter-spacing: .3px;
     }
-    .section-link:hover { color: #333333; text-decoration: underline; }
+    .section-link:hover { text-decoration: underline; }
 
     /* ── VEHICLE CARDS ── */
     .cards-grid {
@@ -299,20 +262,19 @@
 
     .v-card {
       background: var(--white);
-      border: 1.5px solid var(--g200);
-      border-radius: var(--rm);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
       overflow: hidden;
-      transition: box-shadow .2s, border-color .2s, transform .2s;
+      transition: box-shadow .2s, transform .2s;
       cursor: pointer;
     }
     .v-card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: var(--g300);
+      box-shadow: 0 4px 14px rgba(0,0,0,.12);
       transform: translateY(-2px);
     }
 
     .v-card-img {
-      background: linear-gradient(135deg, #e8e8e8 0%, #f2f2f2 100%);
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
       height: 110px;
       display: flex;
       align-items: center;
@@ -325,36 +287,36 @@
       top: 10px;
       left: 12px;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 3px 8px;
-      border-radius: 2px;
-      text-transform: uppercase;
-      letter-spacing: .4px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
-    .badge-live { background: #fee2e2; color: #b91c1c; }
-    .badge-upcoming { background: #fef3c7; color: #92400e; }
-    .badge-closed { background: var(--g200); color: var(--g500); }
+    .badge-live { background: var(--red-bg); color: var(--red); }
+    .badge-upcoming { background: var(--amber-bg); color: var(--amber); }
+    .badge-closed { background: var(--grey-bg); color: var(--grey); }
 
     .v-card-cls {
       position: absolute;
       top: 10px;
       right: 12px;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 3px 7px;
-      border-radius: 2px;
-      background: #ffffff;
-      color: #111111;
-      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      background: rgba(255,255,255,.2);
+      color: rgba(255,255,255,.9);
+      border: 1px solid rgba(255,255,255,.25);
     }
 
     .v-card-body { padding: 14px 16px 16px; }
 
     .v-card-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
-      color: var(--g900);
+      color: var(--text);
       margin-bottom: 3px;
       white-space: nowrap;
       overflow: hidden;
@@ -362,8 +324,8 @@
     }
     .v-card-sub {
       font-size: 11px;
-      color: var(--g500);
-      font-weight: 500;
+      color: var(--muted);
+      font-weight: 400;
       margin-bottom: 14px;
     }
 
@@ -373,15 +335,13 @@
       gap: 10px;
       margin-bottom: 14px;
       padding-bottom: 14px;
-      border-bottom: 1px solid var(--g200);
+      border-bottom: 1px solid var(--border);
     }
-    .meta-item {}
-    .meta-label { font-size: 10px; font-weight: 700; color: var(--g400); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 2px; }
+    .meta-label { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 2px; }
     .meta-value {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--g900);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
     }
     .meta-value.green { color: var(--green); }
     .meta-value.red { color: var(--red); }
@@ -393,8 +353,8 @@
       justify-content: space-between;
       gap: 8px;
     }
-    .v-card-info { font-size: 11px; color: var(--g500); font-weight: 500; }
-    .v-card-info strong { color: var(--g700); }
+    .v-card-info { font-size: 11px; color: var(--muted); font-weight: 400; }
+    .v-card-info strong { color: var(--text); font-weight: 600; }
 
     /* ── CATEGORY CARDS ── */
     .cat-grid {
@@ -404,8 +364,8 @@
     }
     .cat-card {
       background: var(--white);
-      border: 1.5px solid var(--g200);
-      border-radius: var(--rm);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
       padding: 28px 24px;
       display: flex;
       flex-direction: column;
@@ -416,54 +376,57 @@
       transition: all .2s;
       text-decoration: none;
       color: inherit;
+      border: 1px solid var(--border);
     }
     .cat-card:hover {
-      border-color: #111111;
-      box-shadow: var(--shadow-md);
+      border-color: var(--navy);
+      box-shadow: 0 4px 14px rgba(0,0,0,.1);
       transform: translateY(-2px);
     }
-    .cat-emoji {
-      font-size: 44px;
-      line-height: 1;
+    .cat-icon {
+      width: 52px; height: 52px;
+      background: var(--blue-bg);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      color: var(--blue);
     }
     .cat-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--g900);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
     }
     .cat-count {
       font-size: 12px;
-      font-weight: 600;
-      color: var(--g500);
+      font-weight: 500;
+      color: var(--muted);
     }
     .cat-tag {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 3px 10px;
-      border-radius: 2px;
-      background: #f0f0f0;
-      color: #111111;
+      border-radius: 20px;
+      background: var(--grey-bg);
+      color: var(--grey);
     }
 
     /* ── MODULES SECTION ── */
     .modules-bg {
-      background: #f7f7f7;
-      border-top: 1px solid #e8e8e8;
-      border-bottom: 1px solid #e8e8e8;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
     .modules-section { padding: 52px 28px; max-width: 1160px; margin: 0 auto; }
 
     .modules-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: #111111;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
       margin-bottom: 6px;
     }
     .modules-sub {
       font-size: 13px;
-      color: #888888;
+      color: var(--muted);
       margin-bottom: 28px;
     }
 
@@ -474,45 +437,51 @@
     }
 
     .mod-card {
-      background: #ffffff;
-      border: 1.5px solid #e8e8e8;
-      border-radius: var(--rm);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       padding: 20px 20px 18px;
       display: flex;
       flex-direction: column;
       gap: 8px;
       text-decoration: none;
-      color: #111111;
+      color: var(--text);
       transition: all .2s;
     }
     .mod-card:hover {
-      background: #f0f0f0;
-      border-color: #111111;
+      background: var(--blue-bg);
+      border-color: var(--navy);
       transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0,0,0,.08);
     }
     .mod-icon {
-      font-size: 26px;
-      line-height: 1;
+      width: 40px; height: 40px;
+      background: var(--navy);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-size: 18px;
       margin-bottom: 2px;
     }
     .mod-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      color: #111111;
-      letter-spacing: .2px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
     }
     .mod-desc {
       font-size: 12px;
-      color: #888888;
+      color: var(--muted);
       line-height: 1.5;
     }
     .mod-arrow {
       font-size: 11px;
-      color: #111111;
-      font-weight: 700;
+      color: var(--blue);
+      font-weight: 600;
       margin-top: auto;
       padding-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     /* ── HOW IT WORKS ── */
@@ -523,32 +492,31 @@
     }
     .step-card {
       background: var(--white);
-      border: 1.5px solid var(--g200);
-      border-radius: var(--rm);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
       padding: 24px 20px;
+      border: 1px solid var(--border);
     }
     .step-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 36px;
-      font-weight: 800;
-      color: var(--g200);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--border);
       line-height: 1;
       margin-bottom: 12px;
     }
     .step-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--g900);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
       margin-bottom: 6px;
     }
-    .step-desc { font-size: 12px; color: var(--g500); line-height: 1.6; }
+    .step-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
     /* ── BANKS STRIP ── */
     .banks-strip {
       background: var(--white);
-      border-top: 1px solid var(--g200);
-      border-bottom: 1px solid var(--g200);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
       padding: 20px 28px;
       display: flex;
       align-items: center;
@@ -558,25 +526,38 @@
     }
     .banks-label {
       font-size: 11px;
-      font-weight: 700;
-      color: var(--g400);
+      font-weight: 600;
+      color: var(--muted);
       text-transform: uppercase;
       letter-spacing: .5px;
       margin-right: 8px;
     }
     .bank-chip {
-      padding: 5px 12px;
-      background: var(--g100);
-      border: 1.5px solid var(--g200);
-      border-radius: 3px;
+      padding: 4px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
       font-size: 12px;
       font-weight: 600;
-      color: var(--g600);
+      color: var(--navy);
+    }
+
+    /* ── LIVE DOT ── */
+    .live-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse-dot 1.4s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .6; transform: scale(.8); }
     }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--g900);
+      background: var(--navy-dark);
       color: rgba(255,255,255,.45);
       padding: 28px 28px;
       display: flex;
@@ -587,19 +568,20 @@
       font-size: 12px;
     }
     .footer-logo {
-      font-family: 'Barlow Condensed', sans-serif;
       font-size: 18px;
-      font-weight: 800;
-      color: rgba(255,255,255,.7);
+      font-weight: 700;
+      color: rgba(255,255,255,.85);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .footer-logo span { color: var(--gold); }
     .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
     .footer-links a { color: rgba(255,255,255,.45); text-decoration: none; font-size: 12px; font-weight: 500; }
     .footer-links a:hover { color: rgba(255,255,255,.8); }
 
     @media (max-width: 700px) {
       .stats-bar { flex-wrap: wrap; }
-      .stat-item { max-width: 50%; border-bottom: 1px solid var(--g200); }
+      .stat-item { max-width: 50%; border-bottom: 1px solid var(--border); }
       .cat-grid { grid-template-columns: 1fr; }
       .hero { padding: 52px 20px 60px; }
       .section { padding: 36px 20px; }
@@ -611,8 +593,8 @@
 <!-- ── HEADER ── -->
 <header class="hdr">
   <a href="index.html" class="logo">
-    <div class="logo-icon">🏛</div>
-    Hammer<span>ly</span>
+    <div class="logo-icon"><i class="bi bi-bank"></i></div>
+    Hammerly
   </a>
   <nav class="hdr-nav">
     <a href="index.html" class="nav-link active">Home</a>
@@ -620,23 +602,23 @@
     <a href="../drafts.html" class="nav-link">All Prototypes</a>
   </nav>
   <div class="hdr-r">
-    <a href="listings.html" class="btn btn-ghost btn-sm">Browse Auctions</a>
-    <a href="listings.html" class="btn btn-blue btn-sm">Sign In</a>
+    <a href="listings.html" class="btn btn-outline btn-sm"><i class="bi bi-grid"></i> Browse Auctions</a>
+    <a href="listings.html" class="btn btn-primary btn-sm"><i class="bi bi-person"></i> Sign In</a>
   </div>
 </header>
 
 <!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-eyebrow">247 auctions live right now</div>
+  <div class="hero-eyebrow"><i class="bi bi-circle-fill"></i> 247 auctions live right now</div>
   <h1>Bid. Win. <span>Drive.</span></h1>
   <p>India's trusted platform for bank-repossessed vehicle auctions. Transparent bidding, verified stock, delivered fast.</p>
   <div class="hero-actions">
-    <a href="listings.html" class="btn btn-blue btn-lg">Browse Live Auctions →</a>
-    <a href="#how-it-works" class="btn btn-ghost btn-lg">How it works</a>
+    <a href="listings.html" class="btn btn-success btn-lg"><i class="bi bi-hammer"></i> Browse Live Auctions</a>
+    <a href="#how-it-works" class="btn btn-outline btn-lg"><i class="bi bi-info-circle"></i> How it works</a>
   </div>
   <div class="hero-search">
     <input type="text" placeholder="Search by make, model, city or lot number…">
-    <button>Search</button>
+    <button><i class="bi bi-search"></i> Search</button>
   </div>
 </section>
 
@@ -678,18 +660,18 @@
 </div>
 
 <!-- ── FEATURED AUCTIONS ── -->
-<div style="background: var(--g100); padding: 8px 0;">
+<div style="background: var(--bg); padding: 8px 0;">
   <div class="section">
     <div class="section-hdr">
-      <span class="section-title">🔴 Live Right Now</span>
-      <a href="listings.html" class="section-link">View all auctions →</a>
+      <span class="section-title"><span class="live-dot"></span> Live Right Now</span>
+      <a href="listings.html" class="section-link">View all auctions <i class="bi bi-arrow-right"></i></a>
     </div>
     <div class="cards-grid">
 
       <a href="listings.html" class="v-card" style="text-decoration:none;color:inherit;">
         <div class="v-card-img">
-          🏍️
-          <span class="v-card-badge badge-live">● Live</span>
+          <i class="bi bi-bicycle" style="font-size:52px;color:rgba(255,255,255,.6)"></i>
+          <span class="v-card-badge badge-live"><span class="live-dot"></span> Live</span>
           <span class="v-card-cls">2W</span>
         </div>
         <div class="v-card-body">
@@ -715,15 +697,15 @@
           </div>
           <div class="v-card-footer">
             <div class="v-card-info"><strong>Axis Bank</strong> · Bangalore</div>
-            <span class="btn btn-blue btn-sm">Bid Now</span>
+            <span class="btn btn-primary btn-sm"><i class="bi bi-hammer"></i> Bid Now</span>
           </div>
         </div>
       </a>
 
       <a href="listings.html" class="v-card" style="text-decoration:none;color:inherit;">
-        <div class="v-card-img" style="background: linear-gradient(135deg,#e8e8e8 0%,#f2f2f2 100%);">
-          🚙
-          <span class="v-card-badge badge-live">● Live</span>
+        <div class="v-card-img">
+          <i class="bi bi-car-front" style="font-size:52px;color:rgba(255,255,255,.6)"></i>
+          <span class="v-card-badge badge-live"><span class="live-dot"></span> Live</span>
           <span class="v-card-cls">4W</span>
         </div>
         <div class="v-card-body">
@@ -749,15 +731,15 @@
           </div>
           <div class="v-card-footer">
             <div class="v-card-info"><strong>HDFC Bank</strong> · Mumbai</div>
-            <span class="btn btn-blue btn-sm">Bid Now</span>
+            <span class="btn btn-primary btn-sm"><i class="bi bi-hammer"></i> Bid Now</span>
           </div>
         </div>
       </a>
 
       <a href="listings.html" class="v-card" style="text-decoration:none;color:inherit;">
-        <div class="v-card-img" style="background: linear-gradient(135deg,#e8e8e8 0%,#f2f2f2 100%);">
-          🛺
-          <span class="v-card-badge badge-live">● Live</span>
+        <div class="v-card-img">
+          <i class="bi bi-truck" style="font-size:52px;color:rgba(255,255,255,.6)"></i>
+          <span class="v-card-badge badge-live"><span class="live-dot"></span> Live</span>
           <span class="v-card-cls">3W</span>
         </div>
         <div class="v-card-body">
@@ -783,7 +765,7 @@
           </div>
           <div class="v-card-footer">
             <div class="v-card-info"><strong>SBI</strong> · Delhi</div>
-            <span class="btn btn-blue btn-sm">Bid Now</span>
+            <span class="btn btn-primary btn-sm"><i class="bi bi-hammer"></i> Bid Now</span>
           </div>
         </div>
       </a>
@@ -793,49 +775,49 @@
 </div>
 
 <!-- ── BROWSE BY TYPE ── -->
-<div style="background: var(--white); border-top: 1px solid var(--g200); border-bottom: 1px solid var(--g200);">
+<div style="background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="section">
     <div class="section-hdr">
-      <span class="section-title">Browse by Vehicle Type</span>
+      <span class="section-title"><i class="bi bi-grid-3x3-gap"></i> Browse by Vehicle Type</span>
     </div>
     <div class="cat-grid">
       <a href="listings.html?cls=2w" class="cat-card">
-        <div class="cat-emoji">🏍️</div>
+        <div class="cat-icon"><i class="bi bi-bicycle"></i></div>
         <div class="cat-title">Two-Wheelers</div>
         <div class="cat-count">84 vehicles available</div>
-        <div class="cat-tag">Bikes & Scooters</div>
+        <div class="cat-tag">Bikes &amp; Scooters</div>
       </a>
       <a href="listings.html?cls=3w" class="cat-card">
-        <div class="cat-emoji">🛺</div>
+        <div class="cat-icon"><i class="bi bi-truck"></i></div>
         <div class="cat-title">Three-Wheelers</div>
         <div class="cat-count">31 vehicles available</div>
-        <div class="cat-tag">Autos & Tempo</div>
+        <div class="cat-tag">Autos &amp; Tempo</div>
       </a>
       <a href="listings.html?cls=4w" class="cat-card">
-        <div class="cat-emoji">🚗</div>
+        <div class="cat-icon"><i class="bi bi-car-front"></i></div>
         <div class="cat-title">Four-Wheelers</div>
         <div class="cat-count">132 vehicles available</div>
-        <div class="cat-tag">Cars & SUVs</div>
+        <div class="cat-tag">Cars &amp; SUVs</div>
       </a>
     </div>
   </div>
 </div>
 
 <!-- ── HOW IT WORKS ── -->
-<div id="how-it-works" style="background: var(--g100);">
+<div id="how-it-works" style="background: var(--bg);">
   <div class="section">
     <div class="section-hdr">
-      <span class="section-title">How Hammerly Works</span>
+      <span class="section-title"><i class="bi bi-info-circle"></i> How Hammerly Works</span>
     </div>
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-num">01</div>
-        <div class="step-title">Register & KYC</div>
+        <div class="step-title">Register &amp; KYC</div>
         <div class="step-desc">Complete your KYC in under 5 minutes. One-time verification for all auctions.</div>
       </div>
       <div class="step-card">
         <div class="step-num">02</div>
-        <div class="step-title">Browse & Shortlist</div>
+        <div class="step-title">Browse &amp; Shortlist</div>
         <div class="step-desc">Filter by vehicle type, city, bank, and price range. Inspect reports included.</div>
       </div>
       <div class="step-card">
@@ -845,7 +827,7 @@
       </div>
       <div class="step-card">
         <div class="step-num">04</div>
-        <div class="step-title">Win & Pay</div>
+        <div class="step-title">Win &amp; Pay</div>
         <div class="step-desc">Highest bid wins. Complete payment within 48 hours via secure bank transfer.</div>
       </div>
       <div class="step-card">
@@ -865,38 +847,38 @@
     <div class="modules-grid">
 
       <a href="../auto-bid/index.html" class="mod-card">
-        <div class="mod-icon">⚡</div>
+        <div class="mod-icon"><i class="bi bi-lightning-charge"></i></div>
         <div class="mod-title">Smart Auto Bid</div>
         <div class="mod-desc">Automated bidding engine with rival simulation and live session tracking.</div>
-        <div class="mod-arrow">Open prototype →</div>
+        <div class="mod-arrow">Open prototype <i class="bi bi-arrow-right"></i></div>
       </a>
 
       <a href="../bulk-bid/index.html" class="mod-card">
-        <div class="mod-icon">📦</div>
+        <div class="mod-icon"><i class="bi bi-collection"></i></div>
         <div class="mod-title">Bulk Bidding</div>
         <div class="mod-desc">Optimized tool for placing bids across multiple lots simultaneously.</div>
-        <div class="mod-arrow">Open prototype →</div>
+        <div class="mod-arrow">Open prototype <i class="bi bi-arrow-right"></i></div>
       </a>
 
       <a href="../search/index.html" class="mod-card">
-        <div class="mod-icon">🔍</div>
+        <div class="mod-icon"><i class="bi bi-search"></i></div>
         <div class="mod-title">Smart Search</div>
         <div class="mod-desc">Intelligent fuzzy search with dynamic filters and instant results.</div>
-        <div class="mod-arrow">Open prototype →</div>
+        <div class="mod-arrow">Open prototype <i class="bi bi-arrow-right"></i></div>
       </a>
 
       <a href="../e2r/index.html" class="mod-card">
-        <div class="mod-icon">🗂️</div>
+        <div class="mod-icon"><i class="bi bi-diagram-3"></i></div>
         <div class="mod-title">E2R Collections Twin</div>
         <div class="mod-desc">Vehicle collections lifecycle management and digital twin platform.</div>
-        <div class="mod-arrow">Open prototype →</div>
+        <div class="mod-arrow">Open prototype <i class="bi bi-arrow-right"></i></div>
       </a>
 
       <a href="../swipe-bid/index.html" class="mod-card">
-        <div class="mod-icon">👆</div>
+        <div class="mod-icon"><i class="bi bi-hand-index-thumb"></i></div>
         <div class="mod-title">Swipe-Bid</div>
         <div class="mod-desc">Initial prototype for gesture-based bidding on mobile devices.</div>
-        <div class="mod-arrow">Open prototype →</div>
+        <div class="mod-arrow">Open prototype <i class="bi bi-arrow-right"></i></div>
       </a>
 
     </div>
@@ -905,7 +887,7 @@
 
 <!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-logo">Hammer<span>ly</span></div>
+  <div class="footer-logo"><i class="bi bi-bank"></i> Hammerly</div>
   <div class="footer-links">
     <a href="listings.html">Browse Auctions</a>
     <a href="../auto-bid/index.html">Auto Bid</a>

@@ -4,58 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listings — Hammerly</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --blue: #0057a8;
-      --blue-d: #003d7a;
-      --blue-l: #e8f1fb;
-      --blue-m: #1a6fc4;
-      --green: #1a8a3c;
-      --green-l: #e6f5eb;
-      --red: #c0392b;
-      --red-l: #fdecea;
-      --amber: #d97706;
-      --amber-l: #fffbeb;
-      --teal: #0d9488;
-      --teal-l: #e6faf9;
-      --gold: #f0c040;
-      --g100: #f5f6f8;
-      --g200: #eaecf0;
-      --g300: #d1d5db;
-      --g400: #9ca3af;
-      --g500: #6b7280;
-      --g600: #4b5563;
-      --g700: #374151;
-      --g900: #111827;
-      --white: #fff;
-      --hh: 56px;
+      --sidebar-w: 240px; --header-h: 58px;
+      --navy: #1F4E79; --navy-dark: #163a5c; --navy-light: #2563a8;
+      --bg: #EEF2F7; --white: #ffffff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0;
+      --green: #16a34a; --green-bg: #dcfce7;
+      --blue: #2563eb; --blue-bg: #dbeafe;
+      --red: #dc2626; --red-bg: #fee2e2;
+      --amber: #d97706; --amber-bg: #fef3c7;
+      --grey: #6b7280; --grey-bg: #f3f4f6;
+      --teal: #0d9488; --teal-bg: #ccfbf1;
+      --hh: 58px;
       --fh: 52px;
-      --r: 4px;
-      --rm: 6px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.1);
-      --shadow-md: 0 4px 14px rgba(0,0,0,.12);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,.16);
     }
 
-    body {
-      font-family: 'Barlow', sans-serif;
-      background: var(--g100);
-      color: var(--g900);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
     a { text-decoration: none; color: inherit; }
 
     /* ── HEADER ── */
     .hdr {
       height: var(--hh);
-      background: #ffffff;
+      background: var(--white);
       display: flex;
       align-items: center;
       padding: 0 24px;
@@ -63,29 +36,28 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      border-bottom: 1px solid #e8e8e8;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 9px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 21px;
-      font-weight: 800;
-      color: #111111;
-      letter-spacing: .3px;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
       text-decoration: none;
       flex-shrink: 0;
     }
     .logo-icon {
-      width: 30px; height: 30px;
-      background: #111111;
-      border-radius: var(--r);
+      width: 32px; height: 32px;
+      background: var(--navy);
+      border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
+      color: #fff;
       font-size: 16px;
     }
-    .logo span { color: #111111; }
 
     .hdr-search {
       flex: 1;
@@ -95,24 +67,24 @@
     .hdr-search input {
       width: 100%;
       padding: 7px 12px 7px 34px;
-      background: #f7f7f7;
-      border: 1.5px solid #e8e8e8;
-      border-radius: var(--r);
-      color: #111111;
-      font-family: 'Barlow', sans-serif;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 400;
       outline: none;
       transition: all .15s;
     }
-    .hdr-search input::placeholder { color: #888888; }
-    .hdr-search input:focus { background: #ffffff; border-color: #111111; }
+    .hdr-search input::placeholder { color: var(--muted); }
+    .hdr-search input:focus { background: var(--white); border-color: var(--navy); }
     .hdr-search .search-icon {
       position: absolute;
       left: 10px; top: 50%;
       transform: translateY(-50%);
       font-size: 14px;
-      color: #888888;
+      color: var(--muted);
       pointer-events: none;
     }
 
@@ -123,19 +95,15 @@
     }
     .nav-link {
       padding: 6px 14px;
-      border-radius: var(--r);
+      border-radius: 6px;
       font-size: 13px;
-      font-weight: 600;
-      color: #888888;
+      font-weight: 500;
+      color: var(--muted);
       transition: all .15s;
       text-decoration: none;
     }
-    .nav-link:hover { color: #111111; background: #f0f0f0; }
-    .nav-link.active {
-      color: #111111;
-      background: #f0f0f0;
-      box-shadow: inset 0 -2px 0 #111111;
-    }
+    .nav-link:hover { color: var(--navy); background: var(--blue-bg); }
+    .nav-link.active { color: var(--navy); background: var(--blue-bg); font-weight: 600; }
 
     .hdr-r { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
@@ -143,37 +111,41 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 7px 14px;
-      border-radius: var(--r);
+      padding: 6px 14px;
+      border-radius: 6px;
       border: none;
-      font-family: 'Barlow', sans-serif;
+      font-family: inherit;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       transition: all .15s;
       white-space: nowrap;
       text-decoration: none;
     }
-    .btn-blue { background: #111111; color: #fff; }
-    .btn-blue:hover { background: #333333; }
-    .btn-green { background: var(--green); color: #fff; }
-    .btn-green:hover { background: #156a2e; }
-    .btn-ghost-dark {
-      background: #f0f0f0;
-      color: #111111;
-      border: 1.5px solid #e8e8e8;
+    .btn-primary { background: var(--navy); color: #fff; }
+    .btn-primary:hover { background: var(--navy-dark); }
+    .btn-success { background: var(--green); color: #fff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-outline { background: var(--white); color: var(--navy); border: 1px solid var(--navy); }
+    .btn-outline:hover { background: var(--navy); color: #fff; }
+    .btn-amber { background: var(--amber); color: #fff; }
+    .btn-amber:hover { background: #b45309; }
+    .btn-ghost {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
     }
-    .btn-ghost-dark:hover { background: #e8e8e8; }
-    .btn-sm { padding: 5px 12px; font-size: 12px; }
+    .btn-ghost:hover { background: var(--border); }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
 
     /* ── FILTER BAR ── */
     .filter-bar {
       background: var(--white);
-      border-bottom: 1px solid var(--g200);
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: var(--hh);
       z-index: 100;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 1px 3px rgba(0,0,0,.05);
     }
 
     .filter-inner {
@@ -186,14 +158,14 @@
       height: var(--fh);
     }
 
-    .filter-tabs { display: flex; align-items: center; gap: 4px; }
+    .filter-tabs { display: flex; align-items: center; gap: 6px; }
     .filter-tab {
       padding: 5px 14px;
-      border-radius: var(--r);
-      border: 1.5px solid var(--g200);
+      border-radius: 20px;
+      border: 1px solid var(--border);
       font-size: 12px;
-      font-weight: 700;
-      color: var(--g600);
+      font-weight: 500;
+      color: var(--muted);
       background: var(--white);
       cursor: pointer;
       transition: all .15s;
@@ -201,47 +173,47 @@
       align-items: center;
       gap: 5px;
     }
-    .filter-tab:hover { border-color: #111111; color: #111111; background: #f0f0f0; }
-    .filter-tab.on { border-color: #111111; color: #111111; background: #f0f0f0; }
+    .filter-tab:hover { border-color: var(--navy); color: var(--navy); background: var(--blue-bg); }
+    .filter-tab.on { border-color: var(--navy); color: var(--white); background: var(--navy); }
     .filter-count {
       font-size: 10px;
       font-weight: 700;
       padding: 1px 5px;
-      border-radius: 2px;
-      background: #e8e8e8;
-      color: #555555;
+      border-radius: 10px;
+      background: rgba(0,0,0,.1);
+      color: inherit;
     }
-    .filter-tab.on .filter-count { background: #111111; color: #fff; }
+    .filter-tab.on .filter-count { background: rgba(255,255,255,.25); color: #fff; }
 
     .filter-divider {
       width: 1px;
       height: 24px;
-      background: var(--g200);
+      background: var(--border);
       flex-shrink: 0;
     }
 
     .sort-select {
       padding: 5px 28px 5px 10px;
-      border: 1.5px solid var(--g200);
-      border-radius: var(--r);
-      font-family: 'Barlow', sans-serif;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
       font-size: 12px;
-      font-weight: 600;
-      color: var(--g700);
-      background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='%236b7280'%3E%3Cpath d='M0 0l5 6 5-6z'/%3E%3C/svg%3E") no-repeat right 10px center;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='%2364748b'%3E%3Cpath d='M0 0l5 6 5-6z'/%3E%3C/svg%3E") no-repeat right 10px center;
       appearance: none;
       cursor: pointer;
       outline: none;
     }
-    .sort-select:focus { border-color: #111111; }
+    .sort-select:focus { border-color: var(--navy); }
 
     .filter-results {
       margin-left: auto;
       font-size: 12px;
-      font-weight: 600;
-      color: var(--g500);
+      font-weight: 500;
+      color: var(--muted);
     }
-    .filter-results strong { color: var(--g900); }
+    .filter-results strong { color: var(--text); font-weight: 700; }
 
     .live-dot {
       display: inline-block;
@@ -249,7 +221,7 @@
       background: var(--red);
       border-radius: 50%;
       animation: pulse-dot 1.4s infinite;
-      margin-right: 3px;
+      margin-right: 2px;
     }
     @keyframes pulse-dot {
       0%, 100% { opacity: 1; transform: scale(1); }
@@ -273,22 +245,22 @@
     /* ── VEHICLE CARD ── */
     .v-card {
       background: var(--white);
-      border: 1.5px solid var(--g200);
-      border-radius: var(--rm);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
       overflow: hidden;
-      transition: box-shadow .2s, border-color .2s, transform .2s;
+      transition: box-shadow .2s, transform .2s;
       display: flex;
       flex-direction: column;
       cursor: pointer;
+      border: 1px solid var(--border);
     }
     .v-card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: var(--g300);
+      box-shadow: 0 4px 14px rgba(0,0,0,.12);
       transform: translateY(-2px);
     }
     .v-card.featured {
-      border-color: #111111;
-      box-shadow: 0 0 0 1px #e8e8e8, var(--shadow-sm);
+      border-color: var(--navy);
+      box-shadow: 0 0 0 2px rgba(31,78,121,.15), 0 1px 3px rgba(0,0,0,.07);
     }
 
     .v-card-img {
@@ -298,42 +270,39 @@
       justify-content: center;
       font-size: 48px;
       position: relative;
-      background: linear-gradient(135deg, #e8e8e8 0%, #f2f2f2 100%);
     }
 
-    .v-card-img.w2  { background: linear-gradient(135deg, #ebebeb 0%, #f5f5f5 100%); }
-    .v-card-img.w3  { background: linear-gradient(135deg, #f0ede8 0%, #f7f5f2 100%); }
-    .v-card-img.w4a { background: linear-gradient(135deg, #e5ecec 0%, #f0f7f7 100%); }
-    .v-card-img.w4b { background: linear-gradient(135deg, #e8f0eb 0%, #f2f7f3 100%); }
-    .v-card-img.w4c { background: linear-gradient(135deg, #ebebf0 0%, #f5f5f7 100%); }
+    .v-card-img.w2  { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); }
+    .v-card-img.w3  { background: linear-gradient(135deg, #2c4a1e 0%, #3d6b2a 100%); }
+    .v-card-img.w4a { background: linear-gradient(135deg, #1F4E79 0%, #2d6da3 100%); }
+    .v-card-img.w4b { background: linear-gradient(135deg, #163a5c 0%, #1F4E79 100%); }
+    .v-card-img.w4c { background: linear-gradient(135deg, #1e3a5f 0%, #2a5280 100%); }
 
     .v-badge {
       position: absolute;
       top: 10px; left: 12px;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 3px 8px;
-      border-radius: 2px;
-      text-transform: uppercase;
-      letter-spacing: .4px;
+      border-radius: 20px;
       display: flex;
       align-items: center;
       gap: 4px;
     }
-    .badge-live   { background: #fee2e2; color: #b91c1c; }
-    .badge-upcoming { background: #fef3c7; color: #92400e; }
-    .badge-closed { background: var(--g200); color: var(--g500); }
+    .badge-live   { background: var(--red-bg); color: var(--red); }
+    .badge-upcoming { background: var(--amber-bg); color: var(--amber); }
+    .badge-closed { background: var(--grey-bg); color: var(--grey); }
 
     .v-cls {
       position: absolute;
       top: 10px; right: 12px;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 3px 7px;
-      border-radius: 2px;
-      background: rgba(255,255,255,.15);
+      border-radius: 4px;
+      background: rgba(255,255,255,.18);
       color: rgba(255,255,255,.9);
-      border: 1px solid rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.25);
     }
 
     .v-card-body {
@@ -345,18 +314,17 @@
 
     .v-lot {
       font-size: 10px;
-      font-weight: 700;
-      color: var(--g400);
+      font-weight: 600;
+      color: var(--muted);
       letter-spacing: .4px;
       text-transform: uppercase;
       margin-bottom: 4px;
     }
 
     .v-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 19px;
+      font-size: 16px;
       font-weight: 700;
-      color: var(--g900);
+      color: var(--text);
       margin-bottom: 3px;
       white-space: nowrap;
       overflow: hidden;
@@ -364,8 +332,8 @@
     }
     .v-sub {
       font-size: 11px;
-      color: var(--g500);
-      font-weight: 500;
+      color: var(--muted);
+      font-weight: 400;
       margin-bottom: 14px;
     }
 
@@ -375,35 +343,32 @@
       justify-content: space-between;
       margin-bottom: 12px;
       padding-bottom: 12px;
-      border-bottom: 1px solid var(--g200);
+      border-bottom: 1px solid var(--border);
     }
-    .v-bid-block {}
     .v-bid-label {
       font-size: 10px;
-      font-weight: 700;
-      color: var(--g400);
+      font-weight: 600;
+      color: var(--muted);
       text-transform: uppercase;
       letter-spacing: .4px;
       margin-bottom: 2px;
     }
     .v-bid-amt {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
+      font-size: 20px;
+      font-weight: 700;
       color: var(--green);
       line-height: 1;
     }
-    .v-bid-amt.closed { color: var(--g500); }
+    .v-bid-amt.closed { color: var(--muted); }
     .v-time-block { text-align: right; }
     .v-time {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 18px;
-      font-weight: 800;
+      font-size: 17px;
+      font-weight: 700;
       line-height: 1;
     }
     .v-time.live { color: var(--amber); }
     .v-time.upcoming { color: var(--teal); }
-    .v-time.closed { color: var(--g400); }
+    .v-time.closed { color: var(--muted); }
 
     .v-meta {
       display: flex;
@@ -412,16 +377,15 @@
       margin-bottom: 14px;
       font-size: 11px;
     }
-    .v-meta-left { color: var(--g500); font-weight: 500; }
-    .v-meta-left strong { color: var(--g700); font-weight: 600; }
+    .v-meta-left { color: var(--muted); font-weight: 400; }
+    .v-meta-left strong { color: var(--text); font-weight: 600; }
     .v-bids-pill {
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
       padding: 2px 8px;
-      border-radius: 2px;
-      background: var(--g100);
-      color: var(--g600);
-      border: 1px solid var(--g200);
+      border-radius: 20px;
+      background: var(--blue-bg);
+      color: var(--blue);
     }
 
     .v-card-footer {
@@ -432,35 +396,38 @@
     .v-btn-bid {
       flex: 1;
       padding: 9px 12px;
-      background: #111111;
+      background: var(--navy);
       color: #fff;
       border: none;
-      border-radius: var(--r);
-      font-family: 'Barlow', sans-serif;
+      border-radius: 6px;
+      font-family: inherit;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
       transition: background .15s;
     }
-    .v-btn-bid:hover { background: #333333; }
+    .v-btn-bid:hover { background: var(--navy-dark); }
     .v-btn-bid:disabled {
-      background: var(--g200);
-      color: var(--g500);
+      background: var(--border);
+      color: var(--muted);
       cursor: not-allowed;
     }
     .v-btn-watch {
       padding: 9px 12px;
       background: var(--white);
-      color: var(--g600);
-      border: 1.5px solid var(--g200);
-      border-radius: var(--r);
-      font-family: 'Barlow', sans-serif;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       transition: all .15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
     }
-    .v-btn-watch:hover { border-color: var(--g400); color: var(--g900); }
+    .v-btn-watch:hover { border-color: var(--navy); color: var(--navy); }
 
     /* ── SECTION HEADERS ── */
     .list-section-hdr {
@@ -472,10 +439,9 @@
     }
     .list-section-hdr:first-child { margin-top: 0; }
     .list-section-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--g700);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
       text-transform: uppercase;
       letter-spacing: .5px;
       display: flex;
@@ -487,14 +453,14 @@
     .empty {
       text-align: center;
       padding: 60px 20px;
-      color: var(--g400);
+      color: var(--muted);
     }
-    .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; color: var(--border); }
     .empty-txt { font-size: 14px; font-weight: 500; }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--g900);
+      background: var(--navy-dark);
       color: rgba(255,255,255,.45);
       padding: 24px 28px;
       display: flex;
@@ -506,14 +472,15 @@
       margin-top: 20px;
     }
     .footer-logo {
-      font-family: 'Barlow Condensed', sans-serif;
       font-size: 18px;
-      font-weight: 800;
-      color: rgba(255,255,255,.7);
+      font-weight: 700;
+      color: rgba(255,255,255,.85);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .footer-logo span { color: var(--gold); }
     .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-    .footer-links a { color: rgba(255,255,255,.45); font-size: 12px; font-weight: 500; }
+    .footer-links a { color: rgba(255,255,255,.45); font-size: 12px; font-weight: 400; }
     .footer-links a:hover { color: rgba(255,255,255,.8); }
 
     @media (max-width: 700px) {
@@ -528,11 +495,11 @@
 <!-- ── HEADER ── -->
 <header class="hdr">
   <a href="index.html" class="logo">
-    <div class="logo-icon">🏛</div>
-    Hammer<span>ly</span>
+    <div class="logo-icon"><i class="bi bi-bank"></i></div>
+    Hammerly
   </a>
   <div class="hdr-search">
-    <span class="search-icon">🔍</span>
+    <i class="bi bi-search search-icon"></i>
     <input type="text" placeholder="Search make, model, lot, city…" id="searchInput" oninput="filterCards()">
   </div>
   <nav class="hdr-nav">
@@ -541,8 +508,8 @@
     <a href="../drafts.html" class="nav-link">Prototypes</a>
   </nav>
   <div class="hdr-r">
-    <a href="../auto-bid/index.html" class="btn btn-ghost-dark btn-sm">⚡ Auto Bid</a>
-    <a href="../bulk-bid/index.html" class="btn btn-ghost-dark btn-sm">📦 Bulk Bid</a>
+    <a href="../auto-bid/index.html" class="btn btn-ghost btn-sm"><i class="bi bi-lightning-charge"></i> Auto Bid</a>
+    <a href="../bulk-bid/index.html" class="btn btn-ghost btn-sm"><i class="bi bi-collection"></i> Bulk Bid</a>
   </div>
 </header>
 
@@ -557,13 +524,13 @@
         <span class="live-dot"></span>Live <span class="filter-count" id="cnt-live">9</span>
       </button>
       <button class="filter-tab" onclick="setFilter('2w', this)">
-        🏍️ 2W <span class="filter-count" id="cnt-2w">5</span>
+        <i class="bi bi-bicycle"></i> 2W <span class="filter-count" id="cnt-2w">5</span>
       </button>
       <button class="filter-tab" onclick="setFilter('3w', this)">
-        🛺 3W <span class="filter-count" id="cnt-3w">3</span>
+        <i class="bi bi-truck"></i> 3W <span class="filter-count" id="cnt-3w">3</span>
       </button>
       <button class="filter-tab" onclick="setFilter('4w', this)">
-        🚗 4W <span class="filter-count" id="cnt-4w">6</span>
+        <i class="bi bi-car-front"></i> 4W <span class="filter-count" id="cnt-4w">6</span>
       </button>
     </div>
     <div class="filter-divider"></div>
@@ -584,7 +551,7 @@
 
 <!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-logo">Hammer<span>ly</span></div>
+  <div class="footer-logo"><i class="bi bi-bank"></i> Hammerly</div>
   <div class="footer-links">
     <a href="index.html">Home</a>
     <a href="../auto-bid/index.html">Auto Bid</a>
@@ -599,63 +566,63 @@
 <script>
   const VEHICLES = [
     // 2-Wheelers
-    {id:1,  cls:'2w', img:'🏍️', imgCls:'w2', status:'live',
+    {id:1,  cls:'2w', img:'bi-bicycle', imgCls:'w2', status:'live',
      make:'Royal Enfield', model:'Classic 350', year:2022, fuel:'Petrol', tx:'Manual', km:'28,500', color:'Signals Green',
      bank:'Axis Bank', lot:'AXS-881', loc:'Bangalore', timeLeft:'3h 20m', timeVal:200,
      current:138000, reserve:145000, bids:5, condition:'Good', step:500},
-    {id:2,  cls:'2w', img:'🏍️', imgCls:'w2', status:'live',
+    {id:2,  cls:'2w', img:'bi-bicycle', imgCls:'w2', status:'live',
      make:'Honda', model:'CB200R', year:2021, fuel:'Petrol', tx:'Manual', km:'19,200', color:'Mat Sangria Red',
      bank:'ICICI Bank', lot:'ICI-442', loc:'Chennai', timeLeft:'1h 10m', timeVal:70,
      current:110000, reserve:118000, bids:9, condition:'Excellent', step:500},
-    {id:3,  cls:'2w', img:'🛵', imgCls:'w2', status:'live',
+    {id:3,  cls:'2w', img:'bi-bicycle', imgCls:'w2', status:'live',
      make:'Honda', model:'Activa 6G', year:2021, fuel:'Petrol', tx:'CVT', km:'14,800', color:'Rebel Red',
      bank:'SBI', lot:'SBI-105', loc:'Hyderabad', timeLeft:'5h 50m', timeVal:350,
      current:64000, reserve:68000, bids:4, condition:'Good', step:500},
-    {id:4,  cls:'2w', img:'🏍️', imgCls:'w2', status:'upcoming',
+    {id:4,  cls:'2w', img:'bi-bicycle', imgCls:'w2', status:'upcoming',
      make:'Yamaha', model:'FZ-S V3', year:2021, fuel:'Petrol', tx:'Manual', km:'22,100', color:'Metallic Black',
      bank:'Kotak Mahindra', lot:'KOT-318', loc:'Pune', timeLeft:'Tomorrow 10am', timeVal:999,
      current:88000, reserve:95000, bids:0, condition:'Good', step:500},
-    {id:5,  cls:'2w', img:'🏍️', imgCls:'w2', status:'live',
+    {id:5,  cls:'2w', img:'bi-bicycle', imgCls:'w2', status:'live',
      make:'TVS', model:'Apache RTR 200', year:2022, fuel:'Petrol', tx:'Manual', km:'18,400', color:'Blazing Black',
      bank:'HDFC Bank', lot:'HDF-774', loc:'Ahmedabad', timeLeft:'6h 30m', timeVal:390,
      current:95000, reserve:102000, bids:6, condition:'Excellent', step:500},
 
     // 3-Wheelers
-    {id:6,  cls:'3w', img:'🛺', imgCls:'w3', status:'live',
+    {id:6,  cls:'3w', img:'bi-truck', imgCls:'w3', status:'live',
      make:'Bajaj', model:'RE Compact', year:2020, fuel:'CNG', tx:'Manual', km:'41,000', color:'Yellow / Black',
      bank:'SBI', lot:'SBI-203', loc:'Delhi', timeLeft:'4h 00m', timeVal:240,
      current:155000, reserve:162000, bids:3, condition:'Fair', step:1000},
-    {id:7,  cls:'3w', img:'🛺', imgCls:'w3', status:'upcoming',
+    {id:7,  cls:'3w', img:'bi-truck', imgCls:'w3', status:'upcoming',
      make:'Piaggio', model:'Ape City Plus', year:2022, fuel:'LPG', tx:'Manual', km:'33,600', color:'White',
      bank:'Bank of Baroda', lot:'BOB-119', loc:'Hyderabad', timeLeft:'Tomorrow 2pm', timeVal:999,
      current:198000, reserve:210000, bids:0, condition:'Good', step:1000},
-    {id:8,  cls:'3w', img:'🛺', imgCls:'w3', status:'live',
+    {id:8,  cls:'3w', img:'bi-truck', imgCls:'w3', status:'live',
      make:'Bajaj', model:'Maxima Z', year:2021, fuel:'Petrol', tx:'Manual', km:'29,800', color:'Green',
      bank:'Union Bank', lot:'UBI-551', loc:'Jaipur', timeLeft:'2h 15m', timeVal:135,
      current:145000, reserve:155000, bids:2, condition:'Good', step:1000},
 
     // 4-Wheelers
-    {id:9,  cls:'4w', img:'🚙', imgCls:'w4a', status:'live',
+    {id:9,  cls:'4w', img:'bi-car-front', imgCls:'w4a', status:'live',
      make:'Toyota', model:'Fortuner', year:2021, fuel:'Diesel', tx:'Automatic', km:'62,000', color:'White Pearl',
      bank:'HDFC Bank', lot:'HDF-2401', loc:'Mumbai', timeLeft:'2h 45m', timeVal:165,
      current:2650000, reserve:2800000, bids:8, condition:'Good', step:2000},
-    {id:10, cls:'4w', img:'🚗', imgCls:'w4c', status:'upcoming',
+    {id:10, cls:'4w', img:'bi-car-front', imgCls:'w4c', status:'upcoming',
      make:'Hyundai', model:'Creta', year:2022, fuel:'Petrol', tx:'Automatic', km:'24,500', color:'Phantom Black',
      bank:'Kotak Mahindra', lot:'KOT-667', loc:'Pune', timeLeft:'Tomorrow 9am', timeVal:999,
      current:1380000, reserve:1480000, bids:0, condition:'Good', step:2000},
-    {id:11, cls:'4w', img:'🚗', imgCls:'w4b', status:'live',
+    {id:11, cls:'4w', img:'bi-car-front', imgCls:'w4b', status:'live',
      make:'Maruti', model:'Swift Dzire', year:2022, fuel:'Petrol', tx:'Manual', km:'31,200', color:'Arctic White',
      bank:'SBI', lot:'SBI-892', loc:'Lucknow', timeLeft:'7h 00m', timeVal:420,
      current:520000, reserve:580000, bids:11, condition:'Good', step:2000},
-    {id:12, cls:'4w', img:'🚗', imgCls:'w4a', status:'live',
+    {id:12, cls:'4w', img:'bi-car-front', imgCls:'w4a', status:'live',
      make:'Hyundai', model:'i20', year:2021, fuel:'Petrol', tx:'Manual', km:'38,400', color:'Typhoon Silver',
      bank:'ICICI Bank', lot:'ICI-739', loc:'Kolkata', timeLeft:'1h 55m', timeVal:115,
      current:780000, reserve:845000, bids:7, condition:'Good', step:2000},
-    {id:13, cls:'4w', img:'🚗', imgCls:'w4c', status:'live',
+    {id:13, cls:'4w', img:'bi-car-front', imgCls:'w4c', status:'live',
      make:'Tata', model:'Nexon EV', year:2022, fuel:'Electric', tx:'Automatic', km:'22,100', color:'Calgary White',
      bank:'Axis Bank', lot:'AXS-1102', loc:'Bangalore', timeLeft:'9h 30m', timeVal:570,
      current:1850000, reserve:1980000, bids:5, condition:'Excellent', step:2000},
-    {id:14, cls:'4w', img:'🚗', imgCls:'w4b', status:'closed',
+    {id:14, cls:'4w', img:'bi-car-front', imgCls:'w4b', status:'closed',
      make:'Maruti', model:'Ertiga', year:2020, fuel:'CNG', tx:'Manual', km:'55,600', color:'Pearl Metallic White',
      bank:'PNB', lot:'PNB-334', loc:'Chandigarh', timeLeft:'Closed', timeVal:0,
      current:820000, reserve:890000, bids:14, condition:'Fair', step:2000},
@@ -705,7 +672,7 @@
     const root = document.getElementById('listings-root');
 
     if (items.length === 0) {
-      root.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-txt">No vehicles match your search.</div></div>`;
+      root.innerHTML = `<div class="empty"><div class="empty-icon"><i class="bi bi-search"></i></div><div class="empty-txt">No vehicles match your search.</div></div>`;
       return;
     }
 
@@ -726,7 +693,7 @@
     if (upcoming.length) {
       html += `
         <div class="list-section-hdr">
-          <div class="list-section-title">🕐 Upcoming (${upcoming.length})</div>
+          <div class="list-section-title"><i class="bi bi-clock"></i> Upcoming (${upcoming.length})</div>
         </div>
         <div class="listings-grid">${upcoming.map(cardHTML).join('')}</div>
       `;
@@ -734,7 +701,7 @@
     if (closed.length) {
       html += `
         <div class="list-section-hdr">
-          <div class="list-section-title">🔒 Closed (${closed.length})</div>
+          <div class="list-section-title"><i class="bi bi-lock"></i> Closed (${closed.length})</div>
         </div>
         <div class="listings-grid">${closed.map(cardHTML).join('')}</div>
       `;
@@ -745,12 +712,16 @@
 
   function cardHTML(v) {
     const badgeClass = v.status === 'live' ? 'badge-live' : v.status === 'upcoming' ? 'badge-upcoming' : 'badge-closed';
-    const badgeLabel = v.status === 'live' ? '● Live' : v.status === 'upcoming' ? '⏳ Soon' : '🔒 Closed';
+    const badgeLabel = v.status === 'live'
+      ? '<span class="live-dot"></span> Live'
+      : v.status === 'upcoming'
+      ? '<i class="bi bi-clock"></i> Soon'
+      : '<i class="bi bi-lock"></i> Closed';
     const timeClass  = v.status === 'live' ? 'live' : v.status === 'upcoming' ? 'upcoming' : 'closed';
     const amtClass   = v.status === 'closed' ? 'closed' : '';
     const clsLabel   = v.cls === '2w' ? '2W' : v.cls === '3w' ? '3W' : '4W';
     const bidDisabled = v.status !== 'live' ? 'disabled' : '';
-    const bidLabel   = v.status === 'live' ? 'Place Bid' : v.status === 'upcoming' ? 'Remind Me' : 'View Result';
+    const bidLabel   = v.status === 'live' ? '<i class="bi bi-hammer"></i> Place Bid' : v.status === 'upcoming' ? '<i class="bi bi-bell"></i> Remind Me' : '<i class="bi bi-eye"></i> View Result';
 
     const bidLinks = {
       1: '../auto-bid/index.html',
@@ -761,13 +732,13 @@
     };
 
     const extra = bidLinks[v.id]
-      ? `<a href="${bidLinks[v.id]}" class="v-btn-watch" title="Open in prototype">⚡</a>`
-      : `<button class="v-btn-watch">🔖</button>`;
+      ? `<a href="${bidLinks[v.id]}" class="v-btn-watch" title="Open in prototype"><i class="bi bi-lightning-charge"></i></a>`
+      : `<button class="v-btn-watch"><i class="bi bi-bookmark"></i></button>`;
 
     return `
       <div class="v-card${v.status === 'live' && v.bids > 6 ? ' featured' : ''}">
         <div class="v-card-img ${v.imgCls}">
-          ${v.img}
+          <i class="bi ${v.img}" style="font-size:42px;color:rgba(255,255,255,.65)"></i>
           <span class="v-badge ${badgeClass}">${badgeLabel}</span>
           <span class="v-cls">${clsLabel}</span>
         </div>
