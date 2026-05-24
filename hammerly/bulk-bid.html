@@ -458,12 +458,12 @@ select.filter-select:focus{border-color:var(--navy)}
 //  AUCTION DATA
 // ─────────────────────────────────────────────
 const AUCTIONS = [
-  { id:'A001', bank:'SBI', logo:'🏦', name:'SBI Repossessed Vehicle Sale', location:'Bengaluru', city:'Bengaluru', date:'Apr 5, 2025', status:'live',     lots:24, categories:['Cars','SUVs','Bikes'],    contact:'1800-425-3800', ref:'SBI/REC/BLR/2025/04' },
-  { id:'A002', bank:'HDFC Bank', logo:'🏧', name:'HDFC Auto Asset Auction',    location:'Mumbai',    city:'Mumbai',    date:'Apr 8, 2025', status:'upcoming', lots:18, categories:['Cars','Trucks'],          contact:'1800-202-6161', ref:'HDFC/MUM/AUC/2025/04' },
-  { id:'A003', bank:'ICICI Bank', logo:'💳', name:'ICICI Seized Vehicle Lot',  location:'Delhi',     city:'Delhi',     date:'Apr 3, 2025', status:'live',     lots:31, categories:['Cars','Bikes','SUVs'],    contact:'1800-102-4242', ref:'ICICI/DEL/2025/03' },
-  { id:'A004', bank:'Axis Bank', logo:'🏛️', name:'Axis Bank Vehicle Recovery', location:'Chennai',   city:'Chennai',   date:'Apr 12, 2025',status:'upcoming', lots:14, categories:['Bikes','Scooters'],      contact:'1800-419-5555', ref:'AXIS/CHN/2025/04' },
-  { id:'A005', bank:'Bank of Baroda', logo:'🏪', name:'BoB Repossession Auction', location:'Hyderabad', city:'Hyderabad', date:'Apr 2, 2025', status:'live',   lots:22, categories:['Cars','SUVs','Trucks'],  contact:'1800-102-4455', ref:'BOB/HYD/2025/04' },
-  { id:'A006', bank:'SBI', logo:'🏦', name:'SBI Priority Vehicle Sale',       location:'Pune',      city:'Pune',      date:'Apr 15, 2025',status:'upcoming', lots:11, categories:['Cars','Bikes'],           contact:'1800-425-3800', ref:'SBI/PUN/2025/04' },
+  { id:'A001', bank:'SBI', name:'SBI Repossessed Vehicle Sale', location:'Bengaluru', city:'Bengaluru', date:'Apr 5, 2025', status:'live',     lots:24, categories:['Cars','SUVs','Bikes'],    contact:'1800-425-3800', ref:'SBI/REC/BLR/2025/04' },
+  { id:'A002', bank:'HDFC Bank', name:'HDFC Auto Asset Auction',    location:'Mumbai',    city:'Mumbai',    date:'Apr 8, 2025', status:'upcoming', lots:18, categories:['Cars','Trucks'],          contact:'1800-202-6161', ref:'HDFC/MUM/AUC/2025/04' },
+  { id:'A003', bank:'ICICI Bank', name:'ICICI Seized Vehicle Lot',  location:'Delhi',     city:'Delhi',     date:'Apr 3, 2025', status:'live',     lots:31, categories:['Cars','Bikes','SUVs'],    contact:'1800-102-4242', ref:'ICICI/DEL/2025/03' },
+  { id:'A004', bank:'Axis Bank', name:'Axis Bank Vehicle Recovery', location:'Chennai',   city:'Chennai',   date:'Apr 12, 2025',status:'upcoming', lots:14, categories:['Bikes','Scooters'],      contact:'1800-419-5555', ref:'AXIS/CHN/2025/04' },
+  { id:'A005', bank:'Bank of Baroda', name:'BoB Repossession Auction', location:'Hyderabad', city:'Hyderabad', date:'Apr 2, 2025', status:'live',   lots:22, categories:['Cars','SUVs','Trucks'],  contact:'1800-102-4455', ref:'BOB/HYD/2025/04' },
+  { id:'A006', bank:'SBI', name:'SBI Priority Vehicle Sale',       location:'Pune',      city:'Pune',      date:'Apr 15, 2025',status:'upcoming', lots:11, categories:['Cars','Bikes'],           contact:'1800-425-3800', ref:'SBI/PUN/2025/04' },
 ];
 
 // ─────────────────────────────────────────────
@@ -471,40 +471,40 @@ const AUCTIONS = [
 // ─────────────────────────────────────────────
 const VEHICLES_BY_AUCTION = {
   A001:[
-    {id:'V001',name:'Toyota Fortuner',year:'2021',type:'4w',base:1800000,color:'#c8e6c9',emoji:'🚙',fuel:'Diesel',km:'42,000',city:'Bengaluru'},
-    {id:'V002',name:'Honda City',year:'2020',type:'4w',base:850000,color:'#bbdefb',emoji:'🚗',fuel:'Petrol',km:'28,500',city:'Bengaluru'},
-    {id:'V003',name:'Hyundai Creta',year:'2022',type:'4w',base:1200000,color:'#ffe0b2',emoji:'🚘',fuel:'Petrol',km:'15,200',city:'Bengaluru'},
-    {id:'V004',name:'Maruti Swift',year:'2019',type:'4w',base:550000,color:'#f8bbd0',emoji:'🚗',fuel:'Petrol',km:'61,000',city:'Bengaluru'},
-    {id:'V005',name:'Royal Enfield Classic 350',year:'2022',type:'2w',base:180000,color:'#e1bee7',emoji:'🏍️',fuel:'Petrol',km:'9,400',city:'Bengaluru'},
-    {id:'V006',name:'Honda Activa 6G',year:'2021',type:'2w',base:75000,color:'#dcedc8',emoji:'🛵',fuel:'Petrol',km:'22,100',city:'Bengaluru'},
+    {id:'V001',name:'Toyota Fortuner',year:'2021',type:'4w',base:1800000,color:'#c8e6c9',fuel:'Diesel',km:'42,000',city:'Bengaluru'},
+    {id:'V002',name:'Honda City',year:'2020',type:'4w',base:850000,color:'#bbdefb',fuel:'Petrol',km:'28,500',city:'Bengaluru'},
+    {id:'V003',name:'Hyundai Creta',year:'2022',type:'4w',base:1200000,color:'#ffe0b2',fuel:'Petrol',km:'15,200',city:'Bengaluru'},
+    {id:'V004',name:'Maruti Swift',year:'2019',type:'4w',base:550000,color:'#f8bbd0',fuel:'Petrol',km:'61,000',city:'Bengaluru'},
+    {id:'V005',name:'Royal Enfield Classic 350',year:'2022',type:'2w',base:180000,color:'#e1bee7',fuel:'Petrol',km:'9,400',city:'Bengaluru'},
+    {id:'V006',name:'Honda Activa 6G',year:'2021',type:'2w',base:75000,color:'#dcedc8',fuel:'Petrol',km:'22,100',city:'Bengaluru'},
   ],
   A002:[
-    {id:'V007',name:'BMW 3 Series',year:'2020',type:'4w',base:2800000,color:'#cfd8dc',emoji:'🚗',fuel:'Petrol',km:'31,000',city:'Mumbai'},
-    {id:'V008',name:'Tata Nexon EV',year:'2022',type:'4w',base:1450000,color:'#b2dfdb',emoji:'🚙',fuel:'Electric',km:'18,400',city:'Mumbai'},
-    {id:'V009',name:'Bajaj Pulsar NS200',year:'2023',type:'2w',base:145000,color:'#b2ebf2',emoji:'🏍️',fuel:'Petrol',km:'4,800',city:'Mumbai'},
-    {id:'V010',name:'Yamaha FZ-S V3',year:'2022',type:'2w',base:95000,color:'#ffe082',emoji:'🏍️',fuel:'Petrol',km:'12,300',city:'Mumbai'},
+    {id:'V007',name:'BMW 3 Series',year:'2020',type:'4w',base:2800000,color:'#cfd8dc',fuel:'Petrol',km:'31,000',city:'Mumbai'},
+    {id:'V008',name:'Tata Nexon EV',year:'2022',type:'4w',base:1450000,color:'#b2dfdb',fuel:'Electric',km:'18,400',city:'Mumbai'},
+    {id:'V009',name:'Bajaj Pulsar NS200',year:'2023',type:'2w',base:145000,color:'#b2ebf2',fuel:'Petrol',km:'4,800',city:'Mumbai'},
+    {id:'V010',name:'Yamaha FZ-S V3',year:'2022',type:'2w',base:95000,color:'#ffe082',fuel:'Petrol',km:'12,300',city:'Mumbai'},
   ],
   A003:[
-    {id:'V011',name:'Mahindra Scorpio',year:'2020',type:'4w',base:1100000,color:'#d7ccc8',emoji:'🚙',fuel:'Diesel',km:'55,000',city:'Delhi'},
-    {id:'V012',name:'Maruti Baleno',year:'2021',type:'4w',base:720000,color:'#c5cae9',emoji:'🚗',fuel:'Petrol',km:'33,000',city:'Delhi'},
-    {id:'V013',name:'KTM Duke 390',year:'2022',type:'2w',base:225000,color:'#ffccbc',emoji:'🏍️',fuel:'Petrol',km:'7,200',city:'Delhi'},
-    {id:'V014',name:'Hero Splendor Plus',year:'2020',type:'2w',base:48000,color:'#dcedc8',emoji:'🛵',fuel:'Petrol',km:'44,000',city:'Delhi'},
-    {id:'V015',name:'Renault Kiger',year:'2021',type:'4w',base:720000,color:'#f0f4c3',emoji:'🚘',fuel:'Petrol',km:'38,000',city:'Delhi'},
+    {id:'V011',name:'Mahindra Scorpio',year:'2020',type:'4w',base:1100000,color:'#d7ccc8',fuel:'Diesel',km:'55,000',city:'Delhi'},
+    {id:'V012',name:'Maruti Baleno',year:'2021',type:'4w',base:720000,color:'#c5cae9',fuel:'Petrol',km:'33,000',city:'Delhi'},
+    {id:'V013',name:'KTM Duke 390',year:'2022',type:'2w',base:225000,color:'#ffccbc',fuel:'Petrol',km:'7,200',city:'Delhi'},
+    {id:'V014',name:'Hero Splendor Plus',year:'2020',type:'2w',base:48000,color:'#dcedc8',fuel:'Petrol',km:'44,000',city:'Delhi'},
+    {id:'V015',name:'Renault Kiger',year:'2021',type:'4w',base:720000,color:'#f0f4c3',fuel:'Petrol',km:'38,000',city:'Delhi'},
   ],
   A004:[
-    {id:'V016',name:'Suzuki Access 125',year:'2022',type:'2w',base:68000,color:'#e1bee7',emoji:'🛵',fuel:'Petrol',km:'8,500',city:'Chennai'},
-    {id:'V017',name:'TVS Apache RTR 200',year:'2021',type:'2w',base:118000,color:'#b2ebf2',emoji:'🏍️',fuel:'Petrol',km:'19,600',city:'Chennai'},
-    {id:'V018',name:'Honda Dio',year:'2023',type:'2w',base:72000,color:'#ffe0b2',emoji:'🛵',fuel:'Petrol',km:'3,100',city:'Chennai'},
+    {id:'V016',name:'Suzuki Access 125',year:'2022',type:'2w',base:68000,color:'#e1bee7',fuel:'Petrol',km:'8,500',city:'Chennai'},
+    {id:'V017',name:'TVS Apache RTR 200',year:'2021',type:'2w',base:118000,color:'#b2ebf2',fuel:'Petrol',km:'19,600',city:'Chennai'},
+    {id:'V018',name:'Honda Dio',year:'2023',type:'2w',base:72000,color:'#ffe0b2',fuel:'Petrol',km:'3,100',city:'Chennai'},
   ],
   A005:[
-    {id:'V019',name:'Tata Safari',year:'2022',type:'4w',base:1650000,color:'#d1c4e9',emoji:'🚙',fuel:'Diesel',km:'22,000',city:'Hyderabad'},
-    {id:'V020',name:'Kia Seltos',year:'2021',type:'4w',base:1350000,color:'#b2dfdb',emoji:'🚘',fuel:'Petrol',km:'29,000',city:'Hyderabad'},
-    {id:'V021',name:'MG Hector',year:'2020',type:'4w',base:1150000,color:'#c8e6c9',emoji:'🚙',fuel:'Petrol',km:'41,500',city:'Hyderabad'},
-    {id:'V022',name:'Royal Enfield Meteor 350',year:'2022',type:'2w',base:195000,color:'#ffccbc',emoji:'🏍️',fuel:'Petrol',km:'6,800',city:'Hyderabad'},
+    {id:'V019',name:'Tata Safari',year:'2022',type:'4w',base:1650000,color:'#d1c4e9',fuel:'Diesel',km:'22,000',city:'Hyderabad'},
+    {id:'V020',name:'Kia Seltos',year:'2021',type:'4w',base:1350000,color:'#b2dfdb',fuel:'Petrol',km:'29,000',city:'Hyderabad'},
+    {id:'V021',name:'MG Hector',year:'2020',type:'4w',base:1150000,color:'#c8e6c9',fuel:'Petrol',km:'41,500',city:'Hyderabad'},
+    {id:'V022',name:'Royal Enfield Meteor 350',year:'2022',type:'2w',base:195000,color:'#ffccbc',fuel:'Petrol',km:'6,800',city:'Hyderabad'},
   ],
   A006:[
-    {id:'V023',name:'Honda WR-V',year:'2021',type:'4w',base:870000,color:'#f8bbd0',emoji:'🚘',fuel:'Petrol',km:'24,000',city:'Pune'},
-    {id:'V024',name:'Suzuki Burgman Street',year:'2022',type:'2w',base:85000,color:'#dcedc8',emoji:'🛵',fuel:'Petrol',km:'11,200',city:'Pune'},
+    {id:'V023',name:'Honda WR-V',year:'2021',type:'4w',base:870000,color:'#f8bbd0',fuel:'Petrol',km:'24,000',city:'Pune'},
+    {id:'V024',name:'Suzuki Burgman Street',year:'2022',type:'2w',base:85000,color:'#dcedc8',fuel:'Petrol',km:'11,200',city:'Pune'},
   ],
 };
 

@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const stateOnly = stateName.replace(/\s*\([^)]*\)/, '');
             searchInfoDiv.innerHTML = `
                 <div class="search-result-highlight">
-                    <strong>📍 ${matchedCity}</strong> is located in <strong>${stateOnly}</strong>, <strong>${zoneName}</strong>
+                    <strong>${matchedCity}</strong> is located in <strong>${stateOnly}</strong>, <strong>${zoneName}</strong>
                 </div>
             `;
             list.appendChild(searchInfoDiv);
