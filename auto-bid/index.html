@@ -1605,30 +1605,36 @@ function App() {
     }
     addToast('warning', 'Sealed bid placed', `${v.make} ${v.model} — you've been outbid (amount sealed)`);
 
-    // Auto bid: fire back automatically if within pool and max limit
-    const maxNum   = parseInt(s.maxBid) || 0;
-    const nextAuto = niravBid + v.step;
-    const canAutoFire = s.autoBidsUsed < s.autoPool && nextAuto <= maxNum;
-
-    if (canAutoFire) {
-      setTimeout(() => {
-        const autoEntry = {type:'auto', time:ts(), desc:'Auto bid — Avinash responds', bid:nextAuto, bidder:'Avinash', ts:Date.now()};
-        setSessions(prev => {
-          const cur = prev[vId];
-          if (!cur || cur.status !== 'active') return prev;
-          return {...prev, [vId]: {...cur, currentBid:nextAuto, avinashBid:nextAuto, autoBidsUsed:cur.autoBidsUsed+1, history:[...cur.history, autoEntry], rivalLeading:false}};
-        });
-        addToast('auto-bid', 'Sealed auto-bid placed', `Your bid: ${fmt(nextAuto)} — rival's bid remains sealed`);
-      }, 750);
-    } else {
-      setTimeout(() => {
-        if (s.autoBidsUsed >= s.autoPool) {
-          addToast('error', 'Auto Pool Exhausted', `Avinash has no auto bids left — place a manual bid!`);
-        } else {
-          addToast('error', 'Max Limit Reached', `${fmt(nextAuto)} exceeds Avinash's limit. Nirav is winning!`);
+    // Auto bid: fire back — all decisions made inside functional updater to avoid stale closure
+    setTimeout(() => {
+      let fired = false;
+      let toastType = null;
+      let toastMsg  = null;
+      setSessions(prev => {
+        const cur = prev[vId];
+        if (!cur || cur.status !== 'active') return prev;
+        const freshNirav  = Math.max(cur.avinashBid, cur.niravBid, cur.currentBid);
+        const freshNext   = freshNirav + v.step;
+        const maxNum      = parseInt(cur.maxBid) || 0;
+        if (cur.autoBidsUsed >= cur.autoPool) {
+          toastType = 'pool'; return prev;
         }
-      }, 400);
-    }
+        if (freshNext > maxNum) {
+          toastType = 'limit'; toastMsg = fmt(freshNext); return prev;
+        }
+        fired = true;
+        toastMsg = fmt(freshNext);
+        const autoEntry = {type:'auto', time:ts(), desc:'Auto bid — Avinash responds', bid:freshNext, bidder:'Avinash', ts:Date.now()};
+        return {...prev, [vId]: {...cur, currentBid:freshNext, avinashBid:freshNext, autoBidsUsed:cur.autoBidsUsed+1, history:[...cur.history, autoEntry], rivalLeading:false}};
+      });
+      if (fired) {
+        addToast('auto-bid', 'Sealed auto-bid placed', `Your bid: ${toastMsg} — rival's bid remains sealed`);
+      } else if (toastType === 'pool') {
+        addToast('error', 'Auto Pool Exhausted', `Avinash has no auto bids left — place a manual bid!`);
+      } else if (toastType === 'limit') {
+        addToast('error', 'Max Limit Reached', `${toastMsg} exceeds Avinash's limit. Nirav is winning!`);
+      }
+    }, 750);
   };
 
   const handleStartOpenBid = v => {
