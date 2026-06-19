@@ -13,6 +13,12 @@ PM/
 ├── drafts.html             # First Draft — work prototypes and product docs
 ├── style.css               # Global styles
 │
+├── auto-bid/               # Hammerly Smart Auto Bidding prototype
+├── bulk-bid/               # Hammerly Bulk Bid prototype
+├── swipe-bid/              # Hammerly Swipe Bid prototype
+├── swipe-bid-new/          # Hammerly Swipe Bid v2 prototype
+├── hammerly/               # Hammerly hub pages (auto-bid.html, swipe-bid.html)
+│
 ├── ramanujan/              # Ramanujan project pages
 │   ├── index.html          # Product page — what it does
 │   ├── platform.html       # Platform page — all surfaces + downloads
@@ -21,7 +27,7 @@ PM/
 ├── e2r/                    # E2R Collections Digital Twin
 ├── gainsight/              # GainPulse — customer success platform (separate repo, linked)
 ├── avi/                    # Old pages (archived)
-├── doc/                    # Documents
+├── doc/                    # Documents (PRDs for auto-bid, bulk-bid)
 └── .github/workflows/      # GitHub Pages auto-deploy
 ```
 
@@ -93,6 +99,10 @@ Tracks the full lifecycle of a repossessed vehicle — from missed EMIs through 
 ---
 
 ## Changelog
+
+### June 19, 2026
+- Fixed blank page on `auto-bid/`, `swipe-bid/`, `swipe-bid-new/`, `hammerly/auto-bid.html`, `hammerly/swipe-bid.html` — pinned `@babel/standalone` to `7.17.12` (latest unpinned version switched to automatic JSX runtime, incompatible with CDN-global React)
+- Fixed stale closure bug in `auto-bid/index.html` — closed-auction auto-bid decisions now made inside functional state updater to avoid incorrect pool exhaustion checks and wrong bid amounts on rapid rival bids
 
 ### May 24, 2026
 - Overhauled `e2r/index.html` — CSS variables, Bootstrap Icons, readable markup, responsive layout
