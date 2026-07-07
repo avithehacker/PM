@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DJI Flight Simulator — Bangalore</title>
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; overflow:hidden; background:#000;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+
+/* ── Canvas ─────────────────────────────── */
+#cv { position:fixed; inset:0; z-index:0; display:block; }
+
+/* ── Top bar ─────────────────────────────── */
+#topbar {
+  position:fixed; top:0; left:0; right:0; height:40px; z-index:20;
+  background:rgba(0,0,0,0.72); border-bottom:1px solid rgba(255,255,255,0.08);
+  display:flex; align-items:center; padding:0 14px; gap:12px;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+}
+#dji-logo { font-size:13px; font-weight:700; letter-spacing:0.08em; color:#fff; margin-right:4px; }
+#dji-sub  { font-size:10px; color:rgba(255,255,255,0.4); border-left:1px solid rgba(255,255,255,0.15); padding-left:10px; letter-spacing:0.06em; }
+.sep { width:1px; height:18px; background:rgba(255,255,255,0.12); margin:0 2px; }
+.env-tab {
+  padding:4px 11px; font-size:10px; letter-spacing:0.06em; cursor:pointer;
+  border:1px solid transparent; border-radius:3px; color:rgba(255,255,255,0.45);
+  background:transparent; font-family:inherit; transition:all 0.15s;
+}
+.env-tab:hover  { color:rgba(255,255,255,0.8); border-color:rgba(255,255,255,0.2); }
+.env-tab.on     { color:#fff; background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.25); }
+#flex { flex:1; }
+.stat-pill {
+  display:flex; align-items:center; gap:5px; font-size:10px;
+  color:rgba(255,255,255,0.5); letter-spacing:0.04em;
+}
+.stat-pill .dot { width:6px; height:6px; border-radius:50%; background:#06a45c; }
+.stat-pill .dot.warn { background:#e04040; }
+#mode-pill {
+  padding:3px 9px; border-radius:10px; font-size:10px; letter-spacing:0.1em;
+  border:1px solid rgba(6,164,92,0.5); color:#06a45c; cursor:pointer;
+  background:rgba(6,164,92,0.08); transition:all 0.15s;
+}
+#mode-pill:hover { background:rgba(6,164,92,0.18); }
+.hdr-btn {
+  padding:4px 9px; font-size:10px; letter-spacing:0.06em; cursor:pointer;
+  border:1px solid rgba(255,255,255,0.15); border-radius:3px;
+  color:rgba(255,255,255,0.55); background:transparent; font-family:inherit;
+  transition:all 0.15s;
+}
+.hdr-btn:hover  { color:#fff; border-color:rgba(255,255,255,0.3); }
+.hdr-btn.on     { color:#06a45c; border-color:rgba(6,164,92,0.4); }
+
+/* ── Heading tape ────────────────────────── */
+#hdgtape-wrap {
+  position:fixed; top:40px; left:50%; transform:translateX(-50%);
+  z-index:18; width:300px;
+}
+#hdg-canvas { display:block; }
+
+/* ── Left panel (flight data) ────────────── */
+#panel-l {
+  position:fixed; top:52px; left:14px; z-index:10; width:130px;
+}
+.dji-card {
+  background:rgba(0,0,0,0.62); border:1px solid rgba(255,255,255,0.1);
+  border-radius:5px; padding:10px 12px; margin-bottom:8px;
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+}
+.dc-label { font-size:9px; color:rgba(255,255,255,0.38); letter-spacing:0.12em; margin-bottom:2px; }
+.dc-val   { font-size:22px; color:#ffffff; font-weight:300; font-variant-numeric:tabular-nums; line-height:1; }
+.dc-unit  { font-size:10px; color:rgba(255,255,255,0.45); margin-left:3px; }
+.dc-small { font-size:13px; }
+
+/* ── Right panel (nav data) ──────────────── */
+#panel-r {
+  position:fixed; top:52px; right:14px; z-index:10; width:130px; text-align:right;
+}
+
+/* ── ADI (artificial horizon) ────────────── */
+#adi-outer {
+  position:fixed; bottom:74px; left:50%; transform:translateX(-50%);
+  z-index:15; width:110px; height:110px;
+}
+#adi { border-radius:50%; display:block; }
+#adi-ring {
+  position:absolute; inset:0; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.25);
+  box-shadow:0 0 0 1px rgba(0,0,0,0.6), inset 0 0 10px rgba(0,0,0,0.5);
+  pointer-events:none;
+}
+
+/* ── Joystick displays ───────────────────── */
+#js-left  { position:fixed; bottom:10px; left:24px;  z-index:15; }
+#js-right { position:fixed; bottom:10px; right:24px; z-index:15; }
+.js-label { font-size:8px; color:rgba(255,255,255,0.3); letter-spacing:0.1em; text-align:center; margin-top:4px; }
+
+/* ── Bottom stats bar ────────────────────── */
+#btmbar {
+  position:fixed; bottom:0; left:0; right:0; height:26px; z-index:10;
+  background:rgba(0,0,0,0.65); border-top:1px solid rgba(255,255,255,0.08);
+  display:flex; align-items:center; justify-content:center; gap:28px;
+  font-size:10px; color:rgba(255,255,255,0.4); letter-spacing:0.08em;
+}
+.bsv { color:rgba(255,255,255,0.75); font-variant-numeric:tabular-nums; }
+
+/* ── Vertical gauges ─────────────────────── */
+#thr-g {
+  position:fixed; left:5px; top:48px; bottom:30px; width:6px; z-index:10;
+  background:rgba(255,255,255,0.06); border-radius:3px;
+}
+#thr-fill { border-radius:3px; background:linear-gradient(to top,#e08000,#06a45c); }
+#alt-g {
+  position:fixed; right:5px; top:48px; bottom:30px; width:6px; z-index:10;
+  background:rgba(255,255,255,0.06); border-radius:3px;
+}
+#alt-fill { border-radius:3px; background:linear-gradient(to top,#1a6aaa,#06a45c); }
+
+/* ── Home marker UI label ────────────────── */
+#home-tip {
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  z-index:30; background:rgba(0,0,0,0.75); border:1px solid rgba(6,164,92,0.4);
+  color:#06a45c; font-size:11px; padding:8px 18px; border-radius:4px;
+  letter-spacing:0.1em; pointer-events:none; display:none;
+}
+
+/* ── Welcome ─────────────────────────────── */
+#welcome {
+  position:fixed; inset:0; z-index:50;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,0.88); backdrop-filter:blur(6px);
+}
+#wb {
+  width:500px; background:rgba(15,15,15,0.98);
+  border:1px solid rgba(255,255,255,0.1); border-radius:8px;
+  padding:32px 36px;
+}
+#wb-logo { font-size:24px; font-weight:700; color:#fff; letter-spacing:0.06em; margin-bottom:2px; }
+#wb-sub  { font-size:11px; color:rgba(255,255,255,0.35); letter-spacing:0.1em; margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid rgba(255,255,255,0.08); }
+.wb-sec  { font-size:9px; letter-spacing:0.16em; color:rgba(255,255,255,0.3); margin-bottom:10px; }
+.env-cards { display:flex; gap:10px; margin-bottom:18px; }
+.ecard {
+  flex:1; padding:12px; border:1px solid rgba(255,255,255,0.1); border-radius:5px;
+  cursor:pointer; transition:all 0.15s; text-align:left;
+}
+.ecard:hover { border-color:rgba(255,255,255,0.25); }
+.ecard.sel   { border-color:rgba(6,164,92,0.6); background:rgba(6,164,92,0.06); }
+.ecard-name  { font-size:12px; color:#fff; font-weight:500; margin-bottom:3px; }
+.ecard-desc  { font-size:9px; color:rgba(255,255,255,0.35); }
+.mode-cards  { display:flex; gap:10px; margin-bottom:22px; }
+.mcard {
+  flex:1; padding:9px; border:1px solid rgba(255,255,255,0.1); border-radius:5px;
+  cursor:pointer; transition:all 0.15s;
+}
+.mcard:hover { border-color:rgba(255,255,255,0.25); }
+.mcard.sel   { border-color:rgba(6,164,92,0.6); background:rgba(6,164,92,0.06); }
+.mcard-name  { font-size:11px; color:#fff; font-weight:500; margin-bottom:2px; }
+.mcard-desc  { font-size:9px; color:rgba(255,255,255,0.35); }
+#btn-fly {
+  width:100%; padding:12px; border-radius:5px;
+  background:#06a45c; border:none; color:#fff;
+  font-family:inherit; font-size:13px; font-weight:600;
+  letter-spacing:0.08em; cursor:pointer; transition:background 0.15s;
+}
+#btn-fly:hover { background:#08c06e; }
+
+/* ── VVI color helper ─────────────────────── */
+.vup   { color:#06a45c !important; }
+.vdown { color:#e04040 !important; }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<header id="topbar">
+  <span id="dji-logo">DJI</span>
+  <span id="dji-sub">FLIGHT SIMULATOR</span>
+  <div class="sep"></div>
+  <button class="env-tab on" data-env="lake">◈ HEBBAL LAKE</button>
+  <button class="env-tab"    data-env="city">⬛ BANGALORE CITY</button>
+  <div class="sep"></div>
+  <button id="mode-pill">NORMAL</button>
+  <button class="hdr-btn" id="btn-cam">CHASE</button>
+  <button class="hdr-btn on" id="btn-ref">CONTROLS</button>
+  <button class="hdr-btn" id="btn-rst">↺ RTH</button>
+  <div id="flex"></div>
+  <div class="stat-pill"><div class="dot"></div>GPS 12</div>
+  <div class="stat-pill" style="margin-left:8px"><div class="dot" style="background:#06a45c"></div>SIGNAL</div>
+</header>
+
+<!-- Heading tape -->
+<div id="hdgtape-wrap">
+  <canvas id="hdg-canvas" width="300" height="32"></canvas>
+</div>
+
+<!-- Left panel -->
+<div id="panel-l">
+  <div class="dji-card">
+    <div class="dc-label">ALTITUDE</div>
+    <div class="dc-val"><span id="h-alt">0</span><span class="dc-unit">m</span></div>
+  </div>
+  <div class="dji-card">
+    <div class="dc-label">GROUND SPEED</div>
+    <div class="dc-val dc-small"><span id="h-spd">0</span><span class="dc-unit">km/h</span></div>
+  </div>
+  <div class="dji-card">
+    <div class="dc-label">VERTICAL SPEED</div>
+    <div class="dc-val dc-small" id="h-vvi-card"><span id="h-vvi">0.0</span><span class="dc-unit">m/s</span></div>
+  </div>
+</div>
+
+<!-- Right panel -->
+<div id="panel-r">
+  <div class="dji-card">
+    <div class="dc-label">DISTANCE</div>
+    <div class="dc-val dc-small"><span id="h-dist">0</span><span class="dc-unit">m</span></div>
+  </div>
+  <div class="dji-card">
+    <div class="dc-label">HEADING</div>
+    <div class="dc-val dc-small"><span id="h-hdg">360</span><span class="dc-unit">° <span id="h-compass">N</span></span></div>
+  </div>
+  <div class="dji-card">
+    <div class="dc-label">WIND SPEED</div>
+    <div class="dc-val dc-small"><span id="h-wind">0.0</span><span class="dc-unit">m/s</span></div>
+  </div>
+</div>
+
+<!-- ADI -->
+<div id="adi-outer">
+  <canvas id="adi" width="110" height="110"></canvas>
+  <div id="adi-ring"></div>
+</div>
+
+<!-- Virtual joysticks -->
+<div id="js-left">
+  <canvas id="jsl" width="74" height="74"></canvas>
+  <div class="js-label">THR · YAW</div>
+</div>
+<div id="js-right">
+  <canvas id="jsr" width="74" height="74"></canvas>
+  <div class="js-label">PITCH · ROLL</div>
+</div>
+
+<!-- Vertical gauges -->
+<div id="thr-g"><div id="thr-fill" style="height:0%;width:100%"></div></div>
+<div id="alt-g"><div id="alt-fill" style="height:0%;width:100%"></div></div>
+
+<!-- Bottom bar -->
+<div id="btmbar">
+  <span>FLIGHT TIME&nbsp;<span class="bsv" id="h-time">00:00</span></span>
+  <span>MAX ALT&nbsp;<span class="bsv" id="h-malt">0</span>m</span>
+  <span>PITCH&nbsp;<span class="bsv" id="h-pitch">0.0</span>°</span>
+  <span>ROLL&nbsp;<span class="bsv" id="h-roll">0.0</span>°</span>
+  <span style="margin-left:8px;font-size:9px">W/S THROTTLE · A/D YAW · ↑↓←→ PITCH/ROLL · SPACE BOOST · C CAM · R RTH</span>
+</div>
+
+<!-- RTH tip -->
+<div id="home-tip">RETURNING TO HOME</div>
+
+<!-- Welcome -->
+<div id="welcome">
+  <div id="wb">
+    <div id="wb-logo">DJI Flight Simulator</div>
+    <div id="wb-sub">BANGALORE · INDIA</div>
+    <div class="wb-sec">TRAINING ENVIRONMENT</div>
+    <div class="env-cards">
+      <div class="ecard sel" data-wenv="lake">
+        <div class="ecard-name">◈ Hebbal Lake</div>
+        <div class="ecard-desc">Open water · Rolling terrain · Flyover landmark</div>
+      </div>
+      <div class="ecard" data-wenv="city">
+        <div class="ecard-name">⬛ Bangalore City</div>
+        <div class="ecard-desc">IT district · Apartments · Urban obstacles</div>
+      </div>
+    </div>
+    <div class="wb-sec">FLIGHT MODE</div>
+    <div class="mode-cards">
+      <div class="mcard sel" data-wmode="normal">
+        <div class="mcard-name">Normal</div>
+        <div class="mcard-desc">GPS stabilized · Auto-level · Recommended</div>
+      </div>
+      <div class="mcard" data-wmode="sport">
+        <div class="mcard-name">Sport</div>
+        <div class="mcard-desc">Rate control · Faster · Advanced</div>
+      </div>
+    </div>
+    <button id="btn-fly">FLY</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+
+// ════════════════════════════════════════
+// RENDERER
+// ════════════════════════════════════════
+const cvEl = document.createElement('canvas');
+cvEl.id = 'cv';
+document.body.insertBefore(cvEl, document.body.firstChild);
+const renderer = new THREE.WebGLRenderer({ antialias:true, canvas:cvEl, powerPreference:'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.LinearToneMapping;
+renderer.toneMappingExposure = 1.4;
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.physicallyCorrectLights = false;
+window.addEventListener('resize', () => {
+  renderer.setSize(innerWidth, innerHeight);
+  cam.aspect = innerWidth / innerHeight;
+  cam.updateProjectionMatrix();
+});
+
+// ════════════════════════════════════════
+// SCENE + CAMERA
+// ════════════════════════════════════════
+const scene  = new THREE.Scene();
+const cam    = new THREE.PerspectiveCamera(68, innerWidth/innerHeight, 0.05, 3000);
+const envGrp = new THREE.Group();
+scene.add(envGrp);
+
+// ════════════════════════════════════════
+// TOON SHADING
+// ════════════════════════════════════════
+function makeToonGrad() {
+  const c=document.createElement('canvas'); c.width=4; c.height=1;
+  const cx=c.getContext('2d');
+  ['#333','#777','#ccc','#fff'].forEach((col,i)=>{ cx.fillStyle=col; cx.fillRect(i,0,1,1); });
+  const t=new THREE.CanvasTexture(c);
+  t.magFilter=THREE.NearestFilter; t.minFilter=THREE.NearestFilter;
+  return t;
+}
+const TG = makeToonGrad();
+const toon = (col,opts={}) => new THREE.MeshToonMaterial({ color:col, gradientMap:TG, ...opts });
+
+// ════════════════════════════════════════
+// ANGRY BIRDS PALETTE
+// ════════════════════════════════════════
+const AB = {
+  sky:0x5bc8ff, grass:0x7fd44c, grassDark:0x4eba28,
+  wood:0xd4a030, woodDark:0xa87820, woodLight:0xf0c84a,
+  stone:0xb8b4a4, stoneDark:0x888078, stoneLight:0xd0ccc0,
+  glass:0x90dcf8, pig:0x6ec82a, pigDark:0x4ea010,
+  red:0xe83020, yellow:0xf8d820, white:0xf8f8f0,
+  tnt:0xf8e040, ground:0x90d84c
+};
+
+// ════════════════════════════════════════
+// SKY DOME
+// ════════════════════════════════════════
+function makeSkyTexture() {
+  const c = document.createElement('canvas'); c.width=1; c.height=512;
+  const cx = c.getContext('2d');
+  const g = cx.createLinearGradient(0,0,0,512);
+  // Angry Birds sky — iconic bright cerulean gradient
+  g.addColorStop(0,    '#2898e8');
+  g.addColorStop(0.4,  '#5bc8ff');
+  g.addColorStop(0.75, '#88dcff');
+  g.addColorStop(0.92, '#b8edff');
+  g.addColorStop(1,    '#d8f4ff');
+  cx.fillStyle=g; cx.fillRect(0,0,1,512);
+  const t=new THREE.CanvasTexture(c);
+  t.encoding=THREE.sRGBEncoding;
+  return t;
+}
+const skyGeo  = new THREE.SphereGeometry(1400,32,15);
+const skyMesh = new THREE.Mesh(skyGeo, new THREE.MeshBasicMaterial({
+  map: makeSkyTexture(), side:THREE.BackSide, depthWrite:false
+}));
+scene.add(skyMesh);
+
+// Sun billboard
+function makeSunTexture() {
+  const c=document.createElement('canvas'); c.width=c.height=256;
+  const cx=c.getContext('2d');
+  // AB-style chunky sun — solid yellow circle with pointed rays
+  cx.save(); cx.translate(128,128);
+  // Rays (spiky, AB-style)
+  cx.fillStyle='#f8d820';
+  for(let i=0;i<12;i++){
+    cx.rotate(Math.PI/6);
+    cx.beginPath(); cx.moveTo(0,50); cx.lineTo(-8,80); cx.lineTo(0,105); cx.lineTo(8,80); cx.closePath(); cx.fill();
+  }
+  // Solid disc
+  cx.fillStyle='#ffe840';
+  cx.beginPath(); cx.arc(0,0,50,0,Math.PI*2); cx.fill();
+  // Inner highlight
+  cx.fillStyle='#fff8a0';
+  cx.beginPath(); cx.arc(-10,-10,22,0,Math.PI*2); cx.fill();
+  // Outline
+  cx.strokeStyle='#e8a810'; cx.lineWidth=4;
+  cx.beginPath(); cx.arc(0,0,50,0,Math.PI*2); cx.stroke();
+  cx.restore();
+  // Outer glow
+  const g=cx.createRadialGradient(128,128,52,128,128,118);
+  g.addColorStop(0,'rgba(255,220,50,0.35)');
+  g.addColorStop(1,'rgba(255,220,50,0)');
+  cx.fillStyle=g; cx.fillRect(0,0,256,256);
+  const t=new THREE.CanvasTexture(c);
+  t.encoding=THREE.sRGBEncoding;
+  return t;
+}
+const sunSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+  map:makeSunTexture(), transparent:true, depthWrite:false,
+  blending:THREE.AdditiveBlending
+}));
+sunSprite.scale.set(220,220,1);
+sunSprite.position.set(600,800,-400).normalize().multiplyScalar(1300);
+scene.add(sunSprite);
+
+// ════════════════════════════════════════
+// LIGHTS
+// ════════════════════════════════════════
+const ambLight  = new THREE.AmbientLight(0xddeeff, 1.0);
+scene.add(ambLight);
+const hemiLight = new THREE.HemisphereLight(0x88ccff, 0x66cc22, 1.2);
+scene.add(hemiLight);
+const sunLight  = new THREE.DirectionalLight(0xffeecc, 2.8);
+sunLight.position.set(800, 700, -200);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.set(2048, 2048);
+sunLight.shadow.camera.left   = sunLight.shadow.camera.bottom = -280;
+sunLight.shadow.camera.right  = sunLight.shadow.camera.top    =  280;
+sunLight.shadow.camera.far    = 900;
+scene.add(sunLight);
+
+// ════════════════════════════════════════
+// CLOUD SPRITES
+// ════════════════════════════════════════
+const clouds = [];
+function makeCloudTex() {
+  const c = document.createElement('canvas'); c.width = c.height = 512;
+  const cx = c.getContext('2d');
+  // Angry Birds puffy clouds — solid white rounded lumps with dark outline
+  const blobs=[[256,230,88],[168,270,62],[344,258,70],[256,168,56],[308,300,55],[200,248,48],[345,182,44]];
+  // Outline first (AB clouds have visible outline)
+  cx.fillStyle='rgba(180,200,220,0.5)';
+  blobs.forEach(([bx,by,br])=>{ cx.beginPath(); cx.arc(bx,by+6,br*0.88,0,Math.PI*2); cx.fill(); });
+  // White fill
+  cx.fillStyle='#f8fbff';
+  blobs.forEach(([bx,by,br])=>{ cx.beginPath(); cx.arc(bx,by,br*0.88,0,Math.PI*2); cx.fill(); });
+  // Soft edge fade
+  blobs.forEach(([bx,by,br])=>{
+    const g=cx.createRadialGradient(bx,by,br*0.7,bx,by,br);
+    g.addColorStop(0,'rgba(248,251,255,0.5)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    cx.fillStyle=g; cx.fillRect(bx-br,by-br,br*2,br*2);
+  });
+  // Highlight on top
+  cx.fillStyle='rgba(255,255,255,0.6)';
+  blobs.forEach(([bx,by,br])=>{ cx.beginPath(); cx.arc(bx-br*0.2,by-br*0.2,br*0.35,0,Math.PI*2); cx.fill(); });
+  const t = new THREE.CanvasTexture(c);
+  t.encoding = THREE.sRGBEncoding;
+  return t;
+}
+function spawnClouds() {
+  const tex = makeCloudTex();
+  for (let i = 0; i < 22; i++) {
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map:tex, transparent:true, opacity:0.88+Math.random()*0.1, depthWrite:false }));
+    const s  = 100 + Math.random() * 160;
+    sp.scale.set(s, s*0.48, 1);
+    sp.position.set((Math.random()-0.5)*1000, 110+Math.random()*130, (Math.random()-0.5)*1000);
+    sp.userData.drift = (Math.random()-0.5)*0.035;
+    scene.add(sp); clouds.push(sp);
+  }
+}
+spawnClouds();
+
+// ════════════════════════════════════════
+// DJI-STYLE DRONE MODEL (Phantom 4 inspired)
+// ════════════════════════════════════════
+function buildDrone() {
+  const g = new THREE.Group();
+  const props = [];
+
+  const whiteMat = toon(AB.white);
+  const darkMat  = toon(0x222230);
+  const armMat   = toon(AB.yellow);    // AB yellow arms
+  const accentMat= toon(AB.red);       // AB red motor rings
+  const propMat  = () => toon(0x1a1a1a, { transparent:true, opacity:0.88, side:THREE.DoubleSide });
+  const discMat  = () => new THREE.MeshBasicMaterial({ color:0x333333, transparent:true, opacity:0, side:THREE.DoubleSide });
+
+  // Body — lenticular disc shape
+  const bodyDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.52, 0.18, 16), whiteMat);
+  bodyDisc.castShadow = true;
+  g.add(bodyDisc);
+  // Top dome
+  const topDome = new THREE.Mesh(new THREE.SphereGeometry(0.52, 14, 7, 0, Math.PI*2, 0, Math.PI*0.45), whiteMat);
+  topDome.position.y = 0.03;
+  g.add(topDome);
+  // Bottom dome (flatter)
+  const botDome = new THREE.Mesh(new THREE.SphereGeometry(0.52, 14, 7, 0, Math.PI*2, Math.PI*0.6, Math.PI*0.4), whiteMat);
+  botDome.position.y = 0.03;
+  g.add(botDome);
+
+  // 4 diagonal arms (DJI Phantom style)
+  const armAngles = [45, -45, 135, -135];
+  armAngles.forEach((angDeg, i) => {
+    const ang = angDeg * Math.PI / 180;
+    const armLen = 0.75;
+    const ex = Math.sin(ang) * armLen;
+    const ez = Math.cos(ang) * armLen;
+
+    // Arm tube
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.07, 1.45), armMat);
+    arm.rotation.y = ang;
+    arm.position.set(ex*0.5, 0, ez*0.5);
+    arm.castShadow = true;
+    g.add(arm);
+
+    // Motor housing — cute orange accent ring
+    const mh = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.14, 10), accentMat);
+    mh.position.set(ex, 0.07, ez);
+    g.add(mh);
+    // Motor top cap
+    const mc = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 0.04, 10), darkMat);
+    mc.position.set(ex, 0.155, ez);
+    g.add(mc);
+
+    // Propeller group
+    const pg = new THREE.Group();
+    pg.position.set(ex, 0.18, ez);
+    // 3 blades (Phantom 4 style)
+    for (let b = 0; b < 3; b++) {
+      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.012, 0.07), propMat());
+      blade.rotation.y = (b / 3) * Math.PI * 2;
+      pg.add(blade);
+    }
+    const dm = discMat();
+    const disc = new THREE.Mesh(new THREE.CircleGeometry(0.42, 16), dm);
+    disc.rotation.x = -Math.PI/2;
+    pg.add(disc);
+    g.add(pg);
+    props.push({ pg, disc, dm, dir: i%2===0 ? 1 : -1 });
+  });
+
+  // Camera gimbal (3-axis, DJI style)
+  const gimbalY = new THREE.Group();
+  gimbalY.position.set(0, -0.18, 0.2);
+  // Gimbal frame
+  const gf = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.12, 0.05), darkMat);
+  gimbalY.add(gf);
+  // Camera body
+  const cb = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.1, 0.1), toon(0x222233));
+  cb.position.z = 0.06;
+  gimbalY.add(cb);
+  // Lens — bright cute teal circle
+  const lens = new THREE.Mesh(new THREE.CircleGeometry(0.04, 8), new THREE.MeshBasicMaterial({ color:0x44aaff }));
+  lens.position.set(0, 0, 0.115);
+  gimbalY.add(lens);
+  g.add(gimbalY);
+
+  // Landing gear
+  const lgMat = toon(0xddddee);
+  [[-0.28,-0.28],[0.28,-0.28],[-0.28,0.28],[0.28,0.28]].forEach(([lx,lz]) => {
+    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.3,4), lgMat);
+    leg.position.set(lx, -0.24, lz);
+    g.add(leg);
+    // Foot
+    const foot = new THREE.Mesh(new THREE.SphereGeometry(0.035,5,4), lgMat);
+    foot.position.set(lx, -0.39, lz);
+    g.add(foot);
+  });
+
+  // Status LEDs (emissive, no PointLights for performance)
+  const mkLed = (col, px, pz) => {
+    const led = new THREE.Mesh(new THREE.SphereGeometry(0.025,5,4), new THREE.MeshBasicMaterial({ color:col }));
+    led.position.set(px, 0.0, pz);
+    g.add(led);
+  };
+  mkLed(0x00ff66,  0.52, 0);   // starboard green
+  mkLed(0xff2200, -0.52, 0);   // port red
+  mkLed(0xffffff,  0,    0.52);// front white
+  mkLed(0xff6600,  0,   -0.52);// rear orange
+
+  // Engine glow (single, subtle)
+  const engLight = new THREE.PointLight(0x88ccff, 0, 8);
+  engLight.position.set(0, -0.6, 0);
+  g.add(engLight);
+
+  return { g, props, engLight };
+}
+const droneModel = buildDrone();
+scene.add(droneModel.g);
+
+// Home marker (H-post in 3D world)
+const homeMarkerMesh = new THREE.Group();
+{
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,1.8,6), toon(0x22dd66));
+  post.position.y = 0.9;
+  homeMarkerMesh.add(post);
+  const pad  = new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.2,0.08,16), toon(0x22dd66, { transparent:true, opacity:0.6 }));
+  pad.position.y = 0.05;
+  homeMarkerMesh.add(pad);
+}
+scene.add(homeMarkerMesh);
+
+// ════════════════════════════════════════
+// TERRAIN HEIGHT FUNCTIONS
+// ════════════════════════════════════════
+function lakeH(x, z) {
+  return (
+    Math.sin(x*0.016+0.7)*Math.cos(z*0.013)*24 +
+    Math.sin(x*0.04+z*0.033)*11 +
+    Math.sin(x*0.09)*Math.cos(z*0.072+0.5)*5 +
+    Math.cos(x*0.005+z*0.006)*16 - 6
+  );
+}
+
+// ════════════════════════════════════════
+// WINDOW TEXTURE
+// ════════════════════════════════════════
+function winTex(cols, rows) {
+  const cw=cols*14, ch=rows*18;
+  const c=document.createElement('canvas'); c.width=cw; c.height=ch;
+  const cx=c.getContext('2d');
+  cx.fillStyle='#0c1822'; cx.fillRect(0,0,cw,ch);
+  for(let r=0;r<rows;r++) for(let col=0;col<cols;col++) {
+    const lit=Math.random()>0.18, br=28+Math.random()*30;
+    cx.fillStyle=lit?`hsl(210,55%,${br}%)`:'#060e16';
+    cx.fillRect(col*14+2,r*18+2,10,14);
+  }
+  return new THREE.CanvasTexture(c);
+}
+
+// ════════════════════════════════════════
+// TREE BUILDER (shared)
+// ════════════════════════════════════════
+const trkM   = toon(AB.woodDark);
+const fol1M  = toon(AB.grass);
+const fol2M  = toon(AB.grassDark);
+const fol3M  = toon(0x60d840);
+
+// Angry Birds style tree — big round puffs, stumpy trunk
+function addTree(parent, x, y, z, s) {
+  const hTrunk = 1.6*s;
+  // Stubby trunk
+  const tk = new THREE.Mesh(new THREE.CylinderGeometry(0.14*s,0.20*s,hTrunk,6), trkM);
+  tk.position.set(x, y+hTrunk/2, z);
+  parent.add(tk);
+  // Single big round AB canopy
+  const canopyY = y + hTrunk + 1.5*s;
+  const f1 = new THREE.Mesh(new THREE.SphereGeometry(2.0*s, 9, 7), fol1M);
+  f1.position.set(x, canopyY, z); f1.castShadow=true;
+  parent.add(f1);
+  // Second smaller blob on top (AB double-puff look)
+  const f2 = new THREE.Mesh(new THREE.SphereGeometry(1.3*s, 8, 6), fol2M);
+  f2.position.set(x, canopyY+1.1*s, z);
+  parent.add(f2);
+  if(s>0.7){
+    // Side tuft
+    const f3 = new THREE.Mesh(new THREE.SphereGeometry(0.9*s, 7, 5), fol3M);
+    f3.position.set(x+1.0*s, canopyY+0.2*s, z-0.2*s);
+    parent.add(f3);
+  }
+}
+
+// AB-style coconut palm
+const palmFolM = toon(AB.grassDark);
+function addPalm(parent, x, y, z, s) {
+  const h=5.8*s;
+  const tk = new THREE.Mesh(new THREE.CylinderGeometry(0.1*s,0.18*s,h,6), trkM);
+  tk.position.set(x, y+h/2, z);
+  tk.rotation.z = (Math.random()-0.5)*0.18;
+  parent.add(tk);
+  const fronds = new THREE.Mesh(new THREE.SphereGeometry(1.2*s,8,5), palmFolM);
+  fronds.scale.set(2.2,0.5,2.2);
+  fronds.position.set(x, y+h+0.5, z);
+  parent.add(fronds);
+}
+
+// ── AB special props ───────────────────────────
+// Pig character (the villains!)
+function addPig(parent, x, y, z, s) {
+  const body = new THREE.Mesh(new THREE.SphereGeometry(s,12,10), toon(AB.pig));
+  body.position.set(x,y+s,z); body.castShadow=true; parent.add(body);
+  // Snout
+  const snout = new THREE.Mesh(new THREE.SphereGeometry(s*0.34,8,6), toon(AB.pig));
+  snout.scale.z=0.6; snout.position.set(0,s*0.0,s*0.92); body.add(snout);
+  const nostrilL = new THREE.Mesh(new THREE.CircleGeometry(s*0.08,6), new THREE.MeshBasicMaterial({color:AB.pigDark}));
+  nostrilL.position.set(-s*0.12,-s*0.04,s*0.35); body.add(nostrilL);
+  const nostrilR = nostrilL.clone(); nostrilR.position.x=s*0.12; body.add(nostrilR);
+  // Eyes (white sclera + black pupil)
+  [-1,1].forEach(side=>{
+    const sclera=new THREE.Mesh(new THREE.SphereGeometry(s*0.22,8,6), new THREE.MeshBasicMaterial({color:0xffffff}));
+    sclera.position.set(side*s*0.3,s*0.3,s*0.78); body.add(sclera);
+    const pupil=new THREE.Mesh(new THREE.SphereGeometry(s*0.12,7,5), new THREE.MeshBasicMaterial({color:0x111111}));
+    pupil.position.set(side*s*0.3,s*0.3,s*0.93); body.add(pupil);
+    // Eye shine
+    const shine=new THREE.Mesh(new THREE.SphereGeometry(s*0.05,5,4), new THREE.MeshBasicMaterial({color:0xffffff}));
+    shine.position.set(side*s*0.3+s*0.07,s*0.36,s*0.96); body.add(shine);
+  });
+  // Eyebrows (AB pigs have angry eyebrows)
+  const browL=new THREE.Mesh(new THREE.BoxGeometry(s*0.3,s*0.08,s*0.05), toon(AB.pigDark));
+  browL.position.set(-s*0.3,s*0.56,s*0.72); browL.rotation.z=0.35; body.add(browL);
+  const browR=browL.clone(); browR.position.x=s*0.3; browR.rotation.z=-0.35; body.add(browR);
+  return body;
+}
+
+// TNT box — AB classic
+function addTNT(parent, x, y, z) {
+  const box=new THREE.Mesh(new THREE.BoxGeometry(2,2,2), toon(AB.tnt));
+  box.position.set(x,y+1,z); box.castShadow=true; parent.add(box);
+  const band=new THREE.Mesh(new THREE.BoxGeometry(2.02,0.55,2.02), toon(AB.red));
+  band.position.set(x,y+1,z); parent.add(band);
+  const band2=new THREE.Mesh(new THREE.BoxGeometry(0.55,2.02,2.02), toon(AB.red));
+  band2.position.set(x,y+1,z); parent.add(band2);
+}
+
+// Slingshot — the iconic AB launcher
+function buildSlingshot(parent, x, y, z) {
+  const wood=toon(AB.woodDark);
+  // Main base post
+  const base=new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.35,4.5,7), wood);
+  base.position.set(x,y+2.25,z); parent.add(base);
+  // Y-fork left prong
+  const fL=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.22,2.8,6), wood);
+  fL.position.set(x-0.9,y+4.9,z); fL.rotation.z=-0.3; parent.add(fL);
+  // Y-fork right prong
+  const fR=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.22,2.8,6), wood);
+  fR.position.set(x+0.9,y+4.9,z); fR.rotation.z=0.3; parent.add(fR);
+  // Band (rubber sling)
+  const band=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.12,2.4), toon(0xaa4422));
+  band.position.set(x,y+5.8,z); band.rotation.y=Math.PI/2; parent.add(band);
+}
+
+// ════════════════════════════════════════
+// ENVIRONMENT: HEBBAL LAKE
+// ════════════════════════════════════════
+let waterMesh = null;
+
+// Angry Birds level ground — Pig Island Lake
+function makeHebbalGroundTex() {
+  const sz=2048;
+  const c=document.createElement('canvas'); c.width=c.height=sz;
+  const cx=c.getContext('2d');
+  const ttx=(x)=>(x+350)/700*sz;
+  const tty=(z)=>(z+350)/700*sz;
+  // 1. AB grass base
+  cx.fillStyle='#7fd44c'; cx.fillRect(0,0,sz,sz);
+  // 2. Rolling hill shading
+  for(let i=0;i<80;i++){
+    const x=Math.random()*sz, y=Math.random()*sz;
+    const rx=30+Math.random()*120, ry=20+Math.random()*70;
+    const g=cx.createRadialGradient(x,y,0,x,y,Math.max(rx,ry));
+    g.addColorStop(0,'rgba(50,180,20,0.45)'); g.addColorStop(1,'rgba(0,0,0,0)');
+    cx.fillStyle=g; cx.fillRect(x-rx,y-ry,rx*2,ry*2);
+  }
+  // 3. Grass tufts
+  cx.fillStyle='#4eba28';
+  for(let i=0;i<400;i++){
+    const x=Math.random()*sz, y=Math.random()*sz;
+    cx.beginPath(); cx.arc(x,y,3+Math.random()*7,0,Math.PI*2); cx.fill();
+  }
+  // 4. Sandy dirt roads
+  const road=(x1,y1,x2,y2,lw)=>{
+    cx.strokeStyle='#c8a848'; cx.lineWidth=lw; cx.lineCap='round';
+    cx.beginPath(); cx.moveTo(x1,y1); cx.lineTo(x2,y2); cx.stroke();
+    cx.strokeStyle='rgba(200,170,60,0.4)'; cx.lineWidth=lw*0.3; cx.setLineDash([20,18]);
+    cx.beginPath(); cx.moveTo(x1,y1); cx.lineTo(x2,y2); cx.stroke();
+    cx.setLineDash([]);
+  };
+  road(ttx(175),0,ttx(155),sz,20); road(0,tty(-195),sz,tty(-205),24);
+  road(ttx(-30),0,ttx(-30),sz,14); road(ttx(50),0,ttx(55),sz,14);
+  // 5. Tree canopy blobs
+  cx.fillStyle='#3ab820';
+  for(let a=0;a<Math.PI*2;a+=0.09){
+    for(let r=130;r<210;r+=12){
+      const lx=ttx(Math.cos(a)*r), lz=tty(Math.sin(a)*r*0.66);
+      if(lx<0||lx>sz||lz<0||lz>sz) continue;
+      cx.beginPath(); cx.arc(lx+(Math.random()-0.5)*10,lz+(Math.random()-0.5)*10,12+Math.random()*20,0,Math.PI*2); cx.fill();
+    }
+  }
+  // 6. Pig structure patches (AB village)
+  [[ttx(-175),tty(-145),75,55],[ttx(155),tty(-180),65,50],
+   [ttx(-160),tty(120),70,52],[ttx(120),tty(150),60,45]].forEach(([cx2,cy2,w,h])=>{
+    cx.fillStyle='rgba(200,185,140,0.6)'; cx.fillRect(cx2-w/2,cy2-h/2,w,h);
+    const bCols=['#d4a830','#b8b4a4','#90dcf8','rgba(100,200,50,0.7)'];
+    for(let b=0;b<16;b++){
+      const bx2=cx2-w/2+Math.random()*w, by=cy2-h/2+Math.random()*h;
+      cx.fillStyle=bCols[Math.floor(Math.random()*bCols.length)];
+      cx.fillRect(bx2,by,6+Math.random()*14,5+Math.random()*12);
+    }
+  });
+  // 7. Sandy shore
+  cx.fillStyle='#e8d870';
+  cx.beginPath(); cx.ellipse(ttx(0),tty(0),130/700*sz,86/700*sz,0,0,Math.PI*2); cx.fill();
+  // 8. Lake bed
+  cx.fillStyle='#2298d8';
+  cx.beginPath(); cx.ellipse(ttx(0),tty(0),112/700*sz,73/700*sz,0,0,Math.PI*2); cx.fill();
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; return t;
+}
+
+// AB water — bright blue with bold cartoon waves
+function makeHebbalWaterTex() {
+  const sz=512;
+  const c=document.createElement('canvas'); c.width=c.height=sz;
+  const cx=c.getContext('2d');
+  cx.fillStyle='#3ab8e8'; cx.fillRect(0,0,sz,sz);
+  cx.fillStyle='#52c8f0';
+  for(let i=0;i<50;i++){ cx.beginPath(); cx.arc(Math.random()*sz,Math.random()*sz,8+Math.random()*30,0,Math.PI*2); cx.fill(); }
+  cx.strokeStyle='rgba(255,255,255,0.55)'; cx.lineWidth=3.5; cx.lineCap='round';
+  for(let y=0;y<sz;y+=18){
+    cx.beginPath();
+    for(let x=0;x<=sz;x+=14){
+      const wy=y+Math.sin(x*0.035)*7+Math.sin(x*0.09)*3;
+      x===0?cx.moveTo(x,wy):cx.lineTo(x,wy);
+    }
+    cx.stroke();
+  }
+  cx.fillStyle='rgba(255,255,255,0.85)';
+  for(let i=0;i<60;i++){ const x=Math.random()*sz, y=Math.random()*sz; cx.beginPath(); cx.arc(x,y,2+Math.random()*4,0,Math.PI*2); cx.fill(); }
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(3,2);
+  t.encoding=THREE.sRGBEncoding; return t;
+}
+
+function buildLakeEnv() {
+  scene.fog = new THREE.FogExp2(0x88d8ff, 0.002);
+
+  // Terrain — single-coverage satellite texture (no tiling)
+  const TZ=700, TS=150;
+  const tg = new THREE.PlaneGeometry(TZ,TZ,TS,TS);
+  tg.rotateX(-Math.PI/2);
+  const tp=tg.attributes.position;
+  for(let i=0;i<tp.count;i++) tp.setY(i, lakeH(tp.getX(i),tp.getZ(i)));
+  tp.needsUpdate=true; tg.computeVertexNormals();
+  const tm = new THREE.Mesh(tg, toon(0x7fd44c, { map: makeHebbalGroundTex() }));
+  tm.receiveShadow=true; envGrp.add(tm);
+
+  // Hebbal Lake water — elliptical mesh, murky Indian lake colour
+  const lakeGeo = new THREE.CircleGeometry(1,64);
+  // Scale to lake dimensions
+  lakeGeo.scale(115,1,75);
+  lakeGeo.rotateX(-Math.PI/2);
+  const lakeMat = toon(0x22aadd, {
+    map: makeHebbalWaterTex(), transparent:true, opacity:0.94
+  });
+  waterMesh = new THREE.Mesh(lakeGeo, lakeMat);
+  waterMesh.position.set(0, 0.2, 0);
+  envGrp.add(waterMesh);
+
+  // Shore band — sandy/muddy fringe around the lake edge
+  const sGeo = new THREE.RingGeometry(115, 132, 64);
+  sGeo.rotateX(-Math.PI/2);
+  const shoreMesh = new THREE.Mesh(sGeo, new THREE.MeshStandardMaterial({
+    color:0x8a7848, roughness:0.95, metalness:0
+  }));
+  shoreMesh.position.set(0,0.15,0);
+  envGrp.add(shoreMesh);
+
+  // Hebbal Flyover (multi-level overpass, north of lake — iconic)
+  buildFlyover();
+
+  // Dense riparian trees (Rain trees + Gulmohar) around the lake
+  for(let i=0;i<500;i++) {
+    const ang=Math.random()*Math.PI*2;
+    const r=132+Math.random()*190;
+    const x=Math.cos(ang)*r, z=Math.sin(ang)*r;
+    const base=lakeH(x,z);
+    if(base<0 || base>28 || (Math.abs(x)<60&&Math.abs(z)<40)) continue;
+    if(Math.random()<0.18) addPalm(envGrp, x, base, z, 0.65+Math.random()*0.7);
+    else addTree(envGrp, x, base, z, 0.7+Math.random()*1.0);
+  }
+
+  // Hill vegetation
+  for(let i=0;i<200;i++) {
+    const x=(Math.random()-0.5)*620, z=(Math.random()-0.5)*620;
+    const base=lakeH(x,z);
+    if(base<4||base>26) continue;
+    addTree(envGrp, x, base, z, 0.6+Math.random()*0.9);
+  }
+
+  // Coconut palms along the main road alignment
+  for(let z2=-200;z2<200;z2+=18) {
+    const base=lakeH(-35+Math.random()*4, z2);
+    if(base>0 && base<20) addPalm(envGrp, -35+(Math.random()-0.5)*6, base, z2, 0.7+Math.random()*0.5);
+  }
+
+  // Boathouse / pier
+  buildPier(envGrp);
+
+  // ── Angry Birds props ──
+  // Slingshot at spawn (where the drone launches from!)
+  buildSlingshot(envGrp, 0, lakeH(0,65)+0.2, 65);
+  // Pigs on the shores
+  [[80,28],[-60,50],[120,-40],[-90,-30],[30,-60],[-110,80],[150,60]].forEach(([px,pz])=>{
+    const base=lakeH(px,pz);
+    if(base>-1 && base<22) addPig(envGrp,px,base,pz,0.6+Math.random()*0.5);
+  });
+  // TNT boxes scattered around
+  [[55,40],[-45,55],[90,-55],[-80,-40],[130,20]].forEach(([px,pz])=>{
+    const base=lakeH(px,pz);
+    if(base>0) addTNT(envGrp,px,base,pz);
+  });
+}
+
+function buildFlyover() {
+  const cMat = toon(0xb0b0a8);
+  const sMat = toon(0x909898);
+  // Primary deck (runs across)
+  const deck = new THREE.Mesh(new THREE.BoxGeometry(320,2.2,15), cMat);
+  deck.position.set(0,22,-210); deck.castShadow=true; envGrp.add(deck);
+  // Secondary deck (interchange curve)
+  const d2 = new THREE.Mesh(new THREE.BoxGeometry(200,2.0,13), cMat);
+  d2.position.set(30,17,-210); d2.rotation.y=0.32; envGrp.add(d2);
+  // Third level ramp
+  const d3 = new THREE.Mesh(new THREE.BoxGeometry(130,1.8,11), cMat);
+  d3.position.set(-40,12,-200); d3.rotation.y=-0.18; envGrp.add(d3);
+  // Support pillars
+  for(let i=-6;i<=6;i++) {
+    const pil = new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.8,22,8), cMat);
+    pil.position.set(i*28,11,-210); pil.castShadow=true; envGrp.add(pil);
+    // Crossbeam
+    const bm = new THREE.Mesh(new THREE.BoxGeometry(28,1.2,3.5), sMat);
+    bm.position.set(i*28+14,21,-210); envGrp.add(bm);
+    // Guardrail posts
+    const gr = new THREE.Mesh(new THREE.BoxGeometry(0.28,1.2,0.28), sMat);
+    gr.position.set(i*22,23.5,-210-7); envGrp.add(gr);
+    const gr2=gr.clone(); gr2.position.set(i*22,23.5,-210+7); envGrp.add(gr2);
+  }
+}
+
+function buildPier(parent) {
+  const wood = toon(0xa07040);
+  const pier = new THREE.Mesh(new THREE.BoxGeometry(4,0.4,28), wood);
+  pier.position.set(105, 0.25, 30);
+  parent.add(pier);
+  for(let p=0;p<6;p++) {
+    const post=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,2,5), wood);
+    post.position.set(105, -0.8, 18+p*3);
+    parent.add(post);
+  }
+}
+
+// ════════════════════════════════════════
+// ENVIRONMENT: BANGALORE CITY
+// ════════════════════════════════════════
+const bldgBounds = [];
+
+// Angry Birds — Piggy City level map
+function makeBangCityTex() {
+  const sz=2048;
+  const c=document.createElement('canvas'); c.width=c.height=sz;
+  const cx=c.getContext('2d');
+  const ttx=(x)=>(x+400)/800*sz;
+  const tty=(z)=>(z+400)/800*sz;
+  // 1. AB stone ground base
+  cx.fillStyle='#b8b4a0'; cx.fillRect(0,0,sz,sz);
+  // 2. Cobblestone-ish variation
+  for(let i=0;i<3000;i++){
+    const x=Math.random()*sz, y=Math.random()*sz, w=5+Math.random()*18, h=4+Math.random()*14;
+    const lum=148+Math.floor(Math.random()*40);
+    cx.fillStyle=`rgba(${lum},${lum-8},${lum-18},0.45)`;
+    cx.fillRect(x,y,w,h);
+  }
+  // 3. AB building blocks grid — wood/stone/glass in AB colours
+  const abCols=['#d4a830','#d4a830','#b8b4a4','#b8b4a4','#90dcf8','#7fd44c','#e83020','#f8d820'];
+  for(let bx=-380;bx<380;bx+=24){
+    for(let bz=-380;bz<380;bz+=24){
+      if(Math.abs(bx)<22||Math.abs(bz)<22) continue;
+      const col=abCols[Math.floor(Math.random()*abCols.length)];
+      cx.fillStyle=col+'bb';
+      const bw=15+Math.random()*7, bh=15+Math.random()*7;
+      cx.fillRect(ttx(bx),tty(bz),bw/800*sz,bh/800*sz);
+    }
+  }
+  // 4. AB roads — darker stone with yellow dashes
+  const road=(x1,y1,x2,y2,lw)=>{
+    cx.strokeStyle='#888078'; cx.lineWidth=lw; cx.lineCap='round';
+    cx.beginPath(); cx.moveTo(x1,y1); cx.lineTo(x2,y2); cx.stroke();
+    cx.strokeStyle='rgba(248,216,32,0.65)'; cx.lineWidth=lw*0.14; cx.setLineDash([18,16]);
+    cx.beginPath(); cx.moveTo(x1,y1); cx.lineTo(x2,y2); cx.stroke();
+    cx.setLineDash([]);
+  };
+  [[-18,10],[-80,82],[80,-80],[168,165],[-168,-162]].forEach(([xa,xb])=>road(ttx(xa),0,ttx(xb),sz,22));
+  [[-5,5],[88,-88],[-88,88],[168,-168],[-168,168]].forEach(([za,zb])=>road(0,tty(za),sz,tty(zb),22));
+  [-250,-165,-80,0,80,165,250].forEach(off=>{
+    road(ttx(off),0,ttx(off),sz,12); road(0,tty(off),sz,tty(off),12);
+  });
+  // 5. Cubbon Park — AB bright green oval (safe zone)
+  const pkx=ttx(-15), pky=tty(10), pkrx=108/800*sz, pkry=88/800*sz;
+  cx.fillStyle='#7fd44c';
+  cx.beginPath(); cx.ellipse(pkx,pky,pkrx,pkry,0,0,Math.PI*2); cx.fill();
+  cx.strokeStyle='#4eba28'; cx.lineWidth=6;
+  cx.beginPath(); cx.ellipse(pkx,pky,pkrx,pkry,0,0,Math.PI*2); cx.stroke();
+  cx.fillStyle='#3ab820';
+  for(let i=0;i<45;i++){ cx.beginPath(); cx.arc(pkx+(Math.random()-0.5)*pkrx*1.6,pky+(Math.random()-0.5)*pkry*1.6,6+Math.random()*10,0,Math.PI*2); cx.fill(); }
+  // 6. Ulsoor Lake — AB bright blue
+  const ulx=ttx(80), uly=tty(-50);
+  cx.fillStyle='#3ab8e8';
+  cx.beginPath(); cx.ellipse(ulx,uly,95/1600*sz,62/1600*sz,0.15,0,Math.PI*2); cx.fill();
+  cx.strokeStyle='#52c8f0'; cx.lineWidth=4;
+  cx.beginPath(); cx.ellipse(ulx,uly,95/1600*sz,62/1600*sz,0.15,0,Math.PI*2); cx.stroke();
+  // 7. IT zone — AB glass blue grid (pig king's castle)
+  const itx=ttx(170), ity=tty(-185), itw=155/800*sz, ith=155/800*sz;
+  cx.fillStyle='rgba(144,220,248,0.5)'; cx.fillRect(itx-itw/2,ity-ith/2,itw,ith);
+  for(let bi=0;bi<28;bi++){
+    const bx=itx-itw/2+Math.random()*itw, by=ity-ith/2+Math.random()*ith;
+    cx.fillStyle=`rgba(${80+Math.floor(Math.random()*40)},${180+Math.floor(Math.random()*50)},${220+Math.floor(Math.random()*30)},0.6)`;
+    cx.fillRect(bx,by,10+Math.random()*22,10+Math.random()*22);
+  }
+  // 8. Road-side tree dots
+  cx.fillStyle='#4eba28';
+  [-160,-75,75,160,245,-245].forEach(offset=>{
+    for(let z=-310;z<310;z+=18){
+      cx.beginPath(); cx.arc(ttx(offset),tty(z),5+Math.random()*4,0,Math.PI*2); cx.fill();
+      cx.beginPath(); cx.arc(ttx(z),tty(offset),5+Math.random()*4,0,Math.PI*2); cx.fill();
+    }
+  });
+  const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; return t;
+}
+function buildCityEnv() {
+  bldgBounds.length = 0;
+  waterMesh = null;
+  scene.fog = new THREE.FogExp2(0x88d8ff, 0.0025);
+
+  // Ground — single-coverage Bangalore aerial texture
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(800,800),
+    toon(0xb8b4a0, { map:makeBangCityTex() }));
+  ground.rotation.x = -Math.PI/2; ground.receiveShadow=true;
+  envGrp.add(ground);
+
+  // Roads
+  buildRoads(envGrp);
+
+  // Central park (Cubbon Park)
+  const park = new THREE.Mesh(new THREE.PlaneGeometry(110,90), toon(0x3ed83e));
+  park.rotation.x=-Math.PI/2; park.position.set(-15,0.04,10); envGrp.add(park);
+  for(let t=0;t<55;t++) {
+    const px=-15+(Math.random()-0.5)*100, pz=10+(Math.random()-0.5)*80;
+    addTree(envGrp, px, 0, pz, 0.7+Math.random()*0.7);
+  }
+
+  // Ulsoor Lake — murky urban lake, same character as Hebbal
+  const ulkGeo = new THREE.CircleGeometry(1,32);
+  ulkGeo.scale(48,1,32); ulkGeo.rotateX(-Math.PI/2);
+  const ulk = new THREE.Mesh(ulkGeo, new THREE.MeshStandardMaterial({
+    color:0x1e3830, metalness:0.12, roughness:0.1, transparent:true, opacity:0.9
+  }));
+  ulk.position.set(80,0.15,-50); envGrp.add(ulk);
+  // Trees around Ulsoor
+  for(let t=0;t<40;t++) {
+    const a=Math.random()*Math.PI*2, r=50+Math.random()*20;
+    addTree(envGrp, 80+Math.cos(a)*r, 0, -50+Math.sin(a)*r, 0.6+Math.random()*0.5);
+  }
+
+  // Road trees (Bangalore's tree-lined roads)
+  buildRoadTrees(envGrp);
+
+  // Building zones
+  buildITZone(envGrp);
+  buildResZone(envGrp);
+  buildComZone(envGrp);
+  buildModZone(envGrp);
+
+  // ── AB props in Piggy City ──
+  buildSlingshot(envGrp, 0, 0.2, 85);
+  // Pigs scattered on the streets
+  [[-40,40],[40,-40],[80,20],[-80,-30],[120,-80],[-120,50],[0,-100],[50,120],[-50,-100]].forEach(([px,pz])=>{
+    addPig(envGrp, px, 0, pz, 0.55+Math.random()*0.5);
+  });
+  // TNT clusters near buildings
+  [[-30,60],[60,-60],[100,40],[-100,-60],[40,-120]].forEach(([px,pz])=>{
+    addTNT(envGrp, px, 0, pz);
+    if(Math.random()>0.4) addTNT(envGrp, px+3, 0, pz+2);
+  });
+}
+
+function buildRoads(parent) {
+  const rMat = toon(0xc8c4b0);
+  const yMat = new THREE.MeshBasicMaterial({ color:0xe8c840 });
+  // Main arteries
+  [[18,800],[800,18]].forEach(([w,d]) => {
+    const r=new THREE.Mesh(new THREE.PlaneGeometry(w,d), rMat);
+    r.rotation.x=-Math.PI/2; r.position.y=0.04; parent.add(r);
+  });
+  // Secondary roads
+  [-165,-80,80,165,250,-250].forEach(off => {
+    [[10,800],[800,10]].forEach(([w,d]) => {
+      const r=new THREE.Mesh(new THREE.PlaneGeometry(w,d), rMat);
+      r.rotation.x=-Math.PI/2; r.position.set(w>d?0:off, 0.04, w>d?off:0); parent.add(r);
+    });
+  });
+  // Center dashes
+  for(let z=-330;z<330;z+=15) {
+    const d=new THREE.Mesh(new THREE.PlaneGeometry(0.3,8), yMat);
+    d.rotation.x=-Math.PI/2; d.position.set(0,0.06,z); parent.add(d);
+    const d2=new THREE.Mesh(new THREE.PlaneGeometry(8,0.3), yMat);
+    d2.rotation.x=-Math.PI/2; d2.position.set(z,0.06,0); parent.add(d2);
+  }
+}
+
+function buildRoadTrees(parent) {
+  [-160,-75,75,160,245,-245].forEach(offset => {
+    for(let z=-300;z<300;z+=20){
+      const isPalm=Math.random()<0.22;
+      if(isPalm) addPalm(parent, offset+(Math.random()-0.5)*4, 0, z+(Math.random()-0.5)*4, 0.6+Math.random()*0.5);
+      else       addTree(parent, offset+(Math.random()-0.5)*4, 0, z+(Math.random()-0.5)*4, 0.6+Math.random()*0.45);
+    }
+    for(let x=-300;x<300;x+=20){
+      const isPalm=Math.random()<0.22;
+      if(isPalm) addPalm(parent, x+(Math.random()-0.5)*4, 0, offset+(Math.random()-0.5)*4, 0.6+Math.random()*0.5);
+      else       addTree(parent, x+(Math.random()-0.5)*4, 0, offset+(Math.random()-0.5)*4, 0.6+Math.random()*0.45);
+    }
+  });
+}
+
+function addBuilding(parent, x, z, w, d, h, mat, hasTank) {
+  const b = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
+  b.position.set(x, h/2, z);
+  b.castShadow=true; b.receiveShadow=true; parent.add(b);
+  const pCol = new THREE.Color(mat.color).multiplyScalar(0.75);
+  const parapet = new THREE.Mesh(new THREE.BoxGeometry(w+0.4,0.8,d+0.4), toon(pCol.getHex()));
+  parapet.position.set(x, h+0.4, z); parent.add(parapet);
+  if(hasTank) {
+    const tank=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.2,2.4,8), toon(0x223344));
+    tank.position.set(x+(Math.random()-0.5)*5, h+1.6, z+(Math.random()-0.5)*4); parent.add(tank);
+  }
+  bldgBounds.push({ minX:x-w/2, maxX:x+w/2, minZ:z-d/2, maxZ:z+d/2, maxY:h });
+}
+
+// IT Zone — AB glass pig towers (King Pig district)
+function buildITZone(parent) {
+  const glassColors=[0x90dcf8,0x78d0f0,0xa8e8ff,0x68c8e8,0x88daf8];
+  const blds=[
+    [160,-170,28,22,72,5,12],[188,-148,22,24,58,4,10],[140,-140,24,20,85,5,14],
+    [175,-200,30,25,65,5,11],[210,-165,20,20,48,4, 8],[148,-195,26,22,78,5,13],
+    [200,-130,24,18,55,4, 9],[220,-200,22,22,42,4, 7],[168,-220,28,24,90,6,15],
+    [130,-165,20,20,62,4,10],
+  ];
+  blds.forEach(([x,z,w,d,h,wc,wr]) => {
+    const col=glassColors[Math.floor(Math.random()*glassColors.length)];
+    const mat=toon(col);
+    addBuilding(parent,x,z,w,d,h,mat,false);
+    // Window grid overlay
+    const fMat=new THREE.MeshBasicMaterial({ map:winTex(wc,wr), transparent:true, opacity:0.7 });
+    const face=new THREE.Mesh(new THREE.BoxGeometry(w+0.1,h,d+0.1),fMat);
+    face.position.set(x,h/2,z); parent.add(face);
+    // Campus lawn patch
+    if(Math.random()<0.4) {
+      const lw=new THREE.Mesh(new THREE.PlaneGeometry(30,25), new THREE.MeshLambertMaterial({ color:0x2a6830 }));
+      lw.rotation.x=-Math.PI/2; lw.position.set(x+(Math.random()-0.5)*20,0.05,z+(Math.random()-0.5)*20); parent.add(lw);
+    }
+  });
+}
+
+// Residential zone — pastel cartoon colours
+function buildResZone(parent) {
+  const pal=[0xd4a830,0xd4a830,0xb8b4a4,0xb8b4a4,0x90dcf8,0xd4a830,0xc8a040,0xe8b840]; // AB: wood/stone/glass
+  [[-160,-170,20,28,22],[-185,-150,18,24,18],[-145,-145,22,20,25],[-170,-200,24,22,20],
+   [-200,-170,18,20,16],[-155,-215,20,18,28],[-185,-115,22,26,22],[-130,-185,18,24,18],
+   [-210,-130,20,20,24],[-160,-240,26,22,20]].forEach(([x,z,w,d,h]) => {
+    const col=pal[Math.floor(Math.random()*pal.length)];
+    addBuilding(parent,x,z,w,d,h, toon(col), true);
+    for(let t=0;t<2;t++) addTree(parent,x+(Math.random()-0.5)*14,0,z+(Math.random()-0.5)*14,0.65+Math.random()*0.4);
+  });
+}
+
+// Commercial zone — warm pastel tones
+function buildComZone(parent) {
+  const pal=[0xb8b4a4,0xb8b4a4,0xd0ccc0,0xa8a498,0xc0bca8]; // AB stone
+  [[-160,160,30,20,10],[-185,180,22,30,8],[-150,140,18,18,6],[-175,200,28,24,12],
+   [-200,160,24,22,14],[-140,175,20,28,9],[-210,200,16,18,11],[-165,220,24,20,8],
+   [-190,145,20,24,16],[-230,175,26,20,10]].forEach(([x,z,w,d,h]) => {
+    addBuilding(parent,x,z,w,d,h, toon(pal[Math.floor(Math.random()*pal.length)]), false);
+  });
+}
+
+// Modern zone — clean white + light blue cartoon towers
+function buildModZone(parent) {
+  const pal=[0x90dcf8,0xd4a830,0xb8b4a4,0x90dcf8,0xd4a830]; // AB glass/wood mix
+  [[160,160,26,22,38],[185,140,22,24,30],[145,180,28,20,45],
+   [175,200,24,26,28],[200,165,20,22,42],[155,210,30,24,35],
+   [215,190,18,20,32],[170,140,22,18,48]].forEach(([x,z,w,d,h]) => {
+    addBuilding(parent,x,z,w,d,h, toon(pal[Math.floor(Math.random()*pal.length)]), false);
+  });
+}
+
+// ════════════════════════════════════════
+// ENVIRONMENT SWITCH
+// ════════════════════════════════════════
+let curEnv = 'lake';
+const SPAWNS = { lake:[0,14,65], city:[0,32,85] };
+
+function switchEnv(name) {
+  const toKill = [...envGrp.children];
+  toKill.forEach(obj => {
+    envGrp.remove(obj);
+    obj.traverse(c => {
+      if(c.geometry) c.geometry.dispose();
+      if(c.material) { if(Array.isArray(c.material)) c.material.forEach(m=>m.dispose()); else c.material.dispose(); }
+    });
+  });
+  bldgBounds.length = 0;
+  curEnv = name;
+  if(name==='lake') buildLakeEnv(); else buildCityEnv();
+  doReset();
+}
+
+function doReset() {
+  const [sx, sy, sz] = SPAWNS[curEnv] || [0,14,65];
+  dPos.set(sx, sy, sz);
+  dVel.set(0,0,0);
+  dEul.set(0,0,0);
+  throttle = 0;
+  homeMarkerMesh.position.set(sx, curEnv==='lake' ? lakeH(sx,sz)+0.1 : 0.1, sz);
+  homePos.set(sx, 0, sz);
+  flightTime = 0; maxAlt = 0;
+  rthActive = false;
+  document.getElementById('home-tip').style.display = 'none';
+}
+
+// ════════════════════════════════════════
+// PHYSICS STATE
+// ════════════════════════════════════════
+const dPos = new THREE.Vector3(0,14,65);
+const dVel = new THREE.Vector3();
+const dEul = new THREE.Euler(0,0,0,'YXZ');
+const homePos = new THREE.Vector3(0,0,65);
+let throttle=0, propAngle=0;
+let flightMode='normal', camMode='chase';
+let camPos=new THREE.Vector3(0,20,80), camLook=new THREE.Vector3(0,12,60);
+let flightTime=0, maxAlt=0, windT=0, windX=0, windZ=0;
+let rthActive = false;
+let running = false;
+
+// Physics constants (tuned for DJI Normal/Sport feel)
+const GRAVITY    = -13.5;
+const THRUST_NORMAL = 24;
+const THRUST_SPORT  = 34;
+const DRAG_NORMAL   = 0.94;
+const DRAG_SPORT    = 0.97;
+const MAX_TILT_N = 0.42; // ~24° max tilt Normal
+const MAX_TILT_S = 0.62; // ~35° max tilt Sport
+
+// ════════════════════════════════════════
+// INPUT
+// ════════════════════════════════════════
+const keys = {};
+document.addEventListener('keydown', e => {
+  keys[e.code] = true;
+  if(!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) e.preventDefault();
+});
+document.addEventListener('keyup', e => { keys[e.code] = false; });
+document.addEventListener('keydown', e => {
+  if(e.code==='KeyC') cycleCam();
+  if(e.code==='KeyR') triggerRTH();
+});
+
+// ════════════════════════════════════════
+// PHYSICS UPDATE — fixed roll direction
+// ════════════════════════════════════════
+const _q  = new THREE.Quaternion();
+const _up = new THREE.Vector3();
+const _rth = new THREE.Vector3();
+
+function update(dt) {
+  if(!running) return;
+  flightTime += dt;
+  windT += dt;
+
+  // Dynamic wind gusts
+  windX = Math.sin(windT*0.26)*1.6 + Math.sin(windT*0.88)*0.8;
+  windZ = Math.cos(windT*0.21)*1.4 + Math.cos(windT*0.74)*0.65;
+
+  const boost = keys['Space'];
+  const isNormal = flightMode === 'normal';
+  const TMAX = isNormal ? THRUST_NORMAL : THRUST_SPORT;
+  const DRAG = isNormal ? DRAG_NORMAL : DRAG_SPORT;
+  const MAX_TILT = isNormal ? MAX_TILT_N : MAX_TILT_S;
+
+  if(rthActive) {
+    // Return-to-home: smoothly fly back to homePos
+    _rth.set(homePos.x, dPos.y < 15 ? 15 : dPos.y, homePos.z);
+    const toHome = new THREE.Vector3().subVectors(_rth, dPos);
+    const dist = toHome.length();
+    if(dist > 2) {
+      toHome.normalize();
+      dVel.lerp(toHome.multiplyScalar(8), dt * 2);
+    } else {
+      dVel.multiplyScalar(0.92);
+      throttle = 0.55;
+    }
+    // Gradually descend when over home
+    const hDist = Math.sqrt((dPos.x-homePos.x)**2 + (dPos.z-homePos.z)**2);
+    if(hDist < 4 && dPos.y > 2) dVel.y -= 3 * dt;
+    dPos.addScaledVector(dVel, dt);
+  } else {
+    // Normal flight
+    // Throttle — W = up, S = down
+    if(keys['KeyW'])  throttle = Math.min(1, throttle+dt*1.6);
+    else if(keys['KeyS']) throttle = Math.max(0, throttle-dt*2.2);
+    else throttle *= Math.pow(0.984, dt*60);
+
+    // Tilt (Normal = angle mode, Sport = rate mode)
+    let tPitch, tRoll;
+    if(isNormal) {
+      // Angle mode: target angle, auto-levels on release
+      tPitch = keys['ArrowUp']   ? -MAX_TILT : keys['ArrowDown']  ?  MAX_TILT : 0;
+
+      // ────────────────────────────────────────────────────
+      // BUG FIX: Roll direction.
+      // In Three.js with YXZ Euler, positive Z rotation transforms
+      // local up (0,1,0) → (-sinZ, cosZ, 0).
+      // So roll LEFT (left arrow) needs POSITIVE dEul.z  → -sin(+Z) < 0 → moves LEFT ✓
+      //    roll RIGHT (right arrow) needs NEGATIVE dEul.z → -sin(-Z) > 0 → moves RIGHT ✓
+      // ────────────────────────────────────────────────────
+      tRoll  = keys['ArrowLeft'] ?  MAX_TILT : keys['ArrowRight'] ? -MAX_TILT : 0;
+
+      dEul.x += (tPitch - dEul.x) * Math.min(1, dt*6);
+      dEul.z += (tRoll  - dEul.z) * Math.min(1, dt*6);
+    } else {
+      // Rate mode (Sport): sticks change angular velocity
+      const rate = 2.5;
+      if(keys['ArrowUp'])    dEul.x = Math.max(-MAX_TILT, dEul.x-rate*dt);
+      if(keys['ArrowDown'])  dEul.x = Math.min( MAX_TILT, dEul.x+rate*dt);
+      if(keys['ArrowLeft'])  dEul.z = Math.max(-MAX_TILT, dEul.z+rate*dt); // fixed sign
+      if(keys['ArrowRight']) dEul.z = Math.min( MAX_TILT, dEul.z-rate*dt); // fixed sign
+      if(!keys['ArrowUp']&&!keys['ArrowDown'])   dEul.x *= Math.pow(0.96,dt*60);
+      if(!keys['ArrowLeft']&&!keys['ArrowRight']) dEul.z *= Math.pow(0.96,dt*60);
+    }
+
+    // Yaw — A/D or Q/E
+    const yawRate = isNormal ? 1.1 : 1.8;
+    if(keys['KeyA']||keys['KeyQ']) dEul.y += yawRate*dt;
+    if(keys['KeyD']||keys['KeyE']) dEul.y -= yawRate*dt;
+
+    // Thrust vector in world space
+    _q.setFromEuler(dEul);
+    _up.set(0,1,0).applyQuaternion(_q);
+    const T = throttle * TMAX * (boost ? 1.55 : 1);
+
+    // Ground effect: +18% lift within 3m AGL
+    const gY = curEnv==='lake' ? lakeH(dPos.x,dPos.z) : 0;
+    const agl = dPos.y - gY;
+    const ge = agl < 3 ? 1+0.18*(1-agl/3) : 1;
+
+    // Forces
+    dVel.x += (_up.x*T*ge + windX)*dt;
+    dVel.y += (_up.y*T*ge + GRAVITY)*dt;
+    dVel.z += (_up.z*T*ge + windZ)*dt;
+
+    // Drag
+    dVel.multiplyScalar(Math.pow(DRAG, dt*60));
+
+    // Speed cap
+    const maxV = boost ? (isNormal?22:42) : (isNormal?16:32);
+    if(dVel.length() > maxV) dVel.normalize().multiplyScalar(maxV);
+
+    // Integrate
+    dPos.addScaledVector(dVel, dt);
+  }
+
+  // World bounds
+  dPos.x = Math.max(-300, Math.min(300, dPos.x));
+  dPos.z = Math.max(-560, Math.min(300, dPos.z));
+  dPos.y = Math.max(-200, Math.min(220, dPos.y));
+
+  // Ground collision
+  const groundY = (curEnv==='lake' ? lakeH(dPos.x,dPos.z) : 0) + 0.32;
+  if(dPos.y < groundY) {
+    dPos.y = groundY;
+    dVel.y = Math.abs(dVel.y)*0.08;
+    dVel.x *= 0.55; dVel.z *= 0.55;
+    if(rthActive) { rthActive=false; document.getElementById('home-tip').style.display='none'; }
+  }
+
+  // Building collision (city)
+  if(curEnv==='city') {
+    for(const b of bldgBounds) {
+      if(dPos.x>b.minX && dPos.x<b.maxX && dPos.z>b.minZ && dPos.z<b.maxZ && dPos.y<b.maxY+0.5) {
+        const cx=(b.minX+b.maxX)/2, cz=(b.minZ+b.maxZ)/2;
+        const dx=dPos.x-cx, dz=dPos.z-cz;
+        const len=Math.max(0.01,Math.sqrt(dx*dx+dz*dz));
+        const pr=Math.max(b.maxX-b.minX,b.maxZ-b.minZ)/2+1.8;
+        dPos.x=cx+dx/len*pr; dPos.z=cz+dz/len*pr;
+        dVel.x*=-0.2; dVel.z*=-0.2;
+        break;
+      }
+    }
+  }
+
+  // Tracking
+  const gndUnder = curEnv==='lake' ? lakeH(dPos.x,dPos.z) : 0;
+  const altAGL = Math.max(0, dPos.y-gndUnder);
+  if(altAGL > maxAlt) maxAlt = altAGL;
+
+  // Update drone transform
+  droneModel.g.position.copy(dPos);
+  droneModel.g.setRotationFromEuler(dEul);
+
+  // Props spin
+  propAngle += dt*(5+throttle*44)*(boost?2:1);
+  droneModel.props.forEach(({ pg, disc, dm, dir }) => {
+    pg.rotation.y = dir * propAngle;
+    const fast = throttle > 0.2;
+    pg.children.forEach(c => { if(c !== disc) c.visible = !fast; });
+    dm.opacity = fast ? Math.min(0.26, throttle*0.24) : 0;
+  });
+  droneModel.engLight.intensity = throttle*1.8*(boost?1.6:1);
+
+  // Cloud drift
+  clouds.forEach(cl => {
+    cl.position.x += cl.userData.drift * dt * 40;
+    if(cl.position.x > 350) cl.position.x = -350;
+  });
+
+  // Animated water
+  if(waterMesh) {
+    const wt = waterMesh.material.map;
+    if(wt) { wt.offset.x += 0.00028*dt*60; wt.offset.y += 0.00018*dt*60; wt.needsUpdate=true; }
+  }
+}
+
+// ════════════════════════════════════════
+// RTH
+// ════════════════════════════════════════
+function triggerRTH() {
+  if(!running) return;
+  rthActive = !rthActive;
+  document.getElementById('home-tip').style.display = rthActive ? 'block' : 'none';
+}
+
+// ════════════════════════════════════════
+// CAMERA
+// ════════════════════════════════════════
+function updateCamera(dt) {
+  const yaw = dEul.y;
+  if(camMode==='chase') {
+    const tp = new THREE.Vector3(
+      dPos.x+Math.sin(yaw)*10,
+      dPos.y+5+Math.abs(dEul.x)*5,
+      dPos.z+Math.cos(yaw)*10
+    );
+    camPos.lerp(tp, Math.min(1,dt*8));
+    const la = new THREE.Vector3(dPos.x-Math.sin(yaw)*8, dPos.y-0.5, dPos.z-Math.cos(yaw)*8);
+    camLook.lerp(la, Math.min(1,dt*8));
+    cam.position.copy(camPos); cam.lookAt(camLook);
+  } else if(camMode==='fpv') {
+    const off=new THREE.Vector3(0,0.22,0.38); off.applyEuler(dEul);
+    cam.position.copy(dPos).add(off);
+    const fwd=new THREE.Vector3(0,-0.06,-6); fwd.applyEuler(dEul);
+    cam.lookAt(dPos.clone().add(fwd));
+  } else {
+    const t=Date.now()*0.00024, r=18;
+    cam.position.set(dPos.x+Math.sin(t)*r, dPos.y+7, dPos.z+Math.cos(t)*r);
+    cam.lookAt(dPos);
+  }
+}
+
+function cycleCam() {
+  const m=['chase','fpv','orbit'];
+  camMode=m[(m.indexOf(camMode)+1)%m.length];
+  document.getElementById('btn-cam').textContent={chase:'CHASE',fpv:'FPV',orbit:'ORBIT'}[camMode];
+}
+
+// ════════════════════════════════════════
+// HUD — heading tape
+// ════════════════════════════════════════
+const hdgCtx = document.getElementById('hdg-canvas').getContext('2d');
+function drawHdgTape(heading) {
+  const W=300, H=32, cx=150, scale=W/90;
+  hdgCtx.clearRect(0,0,W,H);
+  hdgCtx.fillStyle='rgba(0,0,0,0.65)'; hdgCtx.fillRect(0,0,W,H);
+  hdgCtx.font='10px system-ui';
+  hdgCtx.strokeStyle='rgba(255,255,255,0.4)'; hdgCtx.lineWidth=1;
+  for(let d=heading-45;d<=heading+45;d++) {
+    const px = cx+(d-heading)*scale;
+    const norm = ((d%360)+360)%360;
+    if(d%30===0) {
+      const labels={0:'N',90:'E',180:'S',270:'W',360:'N'};
+      const lbl = labels[norm] || String(norm).padStart(3,'0');
+      hdgCtx.fillStyle='rgba(255,255,255,0.7)'; hdgCtx.textAlign='center';
+      hdgCtx.fillText(lbl, px, H-3);
+      hdgCtx.beginPath(); hdgCtx.moveTo(px,0); hdgCtx.lineTo(px,H-14); hdgCtx.stroke();
+    } else if(d%10===0) {
+      hdgCtx.beginPath(); hdgCtx.moveTo(px,H-10); hdgCtx.lineTo(px,H-14); hdgCtx.stroke();
+    }
+  }
+  // Heading pointer (DJI green triangle)
+  hdgCtx.fillStyle='#06a45c';
+  hdgCtx.beginPath(); hdgCtx.moveTo(cx,0); hdgCtx.lineTo(cx-5,9); hdgCtx.lineTo(cx+5,9); hdgCtx.closePath(); hdgCtx.fill();
+  hdgCtx.fillStyle='#fff'; hdgCtx.font='bold 10px system-ui'; hdgCtx.textAlign='center';
+  hdgCtx.fillText(String(heading).padStart(3,'0')+'°', cx, 22);
+}
+
+// ════════════════════════════════════════
+// HUD — ADI
+// ════════════════════════════════════════
+const adiCtx = document.getElementById('adi').getContext('2d');
+const ADI_R = 52;
+function drawADI(pitch, roll) {
+  const W=110, H=110, cx=55, cy=55;
+  adiCtx.clearRect(0,0,W,H);
+  adiCtx.save();
+  adiCtx.beginPath(); adiCtx.arc(cx,cy,ADI_R,0,Math.PI*2); adiCtx.clip();
+  adiCtx.fillStyle='#0b1220'; adiCtx.fillRect(0,0,W,H);
+
+  // Rotating earth/sky based on pitch and roll
+  adiCtx.save();
+  adiCtx.translate(cx,cy); adiCtx.rotate(-roll);
+  const pp = pitch*(ADI_R*1.3);
+  // Sky
+  adiCtx.fillStyle='#2066a0'; adiCtx.fillRect(-ADI_R*2,-ADI_R*2,ADI_R*4,ADI_R*2+pp);
+  // Ground
+  adiCtx.fillStyle='#604020'; adiCtx.fillRect(-ADI_R*2,pp,ADI_R*4,ADI_R*2);
+  // Horizon
+  adiCtx.strokeStyle='#fff'; adiCtx.lineWidth=1.5;
+  adiCtx.beginPath(); adiCtx.moveTo(-ADI_R*2,pp); adiCtx.lineTo(ADI_R*2,pp); adiCtx.stroke();
+  // Pitch ladder
+  adiCtx.strokeStyle='rgba(255,255,255,0.45)'; adiCtx.lineWidth=1;
+  for(let p=-30;p<=30;p+=10) {
+    if(p===0) continue;
+    const py=pp-p*(ADI_R*1.3/50);
+    const ll=Math.abs(p)===10?14:22;
+    adiCtx.beginPath(); adiCtx.moveTo(-ll,py); adiCtx.lineTo(ll,py); adiCtx.stroke();
+  }
+  adiCtx.restore();
+
+  // Fixed aircraft symbol (DJI style — clean white)
+  adiCtx.strokeStyle='#fff'; adiCtx.lineWidth=2.5; adiCtx.lineCap='round';
+  adiCtx.beginPath(); adiCtx.moveTo(cx-28,cy); adiCtx.lineTo(cx-10,cy); adiCtx.stroke();
+  adiCtx.beginPath(); adiCtx.moveTo(cx+10,cy); adiCtx.lineTo(cx+28,cy); adiCtx.stroke();
+  adiCtx.beginPath(); adiCtx.moveTo(cx,cy-3); adiCtx.lineTo(cx,cy-10); adiCtx.stroke();
+  adiCtx.beginPath(); adiCtx.arc(cx,cy,3.5,0,Math.PI*2); adiCtx.fillStyle='#fff'; adiCtx.fill();
+  adiCtx.restore();
+}
+
+// ════════════════════════════════════════
+// HUD — Virtual joysticks
+// ════════════════════════════════════════
+const jslCtx = document.getElementById('jsl').getContext('2d');
+const jsrCtx = document.getElementById('jsr').getContext('2d');
+function drawJoystick(ctx, xNorm, yNorm) {
+  const W=74, H=74, cx=37, cy=37, r=30;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+  // Cross hair
+  ctx.strokeStyle='rgba(255,255,255,0.12)';
+  ctx.beginPath(); ctx.moveTo(cx,cy-r); ctx.lineTo(cx,cy+r); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx-r,cy); ctx.lineTo(cx+r,cy); ctx.stroke();
+  // Dot position
+  const dx=xNorm*r*0.85, dy=-yNorm*r*0.85;
+  ctx.beginPath(); ctx.arc(cx+dx,cy+dy,6,0,Math.PI*2);
+  ctx.fillStyle='rgba(6,164,92,0.85)'; ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(cx+dx,cy+dy,6,0,Math.PI*2); ctx.stroke();
+}
+
+// ════════════════════════════════════════
+// HUD — text readouts
+// ════════════════════════════════════════
+function updateHUD() {
+  const gY = curEnv==='lake' ? lakeH(dPos.x,dPos.z) : 0;
+  const alt    = Math.max(0,Math.round(dPos.y-gY));
+  const spd    = Math.round(dVel.length()*3.6);
+  const vvi    = dVel.y.toFixed(1);
+  const yawDeg = Math.round(((-dEul.y*180/Math.PI)%360+360)%360);
+  const pitch  = (dEul.x*180/Math.PI).toFixed(1);
+  const roll   = (dEul.z*180/Math.PI).toFixed(1);
+  const wind   = Math.sqrt(windX*windX+windZ*windZ).toFixed(1);
+  const dist   = Math.round(Math.sqrt((dPos.x-homePos.x)**2+(dPos.z-homePos.z)**2));
+
+  document.getElementById('h-alt').textContent   = alt;
+  document.getElementById('h-spd').textContent   = spd;
+  document.getElementById('h-vvi').textContent   = vvi;
+  document.getElementById('h-hdg').textContent   = String(yawDeg).padStart(3,'0');
+  document.getElementById('h-dist').textContent  = dist;
+  document.getElementById('h-wind').textContent  = wind;
+  document.getElementById('h-pitch').textContent = pitch;
+  document.getElementById('h-roll').textContent  = roll;
+  document.getElementById('h-malt').textContent  = Math.round(maxAlt);
+
+  const dirs=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  document.getElementById('h-compass').textContent = dirs[Math.round(yawDeg/22.5)%16];
+
+  const vCard = document.getElementById('h-vvi-card');
+  vCard.className='dc-val dc-small'+(dVel.y>0.4?' vup':dVel.y<-0.8?' vdown':'');
+
+  // Time
+  const mm=String(Math.floor(flightTime/60)).padStart(2,'0');
+  const ss=String(Math.floor(flightTime%60)).padStart(2,'0');
+  document.getElementById('h-time').textContent = `${mm}:${ss}`;
+
+  // Gauges
+  document.getElementById('thr-fill').style.height=(throttle*100).toFixed(1)+'%';
+  document.getElementById('alt-fill').style.height=Math.min(100,(alt/120)*100).toFixed(1)+'%';
+
+  // Heading tape
+  drawHdgTape(yawDeg);
+
+  // ADI
+  drawADI(dEul.x, dEul.z);
+
+  // Virtual joysticks
+  const thrNorm  = throttle*2-1; // -1 to 1
+  const yawNorm  = (keys['KeyA']||keys['KeyQ']) ? -0.8 : (keys['KeyD']||keys['KeyE']) ? 0.8 : 0;
+  const pitchN   = dEul.x/MAX_TILT_N;
+  const rollN    = -dEul.z/MAX_TILT_N; // negate so right = right on stick visual
+  drawJoystick(jslCtx, yawNorm, thrNorm);
+  drawJoystick(jsrCtx, rollN,  -pitchN);
+}
+
+// ════════════════════════════════════════
+// MAIN LOOP
+// ════════════════════════════════════════
+let lastTs = 0;
+function loop(ts) {
+  requestAnimationFrame(loop);
+  const dt = Math.min((ts-lastTs)/1000, 0.05);
+  lastTs = ts;
+  update(dt);
+  updateCamera(dt);
+  renderer.render(scene, cam);
+  if(running) updateHUD();
+}
+requestAnimationFrame(loop);
+
+// ════════════════════════════════════════
+// UI EVENTS
+// ════════════════════════════════════════
+let wEnv='lake', wMode='normal';
+
+document.querySelectorAll('.ecard').forEach(el => el.addEventListener('click', () => {
+  document.querySelectorAll('.ecard').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel'); wEnv=el.dataset.wenv;
+}));
+document.querySelectorAll('.mcard').forEach(el => el.addEventListener('click', () => {
+  document.querySelectorAll('.mcard').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel'); wMode=el.dataset.wmode;
+}));
+
+document.getElementById('btn-fly').addEventListener('click', () => {
+  flightMode = wMode;
+  switchEnv(wEnv);
+  document.getElementById('welcome').style.display='none';
+  document.getElementById('mode-pill').textContent=flightMode.toUpperCase();
+  document.querySelectorAll('.env-tab').forEach(b=>b.classList.toggle('on',b.dataset.env===wEnv));
+  running = true;
+});
+
+document.querySelectorAll('.env-tab').forEach(btn => btn.addEventListener('click', () => {
+  if(!running) return;
+  document.querySelectorAll('.env-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  switchEnv(btn.dataset.env);
+}));
+
+document.getElementById('mode-pill').addEventListener('click', () => {
+  if(!running) return;
+  flightMode = flightMode==='normal' ? 'sport' : 'normal';
+  document.getElementById('mode-pill').textContent=flightMode.toUpperCase();
+});
+
+document.getElementById('btn-cam').addEventListener('click', () => { if(running) cycleCam(); });
+
+document.getElementById('btn-ref').addEventListener('click', () => {
+  const el=document.getElementById('btmbar');
+  const vis=el.style.display!=='none';
+  el.style.display=vis?'none':'flex';
+  document.getElementById('btn-ref').classList.toggle('on',!vis);
+});
+
+document.getElementById('btn-rst').addEventListener('click', () => { if(running) triggerRTH(); });
+
+// Initial scene build
+buildLakeEnv();
+doReset();
+
+})();
+</script>
+</body>
+</html>
