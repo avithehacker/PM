@@ -11,6 +11,9 @@ PM/
 ├── index.html              # Portfolio homepage
 ├── projects.html           # Experiments listing (built projects)
 ├── drafts.html             # First Draft — work prototypes and product docs
+├── whatif.html             # What If — listing page, free-form space for imagination
+├── whatif/                 # Individual "What If" entries, one page each
+│   └── jan-sloot.html      # What if Jan Sloot had lived to sign that contract?
 ├── style.css               # Global styles
 │
 ├── auto-bid/               # Hammerly Smart Auto Bidding prototype
@@ -98,7 +101,23 @@ Tracks the full lifecycle of a repossessed vehicle — from missed EMIs through 
 
 ---
 
+## What If page (`whatif.html` + `whatif/`)
+
+A space for imagination, unconstrained — no rules, no roadmap, no obligation to stay on the topic of tech or product. Just wherever a thought wants to go. Linked from the homepage in its own section, right after Experiments.
+
+Structured like Experiments/First Draft: `whatif.html` is a listing page, and each entry gets its own file under `whatif/` so new pieces can keep being added without the listing page growing unbounded.
+
+Current entries:
+- **What if Jan Sloot had lived to sign that contract?** (`whatif/jan-sloot.html`) — built around the real, unsolved mystery of the Dutch engineer who claimed he could compress a movie into 8KB and died the night before signing the deal. Imagines a world where his compression discipline spread everywhere: local AI, lag-free internet, decades-long device lifespans, lower data-center water/energy draw, closing digital divides, and more. Closes with a short note owning the poetic license taken with the physics.
+
+---
+
 ## Changelog
+
+### August 9, 2026
+- Added `whatif.html` — new "What If" page for speculative/creative what-if scenarios, linked from a new homepage section placed right after Experiments
+- Wrote the first "What If" entry, "What if Jan Sloot had lived to sign that contract?" — an alternate history built around Jan Sloot's lost 1999 compression breakthrough
+- Restructured `whatif.html` into a listing page + `whatif/` folder of individual entry pages (same pattern as Experiments/First Draft), so future entries each get their own page
 
 ### June 19, 2026
 - Fixed blank page on `auto-bid/`, `swipe-bid/`, `swipe-bid-new/`, `hammerly/auto-bid.html`, `hammerly/swipe-bid.html` — pinned `@babel/standalone` to `7.17.12` (latest unpinned version switched to automatic JSX runtime, incompatible with CDN-global React)
