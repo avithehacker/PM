@@ -95,6 +95,7 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
 .badge-overdue{background:var(--red-bg);color:var(--red)}
 .badge-partial{background:var(--amber-bg);color:var(--amber)}
 .badge-grey{background:var(--grey-bg);color:var(--grey)}
+.badge-purple{background:#ede9fe;color:#6d28d9}
 .badge-platform{color:#fff;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600}
 .bp-bidkaro{background:var(--bidkaro)} .bp-ediig{background:var(--ediig)} .bp-cartrade{background:var(--cartrade)} .bp-cardekho{background:var(--cardekho)}
 .badge-rc-complete{background:var(--green-bg);color:var(--green);font-size:11px;padding:2px 8px;border-radius:4px}
@@ -214,9 +215,47 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
   #mob-toggle{display:flex!important}
 }
 #mob-toggle{display:none;background:none;border:none;cursor:pointer;font-size:22px;color:var(--navy)}
+
+/* ── BUYER PORTAL ── */
+.buyer-topbar{position:fixed;top:0;left:0;right:0;height:58px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1);display:flex;align-items:center;padding:0 24px;z-index:100;gap:20px}
+.buyer-topbar-brand{font-size:15px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.buyer-topbar-brand span{font-size:11px;font-weight:500;color:var(--muted);background:var(--blue-bg);padding:2px 8px;border-radius:10px;margin-left:4px}
+.buyer-topbar-actions{display:none;gap:4px;flex:1}
+.buyer-tab{padding:8px 16px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted)}
+.buyer-tab:hover{background:var(--blue-bg);color:var(--navy)}
+.buyer-tab.active{background:var(--navy);color:#fff}
+.buyer-main{margin-top:58px;max-width:1100px;margin-left:auto;margin-right:auto;padding:24px;min-height:calc(100vh - 58px)}
+.buyer-page{display:none}
+.buyer-page.active{display:block}
+.buyer-login-wrap{min-height:calc(100vh - 58px);display:flex;align-items:center;justify-content:center}
+.buyer-login-card{width:380px;max-width:92vw;background:#fff;border-radius:14px;padding:32px 28px;box-shadow:0 4px 24px rgba(0,0,0,.1)}
+.otp-boxes{display:flex;gap:8px}
+.otp-box{width:100%;max-width:44px;height:48px;text-align:center;font-size:18px;font-weight:700;border:1px solid var(--border);border-radius:6px;outline:none;font-family:inherit}
+.otp-box:focus{border-color:var(--navy)}
+.kyc-substep{display:none}
+.kyc-substep.active{display:block;max-width:460px;margin:0 auto}
+.kyc-icon-lg{font-size:42px;color:var(--navy);text-align:center;margin-bottom:8px}
+.buyer-asset-row.selected td{background:#eff6ff}
+.pay-method-btn{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:10px;transition:.15s}
+.pay-method-btn:hover{border-color:var(--navy);background:#f8fafc}
+.pay-method-btn i{font-size:18px;color:var(--navy);width:22px;text-align:center}
+.qr-box{width:160px;height:160px;margin:0 auto 14px;background:#fff;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:76px;color:var(--navy)}
+.spinner-ring{width:44px;height:44px;border:4px solid var(--blue-bg);border-top-color:var(--navy);border-radius:50%;margin:0 auto 14px;animation:bspin .8s linear infinite}
+@keyframes bspin{to{transform:rotate(360deg)}}
+.kyc-status-card{display:flex;align-items:center;gap:14px;background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.kyc-status-icon{font-size:30px}
+@media(max-width:900px){
+  .buyer-main{padding:16px}
+  .buyer-topbar-actions{display:none!important}
+}
 </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════
+     BANK / SELLER VIEW (unchanged)
+══════════════════════════════════════════════ -->
+<div id="bank-app">
 
 <!-- SIDEBAR -->
 <aside id="sidebar">
@@ -246,6 +285,7 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
   </div>
   <span class="header-badge"><i class="bi bi-calendar3"></i> 23-May-2026</span>
   <span class="header-badge" style="background:#fee2e2;color:#dc2626"><i class="bi bi-exclamation-triangle"></i> 12 Overdue</span>
+  <button class="btn btn-primary btn-sm" onclick="showBuyerApp()"><i class="bi bi-person-badge"></i> Buyer Portal</button>
 </header>
 
 <!-- MAIN -->
@@ -491,7 +531,7 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
   </div>
 
   <div class="tbl-wrap">
-    <table id="tracker-table" style="min-width:2200px">
+    <table id="tracker-table" style="min-width:2350px">
       <thead>
         <tr>
           <th>Auction ID</th>
@@ -521,6 +561,7 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
           <th>Paid Date</th>
           <th>Status</th>
           <th>Notified</th>
+          <th>KYC Status</th>
           <th>RC Transfer</th>
           <th>Remarks</th>
           <th>Actions</th>
@@ -679,6 +720,8 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
 
 </main>
 
+</div><!-- /bank-app -->
+
 <!-- TOAST CONTAINER -->
 <div id="toast-container"></div>
 
@@ -774,6 +817,280 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
 </div>
 
 <!-- ═══════════════════════════════════════════
+     BUYER PORTAL (separate flow, inside PayCollect)
+══════════════════════════════════════════════ -->
+<div id="buyer-app" style="display:none">
+
+  <header class="buyer-topbar">
+    <div class="buyer-topbar-brand"><i class="bi bi-bank2"></i> PayCollect <span>Buyer Portal</span></div>
+    <div class="buyer-topbar-actions" id="buyer-topnav">
+      <span class="buyer-tab active" data-bpage="dashboard" onclick="buyerNav('dashboard')">Dashboard</span>
+      <span class="buyer-tab" data-bpage="payment" onclick="buyerNav('payment')">Make Payment</span>
+      <span class="buyer-tab" data-bpage="history" onclick="buyerNav('history')">Payment History</span>
+    </div>
+    <button class="btn btn-outline btn-sm" style="margin-left:auto" onclick="showBankApp()"><i class="bi bi-arrow-left"></i> Back to Bank View</button>
+  </header>
+
+  <main class="buyer-main">
+
+    <!-- LOGIN -->
+    <section class="buyer-page active" id="bpage-login">
+      <div class="buyer-login-wrap">
+        <div class="buyer-login-card">
+          <div style="text-align:center;margin-bottom:20px">
+            <div style="font-size:20px;font-weight:700;color:var(--navy)"><i class="bi bi-bank2"></i> PayCollect</div>
+            <div style="font-size:12px;color:var(--muted)">Buyer Payment Portal — HDFC Bank Asset Recovery</div>
+          </div>
+          <div id="buyer-login-step-creds">
+            <div class="form-group">
+              <label class="form-label">Registered Mobile Number</label>
+              <input type="text" class="form-control" id="buyer-mobile" placeholder="e.g. 9876543210" maxlength="10">
+            </div>
+            <div class="form-group">
+              <label class="form-label">PAN Number</label>
+              <input type="text" class="form-control" id="buyer-pan" placeholder="e.g. ABCDE1234F" style="text-transform:uppercase" maxlength="10">
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="buyerSendLoginOtp()"><i class="bi bi-send"></i> Get OTP</button>
+          </div>
+          <div id="buyer-login-step-otp" style="display:none">
+            <div class="form-group">
+              <label class="form-label">Enter OTP sent to +91 XXXXXX<span id="buyer-mobile-echo"></span></label>
+              <div class="otp-boxes">
+                <input maxlength="1" class="otp-box" oninput="otpAutoNext(this)">
+                <input maxlength="1" class="otp-box" oninput="otpAutoNext(this)">
+                <input maxlength="1" class="otp-box" oninput="otpAutoNext(this)">
+                <input maxlength="1" class="otp-box" oninput="otpAutoNext(this)">
+                <input maxlength="1" class="otp-box" oninput="otpAutoNext(this)">
+                <input maxlength="1" class="otp-box" oninput="otpAutoNext(this)">
+              </div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:8px">Didn't receive OTP? <a href="#" onclick="showToast('success','OTP resent.');return false" style="color:var(--navy);font-weight:600">Resend OTP</a></div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="buyerVerifyLoginOtp()"><i class="bi bi-check-circle"></i> Verify &amp; Sign In</button>
+          </div>
+          <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted)">Demo mode — any valid-format mobile / PAN + any 6-digit OTP signs you in as a sample buyer.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section class="buyer-page" id="bpage-dashboard">
+      <div class="page-title">Welcome, <span id="buyer-name-echo">Buyer</span></div>
+      <div class="page-desc">Track your winning bids and complete your KYC &amp; payment below.</div>
+
+      <div class="grid-2" style="margin-bottom:20px">
+        <div class="kyc-status-card">
+          <i class="bi bi-person-vcard kyc-status-icon" id="kyc-card-icon" style="color:var(--amber)"></i>
+          <div style="flex:1">
+            <div style="font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase">KYC Status</div>
+            <div style="font-size:15px;font-weight:700" id="kyc-status-text">Pending</div>
+            <div style="font-size:11.5px;color:var(--muted)" id="kyc-status-sub">Required before payment as per RBI norms</div>
+          </div>
+        </div>
+        <div class="kyc-status-card">
+          <i class="bi bi-wallet2 kyc-status-icon" style="color:var(--blue)"></i>
+          <div style="flex:1">
+            <div style="font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase">Outstanding Payment</div>
+            <div style="font-size:15px;font-weight:700" id="buyer-outstanding-total">₹0</div>
+            <div style="font-size:11.5px;color:var(--muted)" id="buyer-asset-count-sub">0 vehicles won</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title"><i class="bi bi-car-front-fill"></i> My Winning Bids</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Auction ID</th><th>Lot</th><th>Vehicle</th><th>Reg. No.</th><th>Platform</th><th>Amount Due</th><th>Status</th></tr></thead>
+            <tbody id="buyer-dash-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="buyerGoPayment()"><i class="bi bi-credit-card"></i> Proceed to Asset Payment</button>
+    </section>
+
+    <!-- KYC (eDiig-style: in-page PAN + Aadhaar OTP verification) -->
+    <section class="buyer-page" id="bpage-kyc">
+      <div class="page-title">Complete Your KYC</div>
+      <div class="page-desc">Individuals verify with PAN + Aadhaar OTP. Businesses verify with PAN + GST OTP — required once before payment.</div>
+
+      <div class="stepper" style="max-width:640px;margin:0 auto 28px">
+        <div class="step active" id="kyc-step-1"><div class="step-dot">1</div><div class="step-label">PAN</div></div>
+        <div class="step idle" id="kyc-step-2"><div class="step-dot">2</div><div class="step-label" id="kyc-step2-label">Aadhaar</div></div>
+        <div class="step idle" id="kyc-step-3"><div class="step-dot">3</div><div class="step-label">OTP</div></div>
+        <div class="step idle" id="kyc-step-4"><div class="step-dot">4</div><div class="step-label">Confirm</div></div>
+        <div class="step idle" id="kyc-step-5"><div class="step-dot">5</div><div class="step-label">Done</div></div>
+      </div>
+
+      <div class="card">
+
+        <div class="kyc-substep active" id="kyc-sub-1">
+          <div class="kyc-icon-lg"><i class="bi bi-credit-card-2-front"></i></div>
+          <h3 style="text-align:center;margin-bottom:6px;color:var(--navy)">Step 1 — PAN Verification</h3>
+          <div style="text-align:center;font-size:12px;color:var(--muted);margin-bottom:14px">Are you verifying as an individual or a business?</div>
+          <div class="filter-tabs" style="justify-content:center" id="kyc-buyer-type">
+            <div class="ftab active" data-type="individual" onclick="kycSetBuyerType('individual',this)"><i class="bi bi-person"></i> Individual (PAN + Aadhaar)</div>
+            <div class="ftab" data-type="business" onclick="kycSetBuyerType('business',this)"><i class="bi bi-building"></i> Business (PAN + GST)</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">PAN Number</label>
+            <input type="text" class="form-control" id="kyc-pan" placeholder="e.g. ABCDE1234F" style="text-transform:uppercase" maxlength="10">
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="kycVerifyPan()"><i class="bi bi-search"></i> Verify PAN</button>
+        </div>
+
+        <div class="kyc-substep" id="kyc-sub-2">
+          <div class="kyc-icon-lg" id="kyc-step2-icon"><i class="bi bi-fingerprint"></i></div>
+          <h3 style="text-align:center;margin-bottom:6px;color:var(--navy)" id="kyc-step2-title">Step 2 — Aadhaar Verification</h3>
+          <div style="text-align:center;font-size:12.5px;color:var(--muted);margin-bottom:16px">PAN verified: <strong id="kyc-pan-echo"></strong></div>
+          <div class="form-group" id="kyc-aadhaar-wrap">
+            <label class="form-label">Aadhaar Number</label>
+            <input type="text" class="form-control" id="kyc-aadhaar" placeholder="XXXX XXXX XXXX" maxlength="12">
+          </div>
+          <div class="form-group" id="kyc-gst-wrap" style="display:none">
+            <label class="form-label">GST Number</label>
+            <input type="text" class="form-control" id="kyc-gst" placeholder="e.g. 27ABCDE1234F1Z5" style="text-transform:uppercase" maxlength="15">
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="kycSendIdOtp()"><i class="bi bi-send"></i> Send OTP</button>
+        </div>
+
+        <div class="kyc-substep" id="kyc-sub-3">
+          <div class="kyc-icon-lg"><i class="bi bi-shield-lock"></i></div>
+          <h3 style="text-align:center;margin-bottom:6px;color:var(--navy)">Step 3 — Enter OTP</h3>
+          <div style="text-align:center;font-size:12.5px;color:var(--muted);margin-bottom:16px">OTP sent to <span id="kyc-otp-source">Aadhaar-linked mobile ending <strong>••97</strong></span></div>
+          <div class="otp-boxes" style="justify-content:center;margin-bottom:10px">
+            <input maxlength="1" class="otp-box kyc-otp" oninput="otpAutoNext(this)">
+            <input maxlength="1" class="otp-box kyc-otp" oninput="otpAutoNext(this)">
+            <input maxlength="1" class="otp-box kyc-otp" oninput="otpAutoNext(this)">
+            <input maxlength="1" class="otp-box kyc-otp" oninput="otpAutoNext(this)">
+            <input maxlength="1" class="otp-box kyc-otp" oninput="otpAutoNext(this)">
+            <input maxlength="1" class="otp-box kyc-otp" oninput="otpAutoNext(this)">
+          </div>
+          <div style="text-align:center;font-size:11.5px;margin-bottom:16px">Didn't receive OTP? <a href="#" onclick="showToast('success','OTP resent to registered mobile.');return false" style="color:var(--navy);font-weight:600">Resend OTP</a></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="kycVerifyOtp()"><i class="bi bi-check-circle"></i> Verify OTP</button>
+        </div>
+
+        <div class="kyc-substep" id="kyc-sub-4">
+          <div class="kyc-icon-lg"><i class="bi bi-person-check"></i></div>
+          <h3 style="text-align:center;margin-bottom:16px;color:var(--navy)">Step 4 — Confirm Your Details</h3>
+          <div class="detail-grid" style="margin-bottom:16px">
+            <div class="detail-item"><div class="dl" id="kyc-confirm-name-label">Name (as per Aadhaar)</div><div class="dv" id="kyc-confirm-name"></div></div>
+            <div class="detail-item"><div class="dl">PAN</div><div class="dv" id="kyc-confirm-pan"></div></div>
+            <div class="detail-item"><div class="dl" id="kyc-confirm-id-label">Aadhaar</div><div class="dv" id="kyc-confirm-id"></div></div>
+            <div class="detail-item"><div class="dl">Address</div><div class="dv">401, Sunrise Apartments, Andheri West, Mumbai - 400058</div></div>
+          </div>
+          <label style="display:flex;gap:8px;align-items:flex-start;font-size:12.5px;margin-bottom:16px;cursor:pointer">
+            <input type="checkbox" id="kyc-confirm-check" style="margin-top:3px"> I confirm the above details are correct.
+          </label>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="kycSubmit()"><i class="bi bi-check2-circle"></i> Submit KYC</button>
+        </div>
+
+        <div class="kyc-substep" id="kyc-sub-5" style="text-align:center">
+          <div class="kyc-icon-lg" style="color:var(--green)"><i class="bi bi-patch-check-fill"></i></div>
+          <h3 style="color:var(--green);margin-bottom:6px">KYC Completed Successfully</h3>
+          <div style="font-size:12.5px;color:var(--muted);margin-bottom:20px">Completion Date: <strong id="kyc-done-date"></strong> &bull; Valid Until: <strong id="kyc-done-expiry"></strong></div>
+          <button class="btn btn-success" onclick="buyerGoPayment()"><i class="bi bi-arrow-right-circle"></i> Proceed for Asset Payment</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MULTI-PAYMENT (Hero-style: select up to 10 assets, pay together) -->
+    <section class="buyer-page" id="bpage-payment">
+      <div class="page-title">Make Payment</div>
+      <div class="page-desc">Select up to 10 assets to pay together in a single transaction.</div>
+
+      <div class="grid-2" style="grid-template-columns:2fr 1fr;align-items:start;gap:16px">
+        <div class="card">
+          <div class="card-title"><i class="bi bi-list-check"></i> Select Assets to Pay</div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th style="width:34px"><input type="checkbox" id="buyer-select-all" onchange="buyerToggleAll(this)"></th><th>Auction ID</th><th>Vehicle</th><th>Reg. No.</th><th>Platform</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody id="buyer-pay-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="bi bi-receipt"></i> Order Summary</div>
+          <div class="vc-row" style="margin-bottom:8px"><span class="vc-label">Items Selected</span><span class="vc-val" id="buyer-summary-count">0</span></div>
+          <div class="vc-row" style="margin-bottom:14px;font-size:15px"><span class="vc-label">Total Payable</span><span class="vc-val" style="color:var(--navy)" id="buyer-summary-amount">₹0</span></div>
+          <button class="btn btn-success" style="width:100%;justify-content:center" id="buyer-pay-btn" onclick="openGateway()" disabled><i class="bi bi-credit-card"></i> Pay Now</button>
+          <div style="font-size:11px;color:var(--muted);margin-top:10px">You can select a maximum of 10 assets per transaction.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAYMENT HISTORY -->
+    <section class="buyer-page" id="bpage-history">
+      <div class="page-title">Payment History</div>
+      <div class="page-desc">Record of all payments made through PayCollect.</div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Transaction Ref</th><th>Assets Paid</th><th>Amount</th><th>Mode</th><th>Status</th></tr></thead>
+            <tbody id="buyer-history-tbody"></tbody>
+          </table>
+        </div>
+        <div id="buyer-history-empty" style="text-align:center;padding:30px;color:var(--muted)">No payments made yet.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MODAL: KYC Required Gate -->
+<div class="modal-overlay" id="modal-kyc-gate">
+  <div class="modal-box" style="width:380px;text-align:center">
+    <div class="modal-body" style="padding-top:28px">
+      <div style="font-size:40px;color:var(--amber);margin-bottom:10px"><i class="bi bi-exclamation-triangle-fill"></i></div>
+      <h3 style="margin-bottom:8px">KYC Required</h3>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:22px">As per the regulatory requirement, please complete your KYC before you proceed for payment.</div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <button class="btn btn-outline" onclick="closeModal('modal-kyc-gate')">Cancel</button>
+        <button class="btn btn-primary" onclick="closeModal('modal-kyc-gate');buyerNav('kyc')"><i class="bi bi-arrow-right"></i> Yes, Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Payment Gateway (Hero-style multi-asset pay) -->
+<div class="modal-overlay" id="modal-gateway">
+  <div class="modal-box" style="width:380px">
+    <div class="modal-header">
+      <div class="modal-title"><i class="bi bi-shield-lock"></i> HDFC Bank Secure Pay</div>
+      <button class="modal-close" onclick="closeModal('modal-gateway')">&times;</button>
+    </div>
+    <div class="modal-body">
+
+      <div id="gateway-select">
+        <div style="text-align:center;font-size:13.5px;color:var(--muted);margin-bottom:14px">Select an option to pay <strong id="gateway-amount" style="color:var(--navy)"></strong></div>
+        <div class="qr-box"><i class="bi bi-qr-code"></i></div>
+        <div style="text-align:center;font-size:11.5px;color:var(--muted);margin-bottom:18px">Scan with any UPI app</div>
+        <div style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:10px">More Payment Options</div>
+        <div class="pay-method-btn" onclick="selectPayMethod('Debit/Credit Card')"><i class="bi bi-credit-card-2-back"></i> Debit / Credit Card</div>
+        <div class="pay-method-btn" onclick="selectPayMethod('UPI')"><i class="bi bi-phone"></i> UPI ID</div>
+        <div class="pay-method-btn" onclick="selectPayMethod('Net Banking')"><i class="bi bi-bank"></i> Net Banking</div>
+        <div style="text-align:center;font-size:10.5px;color:var(--muted);margin-top:8px"><i class="bi bi-shield-check"></i> 100% Secure Payments</div>
+      </div>
+
+      <div id="gateway-processing" style="display:none;text-align:center;padding:20px 0">
+        <div class="spinner-ring"></div>
+        <div style="font-size:13.5px;color:var(--muted)">Processing your payment via <strong id="gateway-method-echo"></strong>...</div>
+      </div>
+
+      <div id="gateway-success" style="display:none;text-align:center;padding:10px 0">
+        <div style="font-size:44px;color:var(--green);margin-bottom:10px"><i class="bi bi-check-circle-fill"></i></div>
+        <h3 style="color:var(--green);margin-bottom:6px">Payment Successful</h3>
+        <div style="font-size:12.5px;color:var(--muted);margin-bottom:4px">Amount Paid: <strong id="gateway-success-amount"></strong></div>
+        <div style="font-size:12.5px;color:var(--muted);margin-bottom:18px">Txn Ref: <strong id="gateway-success-ref"></strong></div>
+        <button class="btn btn-primary" onclick="closeGatewaySuccess()">Done</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════════════ -->
 <script>
@@ -781,30 +1098,30 @@ tbody td{padding:9px 12px;white-space:nowrap;vertical-align:middle}
 //  MASTER DATA
 // ────────────────────────────────────────────
 const DEMANDS = [
-  {id:'D001',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-001',reg:'MH12AB1234',make:'Honda',model:'City ZX CVT',variant:'City ZX CVT',year:2021,type:'4W Sedan',chassis:'MAHHG2GAPLH123456',engine:'L15Z11A23456',colour:'Lunar Silver',yard:'Mumbai Central Yard',platform:'Bidkaro',reserve:380000,hammer:420000,bids:7,buyer:'Rajesh Mehta',company:'Mehta Auto Traders',mobile:'9876543210',emd:42000,balanceDue:378000,balancePaid:0,dueDate:'22-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D002',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-002',reg:'DL08CD5678',make:'Tata',model:'Harrier XT+',variant:'Harrier XT+',year:2020,type:'4W SUV',chassis:'MAT607651LRC12345',engine:'TATA475IDI98765',colour:'Calypso Red',yard:'Delhi North Yard',platform:'eDiig',reserve:750000,hammer:850000,bids:11,buyer:'Suresh Kumar Yadav',company:'Yadav Motors Pvt Ltd',mobile:'9845012345',emd:85000,balanceDue:765000,balancePaid:0,dueDate:'21-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D003',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-003',reg:'KA04EF9012',make:'Maruti Suzuki',model:'Ertiga VXI CNG',variant:'Ertiga VXI CNG',year:2018,type:'4W MPV',chassis:'MA3EWDE1S0B123456',engine:'K15BN1A23456',colour:'Auburn Red',yard:'Bangalore Koramangala Yard',platform:'CarTrade',reserve:320000,hammer:380000,bids:5,buyer:'Pradeep Agarwal',company:'Agarwal Fleet Services',mobile:'9812234567',emd:38000,balanceDue:171000,balancePaid:171000,dueDate:'26-May-2026',status:'partial',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'Partial payment received'},
-  {id:'D004',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-004',reg:'TN09GH3456',make:'Hyundai',model:'Creta SX Opt',variant:'Creta SX Opt',year:2021,type:'4W SUV',chassis:'MALBM51BPMH98765',engine:'G4FJ1A56789',colour:'Typhoon Silver',yard:'Chennai Ambattur Yard',platform:'CarDekho',reserve:850000,hammer:920000,bids:14,buyer:'Vikram Singh Rawat',company:'Rawat Automobiles',mobile:'9823345678',emd:92000,balanceDue:828000,balancePaid:0,dueDate:'28-May-2026',status:'pending',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D005',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-005',reg:'GJ05IJ7890',make:'Toyota',model:'Innova Crysta GX',variant:'Innova Crysta GX',year:2019,type:'4W MUV',chassis:'MBJ12FX30H0098765',engine:'2GD1A98765',colour:'Super White',yard:'Ahmedabad Narol Yard',platform:'Bidkaro',reserve:1000000,hammer:1150000,bids:9,buyer:'Dinesh Prakash Choudhary',company:'Choudhary Transport Co',mobile:'9834456789',emd:115000,balanceDue:1035000,balancePaid:0,dueDate:'28-May-2026',status:'pending',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D006',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-006',reg:'MH02OP2345',make:'Maruti Suzuki',model:'Dzire ZXI+',variant:'Dzire ZXI+',year:2020,type:'4W Sedan',chassis:'MA3EKLF1SL098765',engine:'K12M1A98765',colour:'Midnight Black',yard:'Pune Chakan Yard',platform:'eDiig',reserve:480000,hammer:560000,bids:8,buyer:'Deepak Ramesh Joshi',company:'Joshi Car Dealers',mobile:'9845567890',emd:56000,balanceDue:504000,balancePaid:0,dueDate:'27-May-2026',status:'pending',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D007',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-007',reg:'WB24QR5678',make:'Hyundai',model:'i20 Asta',variant:'i20 Asta',year:2019,type:'4W Hatchback',chassis:'MALBF51BPKH34567',engine:'G4FA1A34567',colour:'Polar White',yard:'Kolkata Kasba Yard',platform:'CarTrade',reserve:350000,hammer:415000,bids:6,buyer:'Subhash Chandra Das',company:'Das Auto Gallery',mobile:'9878890123',emd:41500,balanceDue:373500,balancePaid:0,dueDate:'22-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D008',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-008',reg:'DL05QR6789',make:'Hyundai',model:'Grand i10 Sportz',variant:'Grand i10 Sportz',year:2019,type:'4W Hatchback',chassis:'MALBF11BPKH78901',engine:'G4LA1A78901',colour:'Fiery Red',yard:'Delhi Mayapuri Yard',platform:'CarDekho',reserve:310000,hammer:370000,bids:4,buyer:'Pooja Deepak Sharma',company:'Sharma Auto Works',mobile:'9867789012',emd:37000,balanceDue:166500,balancePaid:166500,dueDate:'26-May-2026',status:'partial',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'Partial payment received'},
-  {id:'D009',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-009',reg:'RJ14KL2345',make:'Kia',model:'Seltos GTX+ DCT',variant:'Seltos GTX+ DCT',year:2022,type:'4W SUV',chassis:'KNAKC81GPNK234567',engine:'G4FG1A234567',colour:'Glacier White Pearl',yard:'Jaipur Sanganer Yard',platform:'Bidkaro',reserve:1150000,hammer:1280000,bids:16,buyer:'Mohan Lal Sharma',company:'Sharma Premium Cars',mobile:'9845567891',emd:128000,balanceDue:0,balancePaid:1152000,dueDate:'13-May-2026',status:'paid',notified:true,payMode:'NEFT',utr:'HDFC20260513N0012',paidDate:'13-May-2026',rc:'Complete',remarks:''},
-  {id:'D010',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-010',reg:'UP32MN6789',make:'Honda',model:'City V CVT',variant:'City V CVT',year:2019,type:'4W Sedan',chassis:'MAHHG2GA6KH345678',engine:'L15Z11A345678',colour:'Radiant Red',yard:'Lucknow Amausi Yard',platform:'eDiig',reserve:480000,hammer:520000,bids:7,buyer:'Arvind Kumar Patel',company:'Patel Auto Enterprises',mobile:'9856678901',emd:52000,balanceDue:0,balancePaid:468000,dueDate:'12-May-2026',status:'paid',notified:true,payMode:'RTGS',utr:'HDFC20260512R0034',paidDate:'12-May-2026',rc:'In Progress',remarks:''},
-  {id:'D011',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-011',reg:'MH01OP1234',make:'Maruti Suzuki',model:'Swift ZXI',variant:'Swift ZXI',year:2020,type:'4W Hatchback',chassis:'MA3EKLF1SL456789',engine:'K12M1A456789',colour:'Speedy Blue',yard:'Pune Wagholi Yard',platform:'CarTrade',reserve:420000,hammer:490000,bids:5,buyer:'Ravi Shankar Gupta',company:'Gupta Auto Center',mobile:'9867789013',emd:49000,balanceDue:441000,balancePaid:0,dueDate:'14-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D012',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-012',reg:'KL07CD3456',make:'Honda',model:'Amaze VX CVT',variant:'Amaze VX CVT',year:2020,type:'4W Sedan',chassis:'MAHHG3BA6LH567890',engine:'L12B1A567890',colour:'Meteoroid Grey',yard:'Kochi Kakkanad Yard',platform:'CarDekho',reserve:420000,hammer:480000,bids:8,buyer:'Thomas Joseph Mathew',company:'TJM Auto Solutions',mobile:'9889901235',emd:48000,balanceDue:0,balancePaid:432000,dueDate:'11-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605111234',paidDate:'11-May-2026',rc:'Complete',remarks:''},
-  {id:'D013',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-013',reg:'MH04XY5678',make:'Mahindra',model:'Scorpio S10 4WD',variant:'Scorpio S10 4WD',year:2019,type:'4W SUV',chassis:'MA1PF2GAPJG678901',engine:'mHawk140A678901',colour:'Dsat Silver',yard:'Nashik Satpur Yard',platform:'Bidkaro',reserve:850000,hammer:980000,bids:12,buyer:'Sachin Ramesh Sharma',company:'Sharma Motors',mobile:'9891234568',emd:98000,balanceDue:882000,balancePaid:0,dueDate:'15-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D014',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-014',reg:'DL10AB7890',make:'Toyota',model:'Fortuner Legender',variant:'Fortuner Legender',year:2018,type:'4W SUV',chassis:'MBJ12FX40J0789012',engine:'1GD1A789012',colour:'Phantom Brown',yard:'Delhi Kapashera Yard',platform:'eDiig',reserve:1700000,hammer:1850000,bids:19,buyer:'Amit Vikas Kapoor',company:'Kapoor Luxury Autos',mobile:'9872345679',emd:185000,balanceDue:0,balancePaid:1665000,dueDate:'12-May-2026',status:'paid',notified:true,payMode:'RTGS',utr:'HDFC20260512R0056',paidDate:'12-May-2026',rc:'In Progress',remarks:''},
-  {id:'D015',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-015',reg:'HR26AB9999',make:'Hero',model:'Splendor Plus IBS',variant:'Splendor Plus IBS',year:2021,type:'2W Commuter',chassis:'MBLHA10ECMB890123',engine:'HA10EA1890123',colour:'Black & Candy Blazing Red',yard:'Gurugram Sector-37 Yard',platform:'CarTrade',reserve:50000,hammer:61000,bids:4,buyer:'Harpreet Gurjit Singh',company:'Singh Transport',mobile:'9891234569',emd:6100,balanceDue:0,balancePaid:54900,dueDate:'11-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605112345',paidDate:'11-May-2026',rc:'Complete',remarks:''},
-  {id:'D016',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-016',reg:'UP80KL3456',make:'Tata',model:'Nexon XZA+ Dark',variant:'Nexon XZA+ Dark',year:2021,type:'4W SUV',chassis:'MAT607851MRC901234',engine:'TATA1197IDI901234',colour:'Pure Grey',yard:'Lucknow Chinhat Yard',platform:'CarDekho',reserve:780000,hammer:870000,bids:10,buyer:'Anil Kumar Singh',company:'AKS Auto Deals',mobile:'9878890124',emd:87000,balanceDue:783000,balancePaid:0,dueDate:'15-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D017',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-017',reg:'AP09ST9012',make:'Bajaj',model:'Pulsar 150 Neon',variant:'Pulsar 150 Neon',year:2020,type:'2W Sport',chassis:'MD2DHDHZZLCJ012345',engine:'DHDHZ1A012345',colour:'Neon Blue',yard:'Hyderabad Balanagar Yard',platform:'Bidkaro',reserve:60000,hammer:74000,bids:5,buyer:'Venkat Suresh Reddy',company:'Reddy Two-Wheelers',mobile:'9889901236',emd:7400,balanceDue:66600,balancePaid:0,dueDate:'03-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D018',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-018',reg:'PB10CD1234',make:'TVS',model:'Apache RTR 160 4V',variant:'Apache RTR 160 4V',year:2019,type:'2W Sport',chassis:'MD626BF39K2B123456',engine:'AU41A123456',colour:'Pearl White',yard:'Ludhiana Focal Point Yard',platform:'eDiig',reserve:55000,hammer:67000,bids:4,buyer:'Gurpreet Kaur',company:'Kaur Auto Agency',mobile:'9872345680',emd:6700,balanceDue:60300,balancePaid:0,dueDate:'04-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D019',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-019',reg:'MH14EF1234',make:'Maruti Suzuki',model:'Alto K10 VXI+',variant:'Alto K10 VXI+',year:2019,type:'4W Hatchback',chassis:'MA3CNBE1SKB234567',engine:'K10C1A234567',colour:'Silky Silver',yard:'Pune Bhosari Yard',platform:'CarTrade',reserve:240000,hammer:285000,bids:6,buyer:'Santosh Dnyandev Patil',company:'Patil Car Trading',mobile:'9823345679',emd:28500,balanceDue:0,balancePaid:256500,dueDate:'02-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605021234',paidDate:'02-May-2026',rc:'Complete',remarks:''},
-  {id:'D020',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-020',reg:'GJ01GH5678',make:'Ford',model:'EcoSport Titanium',variant:'EcoSport Titanium',year:2019,type:'4W SUV',chassis:'MAJ4W2BS8KBJ345678',engine:'Dragon1A345678',colour:'Canyon Ridge',yard:'Ahmedabad Vatva Yard',platform:'CarDekho',reserve:580000,hammer:640000,bids:8,buyer:'Bhavesh Rajesh Shah',company:'Shah Auto World',mobile:'9834456790',emd:64000,balanceDue:576000,balancePaid:0,dueDate:'04-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D021',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-021',reg:'RJ22IJ9012',make:'Renault',model:'Kwid RXT Opt',variant:'Kwid RXT Opt',year:2020,type:'4W Hatchback',chassis:'MEEHM8152LB456789',engine:'D4F1A456789',colour:'Electric Blue',yard:'Jaipur Malviya Nagar Yard',platform:'Bidkaro',reserve:220000,hammer:260000,bids:4,buyer:'Ramesh Shankar Meena',company:'Meena Motors',mobile:'9845567892',emd:26000,balanceDue:234000,balancePaid:0,dueDate:'05-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D022',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-022',reg:'TN01MN7890',make:'Honda',model:'Activa 6G Deluxe',variant:'Activa 6G Deluxe',year:2022,type:'2W Scooter',chassis:'ME4JF503NNA567890',engine:'JF50E1A567890',colour:'Pearl Sunbeam Yellow',yard:'Chennai Ambattur Yard',platform:'eDiig',reserve:58000,hammer:68000,bids:5,buyer:'Murugan Selvam',company:'Selvam Two-Wheelers',mobile:'9812234568',emd:6800,balanceDue:0,balancePaid:61200,dueDate:'02-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605022345',paidDate:'02-May-2026',rc:'Complete',remarks:''},
-  {id:'D023',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-023',reg:'KA01ST0123',make:'Royal Enfield',model:'Classic 350 Signals',variant:'Classic 350 Signals',year:2021,type:'2W Cruiser',chassis:'ME3C5D61MMC678901',engine:'UC411C1A678901',colour:'Triton Blue',yard:'Bangalore Peenya Yard',platform:'CarTrade',reserve:120000,hammer:145000,bids:7,buyer:'Rajan Kumar Naidu',company:'Naidu Bikes Palace',mobile:'9856678902',emd:14500,balanceDue:130500,balancePaid:0,dueDate:'04-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''},
-  {id:'D024',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-024',reg:'MH09UV4567',make:'Tata',model:'Tigor EV XZ+',variant:'Tigor EV XZ+',year:2021,type:'4W EV Sedan',chassis:'MAT607651MRC789012',engine:'TATAEV1A789012',colour:'Signature Teal Blue',yard:'Thane Majiwada Yard',platform:'CarDekho',reserve:720000,hammer:810000,bids:9,buyer:'Mahesh Ganesh Shetty',company:'Shetty Auto Finance',mobile:'9867789014',emd:81000,balanceDue:729000,balancePaid:0,dueDate:'05-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:''}
+  {id:'D001',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-001',reg:'MH12AB1234',make:'Honda',model:'City ZX CVT',variant:'City ZX CVT',year:2021,type:'4W Sedan',chassis:'MAHHG2GAPLH123456',engine:'L15Z11A23456',colour:'Lunar Silver',yard:'Mumbai Central Yard',platform:'Bidkaro',reserve:380000,hammer:420000,bids:7,buyer:'Rajesh Mehta',company:'Mehta Auto Traders',mobile:'9876543210',emd:42000,balanceDue:378000,balancePaid:0,dueDate:'22-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'not_started'},
+  {id:'D002',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-002',reg:'DL08CD5678',make:'Tata',model:'Harrier XT+',variant:'Harrier XT+',year:2020,type:'4W SUV',chassis:'MAT607651LRC12345',engine:'TATA475IDI98765',colour:'Calypso Red',yard:'Delhi North Yard',platform:'eDiig',reserve:750000,hammer:850000,bids:11,buyer:'Suresh Kumar Yadav',company:'Yadav Motors Pvt Ltd',mobile:'9845012345',emd:85000,balanceDue:765000,balancePaid:0,dueDate:'21-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'not_started'},
+  {id:'D003',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-003',reg:'KA04EF9012',make:'Maruti Suzuki',model:'Ertiga VXI CNG',variant:'Ertiga VXI CNG',year:2018,type:'4W MPV',chassis:'MA3EWDE1S0B123456',engine:'K15BN1A23456',colour:'Auburn Red',yard:'Bangalore Koramangala Yard',platform:'CarTrade',reserve:320000,hammer:380000,bids:5,buyer:'Pradeep Agarwal',company:'Agarwal Fleet Services',mobile:'9812234567',emd:38000,balanceDue:171000,balancePaid:171000,dueDate:'26-May-2026',status:'partial',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'Partial payment received',kyc:'completed'},
+  {id:'D004',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-004',reg:'TN09GH3456',make:'Hyundai',model:'Creta SX Opt',variant:'Creta SX Opt',year:2021,type:'4W SUV',chassis:'MALBM51BPMH98765',engine:'G4FJ1A56789',colour:'Typhoon Silver',yard:'Chennai Ambattur Yard',platform:'CarDekho',reserve:850000,hammer:920000,bids:14,buyer:'Vikram Singh Rawat',company:'Rawat Automobiles',mobile:'9823345678',emd:92000,balanceDue:828000,balancePaid:0,dueDate:'28-May-2026',status:'pending',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'id_otp_sent'},
+  {id:'D005',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-005',reg:'GJ05IJ7890',make:'Toyota',model:'Innova Crysta GX',variant:'Innova Crysta GX',year:2019,type:'4W MUV',chassis:'MBJ12FX30H0098765',engine:'2GD1A98765',colour:'Super White',yard:'Ahmedabad Narol Yard',platform:'Bidkaro',reserve:1000000,hammer:1150000,bids:9,buyer:'Dinesh Prakash Choudhary',company:'Choudhary Transport Co',mobile:'9834456789',emd:115000,balanceDue:1035000,balancePaid:0,dueDate:'28-May-2026',status:'pending',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'pan_verified'},
+  {id:'D006',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-006',reg:'MH02OP2345',make:'Maruti Suzuki',model:'Dzire ZXI+',variant:'Dzire ZXI+',year:2020,type:'4W Sedan',chassis:'MA3EKLF1SL098765',engine:'K12M1A98765',colour:'Midnight Black',yard:'Pune Chakan Yard',platform:'eDiig',reserve:480000,hammer:560000,bids:8,buyer:'Deepak Ramesh Joshi',company:'Joshi Car Dealers',mobile:'9845567890',emd:56000,balanceDue:504000,balancePaid:0,dueDate:'27-May-2026',status:'pending',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'completed'},
+  {id:'D007',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-007',reg:'WB24QR5678',make:'Hyundai',model:'i20 Asta',variant:'i20 Asta',year:2019,type:'4W Hatchback',chassis:'MALBF51BPKH34567',engine:'G4FA1A34567',colour:'Polar White',yard:'Kolkata Kasba Yard',platform:'CarTrade',reserve:350000,hammer:415000,bids:6,buyer:'Subhash Chandra Das',company:'Das Auto Gallery',mobile:'9878890123',emd:41500,balanceDue:373500,balancePaid:0,dueDate:'22-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'not_started'},
+  {id:'D008',auctionId:'AUC-2026-051',auctionDate:'15-May-2026',lot:'L-008',reg:'DL05QR6789',make:'Hyundai',model:'Grand i10 Sportz',variant:'Grand i10 Sportz',year:2019,type:'4W Hatchback',chassis:'MALBF11BPKH78901',engine:'G4LA1A78901',colour:'Fiery Red',yard:'Delhi Mayapuri Yard',platform:'CarDekho',reserve:310000,hammer:370000,bids:4,buyer:'Pooja Deepak Sharma',company:'Sharma Auto Works',mobile:'9867789012',emd:37000,balanceDue:166500,balancePaid:166500,dueDate:'26-May-2026',status:'partial',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'Partial payment received',kyc:'completed'},
+  {id:'D009',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-009',reg:'RJ14KL2345',make:'Kia',model:'Seltos GTX+ DCT',variant:'Seltos GTX+ DCT',year:2022,type:'4W SUV',chassis:'KNAKC81GPNK234567',engine:'G4FG1A234567',colour:'Glacier White Pearl',yard:'Jaipur Sanganer Yard',platform:'Bidkaro',reserve:1150000,hammer:1280000,bids:16,buyer:'Mohan Lal Sharma',company:'Sharma Premium Cars',mobile:'9845567891',emd:128000,balanceDue:0,balancePaid:1152000,dueDate:'13-May-2026',status:'paid',notified:true,payMode:'NEFT',utr:'HDFC20260513N0012',paidDate:'13-May-2026',rc:'Complete',remarks:'',kyc:'completed'},
+  {id:'D010',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-010',reg:'UP32MN6789',make:'Honda',model:'City V CVT',variant:'City V CVT',year:2019,type:'4W Sedan',chassis:'MAHHG2GA6KH345678',engine:'L15Z11A345678',colour:'Radiant Red',yard:'Lucknow Amausi Yard',platform:'eDiig',reserve:480000,hammer:520000,bids:7,buyer:'Arvind Kumar Patel',company:'Patel Auto Enterprises',mobile:'9856678901',emd:52000,balanceDue:0,balancePaid:468000,dueDate:'12-May-2026',status:'paid',notified:true,payMode:'RTGS',utr:'HDFC20260512R0034',paidDate:'12-May-2026',rc:'In Progress',remarks:'',kyc:'completed'},
+  {id:'D011',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-011',reg:'MH01OP1234',make:'Maruti Suzuki',model:'Swift ZXI',variant:'Swift ZXI',year:2020,type:'4W Hatchback',chassis:'MA3EKLF1SL456789',engine:'K12M1A456789',colour:'Speedy Blue',yard:'Pune Wagholi Yard',platform:'CarTrade',reserve:420000,hammer:490000,bids:5,buyer:'Ravi Shankar Gupta',company:'Gupta Auto Center',mobile:'9867789013',emd:49000,balanceDue:441000,balancePaid:0,dueDate:'14-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'otp_verified'},
+  {id:'D012',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-012',reg:'KL07CD3456',make:'Honda',model:'Amaze VX CVT',variant:'Amaze VX CVT',year:2020,type:'4W Sedan',chassis:'MAHHG3BA6LH567890',engine:'L12B1A567890',colour:'Meteoroid Grey',yard:'Kochi Kakkanad Yard',platform:'CarDekho',reserve:420000,hammer:480000,bids:8,buyer:'Thomas Joseph Mathew',company:'TJM Auto Solutions',mobile:'9889901235',emd:48000,balanceDue:0,balancePaid:432000,dueDate:'11-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605111234',paidDate:'11-May-2026',rc:'Complete',remarks:'',kyc:'completed'},
+  {id:'D013',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-013',reg:'MH04XY5678',make:'Mahindra',model:'Scorpio S10 4WD',variant:'Scorpio S10 4WD',year:2019,type:'4W SUV',chassis:'MA1PF2GAPJG678901',engine:'mHawk140A678901',colour:'Dsat Silver',yard:'Nashik Satpur Yard',platform:'Bidkaro',reserve:850000,hammer:980000,bids:12,buyer:'Sachin Ramesh Sharma',company:'Sharma Motors',mobile:'9891234568',emd:98000,balanceDue:882000,balancePaid:0,dueDate:'15-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'pan_verified'},
+  {id:'D014',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-014',reg:'DL10AB7890',make:'Toyota',model:'Fortuner Legender',variant:'Fortuner Legender',year:2018,type:'4W SUV',chassis:'MBJ12FX40J0789012',engine:'1GD1A789012',colour:'Phantom Brown',yard:'Delhi Kapashera Yard',platform:'eDiig',reserve:1700000,hammer:1850000,bids:19,buyer:'Amit Vikas Kapoor',company:'Kapoor Luxury Autos',mobile:'9872345679',emd:185000,balanceDue:0,balancePaid:1665000,dueDate:'12-May-2026',status:'paid',notified:true,payMode:'RTGS',utr:'HDFC20260512R0056',paidDate:'12-May-2026',rc:'In Progress',remarks:'',kyc:'completed'},
+  {id:'D015',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-015',reg:'HR26AB9999',make:'Hero',model:'Splendor Plus IBS',variant:'Splendor Plus IBS',year:2021,type:'2W Commuter',chassis:'MBLHA10ECMB890123',engine:'HA10EA1890123',colour:'Black & Candy Blazing Red',yard:'Gurugram Sector-37 Yard',platform:'CarTrade',reserve:50000,hammer:61000,bids:4,buyer:'Harpreet Gurjit Singh',company:'Singh Transport',mobile:'9891234569',emd:6100,balanceDue:0,balancePaid:54900,dueDate:'11-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605112345',paidDate:'11-May-2026',rc:'Complete',remarks:'',kyc:'completed'},
+  {id:'D016',auctionId:'AUC-2026-048',auctionDate:'05-May-2026',lot:'L-016',reg:'UP80KL3456',make:'Tata',model:'Nexon XZA+ Dark',variant:'Nexon XZA+ Dark',year:2021,type:'4W SUV',chassis:'MAT607851MRC901234',engine:'TATA1197IDI901234',colour:'Pure Grey',yard:'Lucknow Chinhat Yard',platform:'CarDekho',reserve:780000,hammer:870000,bids:10,buyer:'Anil Kumar Singh',company:'AKS Auto Deals',mobile:'9878890124',emd:87000,balanceDue:783000,balancePaid:0,dueDate:'15-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'id_otp_sent'},
+  {id:'D017',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-017',reg:'AP09ST9012',make:'Bajaj',model:'Pulsar 150 Neon',variant:'Pulsar 150 Neon',year:2020,type:'2W Sport',chassis:'MD2DHDHZZLCJ012345',engine:'DHDHZ1A012345',colour:'Neon Blue',yard:'Hyderabad Balanagar Yard',platform:'Bidkaro',reserve:60000,hammer:74000,bids:5,buyer:'Venkat Suresh Reddy',company:'Reddy Two-Wheelers',mobile:'9889901236',emd:7400,balanceDue:66600,balancePaid:0,dueDate:'03-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'expired'},
+  {id:'D018',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-018',reg:'PB10CD1234',make:'TVS',model:'Apache RTR 160 4V',variant:'Apache RTR 160 4V',year:2019,type:'2W Sport',chassis:'MD626BF39K2B123456',engine:'AU41A123456',colour:'Pearl White',yard:'Ludhiana Focal Point Yard',platform:'eDiig',reserve:55000,hammer:67000,bids:4,buyer:'Gurpreet Kaur',company:'Kaur Auto Agency',mobile:'9872345680',emd:6700,balanceDue:60300,balancePaid:0,dueDate:'04-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'not_started'},
+  {id:'D019',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-019',reg:'MH14EF1234',make:'Maruti Suzuki',model:'Alto K10 VXI+',variant:'Alto K10 VXI+',year:2019,type:'4W Hatchback',chassis:'MA3CNBE1SKB234567',engine:'K10C1A234567',colour:'Silky Silver',yard:'Pune Bhosari Yard',platform:'CarTrade',reserve:240000,hammer:285000,bids:6,buyer:'Santosh Dnyandev Patil',company:'Patil Car Trading',mobile:'9823345679',emd:28500,balanceDue:0,balancePaid:256500,dueDate:'02-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605021234',paidDate:'02-May-2026',rc:'Complete',remarks:'',kyc:'completed'},
+  {id:'D020',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-020',reg:'GJ01GH5678',make:'Ford',model:'EcoSport Titanium',variant:'EcoSport Titanium',year:2019,type:'4W SUV',chassis:'MAJ4W2BS8KBJ345678',engine:'Dragon1A345678',colour:'Canyon Ridge',yard:'Ahmedabad Vatva Yard',platform:'CarDekho',reserve:580000,hammer:640000,bids:8,buyer:'Bhavesh Rajesh Shah',company:'Shah Auto World',mobile:'9834456790',emd:64000,balanceDue:576000,balancePaid:0,dueDate:'04-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'otp_verified'},
+  {id:'D021',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-021',reg:'RJ22IJ9012',make:'Renault',model:'Kwid RXT Opt',variant:'Kwid RXT Opt',year:2020,type:'4W Hatchback',chassis:'MEEHM8152LB456789',engine:'D4F1A456789',colour:'Electric Blue',yard:'Jaipur Malviya Nagar Yard',platform:'Bidkaro',reserve:220000,hammer:260000,bids:4,buyer:'Ramesh Shankar Meena',company:'Meena Motors',mobile:'9845567892',emd:26000,balanceDue:234000,balancePaid:0,dueDate:'05-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'not_started'},
+  {id:'D022',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-022',reg:'TN01MN7890',make:'Honda',model:'Activa 6G Deluxe',variant:'Activa 6G Deluxe',year:2022,type:'2W Scooter',chassis:'ME4JF503NNA567890',engine:'JF50E1A567890',colour:'Pearl Sunbeam Yellow',yard:'Chennai Ambattur Yard',platform:'eDiig',reserve:58000,hammer:68000,bids:5,buyer:'Murugan Selvam',company:'Selvam Two-Wheelers',mobile:'9812234568',emd:6800,balanceDue:0,balancePaid:61200,dueDate:'02-May-2026',status:'paid',notified:true,payMode:'UPI',utr:'UPI202605022345',paidDate:'02-May-2026',rc:'Complete',remarks:'',kyc:'completed'},
+  {id:'D023',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-023',reg:'KA01ST0123',make:'Royal Enfield',model:'Classic 350 Signals',variant:'Classic 350 Signals',year:2021,type:'2W Cruiser',chassis:'ME3C5D61MMC678901',engine:'UC411C1A678901',colour:'Triton Blue',yard:'Bangalore Peenya Yard',platform:'CarTrade',reserve:120000,hammer:145000,bids:7,buyer:'Rajan Kumar Naidu',company:'Naidu Bikes Palace',mobile:'9856678902',emd:14500,balanceDue:130500,balancePaid:0,dueDate:'04-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'pan_verified'},
+  {id:'D024',auctionId:'AUC-2026-041',auctionDate:'25-Apr-2026',lot:'L-024',reg:'MH09UV4567',make:'Tata',model:'Tigor EV XZ+',variant:'Tigor EV XZ+',year:2021,type:'4W EV Sedan',chassis:'MAT607651MRC789012',engine:'TATAEV1A789012',colour:'Signature Teal Blue',yard:'Thane Majiwada Yard',platform:'CarDekho',reserve:720000,hammer:810000,bids:9,buyer:'Mahesh Ganesh Shetty',company:'Shetty Auto Finance',mobile:'9867789014',emd:81000,balanceDue:729000,balancePaid:0,dueDate:'05-May-2026',status:'overdue',notified:true,payMode:'',utr:'',paidDate:'',rc:'Not Started',remarks:'',kyc:'id_otp_sent'}
 ];
 
 // ────────────────────────────────────────────
@@ -828,6 +1145,20 @@ function rcBadge(r){
   return `<span class="badge-rc-progress">In Progress</span>`;
 }
 function notifiedBadge(n){ return n?`<span class="badge" style="background:#dcfce7;color:#16a34a;font-size:11px"><i class="bi bi-check"></i> Yes</span>`:`<span class="badge badge-grey" style="font-size:11px"><i class="bi bi-x"></i> No</span>`; }
+
+// KYC stages, shown as an example progression on the seller Payment Tracker
+const KYC_STAGES = {
+  not_started: {label:'Not Started', cls:'badge-grey', icon:'bi-dash-circle'},
+  pan_verified:{label:'PAN Verified', cls:'badge-pending', icon:'bi-credit-card-2-front'},
+  id_otp_sent: {label:'OTP Sent', cls:'badge-partial', icon:'bi-send'},
+  otp_verified:{label:'ID Verified', cls:'badge-purple', icon:'bi-shield-check'},
+  completed:   {label:'KYC Completed', cls:'badge-paid', icon:'bi-patch-check-fill'},
+  expired:     {label:'KYC Expired', cls:'badge-overdue', icon:'bi-exclamation-triangle'}
+};
+function kycStageBadge(stage){
+  const s=KYC_STAGES[stage]||KYC_STAGES.not_started;
+  return `<span class="badge ${s.cls}"><i class="bi ${s.icon}"></i> ${s.label}</span>`;
+}
 
 let activeFilter = {tracker:'all', vehicles:'all'};
 let currentPayId = null, currentReminderId = null;
@@ -982,6 +1313,7 @@ function renderTrackerTable(){
       <td>${d.paidDate||'—'}</td>
       <td>${statusBadge(d.status)}</td>
       <td>${notifiedBadge(d.notified)}</td>
+      <td>${kycStageBadge(d.kyc)}</td>
       <td>${rcBadge(d.rc)}</td>
       <td style="color:var(--muted);font-size:12px">${d.remarks||'—'}</td>
       <td><div style="display:flex;gap:4px;flex-wrap:nowrap">${actions}</div></td>
@@ -1224,6 +1556,7 @@ function openDetailsModal(did){
       <div class="detail-item"><div class="dl">Buyer Name</div><div class="dv">${d.buyer}</div></div>
       <div class="detail-item"><div class="dl">Company</div><div class="dv">${d.company}</div></div>
       <div class="detail-item"><div class="dl">Mobile</div><div class="dv">${d.mobile}</div></div>
+      <div class="detail-item"><div class="dl">KYC Status</div><div class="dv">${kycStageBadge(d.kyc)}</div></div>
       <div class="detail-item"><div class="dl">Payment Mode</div><div class="dv">${d.payMode||'—'}</div></div>
       <div class="detail-item"><div class="dl">UTR / Reference</div><div class="dv" style="font-size:12px">${d.utr||'—'}</div></div>
       <div class="detail-item"><div class="dl">Paid Date</div><div class="dv">${d.paidDate||'—'}</div></div>
@@ -1317,8 +1650,8 @@ function downloadTemplate(){
 
 function exportTrackerExcel(){
   if(typeof XLSX==='undefined'){showToast('error','SheetJS not loaded.');return;}
-  const headers=['Auction ID','Lot No','Reg. No.','Make','Model','Year','Type','Chassis','Engine','Colour','Yard','Auction Date','Platform','Reserve','Hammer','Bids','Buyer','Company','Mobile','EMD','Balance Due','Due Date','Mode','UTR','Paid Date','Status','Notified','RC','Remarks'];
-  const rows=DEMANDS.map(d=>[d.auctionId,d.lot,d.reg,d.make,d.model,d.year,d.type,d.chassis,d.engine,d.colour,d.yard,d.auctionDate,d.platform,d.reserve,d.hammer,d.bids,d.buyer,d.company,d.mobile,d.emd,d.balanceDue,d.dueDate,d.payMode,d.utr,d.paidDate,d.status,d.notified?'Yes':'No',d.rc,d.remarks]);
+  const headers=['Auction ID','Lot No','Reg. No.','Make','Model','Year','Type','Chassis','Engine','Colour','Yard','Auction Date','Platform','Reserve','Hammer','Bids','Buyer','Company','Mobile','EMD','Balance Due','Due Date','Mode','UTR','Paid Date','Status','Notified','KYC Status','RC','Remarks'];
+  const rows=DEMANDS.map(d=>[d.auctionId,d.lot,d.reg,d.make,d.model,d.year,d.type,d.chassis,d.engine,d.colour,d.yard,d.auctionDate,d.platform,d.reserve,d.hammer,d.bids,d.buyer,d.company,d.mobile,d.emd,d.balanceDue,d.dueDate,d.payMode,d.utr,d.paidDate,d.status,d.notified?'Yes':'No',(KYC_STAGES[d.kyc]||KYC_STAGES.not_started).label,d.rc,d.remarks]);
   const ws=XLSX.utils.aoa_to_sheet([headers,...rows]);
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'PaymentTracker');
@@ -1337,6 +1670,294 @@ function showToast(type,msg){
   t.innerHTML=`<i class="bi ${icons[type]||'bi-info-circle'}"></i><span>${msg}</span>`;
   c.appendChild(t);
   setTimeout(()=>t.remove(),4000);
+}
+
+// ════════════════════════════════════════════
+//  BUYER PORTAL (separate flow — same underlying DEMANDS data)
+// ════════════════════════════════════════════
+const BUYER_DEMO = { name:'Rajesh Mehta', mobile:'9876543210', pan:'', buyerType:'individual', aadhaar:'', gst:'', kycStatus:'pending', kycDate:'', kycExpiry:'' };
+
+// D001 is a real linked demand (mirrors the bank Tracker). The other two are
+// additional won lots for the same buyer, added here to demonstrate multi-select payment.
+const BUYER_ASSETS = [
+  {linkedId:'D001', auctionId:'AUC-2026-051', lot:'L-001', reg:'MH12AB1234', vehicle:'Honda City ZX CVT (2021)', platform:'Bidkaro', amount:378000, status:'pending'},
+  {linkedId:null, auctionId:'AUC-2026-055', lot:'L-014', reg:'MH12AB5566', vehicle:'Maruti Suzuki Baleno Alpha (2021)', platform:'Bidkaro', amount:512000, status:'pending'},
+  {linkedId:null, auctionId:'AUC-2026-055', lot:'L-022', reg:'MH12CD7788', vehicle:'Hyundai Venue SX (2020)', platform:'eDiig', amount:349000, status:'pending'}
+];
+const BUYER_HISTORY = [];
+let buyerSelectedIdx = new Set();
+let gatewayAmount = 0;
+
+function showBuyerApp(){
+  document.getElementById('bank-app').style.display='none';
+  document.getElementById('buyer-app').style.display='block';
+  buyerResetLogin();
+}
+function showBankApp(){
+  document.getElementById('buyer-app').style.display='none';
+  document.getElementById('bank-app').style.display='block';
+}
+
+function buyerResetLogin(){
+  document.getElementById('buyer-topnav').style.display='none';
+  document.querySelectorAll('.buyer-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('bpage-login').classList.add('active');
+  document.getElementById('buyer-login-step-creds').style.display='block';
+  document.getElementById('buyer-login-step-otp').style.display='none';
+  document.getElementById('buyer-mobile').value='';
+  document.getElementById('buyer-pan').value='';
+}
+
+function buyerSendLoginOtp(){
+  const mobile=document.getElementById('buyer-mobile').value.trim();
+  const pan=document.getElementById('buyer-pan').value.trim();
+  if(!/^\d{10}$/.test(mobile)){showToast('warning','Enter a valid 10-digit mobile number.');return;}
+  if(pan.length!==10){showToast('warning','Enter a valid PAN number.');return;}
+  document.getElementById('buyer-mobile-echo').textContent=mobile.slice(-4);
+  document.getElementById('buyer-login-step-creds').style.display='none';
+  document.getElementById('buyer-login-step-otp').style.display='block';
+  showToast('success','OTP sent to +91 '+mobile);
+}
+
+function otpAutoNext(el){
+  if(el.value && el.nextElementSibling && el.nextElementSibling.classList.contains('otp-box')) el.nextElementSibling.focus();
+}
+
+function buyerVerifyLoginOtp(){
+  const boxes=document.querySelectorAll('#buyer-login-step-otp .otp-box');
+  const otp=[...boxes].map(b=>b.value).join('');
+  if(otp.length!==6){showToast('warning','Enter the complete 6-digit OTP.');return;}
+  showToast('success','Login successful. Welcome '+BUYER_DEMO.name+'!');
+  document.getElementById('buyer-name-echo').textContent=BUYER_DEMO.name;
+  document.getElementById('buyer-topnav').style.display='flex';
+  buyerNav('dashboard');
+}
+
+function buyerNav(page){
+  document.querySelectorAll('.buyer-tab').forEach(t=>t.classList.toggle('active', t.dataset.bpage===page));
+  document.querySelectorAll('.buyer-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('bpage-'+page).classList.add('active');
+  if(page==='dashboard') renderBuyerDashboard();
+  if(page==='kyc') kycGoStep(1);
+  if(page==='payment') renderBuyerPaymentTable();
+  if(page==='history') renderBuyerHistory();
+}
+
+function renderBuyerDashboard(){
+  const outstanding=BUYER_ASSETS.filter(a=>a.status==='pending').reduce((s,a)=>s+a.amount,0);
+  document.getElementById('buyer-outstanding-total').textContent=fmt(outstanding);
+  document.getElementById('buyer-asset-count-sub').textContent=BUYER_ASSETS.length+' vehicles won';
+  document.getElementById('buyer-dash-tbody').innerHTML=BUYER_ASSETS.map(a=>`
+    <tr><td>${a.auctionId}</td><td>${a.lot}</td><td>${a.vehicle}</td><td><strong>${a.reg}</strong></td><td>${platformBadge(a.platform)}</td>
+    <td>${a.status==='paid'?'—':fmt(a.amount)}</td><td>${a.status==='paid'?'<span class="badge badge-paid"><i class="bi bi-check-circle"></i> Paid</span>':'<span class="badge badge-pending"><i class="bi bi-clock"></i> Pending</span>'}</td></tr>`).join('');
+  updateKycStatusCard();
+}
+
+function updateKycStatusCard(){
+  const icon=document.getElementById('kyc-card-icon');
+  const txt=document.getElementById('kyc-status-text');
+  const sub=document.getElementById('kyc-status-sub');
+  if(BUYER_DEMO.kycStatus==='completed'){
+    icon.className='bi bi-patch-check-fill kyc-status-icon'; icon.style.color='var(--green)';
+    txt.textContent='Completed'; txt.style.color='var(--green)';
+    sub.textContent='Valid until '+BUYER_DEMO.kycExpiry;
+  } else {
+    icon.className='bi bi-person-vcard kyc-status-icon'; icon.style.color='var(--amber)';
+    txt.textContent='Pending'; txt.style.color='var(--text)';
+    sub.textContent='Required before payment as per RBI norms';
+  }
+}
+
+function buyerGoPayment(){
+  if(BUYER_DEMO.kycStatus!=='completed'){ openModal('modal-kyc-gate'); return; }
+  buyerNav('payment');
+}
+
+function renderBuyerPaymentTable(){
+  buyerSelectedIdx.clear();
+  document.getElementById('buyer-pay-tbody').innerHTML=BUYER_ASSETS.map((a,i)=>{
+    if(a.status==='paid') return `<tr><td></td><td>${a.auctionId}</td><td>${a.vehicle}</td><td>${a.reg}</td><td>${platformBadge(a.platform)}</td><td>—</td><td><span class="badge badge-paid">Paid</span></td></tr>`;
+    return `<tr class="buyer-asset-row" id="buyer-row-${i}"><td><input type="checkbox" onchange="buyerToggleAsset(${i},this)"></td><td>${a.auctionId}</td><td>${a.vehicle}</td><td>${a.reg}</td><td>${platformBadge(a.platform)}</td><td>${fmt(a.amount)}</td><td><span class="badge badge-pending">Pending</span></td></tr>`;
+  }).join('');
+  document.getElementById('buyer-select-all').checked=false;
+  updateBuyerSummary();
+}
+
+function buyerToggleAll(cb){
+  BUYER_ASSETS.forEach((a,i)=>{
+    if(a.status==='paid') return;
+    if(cb.checked && buyerSelectedIdx.size>=10 && !buyerSelectedIdx.has(i)) return;
+    const check=document.getElementById('buyer-row-'+i).querySelector('input[type=checkbox]');
+    check.checked=cb.checked;
+    buyerToggleAsset(i,check);
+  });
+}
+
+function buyerToggleAsset(i,el){
+  if(el.checked){
+    if(buyerSelectedIdx.size>=10){ el.checked=false; showToast('warning','You can select a maximum of 10 assets.'); return; }
+    buyerSelectedIdx.add(i);
+    document.getElementById('buyer-row-'+i).classList.add('selected');
+  } else {
+    buyerSelectedIdx.delete(i);
+    document.getElementById('buyer-row-'+i).classList.remove('selected');
+  }
+  updateBuyerSummary();
+}
+
+function updateBuyerSummary(){
+  const items=[...buyerSelectedIdx];
+  const total=items.reduce((s,i)=>s+BUYER_ASSETS[i].amount,0);
+  document.getElementById('buyer-summary-count').textContent=items.length;
+  document.getElementById('buyer-summary-amount').textContent=fmt(total);
+  document.getElementById('buyer-pay-btn').disabled=items.length===0;
+}
+
+// ── KYC STEPPER (eDiig-style: in-page PAN + Aadhaar OTP, no external redirect) ──
+function kycGoStep(step){
+  for(let i=1;i<=5;i++){
+    const s=document.getElementById('kyc-step-'+i);
+    document.getElementById('kyc-sub-'+i).classList.toggle('active', i===step);
+    if(i<step){ s.className='step done'; s.querySelector('.step-dot').innerHTML='<i class="bi bi-check"></i>'; }
+    else if(i===step){ s.className='step active'; }
+    else{ s.className='step idle'; }
+  }
+}
+
+function kycSetBuyerType(type,el){
+  BUYER_DEMO.buyerType=type;
+  document.querySelectorAll('#kyc-buyer-type .ftab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Syncs the buyer's KYC progress onto any real bank-side demand linked to this buyer,
+// so the Payment Tracker's KYC Status column reflects it live.
+function syncBuyerKycToDemands(stage){
+  BUYER_ASSETS.forEach(a=>{
+    if(!a.linkedId) return;
+    const d=DEMANDS.find(x=>x.id===a.linkedId);
+    if(d) d.kyc=stage;
+  });
+}
+
+function kycVerifyPan(){
+  const pan=document.getElementById('kyc-pan').value.trim().toUpperCase();
+  if(pan.length!==10){ showToast('warning','Enter a valid 10-character PAN.'); return; }
+  BUYER_DEMO.pan=pan;
+  document.getElementById('kyc-pan-echo').textContent=pan;
+  const isBiz=BUYER_DEMO.buyerType==='business';
+  document.getElementById('kyc-step2-label').textContent=isBiz?'GST':'Aadhaar';
+  document.getElementById('kyc-step2-title').textContent='Step 2 — '+(isBiz?'GST Verification':'Aadhaar Verification');
+  document.getElementById('kyc-step2-icon').innerHTML=isBiz?'<i class="bi bi-building-check"></i>':'<i class="bi bi-fingerprint"></i>';
+  document.getElementById('kyc-aadhaar-wrap').style.display=isBiz?'none':'block';
+  document.getElementById('kyc-gst-wrap').style.display=isBiz?'block':'none';
+  showToast('success','PAN verified successfully.');
+  syncBuyerKycToDemands('pan_verified');
+  kycGoStep(2);
+}
+
+function kycSendIdOtp(){
+  const isBiz=BUYER_DEMO.buyerType==='business';
+  if(isBiz){
+    const gst=document.getElementById('kyc-gst').value.trim().toUpperCase();
+    if(gst.length!==15){ showToast('warning','Enter a valid 15-character GST number.'); return; }
+    BUYER_DEMO.gst=gst;
+    document.getElementById('kyc-otp-source').innerHTML='GST-registered mobile ending <strong>••97</strong>';
+    showToast('success','OTP sent to GST-registered mobile number.');
+  } else {
+    const aad=document.getElementById('kyc-aadhaar').value.trim();
+    if(!/^\d{12}$/.test(aad)){ showToast('warning','Enter a valid 12-digit Aadhaar number.'); return; }
+    BUYER_DEMO.aadhaar=aad;
+    document.getElementById('kyc-otp-source').innerHTML='Aadhaar-linked mobile ending <strong>••97</strong>';
+    showToast('success','OTP sent to Aadhaar-linked mobile number.');
+  }
+  syncBuyerKycToDemands('id_otp_sent');
+  kycGoStep(3);
+}
+
+function kycVerifyOtp(){
+  const boxes=document.querySelectorAll('.kyc-otp');
+  const otp=[...boxes].map(b=>b.value).join('');
+  if(otp.length!==6){ showToast('warning','Enter the complete 6-digit OTP.'); return; }
+  const isBiz=BUYER_DEMO.buyerType==='business';
+  document.getElementById('kyc-confirm-name-label').textContent=isBiz?'Business Name (as per GST)':'Name (as per Aadhaar)';
+  document.getElementById('kyc-confirm-name').textContent=isBiz?'Mehta Auto Traders':BUYER_DEMO.name;
+  document.getElementById('kyc-confirm-pan').textContent=BUYER_DEMO.pan;
+  document.getElementById('kyc-confirm-id-label').textContent=isBiz?'GSTIN':'Aadhaar';
+  document.getElementById('kyc-confirm-id').textContent=isBiz?BUYER_DEMO.gst:('XXXX XXXX '+BUYER_DEMO.aadhaar.slice(-4));
+  syncBuyerKycToDemands('otp_verified');
+  kycGoStep(4);
+}
+
+function kycSubmit(){
+  if(!document.getElementById('kyc-confirm-check').checked){ showToast('warning','Please confirm your details to proceed.'); return; }
+  BUYER_DEMO.kycStatus='completed';
+  BUYER_DEMO.kycDate='24-Aug-2026';
+  BUYER_DEMO.kycExpiry='23-Sep-2026';
+  document.getElementById('kyc-done-date').textContent=BUYER_DEMO.kycDate;
+  document.getElementById('kyc-done-expiry').textContent=BUYER_DEMO.kycExpiry;
+  showToast('success','KYC completed successfully.');
+  syncBuyerKycToDemands('completed');
+  renderTrackerTable();
+  kycGoStep(5);
+}
+
+// ── PAYMENT GATEWAY (Hero-style: multi-asset pay in one go) ──
+function openGateway(){
+  const items=[...buyerSelectedIdx];
+  if(!items.length) return;
+  gatewayAmount=items.reduce((s,i)=>s+BUYER_ASSETS[i].amount,0);
+  document.getElementById('gateway-amount').textContent=fmt(gatewayAmount);
+  document.getElementById('gateway-select').style.display='block';
+  document.getElementById('gateway-processing').style.display='none';
+  document.getElementById('gateway-success').style.display='none';
+  openModal('modal-gateway');
+}
+
+function selectPayMethod(method){
+  document.getElementById('gateway-select').style.display='none';
+  document.getElementById('gateway-processing').style.display='block';
+  document.getElementById('gateway-method-echo').textContent=method;
+  setTimeout(()=>completeBuyerPayment(method),1600);
+}
+
+function completeBuyerPayment(method){
+  const items=[...buyerSelectedIdx];
+  const txnRef='HDFCPC'+Math.floor(100000+Math.random()*900000);
+  const paidDate='24-Aug-2026';
+  items.forEach(i=>{
+    const a=BUYER_ASSETS[i];
+    a.status='paid';
+    if(a.linkedId){
+      const d=DEMANDS.find(x=>x.id===a.linkedId);
+      if(d){
+        d.balancePaid+=d.balanceDue; d.balanceDue=0; d.status='paid';
+        d.payMode=method==='UPI'?'UPI':method==='Net Banking'?'RTGS':'NEFT';
+        d.utr=txnRef; d.paidDate=paidDate; d.rc='In Progress';
+      }
+    }
+  });
+  BUYER_HISTORY.unshift({date:paidDate, ref:txnRef, items:items.length, amount:gatewayAmount, mode:method});
+  document.getElementById('gateway-processing').style.display='none';
+  document.getElementById('gateway-success-amount').textContent=fmt(gatewayAmount);
+  document.getElementById('gateway-success-ref').textContent=txnRef;
+  document.getElementById('gateway-success').style.display='block';
+  renderDashboard(); renderTrackerTable();
+}
+
+function closeGatewaySuccess(){
+  closeModal('modal-gateway');
+  renderBuyerPaymentTable();
+  renderBuyerDashboard();
+  showToast('success','Payment recorded — also reflected in the Bank Tracker.');
+}
+
+function renderBuyerHistory(){
+  const tbody=document.getElementById('buyer-history-tbody');
+  const empty=document.getElementById('buyer-history-empty');
+  if(!BUYER_HISTORY.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  tbody.innerHTML=BUYER_HISTORY.map(h=>`<tr><td>${h.date}</td><td>${h.ref}</td><td>${h.items}</td><td>${fmt(h.amount)}</td><td>${h.mode}</td><td><span class="badge badge-paid"><i class="bi bi-check-circle"></i> Success</span></td></tr>`).join('');
 }
 
 // ────────────────────────────────────────────
