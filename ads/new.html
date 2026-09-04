@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ads | post to classifieds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=7">
+</head>
+<body>
+
+<div class="wrap">
+  <div class="headline">
+    <a href="index.html" style="text-decoration:none;"><span class="cl-logo">ads</span></a>
+    <span class="cl-tag">post to classifieds</span>
+    <span class="flexgap"></span>
+    <span id="authSlot" class="top-link"></span>
+  </div>
+  <hr class="thin">
+
+  <p class="fee-note">₹<span class="feeAmt"></span> to publish. Buyers pay your full listed price — we charge them a ₹<span class="feeAmt"></span> platform fee on top, not you.</p>
+
+  <div class="form-box">
+    <form id="newPostForm">
+      <label>category</label>
+      <select id="fCat" required></select>
+
+      <label>title</label>
+      <input type="text" id="fTitle" required maxlength="80" placeholder="e.g. iPhone 13, 128GB, mint condition">
+
+      <label>price (leave blank if not applicable)</label>
+      <input type="text" id="fPrice" placeholder="e.g. 25000">
+
+      <label>neighborhood</label>
+      <select id="fHood" required></select>
+
+      <label>description</label>
+      <textarea id="fDesc" required placeholder="Describe the item, service, or job in detail..."></textarea>
+
+      <button type="submit" id="publishBtn" class="submit-btn">Pay ₹<span class="feeAmt"></span> &amp; publish</button>
+      <div id="publishStatus" style="margin-top:10px;font-size:12px;color:#141414;"></div>
+    </form>
+  </div>
+
+  <footer class="foot">
+    <span>&copy; 2026 ads</span>
+    <a href="help.html">help</a>
+  </footer>
+</div>
+
+<script src="app.js?v=7"></script>
+<script>
+(function () {
+  CL.mountAuthLink(document.getElementById('authSlot'));
+  Array.prototype.forEach.call(document.querySelectorAll('.feeAmt'), function (el) {
+    el.textContent = CL.LEAD_FEE_INR;
+  });
+  var city = CL.getCity();
+  var catSel = document.getElementById('fCat');
+  Object.keys(CL.CATEGORIES).forEach(function (cat) {
+    var opt = document.createElement('option');
+    opt.value = cat; opt.textContent = cat;
+    catSel.appendChild(opt);
+  });
+
+  var hoodSel = document.getElementById('fHood');
+  (CL.AREAS[city] || []).forEach(function (a) {
+    var opt = document.createElement('option');
+    opt.value = a; opt.textContent = a;
+    hoodSel.appendChild(opt);
+  });
+
+  document.getElementById('newPostForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = document.getElementById('publishBtn');
+    var statusEl = document.getElementById('publishStatus');
+    btn.disabled = true;
+    statusEl.textContent = 'Processing ₹' + CL.LEAD_FEE_INR + ' payment (demo)...';
+    setTimeout(function () {
+      var priceRaw = document.getElementById('fPrice').value.trim();
+      var post = {
+        cat: catSel.value,
+        subcat: catSel.value,
+        title: document.getElementById('fTitle').value.trim(),
+        price: priceRaw ? Number(priceRaw.replace(/[^0-9]/g, '')) : null,
+        city: city,
+        hood: hoodSel.value,
+        swatch: '#c4c4c4',
+        desc: document.getElementById('fDesc').value.trim()
+      };
+      var id = CL.saveUserPost(post);
+      window.location.href = 'post.html?id=' + id;
+    }, 600);
+  });
+})();
+</script>
+</body>
+</html>

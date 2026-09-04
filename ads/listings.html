@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ads | search results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=7">
+</head>
+<body>
+
+<div class="wrap">
+  <div class="headline">
+    <a href="index.html" style="text-decoration:none;"><span class="cl-logo">ads</span></a>
+    <span class="cl-city" id="cityLabel"></span>
+    <span class="flexgap"></span>
+    <span id="authSlot" class="top-link"></span>
+    <a href="new.html"><button class="post-btn">+ post</button></a>
+  </div>
+
+  <form class="searchbar" id="searchForm">
+    <input type="text" id="searchInput" placeholder="search ads">
+    <button type="submit">search</button>
+  </form>
+  <hr class="thin">
+
+  <div class="main-layout">
+    <div class="side-col">
+      <div class="filter-box">
+        <label>category</label>
+        <select id="catFilter">
+          <option value="">all categories</option>
+        </select>
+        <label>sort by</label>
+        <select id="sortFilter">
+          <option value="new">newest</option>
+          <option value="price-asc">price, low to high</option>
+          <option value="price-desc">price, high to low</option>
+        </select>
+      </div>
+      <div class="side-box">
+        <h4>city info</h4>
+        <ul id="areaList"></ul>
+      </div>
+    </div>
+
+    <div class="main-col">
+      <div class="results-count" id="resultsCount"></div>
+      <div id="resultsList"></div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span>&copy; 2026 ads</span>
+    <a href="help.html">help</a>
+  </footer>
+</div>
+
+<script src="app.js?v=7"></script>
+<script>
+(function () {
+  CL.mountAuthLink(document.getElementById('authSlot'));
+  var city = CL.getCity();
+  document.getElementById('cityLabel').textContent = '> ' + city;
+
+  var areas = CL.AREAS[city] || [];
+  document.getElementById('areaList').innerHTML = areas.map(function (a) {
+    return '<li><a href="listings.html?hood=' + encodeURIComponent(a) + '">' + a + '</a></li>';
+  }).join('');
+
+  var catFilter = document.getElementById('catFilter');
+  Object.keys(CL.CATEGORIES).forEach(function (cat) {
+    var opt = document.createElement('option');
+    opt.value = cat; opt.textContent = cat;
+    catFilter.appendChild(opt);
+  });
+
+  var qParam = CL.qs('q') || '';
+  var catParam = CL.qs('cat') || '';
+  var subcatParam = CL.qs('subcat') || '';
+  var hoodParam = CL.qs('hood') || '';
+  var mineParam = CL.qs('mine') || '';
+
+  document.getElementById('searchInput').value = qParam;
+  catFilter.value = catParam;
+
+  function render() {
+    var q = document.getElementById('searchInput').value.trim().toLowerCase();
+    var cat = catFilter.value;
+    var sort = document.getElementById('sortFilter').value;
+
+    var results = CL.allListings().filter(function (l) {
+      if (mineParam && !l.user) return false;
+      if (cat && l.cat !== cat) return false;
+      if (subcatParam && l.subcat !== subcatParam) return false;
+      if (hoodParam && l.hood !== hoodParam) return false;
+      if (q && (l.title + ' ' + l.desc + ' ' + l.subcat).toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+
+    if (sort === 'price-asc') {
+      results.sort(function (a, b) { return (a.price || 0) - (b.price || 0); });
+    } else if (sort === 'price-desc') {
+      results.sort(function (a, b) { return (b.price || 0) - (a.price || 0); });
+    } else {
+      results.sort(function (a, b) { return a.daysAgo - b.daysAgo; });
+    }
+
+    document.getElementById('resultsCount').textContent = (mineParam ? 'your postings' : results.length + ' results') +
+      (cat ? ' in ' + cat : '') + (subcatParam ? ' / ' + subcatParam : '') + (hoodParam ? ' near ' + hoodParam : '') +
+      (q ? ' for "' + q + '"' : '');
+
+    var list = document.getElementById('resultsList');
+    if (!results.length) {
+      list.innerHTML = '<p style="color:#888;padding:20px 0;">No listings matched. Try a different search or category.</p>';
+      return;
+    }
+    list.innerHTML = results.map(function (l) {
+      return '<div class="listing-row">' +
+        '<span class="listing-date">' + CL.fmtDate(l.daysAgo) + '</span>' +
+        '<span class="swatch" style="background:' + l.swatch + '"></span>' +
+        '<span class="listing-price">' + CL.fmtPrice(l.price, l.city) + '</span>' +
+        '<span class="listing-title"><a href="post.html?id=' + l.id + '">' + l.title + '</a></span>' +
+        '<span class="listing-hood">(' + l.hood + ')</span>' +
+        '</div>';
+    }).join('');
+  }
+
+  document.getElementById('searchForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    render();
+  });
+  catFilter.addEventListener('change', render);
+  document.getElementById('sortFilter').addEventListener('change', render);
+
+  render();
+})();
+</script>
+</body>
+</html>

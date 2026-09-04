@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ads | listing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=7">
+</head>
+<body>
+
+<div class="wrap">
+  <div class="headline">
+    <a href="index.html" style="text-decoration:none;"><span class="cl-logo">ads</span></a>
+    <span class="cl-city" id="cityLabel"></span>
+    <span class="flexgap"></span>
+    <span id="authSlot" class="top-link"></span>
+    <a href="listings.html">&laquo; back to search results</a>
+  </div>
+  <hr class="thin">
+
+  <div id="postContent"></div>
+
+  <footer class="foot">
+    <span>&copy; 2026 ads</span>
+    <a href="help.html">help</a>
+  </footer>
+</div>
+
+<script src="app.js?v=7"></script>
+<script>
+(function () {
+  CL.mountAuthLink(document.getElementById('authSlot'));
+  document.getElementById('cityLabel').textContent = '> ' + CL.getCity();
+
+  var id = CL.qs('id');
+  var listing = id ? CL.findListing(id) : null;
+  var el = document.getElementById('postContent');
+
+  if (!listing) {
+    el.innerHTML = '<p style="padding:30px 0;color:#888;">This listing could not be found. It may have expired or been removed.</p>';
+    return;
+  }
+
+  var hasPrice = listing.price != null;
+  var total = hasPrice ? listing.price + CL.LEAD_FEE_INR : null;
+  var currencySym = CL.currencySymbol(listing.city);
+
+  var swatches = [listing.swatch, '#ccc', '#ddd'];
+  el.innerHTML =
+    '<div class="post-meta">' + listing.cat + ' &gt; ' + listing.subcat + ' &mdash; ' + listing.hood + ', ' + listing.city + ' &mdash; ' + CL.fmtDate(listing.daysAgo) + (listing.user ? ' &mdash; <b>your posting</b>' : '') + '</div>' +
+    (hasPrice ? '<div class="post-price">' + CL.fmtPrice(listing.price, listing.city) + '</div>' : '') +
+    '<h1 class="post-title">' + listing.title + '</h1>' +
+    '<div class="post-gallery">' + swatches.map(function (s) {
+      return '<div class="swatch-lg" style="background:' + s + '"></div>';
+    }).join('') + '</div>' +
+    '<div class="post-body">' + listing.desc + '</div>' +
+    '<div class="reply-box">' +
+      '<b>reply to this posting</b><br><br>' +
+      '<input type="text" id="replyMsg" placeholder="write a message to the poster..." style="width:100%;padding:7px;border:1px solid #999;margin-bottom:8px;">' +
+      (hasPrice
+        ? '<div class="fee-note">You pay ' + CL.fmtPrice(total, listing.city) + ' total — ' + CL.fmtPrice(listing.price, listing.city) + ' goes to the seller, ' + currencySym + CL.LEAD_FEE_INR + ' is our platform fee (charged to you, not the seller).</div>' +
+          '<button id="replyBtn" class="pay-btn">Pay ' + CL.fmtPrice(total, listing.city) + ' &amp; send message</button>'
+        : '<div class="fee-note">₹' + CL.LEAD_FEE_INR + ' to connect with the seller.</div>' +
+          '<button id="replyBtn" class="pay-btn">Pay ₹' + CL.LEAD_FEE_INR + ' &amp; send message</button>') +
+      '<div id="replyStatus" style="margin-top:8px;color:#141414;font-size:12px;"></div>' +
+    '</div>';
+
+  document.getElementById('replyBtn').addEventListener('click', function () {
+    var msg = document.getElementById('replyMsg').value.trim();
+    var statusEl = document.getElementById('replyStatus');
+    var btn = document.getElementById('replyBtn');
+    if (!msg) {
+      statusEl.style.color = '#141414';
+      statusEl.textContent = 'Write a message first.';
+      return;
+    }
+    btn.disabled = true;
+    statusEl.style.color = '#8a8a8a';
+    statusEl.textContent = 'Processing payment...';
+    setTimeout(function () {
+      CL.recordLead();
+      statusEl.style.color = '#141414';
+      statusEl.textContent = hasPrice
+        ? '✓ Paid ' + CL.fmtPrice(total, listing.city) + ' — ' + CL.fmtPrice(listing.price, listing.city) + ' sent to the seller, ' + currencySym + CL.LEAD_FEE_INR + ' kept as platform fee. Message delivered.'
+        : '✓ Message sent.';
+      btn.disabled = false;
+    }, 600);
+  });
+})();
+</script>
+</body>
+</html>

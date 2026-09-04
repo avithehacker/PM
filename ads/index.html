@@ -3,9 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ads</title>
+<title>ads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
-<h1>Ads</h1>
+
+<div class="wrap">
+  <div class="headline">
+    <span class="cl-logo">ads</span>
+    <span class="flexgap"></span>
+    <span id="authSlot" class="top-link"></span>
+    <select id="citySelect" class="city-mini"></select>
+  </div>
+
+  <div class="hero">
+    <div class="hero-card">
+      <h2>Sell something</h2>
+      <p>₹20 to list. Takes under a minute.</p>
+      <a href="new.html" class="cta-btn">Start selling →</a>
+    </div>
+    <div class="hero-card">
+      <h2>Find something</h2>
+      <form id="searchForm" class="hero-search">
+        <input type="text" id="searchInput" placeholder="What are you looking for?">
+        <button type="submit">Search →</button>
+      </form>
+      <p class="fee-note">You pay a ₹20 platform fee on top of the seller's price.</p>
+    </div>
+  </div>
+
+  <p id="mineLine" class="mine-line" hidden></p>
+
+  <footer class="foot">
+    <span>&copy; 2026 ads</span>
+    <a href="help.html">help</a>
+  </footer>
+</div>
+
+<script src="app.js?v=7"></script>
+<script>
+(function () {
+  CL.mountAuthLink(document.getElementById('authSlot'));
+  var citySelect = document.getElementById('citySelect');
+  Object.keys(CL.REGIONS).forEach(function (region) {
+    var group = document.createElement('optgroup');
+    group.label = region;
+    CL.REGIONS[region].forEach(function (c) {
+      var opt = document.createElement('option');
+      opt.value = c; opt.textContent = c;
+      group.appendChild(opt);
+    });
+    citySelect.appendChild(group);
+  });
+  citySelect.value = CL.getCity();
+  citySelect.addEventListener('change', function () {
+    CL.setCity(citySelect.value);
+  });
+
+  document.getElementById('searchForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var q = document.getElementById('searchInput').value.trim();
+    window.location.href = 'listings.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+  });
+
+  var myPosts = JSON.parse(localStorage.getItem('cl_user_posts') || '[]');
+  if (myPosts.length) {
+    var line = document.getElementById('mineLine');
+    line.hidden = false;
+    line.innerHTML = 'You have ' + myPosts.length + ' posting' + (myPosts.length > 1 ? 's' : '') + ' up — <a href="listings.html?mine=1">view them</a>';
+  }
+})();
+</script>
 </body>
 </html>

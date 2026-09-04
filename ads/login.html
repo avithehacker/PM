@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ads | log in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=7">
+</head>
+<body>
+
+<div class="wrap">
+  <div class="headline">
+    <a href="index.html" style="text-decoration:none;"><span class="cl-logo">ads</span></a>
+    <span class="cl-tag">log in</span>
+  </div>
+  <hr class="thin">
+
+  <div class="form-box">
+    <p id="alreadyIn" class="fee-note" hidden></p>
+    <form id="loginForm">
+      <label>name</label>
+      <input type="text" id="fName" required maxlength="40" placeholder="e.g. Priya Shah">
+
+      <label>phone or email</label>
+      <input type="text" id="fContact" required maxlength="60" placeholder="e.g. 98765 43210 or you@email.com">
+
+      <button type="submit" class="submit-btn">Continue</button>
+    </form>
+  </div>
+
+  <footer class="foot">
+    <span>&copy; 2026 ads</span>
+    <a href="index.html">home</a>
+  </footer>
+</div>
+
+<script src="app.js?v=7"></script>
+<script>
+(function () {
+  var user = CL.getUser();
+  if (user) {
+    var el = document.getElementById('alreadyIn');
+    el.hidden = false;
+    el.innerHTML = 'You\'re already logged in as ' + user.name + '. <a href="index.html">Go home</a> or log in as someone else below.';
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('fName').value.trim();
+    var contact = document.getElementById('fContact').value.trim();
+    CL.setUser({ name: name, contact: contact });
+    window.location.href = 'index.html';
+  });
+})();
+</script>
+</body>
+</html>
