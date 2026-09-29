@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auto Bid Demo</title>
+<style>
+:root{
+  --bg:#eef2f7;--card:#fff;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0;--soft:#f8fafc;
+  --navy:#1f4e79;--navy-d:#163a5c;--blue:#2563eb;--blue-bg:#dbeafe;
+  --green:#16a34a;--green-bg:#dcfce7;--red:#dc2626;--red-bg:#fee2e2;--amber:#b45309;--amber-bg:#fef3c7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;padding:24px 16px 48px}
+button{font-family:inherit;cursor:pointer;border:none}
+button:disabled{cursor:not-allowed}
+.wrap{max-width:980px;margin:0 auto;display:grid;gap:16px}
+h1{font-size:22px;color:var(--navy)}
+.sub{color:var(--muted);font-size:13px}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.step{font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;background:var(--card);border:1px solid var(--line);color:var(--muted)}
+.step.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.step.done{background:var(--green-bg);color:var(--green);border-color:transparent}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.pad{padding:16px}
+
+/* vehicle card */
+.veh{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.thumb{width:96px;height:64px;border-radius:8px;background:#f0f4f8;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.veh-name{font-size:17px;font-weight:700}
+.veh-sub{font-size:12px;color:var(--muted)}
+.veh-right{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap}
+.kv .k{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.kv .v{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.bar{display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
+.pill.lead{background:var(--green-bg);color:var(--green)}
+.pill.out{background:var(--red-bg);color:var(--red)}
+.pill.idle{background:var(--line);color:var(--muted)}
+.btn{padding:9px 16px;border-radius:6px;font-weight:700;font-size:13px}
+.btn.primary{background:var(--navy);color:#fff}.btn.primary:hover:not(:disabled){background:var(--navy-d)}
+.btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--ink)}.btn.ghost:hover:not(:disabled){background:var(--soft)}
+.btn.red{background:var(--red-bg);color:var(--red)}
+.btn.amber{background:var(--amber-bg);color:var(--amber)}
+.btn:disabled{opacity:.45}
+.auto-btn{display:inline-flex;align-items:center;gap:6px}
+
+/* auto bid window */
+.win-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--navy);color:#fff;border-radius:10px 10px 0 0}
+.win-hd b{font-size:15px}
+.win-x{background:rgba(255,255,255,.15);color:#fff;width:28px;height:28px;border-radius:6px;font-size:14px}
+.status{font-size:12.5px;font-weight:600;color:var(--red);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.status.on{color:var(--blue)}.status.pause{color:var(--amber)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media(max-width:560px){.fields{grid-template-columns:1fr}}
+.lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px}
+.stp{display:flex;border:1.5px solid var(--line);border-radius:6px;overflow:hidden;height:40px;background:#fff}
+.stp:focus-within{border-color:var(--navy)}
+.stp button{width:36px;background:var(--soft);color:var(--navy);font-size:18px;font-weight:600}
+.stp button:hover:not(:disabled){background:var(--line)}
+.stp button:disabled{color:#cbd5e1}
+.stp input{flex:1;min-width:0;border:none;outline:none;text-align:center;font-size:15px;font-weight:700;font-family:inherit;font-variant-numeric:tabular-nums}
+select{width:100%;height:40px;border:1.5px solid var(--line);border-radius:6px;padding:0 10px;font-size:15px;font-weight:700;font-family:inherit;background:#fff;color:var(--ink)}
+select:focus{outline:none;border-color:var(--navy)}
+.hint{font-size:12px;color:var(--muted);margin:8px 0 14px}
+.hint.warn{color:var(--amber);font-weight:600}
+.sec{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:8px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+.ladder{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;max-height:230px;overflow-y:auto;padding:2px}
+.chip{border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:#fff}
+.chip-top{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);font-weight:600}
+.tag{font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px;background:var(--line);color:#475569}
+.tag.max{background:var(--blue-bg);color:var(--blue)}
+.chip-row{display:flex;justify-content:space-between;align-items:center;margin-top:2px}
+.amt{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.ed{display:flex;gap:3px}
+.ed button{width:22px;height:22px;border-radius:4px;background:var(--soft);color:var(--navy);font-weight:700}
+.ed button:disabled{color:#cbd5e1}
+.chip.placed{background:var(--blue-bg);border-color:rgba(37,99,235,.3)}.chip.placed .amt{color:var(--blue)}
+.chip.next{border:2px solid var(--navy)}
+.chip.skipped{opacity:.45}.chip.skipped .amt{text-decoration:line-through}
+.info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+.info .v{font-size:14px}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.fee{font-size:12px;color:var(--muted)}
+.banner{border-radius:8px;padding:10px 12px;font-size:13px;font-weight:600;margin-bottom:12px}
+.banner.win{background:var(--green-bg);color:var(--green)}
+.banner.lose{background:var(--red-bg);color:var(--red)}
+.banner.warn{background:var(--amber-bg);color:var(--amber)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+
+/* side panel */
+.side h3{font-size:14px;color:var(--navy);margin-bottom:4px}
+.side p{font-size:12px;color:var(--muted);margin-bottom:10px}
+.demo-btns{display:grid;gap:8px;margin-bottom:14px}
+.log{max-height:360px;overflow-y:auto;display:grid;gap:6px}
+.log-row{display:flex;gap:8px;align-items:center;font-size:12px;padding:6px 8px;border-radius:6px;background:var(--soft)}
+.log-row .who{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;width:52px;text-align:center;flex-shrink:0}
+.who.you{background:var(--blue-bg);color:var(--blue)}.who.rival{background:var(--red-bg);color:var(--red)}.who.sys{background:var(--amber-bg);color:var(--amber)}.who.man{background:var(--line);color:#475569}
+.log-row .t{flex:1}
+.log-row .a{font-weight:700;font-variant-numeric:tabular-nums}
+.empty{font-size:12px;color:var(--muted);text-align:center;padding:16px}
+
+/* confirm */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal{background:#fff;border-radius:12px;max-width:400px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.2);overflow:hidden}
+.modal .pad h2{font-size:17px;color:var(--navy);margin-bottom:6px}
+.sum{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:12px 0}
+.sum div{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.sum span:first-child{color:var(--muted)}.sum span:last-child{font-weight:700}
+.m-btns{display:flex;justify-content:flex-end;gap:8px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Auto Bid — interactive demo</h1>
+    <p class="sub">Set your Start bid, Max bid and No. of bids. The system builds your bid ladder and bids for you whenever someone beats you.</p>
+    <div class="steps" id="steps">
+      <span class="step" data-s="1">1 · Open Auto Bid</span>
+      <span class="step" data-s="2">2 · Set bids</span>
+      <span class="step" data-s="3">3 · Activate &amp; confirm</span>
+      <span class="step" data-s="4">4 · System bids for you</span>
+      <span class="step" data-s="5">5 · Win or stop</span>
+    </div>
+  </header>
+
+  <!-- Vehicle card -->
+  <section class="card pad">
+    <div class="veh">
+      <div class="thumb" aria-hidden="true">
+        <svg width="80" height="40" viewBox="0 0 200 76" fill="none"><path d="M65 42 L95 26 L135 26 L148 40" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/><path d="M88 26 Q110 20 128 26" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/><circle cx="57" cy="56" r="16" stroke="#94a3b8" stroke-width="3"/><circle cx="147" cy="56" r="16" stroke="#94a3b8" stroke-width="3"/></svg>
+      </div>
+      <div>
+        <div class="veh-name">Bajaj Avenger Street 160</div>
+        <div class="veh-sub">2019 · Gurgaon · Loan No. 25279809</div>
+      </div>
+      <div class="veh-right">
+        <div class="kv"><div class="k">Base price</div><div class="v" id="vBase"></div></div>
+        <div class="kv"><div class="k">Highest bid</div><div class="v" id="vTop"></div></div>
+        <div class="kv"><div class="k">Ends in</div><div class="v">01h 19m</div></div>
+      </div>
+    </div>
+    <div class="bar">
+      <span class="pill idle" id="leadPill">No bids yet</span>
+      <span class="sub" id="leadTxt"></span>
+      <span style="margin-left:auto"></span>
+      <button class="btn primary auto-btn" id="openBtn">⚡ Auto Bid</button>
+    </div>
+  </section>
+
+  <div class="grid">
+    <!-- Auto bid window -->
+    <section class="card" id="win" hidden>
+      <div class="win-hd"><b>Auto Bid</b><button class="win-x" id="closeWin" aria-label="Close">✕</button></div>
+      <div class="pad">
+        <div class="status" id="status"><span class="dot"></span><span id="statusTxt">No auto bid is active for this vehicle</span></div>
+        <div id="banner" class="banner" hidden></div>
+
+        <!-- setup -->
+        <div id="setup">
+          <div class="fields">
+            <div>
+              <label class="lbl" for="startIn">Start bid</label>
+              <div class="stp"><button id="startMinus" aria-label="Lower start bid">−</button><input id="startIn" inputmode="numeric"><button id="startPlus" aria-label="Raise start bid">+</button></div>
+            </div>
+            <div>
+              <label class="lbl" for="maxIn">Max bid</label>
+              <div class="stp"><button id="maxMinus" aria-label="Lower max bid">−</button><input id="maxIn" inputmode="numeric"><button id="maxPlus" aria-label="Raise max bid">+</button></div>
+            </div>
+            <div>
+              <label class="lbl" for="countSel">No. of bids</label>
+              <select id="countSel"></select>
+            </div>
+          </div>
+          <p class="hint">Start = your first bid. Max = the most you'll pay. No. of bids = how many times the system may bid for you.</p>
+        </div>
+
+        <!-- live summary (after activation) -->
+        <div id="live" hidden>
+          <div class="info" style="border-top:none;margin-top:0;padding-top:0;margin-bottom:12px">
+            <div class="kv"><div class="k">Your bid</div><div class="v" id="liveYou"></div></div>
+            <div class="kv"><div class="k">Next ladder bid</div><div class="v" id="liveNext" style="color:var(--blue)"></div></div>
+            <div class="kv"><div class="k">Max bid</div><div class="v" id="liveMax"></div></div>
+          </div>
+        </div>
+
+        <div class="sec">Your bid ladder</div>
+        <div class="ladder" id="ladder"></div>
+        <p class="hint" id="ladderHint"></p>
+
+        <div class="info">
+          <div class="kv"><div class="k">Base price</div><div class="v" id="iBase"></div></div>
+          <div class="kv"><div class="k">Available limit</div><div class="v">₹1,00,00,000</div></div>
+          <div class="kv"><div class="k">Bids remaining</div><div class="v" id="iLeft"></div></div>
+        </div>
+
+        <div class="foot" id="setupFoot">
+          <span class="fee">* An extra transaction fee applies</span>
+          <button class="btn primary" id="activateBtn">ACTIVATE</button>
+        </div>
+
+        <div class="acts" id="liveActs" hidden>
+          <button class="btn amber" id="pauseBtn">Pause</button>
+          <button class="btn red" id="stopBtn">Stop auto bid</button>
+          <button class="btn ghost" id="manualBtn">Manual bid</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo controls -->
+    <aside class="card pad side" id="side">
+      <h3>Try it: play the auction</h3>
+      <p>Pretend to be another buyer and watch Auto Bid answer.</p>
+      <div class="demo-btns">
+        <button class="btn ghost" id="rivalBtn">👤 Another buyer bids higher</button>
+        <button class="btn ghost" id="endBtn">⏱ End the auction now</button>
+        <button class="btn ghost" id="resetBtn">↺ Reset demo</button>
+      </div>
+      <div class="sec">Activity</div>
+      <div class="log" id="log"><div class="empty">No bids yet.</div></div>
+    </aside>
+  </div>
+</div>
+
+<!-- Confirm popup -->
+<div class="overlay" id="confirm" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <div class="pad">
+      <h2 id="cfTitle">Activate auto bid?</h2>
+      <p class="sub">The system will bid for you whenever someone beats your bid.</p>
+      <div class="sum">
+        <div><span>Bid 1 (placed now)</span><span id="cfFirst"></span></div>
+        <div><span>Max bid (never above)</span><span id="cfMax"></span></div>
+        <div><span>No. of bids</span><span id="cfCount"></span></div>
+        <div><span>Transaction fee</span><span>Extra charge applies</span></div>
+      </div>
+      <div class="m-btns">
+        <button class="btn ghost" id="cfNo">No, go back</button>
+        <button class="btn primary" id="cfYes">Yes, activate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Settings ────────────────────────────────────────────────
+const BASE = 15000, INC = 500, QUOTA = 20, LIMIT = 10000000;
+const $ = id => document.getElementById(id);
+const fmt = n => '₹' + n.toLocaleString('en-IN');
+
+// ─── State ───────────────────────────────────────────────────
+let S;
+function reset() {
+  S = {
+    top: BASE, leader: null,             // highest bid and who holds it ('you' | 'rival')
+    start: BASE + INC, max: BASE + INC, n: 1, ladder: [BASE + INC],
+    mode: 'idle',                        // idle | on | paused | stopped | ended
+    idx: 0, placed: [], used: 0, log: [], done: false, result: null
+  };
+  $('win').hidden = true;
+  render();
+}
+
+// ─── Ladder rule ─────────────────────────────────────────────
+// step = (Max − Start) ÷ (No. of bids − 1), rounded DOWN to ₹500; last bid = Max
+const maxBidsFor = (start, max) => max <= start ? 1 : Math.floor((max - start) / INC) + 1;
+function buildLadder(start, max, n) {
+  if (n <= 1 || max <= start) return [start];
+  const step = Math.max(INC, Math.floor((max - start) / (n - 1) / INC) * INC);
+  const out = [];
+  for (let i = 0; i < n - 1; i++) out.push(start + i * step);
+  out.push(max);
+  return out;
+}
+function recompute(start, max, n) {
+  const minStart = S.top + INC;
+  start = Math.max(minStart, Math.min(LIMIT, start));
+  max = Math.max(start, Math.min(LIMIT, max));
+  const cap = Math.min(QUOTA - S.used, maxBidsFor(start, max));
+  if (max > start && n < 2) n = 2;   // Max above Start → at least 2 bids
+  if (max === start) n = 1;          // Max = Start → only 1 bid
+  n = Math.max(1, Math.min(n, cap));
+  Object.assign(S, { start, max, n, ladder: buildLadder(start, max, n) });
+  render();
+}
+const snap = v => { const b = S.top + INC; return b + Math.round((v - b) / INC) * INC; };
+
+// ─── Bidding engine ──────────────────────────────────────────
+function addLog(who, text, amt) { S.log.unshift({ who, text, amt }); }
+
+function activate() {
+  S.mode = 'on'; S.idx = 1; S.placed = [0]; S.used = 1;
+  S.top = S.ladder[0]; S.leader = 'you'; S.done = S.ladder.length === 1;
+  addLog('you', 'Auto bid ON — Bid 1 placed', S.ladder[0]);
+  render();
+}
+
+function rivalBids() {
+  if (S.mode === 'ended') return;
+  const jump = INC * (1 + Math.floor(Math.random() * 3));  // rival raises by ₹500–₹1,500
+  S.top += jump; S.leader = 'rival';
+  addLog('rival', 'Another buyer bid higher', S.top);
+  render();
+  if (S.mode === 'on') setTimeout(autoRespond, 700);
+}
+
+function autoRespond() {
+  if (S.mode !== 'on' || S.leader !== 'rival') return;
+  if (S.used >= QUOTA) { addLog('sys', 'No bids left for this vehicle'); S.done = true; return render(); }
+  let i = S.idx;
+  while (i < S.ladder.length && S.ladder[i] <= S.top) i++;   // skip amounts already beaten
+  if (i >= S.ladder.length) {
+    S.idx = i; S.done = true;
+    addLog('sys', 'Ladder finished — your Max is reached');
+    return render();
+  }
+  S.top = S.ladder[i]; S.leader = 'you'; S.placed.push(i); S.idx = i + 1; S.used++;
+  if (S.idx >= S.ladder.length) S.done = true;
+  addLog('you', `Auto bid — Bid ${i + 1} of ${S.ladder.length}`, S.top);
+  render();
+}
+
+function manualBid() {
+  if (S.leader !== 'rival' || S.used >= QUOTA) return;
+  S.top += INC; S.leader = 'you'; S.used++;
+  addLog('man', 'You placed a manual bid', S.top);
+  render();
+}
+
+function endAuction() {
+  if (S.mode === 'ended') return;
+  S.result = S.leader === 'you' ? 'win' : 'lose';
+  S.mode = 'ended';
+  addLog('sys', S.result === 'win' ? 'Auction ended — you won' : 'Auction ended');
+  $('win').hidden = false;
+  render();
+}
+
+// ─── Render ──────────────────────────────────────────────────
+function render() {
+  const setupMode = S.mode === 'idle';
+  const left = QUOTA - S.used;
+
+  // vehicle card
+  $('vBase').textContent = fmt(BASE);
+  $('vTop').textContent = S.leader ? fmt(S.top) : '—';
+  const pill = $('leadPill');
+  pill.className = 'pill ' + (S.leader === 'you' ? 'lead' : S.leader === 'rival' ? 'out' : 'idle');
+  pill.textContent = S.leader === 'you' ? 'You are winning' : S.leader === 'rival' ? 'You are outbid' : 'No bids yet';
+  $('leadTxt').textContent = S.mode === 'on' ? 'Auto bid is ON' : S.mode === 'paused' ? 'Auto bid paused' : '';
+
+  // status
+  const st = $('status');
+  st.className = 'status' + (S.mode === 'on' ? ' on' : S.mode === 'paused' ? ' pause' : '');
+  $('statusTxt').textContent = {
+    idle: 'No auto bid is active for this vehicle',
+    on: `Auto bid ON · Bid ${S.placed.length} of ${S.ladder.length} placed`,
+    paused: 'Auto bid paused — no bids will be placed',
+    stopped: 'Auto bid stopped',
+    ended: 'Auction ended'
+  }[S.mode];
+
+  // banner
+  const bn = $('banner');
+  bn.hidden = true;
+  if (S.mode === 'ended') {
+    bn.hidden = false;
+    bn.className = 'banner ' + (S.result === 'win' ? 'win' : 'lose');
+    bn.textContent = S.result === 'win' ? `🎉 You won the vehicle at ${fmt(S.top)}.` : `Another buyer won at ${fmt(S.top)}.`;
+  } else if (S.done && S.leader === 'rival' && S.mode !== 'idle') {
+    bn.hidden = false; bn.className = 'banner warn';
+    bn.textContent = `Auto bid stopped: your Max of ${fmt(S.max)} is reached. ${left > 0 ? 'You can still bid manually.' : 'No bids left.'}`;
+  }
+
+  // setup vs live
+  $('setup').hidden = !setupMode;
+  $('setupFoot').hidden = !setupMode;
+  $('live').hidden = setupMode;
+  $('liveActs').hidden = setupMode || S.mode === 'ended';
+
+  if (setupMode) {
+    $('startIn').value = S.start.toLocaleString('en-IN');
+    $('maxIn').value = S.max.toLocaleString('en-IN');
+    $('startMinus').disabled = S.start - INC < S.top + INC;
+    $('maxMinus').disabled = S.max - INC < S.start;
+    const cap = Math.min(QUOTA - S.used, maxBidsFor(S.start, S.max));
+    $('countSel').innerHTML = Array.from({ length: cap }, (_, i) => `<option ${i + 1 === S.n ? 'selected' : ''}>${i + 1}</option>`).join('');
+  } else {
+    $('liveYou').textContent = S.placed.length || S.used ? fmt(lastYourBid()) : '—';
+    $('liveNext').textContent = S.idx < S.ladder.length ? fmt(S.ladder[S.idx]) : '—';
+    $('liveMax').textContent = fmt(S.max);
+    $('pauseBtn').textContent = S.mode === 'paused' ? 'Resume' : 'Pause';
+    $('pauseBtn').hidden = S.mode === 'stopped';
+    $('stopBtn').hidden = S.mode === 'stopped';
+    $('manualBtn').disabled = S.leader !== 'rival' || left <= 0;
+    $('manualBtn').textContent = S.leader === 'rival' ? `Manual bid ${fmt(S.top + INC)}` : 'Manual bid (you are winning)';
+  }
+
+  // ladder
+  const n = S.ladder.length;
+  $('ladder').innerHTML = S.ladder.map((amt, i) => {
+    const first = i === 0, last = i === n - 1 && n > 1;
+    let cls = '', note = '';
+    if (!setupMode) {
+      if (S.placed.includes(i)) { cls = 'placed'; note = '✓ placed'; }
+      else if (i < S.idx) { cls = 'skipped'; note = 'skipped'; }
+      else if (i === S.idx && S.mode !== 'ended' && S.mode !== 'stopped') { cls = 'next'; note = 'next'; }
+    }
+    const tag = first ? '<span class="tag">START</span>' : last ? '<span class="tag max">MAX</span>' : '';
+    const edit = setupMode && !first && !last
+      ? `<span class="ed"><button data-i="${i}" data-d="-1" aria-label="Lower bid ${i + 1}" ${amt - INC <= S.ladder[i - 1] ? 'disabled' : ''}>−</button><button data-i="${i}" data-d="1" aria-label="Raise bid ${i + 1}" ${amt + INC >= S.ladder[i + 1] ? 'disabled' : ''}>+</button></span>` : '';
+    return `<div class="chip ${cls}"><div class="chip-top"><span>Bid ${i + 1}</span>${note ? `<span>${note}</span>` : tag}</div><div class="chip-row"><span class="amt">${fmt(amt)}</span>${edit}</div></div>`;
+  }).join('');
+
+  const step = n > 2 ? S.ladder[1] - S.ladder[0] : null;
+  const lastJump = n > 1 ? S.ladder[n - 1] - S.ladder[n - 2] : null;
+  const h = $('ladderHint');
+  h.className = 'hint';
+  if (!setupMode) h.textContent = 'Blue = placed · outlined = placed next time you are outbid · faded = skipped because the other buyer was already above it.';
+  else if (n === 1) h.textContent = 'Raise Max bid to add more bids.';
+  else if (step && lastJump > step) { h.className = 'hint warn'; h.textContent = `Steps of ${fmt(step)}; the last bid jumps ${fmt(lastJump)} to reach your Max. You can adjust middle bids with + / −.`; }
+  else h.textContent = step ? `Each bid goes up by ${fmt(step)}. You can adjust middle bids with + / −.` : 'Two bids: Start, then Max.';
+
+  // info
+  $('iBase').textContent = fmt(BASE);
+  $('iLeft').textContent = left;
+
+  // log
+  $('log').innerHTML = S.log.length ? S.log.map(l => {
+    const lab = { you: 'AUTO', rival: 'BUYER', sys: 'SYSTEM', man: 'MANUAL' }[l.who];
+    return `<div class="log-row"><span class="who ${l.who}">${lab}</span><span class="t">${l.text}</span>${l.amt ? `<span class="a">${fmt(l.amt)}</span>` : ''}</div>`;
+  }).join('') : '<div class="empty">No bids yet.</div>';
+
+  // demo buttons
+  $('rivalBtn').disabled = S.mode === 'ended';
+  $('endBtn').disabled = S.mode === 'ended';
+  $('openBtn').textContent = S.mode === 'idle' ? '⚡ Auto Bid' : '⚡ View Auto Bid';
+
+  // step tracker
+  const cur = !$('win').hidden ? (S.mode === 'idle' ? 2 : S.mode === 'ended' || (S.done && S.leader === 'rival') ? 5 : 4) : 1;
+  document.querySelectorAll('.step').forEach(el => {
+    const k = +el.dataset.s;
+    el.className = 'step' + (k < cur ? ' done' : k === cur ? ' on' : '');
+  });
+}
+function lastYourBid() {
+  const mine = S.log.filter(l => l.who === 'you' || l.who === 'man');
+  return mine.length ? mine[0].amt : S.ladder[0];
+}
+
+// ─── Events ──────────────────────────────────────────────────
+$('openBtn').onclick = () => { $('win').hidden = false; render(); $('win').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+$('closeWin').onclick = () => { $('win').hidden = true; render(); };
+$('startMinus').onclick = () => recompute(S.start - INC, S.max, S.n);
+$('startPlus').onclick = () => recompute(S.start + INC, Math.max(S.max, S.start + INC), S.n);
+$('maxMinus').onclick = () => recompute(S.start, S.max - INC, S.n);
+$('maxPlus').onclick = () => recompute(S.start, S.max + INC, S.n);
+$('startIn').onchange = e => { const v = snap(parseInt(e.target.value.replace(/\D/g, '')) || 0); recompute(v, Math.max(S.max, v), S.n); };
+$('maxIn').onchange = e => recompute(S.start, snap(parseInt(e.target.value.replace(/\D/g, '')) || 0), S.n);
+$('countSel').onchange = e => recompute(S.start, S.max, parseInt(e.target.value));
+$('ladder').onclick = e => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  const i = +b.dataset.i, v = S.ladder[i] + (+b.dataset.d) * INC;
+  if (v <= S.ladder[i - 1] || v >= S.ladder[i + 1]) return;
+  S.ladder[i] = v; render();
+};
+$('activateBtn').onclick = () => {
+  $('cfFirst').textContent = fmt(S.ladder[0]);
+  $('cfMax').textContent = fmt(S.max);
+  $('cfCount').textContent = `${S.ladder.length} of ${QUOTA - S.used} remaining`;
+  $('confirm').hidden = false; $('cfYes').focus();
+};
+$('cfNo').onclick = () => { $('confirm').hidden = true; };
+$('cfYes').onclick = () => { $('confirm').hidden = true; activate(); };
+$('confirm').onclick = e => { if (e.target.id === 'confirm') $('confirm').hidden = true; };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('confirm').hidden = true; });
+$('pauseBtn').onclick = () => {
+  S.mode = S.mode === 'paused' ? 'on' : 'paused';
+  addLog('sys', S.mode === 'paused' ? 'Auto bid paused' : 'Auto bid resumed');
+  render();
+  if (S.mode === 'on') setTimeout(autoRespond, 500);
+};
+$('stopBtn').onclick = () => { S.mode = 'stopped'; addLog('sys', 'Auto bid stopped by you'); render(); };
+$('manualBtn').onclick = manualBid;
+$('rivalBtn').onclick = rivalBids;
+$('endBtn').onclick = endAuction;
+$('resetBtn').onclick = reset;
+
+reset();
+</script>
+</body>
+</html>
