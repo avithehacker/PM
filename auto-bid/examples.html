@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
         rel="stylesheet">
     <style>
         *,
@@ -21,10 +21,23 @@
             padding: 0;
         }
 
+        :root {
+            --bg: #f4f6f5;
+            --card: #fff;
+            --ink: #2b3339;
+            --muted: #7c8790;
+            --line: #e6eae8;
+            --soft: #eef2f0;
+            --teal: #3f7d73;
+            --teal-d: #336a61;
+            --teal-bg: #e4f0ec;
+            --shadow-md: 0 6px 20px rgba(43, 51, 57, .08);
+        }
+
         body {
-            background-color: #ffffff;
-            color: #1a1a1a;
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--ink);
+            font-family: 'Inter', system-ui, sans-serif;
             line-height: 1.6;
             padding: 80px 40px;
             display: flex;
@@ -39,97 +52,89 @@
         }
 
         header {
-            margin-bottom: 60px;
+            margin-bottom: 48px;
         }
 
         .back-link {
             font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #555;
-            text-decoration: underline;
-            text-decoration-color: rgba(0, 0, 0, 0.3);
-            text-underline-offset: 3px;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
             display: inline-block;
             margin-bottom: 20px;
-            transition: text-decoration-color 0.2s, color 0.2s;
+            transition: color 0.2s;
         }
 
         .back-link:hover {
-            color: #111;
-            text-decoration-color: #111;
+            color: var(--teal-d);
         }
 
         h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.8rem;
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
-            text-transform: uppercase;
+            font-family: 'Inter', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 10px;
+            color: var(--ink);
         }
 
         .subtitle {
             font-size: 0.9rem;
-            color: #666;
-            letter-spacing: 0.02em;
-            font-weight: 300;
+            color: var(--muted);
+            font-weight: 400;
+            max-width: 48ch;
         }
 
         section {
-            margin-bottom: 48px;
+            margin-bottom: 40px;
         }
 
         h2 {
             font-family: 'Inter', sans-serif;
             font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: #aaa;
-            margin-bottom: 24px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding-bottom: 8px;
+            color: var(--muted);
+            margin-bottom: 16px;
         }
 
         ul {
             list-style: none;
-        }
-
-        li {
-            margin-bottom: 20px;
+            display: grid;
+            gap: 12px;
         }
 
         .link-item {
             display: block;
             text-decoration: none;
-            color: #111;
+            color: var(--ink);
             cursor: pointer;
-            transition: color 0.2s;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 18px 20px;
+            box-shadow: var(--shadow-md);
+            transition: border-color 0.15s, transform 0.15s;
         }
 
         .link-item:hover {
-            color: #000;
-        }
-
-        .link-item:hover .link-title {
-            text-decoration-color: #111;
+            border-color: var(--teal);
+            transform: translateY(-1px);
         }
 
         .link-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
-            font-weight: 400;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
             display: block;
             margin-bottom: 4px;
-            text-decoration: underline;
-            text-decoration-color: rgba(0, 0, 0, 0.25);
-            text-underline-offset: 3px;
+            color: var(--teal-d);
         }
 
         .link-desc {
-            font-size: 0.8rem;
-            color: #555;
+            font-size: 0.85rem;
+            color: var(--muted);
             font-weight: 400;
         }
 
@@ -137,7 +142,7 @@
             margin-top: auto;
             padding-top: 40px;
             font-size: 0.75rem;
-            color: #ccc;
+            color: var(--muted);
             text-align: center;
         }
 
@@ -147,7 +152,7 @@
             }
 
             h1 {
-                font-size: 2.2rem;
+                font-size: 1.7rem;
             }
         }
     </style>

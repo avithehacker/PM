@@ -5,35 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hammerly — Smart Search</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
       --sidebar-w:240px;--header-h:58px;
-      --navy:#1F4E79;--navy-dark:#163a5c;--navy-light:#2563a8;
-      --bg:#EEF2F7;--white:#ffffff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
-      --green:#16a34a;--green-bg:#dcfce7;
-      --blue:#2563eb;--blue-bg:#dbeafe;
-      --red:#dc2626;--red-bg:#fee2e2;
-      --amber:#d97706;--amber-bg:#fef3c7;
-      --grey:#6b7280;--grey-bg:#f3f4f6;
-      --shadow-sm:0 1px 3px rgba(0,0,0,.07);
-      --shadow-md:0 4px 14px rgba(0,0,0,.12);
-      --shadow-lg:0 8px 30px rgba(0,0,0,.16);
-      --r:6px;--rm:10px;
+      --navy:#3f7d73;--navy-dark:#336a61;--navy-light:#5b9086;
+      --bg:#f4f6f5;--white:#ffffff;--text:#2b3339;--muted:#7c8790;--border:#e6eae8;
+      --green:#4c8c6b;--green-bg:#e7f3ec;
+      --blue:#4a6fa1;--blue-bg:#e9eff8;
+      --red:#b3695f;--red-bg:#f7ece9;
+      --amber:#a98249;--amber-bg:#f7f0e3;
+      --grey:#7c8790;--grey-bg:#eef2f0;
+      --shadow-sm:0 1px 3px rgba(43,51,57,.06);
+      --shadow-md:0 6px 20px rgba(43,51,57,.08);
+      --shadow-lg:0 12px 32px rgba(43,51,57,.10);
+      --r:9px;--rm:10px;
       --hh:58px;
     }
-    body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
-    button{cursor:pointer;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
-    input,select{font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+    body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+    button{cursor:pointer;font-family:'Inter',system-ui,-apple-system,sans-serif}
+    input,select{font-family:'Inter',system-ui,-apple-system,sans-serif}
     a{text-decoration:none;color:inherit}
 
     /* ══ HEADER ══ */
-    header{position:sticky;top:0;z-index:300;background:var(--white);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;border-bottom:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    header{position:sticky;top:0;z-index:300;background:var(--white);height:var(--hh);display:flex;align-items:center;padding:0 24px;gap:16px;border-bottom:1px solid var(--border);box-shadow:0 1px 4px rgba(43,51,57,.05)}
     .hdr-logo{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:.3px;white-space:nowrap}
     .hdr-logo-icon{width:32px;height:32px;background:var(--navy);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;font-weight:800}
     .hdr-divider{width:1px;height:28px;background:var(--border)}
     .search-container{flex:1;position:relative}
-    .search-bar{width:100%;padding:8px 34px 8px 36px;border-radius:var(--r);border:1.5px solid var(--border);outline:none;font-size:13px;font-family:'Segoe UI',system-ui,sans-serif;font-weight:500;background:var(--bg);color:var(--text);transition:border-color .15s,box-shadow .15s}
+    .search-bar{width:100%;padding:8px 34px 8px 36px;border-radius:var(--r);border:1.5px solid var(--border);outline:none;font-size:13px;font-family:'Inter',system-ui,sans-serif;font-weight:500;background:var(--bg);color:var(--text);transition:border-color .15s,box-shadow .15s}
     .search-bar::placeholder{color:var(--muted)}
     .search-bar:focus{background:var(--white);border-color:var(--navy);box-shadow:0 0 0 3px rgba(31,78,121,.08)}
     .search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none}
@@ -121,11 +124,11 @@
 
     /* ══ CARDS ══ */
     .card{background:var(--white);border:1px solid var(--border);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,transform .2s,border-color .2s;display:flex;flex-direction:column;box-shadow:var(--shadow-sm)}
-    .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:#cbd5e1}
+    .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:#d5dbd8}
     .card-img-wrapper{position:relative;height:148px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--grey-bg)}
-    .card-img-wrapper.suv{background:linear-gradient(135deg,#dbeafe 0%,#eff6ff 100%)}
-    .card-img-wrapper.car{background:linear-gradient(135deg,#dcfce7 0%,#f0fdf4 100%)}
-    .card-img-wrapper.hatchback{background:linear-gradient(135deg,#fef3c7 0%,#fffbeb 100%)}
+    .card-img-wrapper.suv{background:linear-gradient(135deg,#e9eff8 0%,#eff6ff 100%)}
+    .card-img-wrapper.car{background:linear-gradient(135deg,#e7f3ec 0%,#f0fdf4 100%)}
+    .card-img-wrapper.hatchback{background:linear-gradient(135deg,#f7f0e3 0%,#fffbeb 100%)}
     .card-img-wrapper.sedan{background:linear-gradient(135deg,#f3e8ff 0%,#faf5ff 100%)}
     .card-silhouette{display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:10px}
     .card-silhouette svg{width:82%;max-width:200px;height:auto}
@@ -337,10 +340,10 @@
     };
 
     const VEH_SVG = {
-      car:      `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="42" width="156" height="18" rx="3" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><path d="M48 42 Q54 20 70 16 L130 16 Q146 20 152 42 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/><path d="M60 42 Q64 24 76 20 L124 20 Q136 24 140 42 Z" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/><circle cx="56" cy="62" r="12" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="56" cy="62" r="4" fill="#94a3b8"/><circle cx="144" cy="62" r="12" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="144" cy="62" r="4" fill="#94a3b8"/></svg>`,
-      suv:      `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="38" width="164" height="22" rx="3" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><path d="M34 38 Q38 14 56 10 L144 10 Q162 14 166 38 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/><path d="M48 38 Q52 18 64 13 L136 13 Q148 18 152 38 Z" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/><circle cx="54" cy="62" r="13" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="54" cy="62" r="5" fill="#94a3b8"/><circle cx="146" cy="62" r="13" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="146" cy="62" r="5" fill="#94a3b8"/></svg>`,
-      hatchback:`<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="24" y="44" width="152" height="16" rx="3" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><path d="M50 44 Q54 24 68 18 L132 18 Q148 22 150 44 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/><path d="M62 44 Q66 28 76 22 L124 22 Q136 26 138 44 Z" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/><circle cx="58" cy="62" r="11" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="58" cy="62" r="4" fill="#94a3b8"/><circle cx="142" cy="62" r="11" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="142" cy="62" r="4" fill="#94a3b8"/></svg>`,
-      sedan:    `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="44" width="160" height="16" rx="3" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><path d="M44 44 Q50 26 68 20 L132 20 Q150 24 156 44 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/><path d="M58 44 Q62 28 76 23 L124 23 Q138 27 142 44 Z" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/><circle cx="54" cy="62" r="12" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="54" cy="62" r="4" fill="#94a3b8"/><circle cx="146" cy="62" r="12" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/><circle cx="146" cy="62" r="4" fill="#94a3b8"/></svg>`
+      car:      `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="42" width="156" height="18" rx="3" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><path d="M48 42 Q54 20 70 16 L130 16 Q146 20 152 42 Z" fill="#f1f5f9" stroke="#d5dbd8" stroke-width="1.5"/><path d="M60 42 Q64 24 76 20 L124 20 Q136 24 140 42 Z" fill="#f4f6f5" stroke="#e6eae8" stroke-width="1"/><circle cx="56" cy="62" r="12" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><circle cx="56" cy="62" r="4" fill="#a9b3ae"/><circle cx="144" cy="62" r="12" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><circle cx="144" cy="62" r="4" fill="#a9b3ae"/></svg>`,
+      suv:      `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="38" width="164" height="22" rx="3" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><path d="M34 38 Q38 14 56 10 L144 10 Q162 14 166 38 Z" fill="#f1f5f9" stroke="#d5dbd8" stroke-width="1.5"/><path d="M48 38 Q52 18 64 13 L136 13 Q148 18 152 38 Z" fill="#f4f6f5" stroke="#e6eae8" stroke-width="1"/><circle cx="54" cy="62" r="13" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><circle cx="54" cy="62" r="5" fill="#a9b3ae"/><circle cx="146" cy="62" r="13" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><circle cx="146" cy="62" r="5" fill="#a9b3ae"/></svg>`,
+      hatchback:`<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="24" y="44" width="152" height="16" rx="3" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><path d="M50 44 Q54 24 68 18 L132 18 Q148 22 150 44 Z" fill="#f1f5f9" stroke="#d5dbd8" stroke-width="1.5"/><path d="M62 44 Q66 28 76 22 L124 22 Q136 26 138 44 Z" fill="#f4f6f5" stroke="#e6eae8" stroke-width="1"/><circle cx="58" cy="62" r="11" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><circle cx="58" cy="62" r="4" fill="#a9b3ae"/><circle cx="142" cy="62" r="11" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><circle cx="142" cy="62" r="4" fill="#a9b3ae"/></svg>`,
+      sedan:    `<svg viewBox="0 0 200 76" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="44" width="160" height="16" rx="3" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><path d="M44 44 Q50 26 68 20 L132 20 Q150 24 156 44 Z" fill="#f1f5f9" stroke="#d5dbd8" stroke-width="1.5"/><path d="M58 44 Q62 28 76 23 L124 23 Q138 27 142 44 Z" fill="#f4f6f5" stroke="#e6eae8" stroke-width="1"/><circle cx="54" cy="62" r="12" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><circle cx="54" cy="62" r="4" fill="#a9b3ae"/><circle cx="146" cy="62" r="12" fill="#e6eae8" stroke="#d5dbd8" stroke-width="1.5"/><circle cx="146" cy="62" r="4" fill="#a9b3ae"/></svg>`
     };
 
     const allCars = generateMockData(40);
@@ -632,7 +635,7 @@
       const grid = document.getElementById('resultsGrid');
       grid.innerHTML = '';
       if (data.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-size:15px;font-weight:500;"><i class="bi bi-search" style="font-size:40px;display:block;margin-bottom:12px;color:#cbd5e1"></i>No vehicles match. Try adjusting your search or filters.</div>`;
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-size:15px;font-weight:500;"><i class="bi bi-search" style="font-size:40px;display:block;margin-bottom:12px;color:#d5dbd8"></i>No vehicles match. Try adjusting your search or filters.</div>`;
         return;
       }
       data.forEach(car => {

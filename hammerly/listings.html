@@ -5,24 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listings — Hammerly</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --sidebar-w: 240px; --header-h: 58px;
-      --navy: #1F4E79; --navy-dark: #163a5c; --navy-light: #2563a8;
-      --bg: #EEF2F7; --white: #ffffff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0;
-      --green: #16a34a; --green-bg: #dcfce7;
-      --blue: #2563eb; --blue-bg: #dbeafe;
-      --red: #dc2626; --red-bg: #fee2e2;
-      --amber: #d97706; --amber-bg: #fef3c7;
-      --grey: #6b7280; --grey-bg: #f3f4f6;
-      --teal: #0d9488; --teal-bg: #ccfbf1;
+      --navy: #3f7d73; --navy-dark: #336a61; --navy-light: #5b9086;
+      --bg: #f4f6f5; --white: #ffffff; --text: #2b3339; --muted: #7c8790; --border: #e6eae8;
+      --green: #4c8c6b; --green-bg: #e7f3ec;
+      --blue: #4a6fa1; --blue-bg: #e9eff8;
+      --red: #b3695f; --red-bg: #f7ece9;
+      --amber: #a98249; --amber-bg: #f7f0e3;
+      --grey: #7c8790; --grey-bg: #eef2f0;
+      --teal: #3f7d73; --teal-bg: #e4f0ec;
       --hh: 58px;
       --fh: 52px;
     }
 
-    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
     a { text-decoration: none; color: inherit; }
 
     /* ── HEADER ── */
@@ -37,7 +40,7 @@
       top: 0;
       z-index: 200;
       border-bottom: 1px solid var(--border);
-      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+      box-shadow: 0 1px 4px rgba(43,51,57,.08);
     }
 
     .logo {
@@ -125,7 +128,7 @@
     .btn-primary { background: var(--navy); color: #fff; }
     .btn-primary:hover { background: var(--navy-dark); }
     .btn-success { background: var(--green); color: #fff; }
-    .btn-success:hover { background: #15803d; }
+    .btn-success:hover { background: #3f7359; }
     .btn-outline { background: var(--white); color: var(--navy); border: 1px solid var(--navy); }
     .btn-outline:hover { background: var(--navy); color: #fff; }
     .btn-amber { background: var(--amber); color: #fff; }
@@ -145,7 +148,7 @@
       position: sticky;
       top: var(--hh);
       z-index: 100;
-      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+      box-shadow: 0 1px 3px rgba(43,51,57,.05);
     }
 
     .filter-inner {
@@ -180,7 +183,7 @@
       font-weight: 700;
       padding: 1px 5px;
       border-radius: 10px;
-      background: rgba(0,0,0,.1);
+      background: rgba(43,51,57,.1);
       color: inherit;
     }
     .filter-tab.on .filter-count { background: rgba(255,255,255,.25); color: #fff; }
@@ -246,7 +249,7 @@
     .v-card {
       background: var(--white);
       border-radius: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.07);
+      box-shadow: 0 1px 3px rgba(43,51,57,.07);
       overflow: hidden;
       transition: box-shadow .2s, transform .2s;
       display: flex;
@@ -255,12 +258,12 @@
       border: 1px solid var(--border);
     }
     .v-card:hover {
-      box-shadow: 0 4px 14px rgba(0,0,0,.12);
+      box-shadow: 0 4px 14px rgba(43,51,57,.12);
       transform: translateY(-2px);
     }
     .v-card.featured {
       border-color: var(--navy);
-      box-shadow: 0 0 0 2px rgba(31,78,121,.15), 0 1px 3px rgba(0,0,0,.07);
+      box-shadow: 0 0 0 2px rgba(63,125,115,.15), 0 1px 3px rgba(43,51,57,.07);
     }
 
     .v-card-img {
@@ -274,8 +277,8 @@
 
     .v-card-img.w2  { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); }
     .v-card-img.w3  { background: linear-gradient(135deg, #2c4a1e 0%, #3d6b2a 100%); }
-    .v-card-img.w4a { background: linear-gradient(135deg, #1F4E79 0%, #2d6da3 100%); }
-    .v-card-img.w4b { background: linear-gradient(135deg, #163a5c 0%, #1F4E79 100%); }
+    .v-card-img.w4a { background: linear-gradient(135deg, #3f7d73 0%, #2d6da3 100%); }
+    .v-card-img.w4b { background: linear-gradient(135deg, #336a61 0%, #3f7d73 100%); }
     .v-card-img.w4c { background: linear-gradient(135deg, #1e3a5f 0%, #2a5280 100%); }
 
     .v-badge {

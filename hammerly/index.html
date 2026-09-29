@@ -5,35 +5,38 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Hammerly — Vehicle Auctions</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#1F4E79;--navy-dark:#163a5c;--navy-light:#2563a8;
-  --bg:#EEF2F7;--white:#ffffff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
-  --green:#16a34a;--green-bg:#dcfce7;
-  --blue:#2563eb;--blue-bg:#dbeafe;
-  --red:#dc2626;--red-bg:#fee2e2;
-  --amber:#d97706;--amber-bg:#fef3c7;
-  --teal:#0d9488;--teal-bg:#ccfbf1;
-  --purple:#7c3aed;--purple-bg:#ede9fe;
-  --grey:#6b7280;--grey-bg:#f3f4f6;
+  --navy:#3f7d73;--navy-dark:#336a61;--navy-light:#5b9086;
+  --bg:#f4f6f5;--white:#ffffff;--text:#2b3339;--muted:#7c8790;--border:#e6eae8;
+  --green:#4c8c6b;--green-bg:#e7f3ec;
+  --blue:#4a6fa1;--blue-bg:#e9eff8;
+  --red:#b3695f;--red-bg:#f7ece9;
+  --amber:#a98249;--amber-bg:#f7f0e3;
+  --teal:#3f7d73;--teal-bg:#e4f0ec;
+  --purple:#8b7bb8;--purple-bg:#efeaf7;
+  --grey:#7c8790;--grey-bg:#eef2f0;
   /* Legacy aliases kept for JS-generated content */
   --blue-l:var(--blue-bg);--green-l:var(--green-bg);--red-l:var(--red-bg);
   --amber-l:var(--amber-bg);--teal-l:var(--teal-bg);--purple-l:var(--purple-bg);
-  --g50:#f9fafb;--g100:#f5f6f8;--g200:var(--border);--g300:#d1d5db;
-  --g400:#9ca3af;--g500:var(--muted);--g600:#4b5563;--g700:#374151;--g900:var(--text);
+  --g50:#f6f8f7;--g100:#f4f6f5;--g200:var(--border);--g300:#d5dbd8;
+  --g400:#a9b3ae;--g500:var(--muted);--g600:#5c6660;--g700:#3f4844;--g900:var(--text);
   --hh:58px;
-  --r:6px;--rm:10px;--rl:14px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.07);
-  --shadow-md:0 4px 14px rgba(0,0,0,.08);
-  --shadow-lg:0 8px 32px rgba(0,0,0,.14);
-  --shadow-xl:0 16px 48px rgba(0,0,0,.18);
+  --r:9px;--rm:14px;--rl:18px;
+  --shadow-sm:0 1px 3px rgba(43,51,57,.06);
+  --shadow-md:0 6px 20px rgba(43,51,57,.08);
+  --shadow-lg:0 12px 32px rgba(43,51,57,.10);
+  --shadow-xl:0 20px 48px rgba(43,51,57,.14);
 }
-html{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+html{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px}
 body{min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;line-height:1.5}
 a{text-decoration:none;color:inherit}
-button{cursor:pointer;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;border:none;outline:none}
-input,select{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;outline:none}
+button{cursor:pointer;font-family:'Inter',system-ui,-apple-system,sans-serif;border:none;outline:none}
+input,select{font-family:'Inter',system-ui,-apple-system,sans-serif;outline:none}
 
 /* ══ HEADER ══ */
 .hdr{position:sticky;top:0;z-index:400;height:var(--hh);background:var(--navy);display:flex;align-items:center;padding:0 20px;gap:12px;border-bottom:1px solid var(--navy-dark);box-shadow:0 2px 8px rgba(31,78,121,.3)}
@@ -59,12 +62,12 @@ input,select{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;outline:n
 .hdr-btn-icon{font-size:15px}
 .hdr-badge{position:absolute;top:3px;right:3px;background:var(--red);color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--navy)}
 .hdr-badge.show{display:flex}
-.live-pill{background:#dc2626;color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:.8px;animation:blink 2s infinite;flex-shrink:0}
+.live-pill{background:#b3695f;color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:.8px;animation:blink 2s infinite;flex-shrink:0}
 .avatar{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid rgba(255,255,255,.3)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.55}}
 
 /* ══ AUCTION RAIL ══ */
-.rail-wrap{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.rail-wrap{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;box-shadow:0 1px 3px rgba(43,51,57,.05)}
 .rail{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:none;-ms-overflow-style:none;align-items:center}
 .rail::-webkit-scrollbar{display:none}
 .rail-chip{display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--rm);background:var(--white);border:1.5px solid var(--border);cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0}
@@ -180,7 +183,7 @@ input,select{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;outline:n
 
 /* Swipe overlay */
 .swipe-ol{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;letter-spacing:1px;opacity:0;pointer-events:none;z-index:10;transition:opacity .15s}
-.swipe-ol.bid{background:rgba(22,163,74,.85);color:#fff}
+.swipe-ol.bid{background:rgba(76,140,107,.85);color:#fff}
 .swipe-ol.skip{background:rgba(0,0,0,.5);color:#fff}
 
 /* Gradient backgrounds per type */
@@ -281,7 +284,7 @@ input,select{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;outline:n
 .toggle-switch{position:relative;width:40px;height:22px;flex-shrink:0}
 .toggle-switch input{opacity:0;width:0;height:0;position:absolute}
 .toggle-slider{position:absolute;cursor:pointer;inset:0;background:var(--border);border-radius:11px;transition:.25s}
-.toggle-slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle-slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s;box-shadow:0 1px 3px rgba(43,51,57,.18)}
 .toggle-switch input:checked+.toggle-slider{background:var(--navy)}
 .toggle-switch input:checked+.toggle-slider::before{transform:translateX(18px)}
 .phone-input-wrap{position:relative;margin-top:6px}

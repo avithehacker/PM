@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Hammerly — Smart Auto Bidding</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 <script src="https://unpkg.com/@babel/standalone@7.17.12/babel.min.js"></script>
@@ -12,26 +15,26 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --sidebar-w:240px;--header-h:58px;
-  --navy:#1F4E79;--navy-dark:#163a5c;--navy-light:#2563a8;
-  --bg:#EEF2F7;--white:#ffffff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
-  --green:#16a34a;--green-bg:#dcfce7;--green-l:#dcfce7;
-  --blue:#2563eb;--blue-bg:#dbeafe;--blue-l:#dbeafe;
-  --red:#dc2626;--red-bg:#fee2e2;--red-l:#fee2e2;
-  --amber:#d97706;--amber-bg:#fef3c7;--amber-l:#fef3c7;
-  --grey:#6b7280;--grey-bg:#f3f4f6;
-  --purple:#7c3aed;--purple-l:#f3f0ff;
-  --teal:#0d9488;--teal-l:#ccfbf1;
-  --g100:#f8fafc;--g200:#e2e8f0;--g300:#cbd5e1;--g400:#94a3b8;
-  --g500:#64748b;--g600:#475569;--g700:#334155;--g900:#0f172a;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
-  --shadow-md:0 4px 12px rgba(0,0,0,.1);
-  --shadow-lg:0 8px 30px rgba(0,0,0,.15);
-  --r:6px;--rm:8px;
+  --navy:#3f7d73;--navy-dark:#336a61;--navy-light:#5b9086;
+  --bg:#f4f6f5;--white:#ffffff;--text:#2b3339;--muted:#7c8790;--border:#e6eae8;
+  --green:#4c8c6b;--green-bg:#e7f3ec;--green-l:#e7f3ec;
+  --blue:#4a6fa1;--blue-bg:#e9eff8;--blue-l:#e9eff8;
+  --red:#b3695f;--red-bg:#f7ece9;--red-l:#f7ece9;
+  --amber:#a98249;--amber-bg:#f7f0e3;--amber-l:#f7f0e3;
+  --grey:#7c8790;--grey-bg:#eef2f0;
+  --purple:#8b7bb8;--purple-l:#efeaf7;
+  --teal:#3f7d73;--teal-l:#e4f0ec;
+  --g100:#f4f6f5;--g200:#e6eae8;--g300:#d5dbd8;--g400:#a9b3ae;
+  --g500:#7c8790;--g600:#5c6660;--g700:#3f4844;--g900:#232b27;
+  --shadow-sm:0 1px 3px rgba(43,51,57,.06);
+  --shadow-md:0 6px 20px rgba(43,51,57,.08);
+  --shadow-lg:0 12px 32px rgba(43,51,57,.10);
+  --r:9px;--rm:14px;
 }
-html{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+html{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
 body{min-height:100vh}
-button{cursor:pointer;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;border:none;outline:none}
-input,select{font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+button{cursor:pointer;font-family:'Inter',system-ui,-apple-system,sans-serif;border:none;outline:none}
+input,select{font-family:'Inter',system-ui,-apple-system,sans-serif}
 a{text-decoration:none;color:inherit}
 
 /* ══ SIDEBAR ══ */
@@ -53,7 +56,7 @@ a{text-decoration:none;color:inherit}
 #hdr{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--header-h);background:var(--white);box-shadow:0 1px 4px rgba(0,0,0,.08);display:flex;align-items:center;padding:0 24px;z-index:100;gap:16px}
 .hdr-title{font-size:15px;font-weight:600;color:var(--navy);flex:1}
 .hdr-right{display:flex;align-items:center;gap:10px}
-.live-pill{background:#dc2626;color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.5px;animation:blink 2s infinite}
+.live-pill{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.5px;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
 .avatar{width:30px;height:30px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700}
 .hdr-badge{background:var(--blue-bg);color:var(--blue);padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600}
@@ -86,7 +89,7 @@ a{text-decoration:none;color:inherit}
 .ac.expanded{border-color:var(--navy-light);box-shadow:var(--shadow-md)}
 .ac-head{padding:14px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;cursor:pointer;user-select:none}
 .ac-head:hover{background:var(--g100)}
-.ac-emoji{width:80px;height:52px;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:#f0f4f8;padding:4px}
+.ac-emoji{width:80px;height:52px;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:var(--g100);padding:4px}
 .ac-info{flex:1;min-width:0}
 .ac-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ac-sub{font-size:11px;color:var(--muted);font-weight:500}
@@ -106,7 +109,7 @@ a{text-decoration:none;color:inherit}
 .ac-cta{width:100%;padding:9px 16px;border-radius:6px;background:var(--navy);color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s}
 .ac-cta:hover{background:var(--navy-dark)}
 .ac-cta.st-active{background:var(--blue)}
-.ac-cta.st-active:hover{background:#1d4ed8}
+.ac-cta.st-active:hover{background:#3d5d89}
 .ac-cta.st-paused{background:var(--amber)}
 .ac-cta.st-stopped{background:var(--g400);cursor:default}
 
@@ -142,7 +145,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 input[type=range].blue-r::-webkit-slider-thumb{background:var(--navy)}
 input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 .total-bar{background:var(--g100);border-radius:6px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border:1px solid var(--border)}
-.total-bar.warn{background:var(--amber-l);border-color:rgba(217,119,6,.25)}
+.total-bar.warn{background:var(--amber-l);border-color:rgba(169,130,73,.25)}
 .total-bar-lbl{font-size:11px;font-weight:600;color:var(--text)}
 .total-bar.warn .total-bar-lbl{color:var(--amber)}
 .total-bar-val{font-size:14px;font-weight:700;color:var(--text)}
@@ -153,14 +156,14 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 
 /* ══ STATUS BAR ══ */
 .st-bar{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;border:1px solid transparent;margin-bottom:10px}
-.st-bar.active{background:var(--blue-bg);border-color:rgba(37,99,235,.2)}
-.st-bar.paused{background:var(--amber-bg);border-color:rgba(217,119,6,.2)}
-.st-bar.stopped{background:var(--red-bg);border-color:rgba(220,38,38,.2)}
+.st-bar.active{background:var(--blue-bg);border-color:rgba(74,111,161,.2)}
+.st-bar.paused{background:var(--amber-bg);border-color:rgba(169,130,73,.2)}
+.st-bar.stopped{background:var(--red-bg);border-color:rgba(179,105,95,.2)}
 .st-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .st-dot.active{background:var(--blue);animation:pulse 2s infinite}
 .st-dot.paused{background:var(--amber)}
 .st-dot.stopped{background:var(--red)}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,.4)}50%{box-shadow:0 0 0 5px rgba(37,99,235,0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,111,161,.4)}50%{box-shadow:0 0 0 5px rgba(74,111,161,0)}}
 .st-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .st-label.active{color:var(--blue)}
 .st-label.paused{color:var(--amber)}
@@ -177,11 +180,11 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 /* action buttons */
 .act-row{display:flex;gap:7px;margin-bottom:12px}
 .act-btn{flex:1;padding:8px 6px;border-radius:6px;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;border:1px solid transparent;transition:all .15s;white-space:nowrap}
-.act-btn.pause{background:var(--amber-bg);color:var(--amber);border-color:rgba(217,119,6,.3)}
+.act-btn.pause{background:var(--amber-bg);color:var(--amber);border-color:rgba(169,130,73,.3)}
 .act-btn.pause:hover{background:var(--amber);color:#fff}
-.act-btn.resume{background:var(--blue-bg);color:var(--blue);border-color:rgba(37,99,235,.25)}
+.act-btn.resume{background:var(--blue-bg);color:var(--blue);border-color:rgba(74,111,161,.25)}
 .act-btn.resume:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
-.act-btn.stop{background:var(--red-bg);color:var(--red);border-color:rgba(220,38,38,.3)}
+.act-btn.stop{background:var(--red-bg);color:var(--red);border-color:rgba(179,105,95,.3)}
 .act-btn.stop:hover{background:var(--red);color:#fff}
 .act-btn.manual{background:var(--g100);color:var(--text);border-color:var(--border)}
 .act-btn.manual:hover:not(:disabled){background:var(--navy);color:#fff;border-color:var(--navy)}
@@ -233,7 +236,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 .rule-num{width:24px;height:24px;border-radius:50%;background:var(--blue-bg);color:var(--blue);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .rule-text{font-size:13px;color:var(--text);line-height:1.55}
 .rule-text strong{color:var(--navy)}
-.rule-note{background:var(--amber-bg);border:1px solid rgba(217,119,6,.25);border-radius:6px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--amber);font-weight:600;line-height:1.5}
+.rule-note{background:var(--amber-bg);border:1px solid rgba(169,130,73,.25);border-radius:6px;padding:10px 12px;margin-top:10px;font-size:12px;color:var(--amber);font-weight:600;line-height:1.5}
 
 /* ══ MY BIDS TAB ══ */
 .tab-wrap{padding:20px 24px}
@@ -242,7 +245,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 /* battle row = one vehicle session */
 .battle-row{margin-bottom:20px}
 .battle-hdr{background:var(--white);border:1px solid var(--border);border-radius:10px 10px 0 0;border-bottom:none;padding:11px 16px;display:flex;align-items:center;gap:12px}
-.battle-emoji{width:60px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:#f0f4f8;padding:3px}
+.battle-emoji{width:60px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:var(--g100);padding:3px}
 .battle-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
 .battle-sub{font-size:11px;color:var(--muted);font-weight:500;margin-top:1px}
 .battle-status-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.3px;white-space:nowrap}
@@ -252,8 +255,8 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 /* individual bidder card */
 .bidder-card{background:var(--white);padding:14px 15px;position:relative;transition:background .25s}
 .bidder-card + .bidder-card{border-left:1px solid var(--border)}
-.bidder-card.winning{background:linear-gradient(160deg,rgba(22,163,74,.05) 0%,rgba(22,163,74,.01) 100%)}
-.bidder-card.outbid{background:linear-gradient(160deg,rgba(220,38,38,.04) 0%,rgba(220,38,38,.01) 100%)}
+.bidder-card.winning{background:linear-gradient(160deg,rgba(76,140,107,.05) 0%,rgba(76,140,107,.01) 100%)}
+.bidder-card.outbid{background:linear-gradient(160deg,rgba(179,105,95,.04) 0%,rgba(179,105,95,.01) 100%)}
 
 /* bidder label row */
 .bidder-name-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
@@ -284,22 +287,22 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 .bidder-acts{display:flex;flex-direction:column;gap:5px}
 .bact-row{display:flex;gap:5px}
 .bact{flex:1;padding:6px 4px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid transparent;display:flex;align-items:center;justify-content:center;gap:3px;transition:all .15s;white-space:nowrap}
-.bact.pause{background:var(--amber-bg);color:var(--amber);border-color:rgba(217,119,6,.25)}
+.bact.pause{background:var(--amber-bg);color:var(--amber);border-color:rgba(169,130,73,.25)}
 .bact.pause:hover{background:var(--amber);color:#fff}
-.bact.resume{background:var(--blue-bg);color:var(--blue);border-color:rgba(37,99,235,.25)}
+.bact.resume{background:var(--blue-bg);color:var(--blue);border-color:rgba(74,111,161,.25)}
 .bact.resume:hover{background:var(--navy);color:#fff}
-.bact.stop{background:var(--red-bg);color:var(--red);border-color:rgba(220,38,38,.25)}
+.bact.stop{background:var(--red-bg);color:var(--red);border-color:rgba(179,105,95,.25)}
 .bact.stop:hover{background:var(--red);color:#fff}
 .bact.manual{background:var(--g100);color:var(--text);border-color:var(--border)}
 .bact.manual:hover:not(:disabled){background:var(--navy);color:#fff}
 .bact:disabled{opacity:.35;cursor:not-allowed}
 
 /* rival card */
-.rival-fire-btn{width:100%;padding:10px;border-radius:6px;background:var(--red-bg);border:1px solid rgba(220,38,38,.3);color:var(--red);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;margin-top:auto}
-.rival-fire-btn:hover:not(:disabled){background:var(--red);color:#fff;border-color:var(--red);transform:translateY(-1px);box-shadow:0 3px 10px rgba(220,38,38,.22)}
+.rival-fire-btn{width:100%;padding:10px;border-radius:6px;background:var(--red-bg);border:1px solid rgba(179,105,95,.3);color:var(--red);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;margin-top:auto}
+.rival-fire-btn:hover:not(:disabled){background:var(--red);color:#fff;border-color:var(--red);transform:translateY(-1px);box-shadow:0 3px 10px rgba(179,105,95,.22)}
 .rival-fire-btn:disabled{opacity:.35;cursor:not-allowed}
 .rival-fire-btn.firing{animation:rival-flash .4s ease}
-@keyframes rival-flash{0%{transform:scale(1)}30%{transform:scale(.97);background:#fecaca}70%{transform:scale(1.01)}100%{transform:scale(1)}}
+@keyframes rival-flash{0%{transform:scale(1)}30%{transform:scale(.97);background:var(--red-bg)}70%{transform:scale(1.01)}100%{transform:scale(1)}}
 .rival-bid-count{font-size:10px;color:var(--muted);font-weight:600;margin-bottom:8px}
 
 /* bid history */
@@ -313,7 +316,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 .ht-hd{display:grid;grid-template-columns:44px 1fr 110px 60px 90px;padding:9px 14px;background:var(--navy);border-bottom:1px solid var(--border);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.85);gap:8px}
 .ht-row{display:grid;grid-template-columns:44px 1fr 110px 60px 90px;padding:9px 14px;border-bottom:1px solid var(--border);font-size:12px;align-items:center;gap:8px}
 .ht-row:last-child{border-bottom:none}
-.ht-row:hover{background:#f0f7ff}
+.ht-row:hover{background:var(--g100)}
 
 /* ══ SIMULATOR TAB ══ */
 .sim-wrap{padding:20px 24px;display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:flex-start}
@@ -331,9 +334,9 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 .sim-msg.system{background:var(--amber-bg)}
 .sim-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.3px;width:52px;text-align:center;flex-shrink:0}
 .sim-tag.comp{background:var(--red-bg);color:var(--red)}
-.sim-tag.you-auto{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+.sim-tag.you-auto{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(74,111,161,.2)}
 .sim-tag.you-manual{background:var(--grey-bg);color:var(--grey);border:1px solid var(--border)}
-.sim-tag.system{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(217,119,6,.2)}
+.sim-tag.system{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(169,130,73,.2)}
 .sim-t{font-size:10px;color:var(--muted);font-weight:500;width:40px;flex-shrink:0}
 .sim-text{flex:1;font-size:12px;color:var(--text);font-weight:500}
 .sim-amt{font-size:14px;font-weight:700;flex-shrink:0}
@@ -348,7 +351,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 .sim-ctrl-sub{font-size:11px;color:var(--muted)}
 .sim-ctrl-body{padding:14px 16px}
 .field-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px}
-.vehicle-sel{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:13px;font-weight:500;color:var(--text);background:var(--white);margin-bottom:12px}
+.vehicle-sel{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-family:'Inter',system-ui,-apple-system,sans-serif;font-size:13px;font-weight:500;color:var(--text);background:var(--white);margin-bottom:12px}
 .vehicle-sel:focus{outline:none;border-color:var(--navy)}
 .speed-row{display:flex;gap:6px;margin-bottom:12px}
 .speed-btn{flex:1;padding:6px 4px;border-radius:6px;border:1px solid var(--border);background:var(--white);font-size:12px;font-weight:600;color:var(--muted);transition:all .15s}
@@ -363,7 +366,7 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 .sim-start-btn{width:100%;padding:10px;border-radius:6px;background:var(--navy);color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;margin-bottom:8px}
 .sim-start-btn:hover{background:var(--navy-dark)}
 .sim-start-btn.stop-mode{background:var(--red)}
-.sim-start-btn.stop-mode:hover{background:#b91c1c}
+.sim-start-btn.stop-mode:hover{background:#96564d}
 .sim-manual-btn{width:100%;padding:8px;border-radius:6px;border:1px solid var(--border);background:var(--g100);color:var(--text);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px;transition:all .15s}
 .sim-manual-btn:hover:not(:disabled){background:var(--navy);color:#fff;border-color:var(--navy)}
 .sim-manual-btn:disabled{opacity:.4;cursor:not-allowed}
@@ -388,13 +391,13 @@ input[type=range].amber-r::-webkit-slider-thumb{background:var(--amber)}
 .ob-info-lbl{font-size:11px;color:var(--muted);font-weight:600}
 .ob-info-val{font-size:14px;font-weight:700;color:var(--text)}
 .place-bid-btn{width:100%;padding:12px 16px;border-radius:6px;background:var(--green);color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;margin-bottom:8px;letter-spacing:.1px}
-.place-bid-btn:hover:not(:disabled){background:#15803d}
+.place-bid-btn:hover:not(:disabled){background:#3f7359}
 .place-bid-btn:disabled{background:var(--g300);color:var(--g500);cursor:not-allowed}
 .ob-start-btn{width:100%;padding:10px;border-radius:6px;background:var(--green);color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
-.ob-start-btn:hover:not(:disabled){background:#15803d}
+.ob-start-btn:hover:not(:disabled){background:#3f7359}
 .ob-start-btn:disabled{background:var(--g300);color:var(--g500);cursor:not-allowed}
 .ac-cta.st-open{background:var(--green)}
-.ac-cta.st-open:hover{background:#15803d}
+.ac-cta.st-open:hover{background:#3f7359}
 /* auction type badges on card */
 .badge-open-auction{background:var(--green-bg);color:var(--green)}
 .badge-closed-auction{background:var(--g200);color:var(--muted)}
@@ -746,7 +749,7 @@ function OpenBidSetupPanel({vehicle, session, onUpdate, onStartOpenBid}) {
       )}
       {!session.openMaxBid && <div style={{height:'14px'}}/>}
 
-      <div style={{background:'var(--green-l)',border:'1px solid rgba(26,138,60,.2)',borderRadius:'var(--r)',padding:'9px 11px',marginBottom:'12px',fontSize:'11px',color:'var(--green)',fontWeight:600,lineHeight:1.5}}>
+      <div style={{background:'var(--green-l)',border:'1px solid rgba(76,140,107,.2)',borderRadius:'var(--r)',padding:'9px 11px',marginBottom:'12px',fontSize:'11px',color:'var(--green)',fontWeight:600,lineHeight:1.5}}>
         Open Auction — bids are unlimited and the current highest bid is visible to everyone. You place each bid manually at the fixed increment. Set an optional ceiling to avoid over-bidding.
       </div>
 
@@ -780,16 +783,16 @@ function OpenBidActivePanel({vehicle, session, onPlaceBid, onStop}) {
       <div style={{background:'var(--g100)',borderRadius:'var(--r)',padding:'10px 12px',marginBottom:'10px',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
         <div>
           <div style={{fontSize:'10px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.5px',color:'var(--g400)',marginBottom:'2px'}}>Your Bid</div>
-          <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'20px',fontWeight:800,color:'var(--navy)'}}>{fmt(session.avinashBid)}</div>
+          <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:'20px',fontWeight:800,color:'var(--navy)'}}>{fmt(session.avinashBid)}</div>
         </div>
         <div style={{textAlign:'right'}}>
           <div style={{fontSize:'10px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.5px',color:'var(--g400)',marginBottom:'2px'}}>Next Bid</div>
-          <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'20px',fontWeight:800,color: atMax ? 'var(--g400)' : 'var(--green)'}}>{fmt(nextBid)}</div>
+          <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:'20px',fontWeight:800,color: atMax ? 'var(--g400)' : 'var(--green)'}}>{fmt(nextBid)}</div>
         </div>
       </div>
 
       {isOutbid && st === 'active' && (
-        <div style={{background:'var(--red-l)',border:'1px solid rgba(192,57,43,.2)',borderRadius:'var(--r)',padding:'7px 10px',marginBottom:'8px',fontSize:'11px',color:'var(--red)',fontWeight:700}}>
+        <div style={{background:'var(--red-l)',border:'1px solid rgba(179,105,95,.2)',borderRadius:'var(--r)',padding:'7px 10px',marginBottom:'8px',fontSize:'11px',color:'var(--red)',fontWeight:700}}>
           Outbid by {fmt(session.niravBid - session.avinashBid)} — place a bid to take the lead!
         </div>
       )}
@@ -883,7 +886,7 @@ function BidActivePanel({vehicle, session, onPause, onResume, onStop, onManualBi
       {/* Current bid row — always show user's own bid; highest bid is sealed */}
       <div style={{background:'var(--g100)',borderRadius:'var(--r)',padding:'8px 10px',marginBottom:'10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
         <span style={{fontSize:'11px',color:'var(--g500)',fontWeight:600}}>Your bid</span>
-        <span style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'17px',fontWeight:800,color:'var(--navy)'}}>{fmt(session.avinashBid)}</span>
+        <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:'17px',fontWeight:800,color:'var(--navy)'}}>{fmt(session.avinashBid)}</span>
       </div>
       {/* Highest bid sealed notice */}
       <div style={{background:'var(--g200)',borderRadius:'var(--r)',padding:'6px 10px',marginBottom:'10px',display:'flex',alignItems:'center',gap:'6px',fontSize:'11px',color:'var(--g500)',fontWeight:600}}>
@@ -980,7 +983,7 @@ function AuctionCard({vehicle:v, session, onUpdate, onEnable, onStartOpenBid, on
             })()}</div>
           <div style={{textAlign:'right'}}>
             <div className="bid-label">Time Left</div>
-            <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'19px',fontWeight:800,color:v.status==='live'?'var(--red)':'var(--g400)'}}>{v.timeLeft}</div>
+            <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:'19px',fontWeight:800,color:v.status==='live'?'var(--red)':'var(--g400)'}}>{v.timeLeft}</div>
             <div style={{fontSize:'10px',color:'var(--g400)',fontWeight:600,marginTop:'1px'}}>{v.label}</div>
           </div>
         </div>
@@ -1283,7 +1286,7 @@ function MyBidsTab({sessions, vehicles, onRivalBid, onPause, onResume, onStop, o
                     {tagLabel(h.type)}
                   </span>
                 </div>
-                <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",fontSize:'14px',fontWeight:800,color:tagColor(h.type)}}>
+                <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:'14px',fontWeight:800,color:tagColor(h.type)}}>
                   {h.bid
                     ? (h.type === 'comp' && sessions[vehicles.find(vv=>vv.lot===h.lot)?.id]?.mode !== 'open' ? 'Sealed' : fmt(h.bid))
                     : '—'}
@@ -1441,7 +1444,7 @@ function SimulatorTab({addToast}) {
         </div>
         {sess && (
           <div className="sim-footer">
-            <span className="sim-footer-item">Bid: <strong style={{color:'var(--navy)',fontFamily:"'Segoe UI',system-ui,sans-serif"}}>{fmt(sess.currentBid)}</strong></span>
+            <span className="sim-footer-item">Bid: <strong style={{color:'var(--navy)',fontFamily:"'JetBrains Mono',monospace"}}>{fmt(sess.currentBid)}</strong></span>
             <span className="sim-footer-item" style={{color:'var(--blue)'}}>Auto: {sess.autoBidsUsed}/{sess.autoPool}</span>
             <span className="sim-footer-item" style={{color:'var(--muted)'}}>Manual: {sess.manualBidsUsed}/{sess.manualReserve}</span>
             <span className="sim-footer-item">

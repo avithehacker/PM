@@ -5,19 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Hammerly — AI Vehicle Recommendations</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --sidebar-w:240px; --header-h:58px;
-  --navy:#1F4E79; --navy-dark:#163a5c; --navy-light:#2563a8;
-  --bg:#EEF2F7; --white:#ffffff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
-  --green:#16a34a; --green-bg:#dcfce7;
-  --blue:#2563eb; --blue-bg:#dbeafe;
-  --red:#dc2626; --red-bg:#fee2e2;
-  --amber:#d97706; --amber-bg:#fef3c7;
-  --grey:#6b7280; --grey-bg:#f3f4f6;
+  --navy:#3f7d73; --navy-dark:#336a61; --navy-light:#5b9086;
+  --bg:#f4f6f5; --white:#ffffff; --text:#2b3339; --muted:#7c8790; --border:#e6eae8;
+  --green:#4c8c6b; --green-bg:#e7f3ec;
+  --blue:#4a6fa1; --blue-bg:#e9eff8;
+  --red:#b3695f; --red-bg:#f7ece9;
+  --amber:#a98249; --amber-bg:#f7f0e3;
+  --grey:#7c8790; --grey-bg:#eef2f0;
 }
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
 a{text-decoration:none;color:inherit}
 button{cursor:pointer;font-family:inherit;border:none;outline:none}
 input,select{font-family:inherit}
@@ -35,7 +38,7 @@ input,select{font-family:inherit}
 .sb-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:11px}
 
 /* HEADER */
-#header{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--header-h);background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1);display:flex;align-items:center;padding:0 24px;z-index:100;gap:16px}
+#header{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--header-h);background:#fff;box-shadow:0 1px 4px rgba(43,51,57,.08);display:flex;align-items:center;padding:0 24px;z-index:100;gap:16px}
 .header-title{font-size:15px;font-weight:600;color:var(--navy);flex:1}
 .header-badge{background:var(--blue-bg);color:var(--blue);padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600}
 
@@ -43,7 +46,7 @@ input,select{font-family:inherit}
 #main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:24px;min-height:calc(100vh - var(--header-h))}
 
 /* PAGE HERO */
-.page-hero{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:28px 28px 24px;margin-bottom:22px;text-align:center}
+.page-hero{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(43,51,57,.06);padding:28px 28px 24px;margin-bottom:22px;text-align:center}
 .page-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--blue-bg);color:var(--blue);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:16px}
 .page-title{font-size:26px;font-weight:700;color:var(--navy);margin-bottom:12px}
 .page-desc{color:var(--muted);font-size:13.5px;max-width:520px;margin:0 auto 28px;line-height:1.65}
@@ -52,7 +55,7 @@ input,select{font-family:inherit}
 .hero-stat-lbl{font-size:.75rem;color:var(--muted);margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
 
 /* HOW IT WORKS */
-.hiw-section{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:20px;margin-bottom:22px}
+.hiw-section{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(43,51,57,.06);padding:20px;margin-bottom:22px}
 .section-label{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .section-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:20px}
 .hiw-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -68,7 +71,7 @@ input,select{font-family:inherit}
 @media(max-width:700px){.page-body{grid-template-columns:1fr}}
 
 /* CARD */
-.card{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);overflow:hidden}
+.card{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(43,51,57,.06);overflow:hidden}
 .card-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .card-hdr-icon{width:30px;height:30px;border-radius:6px;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--navy);flex-shrink:0}
 .card-hdr-title{font-size:.88rem;font-weight:700;color:var(--text)}
@@ -101,12 +104,12 @@ input,select{font-family:inherit}
 
 .result-grid{display:flex;flex-direction:column;gap:12px}
 .result-card{background:var(--white);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
-.result-card:hover{border-color:var(--navy);box-shadow:0 2px 8px rgba(31,78,121,.1)}
+.result-card:hover{border-color:var(--navy);box-shadow:0 2px 8px rgba(63,125,115,.12)}
 .result-card-top{display:grid;grid-template-columns:auto 1fr auto;gap:12px;padding:14px 16px 10px;align-items:start}
 .rank-num{width:24px;height:24px;border-radius:50%;background:var(--grey-bg);color:var(--grey);font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.rank-num.r1{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(217,119,6,.3)}
-.rank-num.r2{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
-.rank-num.r3{background:var(--green-bg);color:var(--green);border:1px solid rgba(22,163,74,.2)}
+.rank-num.r1{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(169,130,73,.3)}
+.rank-num.r2{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(74,111,161,.2)}
+.rank-num.r3{background:var(--green-bg);color:var(--green);border:1px solid rgba(76,140,107,.2)}
 .result-card-main{min-width:0}
 .result-card-lot{font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
 .result-card-name{font-weight:700;font-size:.95rem;color:var(--text)}
@@ -115,8 +118,8 @@ input,select{font-family:inherit}
 .result-card-bid{font-size:1.3rem;font-weight:700;color:var(--navy)}
 .result-card-est{font-size:.7rem;color:var(--muted);margin-top:2px}
 .match-badge{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:700;margin-top:6px}
-.match-badge.gold{background:var(--amber-bg);border:1px solid rgba(217,119,6,.3);color:var(--amber)}
-.match-badge.purple{background:var(--blue-bg);border:1px solid rgba(37,99,235,.2);color:var(--blue)}
+.match-badge.gold{background:var(--amber-bg);border:1px solid rgba(169,130,73,.3);color:var(--amber)}
+.match-badge.purple{background:var(--blue-bg);border:1px solid rgba(74,111,161,.2);color:var(--blue)}
 .match-badge.blue{background:var(--grey-bg);border:1px solid var(--border);color:var(--grey)}
 .result-card-reasons{padding:0 16px 12px;display:flex;flex-wrap:wrap;gap:6px}
 .reason-tag{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 9px;font-size:.72rem;font-weight:600;color:var(--text)}
@@ -138,7 +141,7 @@ input,select{font-family:inherit}
 .ai-steps li.done::before{content:'✓';font-size:.75rem;color:var(--green)}
 .ai-steps li:not(.done)::before{content:'○';font-size:.75rem;color:var(--border)}
 
-.no-match{background:var(--amber-bg);border:1px solid rgba(217,119,6,.3);border-radius:10px;padding:28px 24px;text-align:center;display:none}
+.no-match{background:var(--amber-bg);border:1px solid rgba(169,130,73,.3);border-radius:10px;padding:28px 24px;text-align:center;display:none}
 .no-match.show{display:block}
 .no-match h3{font-size:1rem;font-weight:700;color:var(--amber);margin-bottom:6px}
 .no-match p{font-size:.8rem;color:var(--muted)}

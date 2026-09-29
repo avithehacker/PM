@@ -5,19 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Hammerly — Robo Call</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --sidebar-w:240px; --header-h:58px;
-  --navy:#1F4E79; --navy-dark:#163a5c; --navy-light:#2563a8;
-  --bg:#EEF2F7; --white:#ffffff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
-  --green:#16a34a; --green-bg:#dcfce7;
-  --blue:#2563eb; --blue-bg:#dbeafe;
-  --red:#dc2626; --red-bg:#fee2e2;
-  --amber:#d97706; --amber-bg:#fef3c7;
-  --grey:#6b7280; --grey-bg:#f3f4f6;
+  --navy:#3f7d73; --navy-dark:#336a61; --navy-light:#5b9086;
+  --bg:#f4f6f5; --white:#ffffff; --text:#2b3339; --muted:#7c8790; --border:#e6eae8;
+  --green:#4c8c6b; --green-bg:#e7f3ec;
+  --blue:#4a6fa1; --blue-bg:#e9eff8;
+  --red:#b3695f; --red-bg:#f7ece9;
+  --amber:#a98249; --amber-bg:#f7f0e3;
+  --grey:#7c8790; --grey-bg:#eef2f0;
 }
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
 a{text-decoration:none;color:inherit}
 button{cursor:pointer;font-family:inherit;border:none;outline:none}
 input,select,textarea{font-family:inherit}
@@ -35,7 +38,7 @@ input,select,textarea{font-family:inherit}
 .sb-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);font-size:11px}
 
 /* HEADER */
-#header{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--header-h);background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1);display:flex;align-items:center;padding:0 24px;z-index:100;gap:16px}
+#header{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--header-h);background:#fff;box-shadow:0 1px 4px rgba(43,51,57,.1);display:flex;align-items:center;padding:0 24px;z-index:100;gap:16px}
 .header-title{font-size:15px;font-weight:600;color:var(--navy);flex:1}
 .header-badge{background:var(--blue-bg);color:var(--blue);padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600}
 
@@ -51,7 +54,7 @@ input,select,textarea{font-family:inherit}
 .live-dur{margin-left:auto;font-size:17px;font-weight:700;letter-spacing:.5px}
 
 /* PAGE HERO */
-.page-hero{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:24px 28px;margin-bottom:22px}
+.page-hero{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(43,51,57,.07);padding:24px 28px;margin-bottom:22px}
 .page-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--blue-bg);color:var(--blue);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:12px}
 .page-title{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px}
 .page-desc{color:var(--muted);font-size:13px;max-width:560px;line-height:1.65;margin-bottom:18px}
@@ -64,7 +67,7 @@ input,select,textarea{font-family:inherit}
 @media(max-width:900px){.dashboard{grid-template-columns:1fr}}
 
 /* CARD */
-.card{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:20px}
+.card{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(43,51,57,.07);padding:20px}
 .card-title{font-size:13.5px;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:7px}
 
 /* FORM ELEMENTS */
@@ -78,12 +81,12 @@ input,select,textarea{font-family:inherit}
 
 /* CALL BUTTON */
 .call-btn{width:100%;padding:11px;background:var(--green);color:#fff;border-radius:6px;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.call-btn:hover{background:#15803d}
+.call-btn:hover{background:#3f7359}
 .call-btn.calling{background:var(--red);animation:callPulse 1.2s infinite}
 @keyframes callPulse{0%,100%{opacity:1}50%{opacity:.75}}
 
 /* LOG PANEL */
-.log-panel{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);overflow:hidden;display:flex;flex-direction:column}
+.log-panel{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(43,51,57,.07);overflow:hidden;display:flex;flex-direction:column}
 .log-hdr{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .log-title{font-size:14px;font-weight:700;color:var(--text)}
 .log-filter{display:flex;gap:6px}
@@ -110,7 +113,7 @@ input,select,textarea{font-family:inherit}
 .log-dur{font-size:10px;color:var(--muted)}
 
 /* FEATURES SECTION */
-.features-section{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.07);padding:20px}
+.features-section{background:var(--white);border-radius:10px;box-shadow:0 1px 3px rgba(43,51,57,.07);padding:20px}
 .section-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:16px}
 .feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 .feat-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:18px}
@@ -222,7 +225,7 @@ input,select,textarea{font-family:inherit}
 
     <!-- Log Panel -->
     <div class="log-panel">
-      <div id="liveCallBanner" style="display:none;padding:10px 20px;background:var(--green-bg);border-bottom:1px solid #b7dfc5;align-items:center;gap:10px;font-size:12px;font-weight:600;color:var(--green)">
+      <div id="liveCallBanner" style="display:none;padding:10px 20px;background:var(--green-bg);border-bottom:1px solid #cfe3d7;align-items:center;gap:10px;font-size:12px;font-weight:600;color:var(--green)">
       </div>
       <div class="log-hdr">
         <div class="log-title"><i class="bi bi-journal-text" style="color:var(--navy);margin-right:6px"></i>Call Log</div>

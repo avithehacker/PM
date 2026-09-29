@@ -5,29 +5,32 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Hammerly — Bulk Bidding</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --sidebar-w:240px; --header-h:58px;
-  --navy:#1F4E79; --navy-dark:#163a5c; --navy-light:#2563a8;
-  --bg:#EEF2F7; --white:#ffffff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0;
-  --green:#16a34a; --green-bg:#dcfce7;
-  --blue:#2563eb; --blue-bg:#dbeafe;
-  --red:#dc2626; --red-bg:#fee2e2;
-  --amber:#d97706; --amber-bg:#fef3c7;
-  --grey:#6b7280; --grey-bg:#f3f4f6;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.07);
-  --shadow-md:0 4px 14px rgba(0,0,0,.12);
-  --shadow-lg:0 8px 30px rgba(0,0,0,.16);
-  --r:6px; --rm:10px;
+  --navy:#3f7d73; --navy-dark:#336a61; --navy-light:#5b9086;
+  --bg:#f4f6f5; --white:#ffffff; --text:#2b3339; --muted:#7c8790; --border:#e6eae8;
+  --green:#4c8c6b; --green-bg:#e7f3ec;
+  --blue:#4a6fa1; --blue-bg:#e9eff8;
+  --red:#b3695f; --red-bg:#f7ece9;
+  --amber:#a98249; --amber-bg:#f7f0e3;
+  --grey:#7c8790; --grey-bg:#eef2f0;
+  --shadow-sm:0 1px 3px rgba(43,51,57,.06);
+  --shadow-md:0 6px 20px rgba(43,51,57,.08);
+  --shadow-lg:0 12px 32px rgba(43,51,57,.10);
+  --r:9px; --rm:10px;
 }
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
-button{cursor:pointer;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
-input,select{font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
+button{cursor:pointer;font-family:'Inter',system-ui,-apple-system,sans-serif}
+input,select{font-family:'Inter',system-ui,-apple-system,sans-serif}
 a{text-decoration:none;color:inherit}
 
 /* ══ HEADER ══ */
-.hdr{position:sticky;top:0;z-index:300;background:var(--white);height:var(--header-h);display:flex;align-items:center;padding:0 24px;gap:16px;border-bottom:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.hdr{position:sticky;top:0;z-index:300;background:var(--white);height:var(--header-h);display:flex;align-items:center;padding:0 24px;gap:16px;border-bottom:1px solid var(--border);box-shadow:0 1px 4px rgba(43,51,57,.05)}
 .hdr-logo{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:.3px;white-space:nowrap}
 .hdr-logo-icon{width:32px;height:32px;background:var(--navy);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;font-weight:800}
 .hdr-divider{width:1px;height:28px;background:var(--border)}
@@ -67,7 +70,7 @@ select.filter-select:focus{border-color:var(--navy)}
 
 /* Auction Card */
 .auction-card{background:var(--white);border:1px solid var(--border);border-radius:var(--rm);overflow:hidden;transition:box-shadow .2s,transform .2s;cursor:pointer;box-shadow:var(--shadow-sm)}
-.auction-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:#cbd5e1}
+.auction-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:#d5dbd8}
 .ac-header{padding:14px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px}
 .ac-bank-logo{width:44px;height:44px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;color:var(--navy)}
 .ac-info{flex:1;min-width:0}
@@ -161,8 +164,8 @@ select.filter-select:focus{border-color:var(--navy)}
 /* buttons */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--r);border:none;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
 .btn-blue{background:var(--navy);color:#fff}.btn-blue:hover{background:var(--navy-dark)}
-.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#15803d}
-.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#b91c1c}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#3f7359}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#96564d}
 .btn-ghost{background:var(--white);color:var(--muted);border:1px solid var(--border)}.btn-ghost:hover{border-color:var(--navy);color:var(--navy)}
 .btn-outline-blue{background:var(--white);color:var(--navy);border:1px solid var(--navy)}.btn-outline-blue:hover{background:var(--blue-bg)}
 .btn-sm{padding:5px 10px;font-size:12px}
@@ -188,7 +191,7 @@ select.filter-select:focus{border-color:var(--navy)}
 /* Right: Group detail */
 .mybids-detail{display:flex;flex-direction:column;overflow:hidden}
 .mbd-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted)}
-.mbd-empty-icon{font-size:48px;margin-bottom:12px;color:#cbd5e1}
+.mbd-empty-icon{font-size:48px;margin-bottom:12px;color:#d5dbd8}
 .mbd-empty-txt{font-size:15px;font-weight:500}
 .mbd-header{background:var(--white);border-bottom:1px solid var(--border);padding:16px 22px;display:flex;align-items:center;gap:14px;flex-shrink:0}
 .mbd-group-name{font-size:18px;font-weight:700;color:var(--navy)}
@@ -200,13 +203,13 @@ select.filter-select:focus{border-color:var(--navy)}
 .bulk-ctrl{background:var(--navy);padding:10px 22px;display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap}
 .bulk-ctrl-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.55)}
 .bulk-amount-ctrl{display:flex;align-items:center;border:2px solid rgba(255,255,255,.4);border-radius:var(--r);overflow:hidden;background:#fff}
-.bac-btn{background:#e2e8f0;border:none;width:40px;height:42px;font-size:22px;font-weight:700;color:var(--text);transition:background .1s}
-.bac-btn:hover{background:#cbd5e1}
+.bac-btn{background:#e6eae8;border:none;width:40px;height:42px;font-size:22px;font-weight:700;color:var(--text);transition:background .1s}
+.bac-btn:hover{background:#d5dbd8}
 .bac-val{padding:0 16px;font-size:22px;font-weight:700;color:var(--text);background:#fff;border-left:1px solid var(--border);border-right:1px solid var(--border);height:42px;display:flex;align-items:center;min-width:80px;justify-content:center}
 .bulk-up-btn{height:42px;padding:0 16px;background:var(--green);border:1px solid rgba(255,255,255,.3);border-radius:var(--r);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
-.bulk-up-btn:hover{background:#15803d;transform:translateY(-1px);box-shadow:0 4px 12px rgba(22,163,74,.4)}
+.bulk-up-btn:hover{background:#3f7359;transform:translateY(-1px);box-shadow:0 4px 12px rgba(76,140,107,.4)}
 .bulk-dn-btn{height:42px;padding:0 16px;background:var(--red);border:1px solid rgba(255,255,255,.3);border-radius:var(--r);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
-.bulk-dn-btn:hover{background:#b91c1c;transform:translateY(-1px);box-shadow:0 4px 12px rgba(220,38,38,.4)}
+.bulk-dn-btn:hover{background:#96564d;transform:translateY(-1px);box-shadow:0 4px 12px rgba(179,105,95,.4)}
 .bulk-sep{width:1px;height:32px;background:rgba(255,255,255,.2)}
 .place-bulk-btn{height:42px;padding:0 24px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.5);border-radius:var(--r);color:#fff;font-size:14px;font-weight:700;letter-spacing:.4px;cursor:pointer;transition:all .15s;text-transform:uppercase;margin-left:auto}
 .place-bulk-btn:hover{background:rgba(255,255,255,.25);transform:translateY(-1px)}
@@ -215,7 +218,7 @@ select.filter-select:focus{border-color:var(--navy)}
 /* Vehicle rows in detail */
 .mbd-vehicles{flex:1;overflow-y:auto;padding:16px 22px;display:flex;flex-direction:column;gap:10px}
 .mbd-vrow{background:var(--white);border:1px solid var(--border);border-radius:var(--rm);overflow:hidden;display:flex;gap:0;transition:border-color .2s;box-shadow:var(--shadow-sm)}
-.mbd-vrow.locked-row{background:var(--bg);border-color:#cbd5e1}
+.mbd-vrow.locked-row{background:var(--bg);border-color:#d5dbd8}
 .mbd-vrow-img{width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0}
 .mbd-vrow-body{flex:1;padding:10px 14px;min-width:0;border-left:1px solid var(--border)}
 .mbd-vrow-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
@@ -233,7 +236,7 @@ select.filter-select:focus{border-color:var(--navy)}
 /* placed badge */
 .placed-badge{display:inline-flex;align-items:center;gap:4px;background:var(--green-bg);color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px}
 /* ══ MODALS ══ */
-.modal-ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-ov{position:fixed;inset:0;z-index:500;background:rgba(43,51,57,.35);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
 .modal-ov.open{opacity:1;pointer-events:all}
 .modal{background:#fff;border-radius:var(--rm);width:500px;max-width:calc(100vw - 32px);max-height:86vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);transform:translateY(10px);transition:transform .2s}
 .modal-ov.open .modal{transform:translateY(0)}
@@ -244,7 +247,7 @@ select.filter-select:focus{border-color:var(--navy)}
 .modal-body{padding:18px;overflow-y:auto;flex:1}
 .modal-footer{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
 .form-label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text);margin-bottom:5px}
-.form-input{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;font-family:'Segoe UI',system-ui,sans-serif;outline:none;transition:border-color .15s}
+.form-input{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;font-family:'Inter',system-ui,sans-serif;outline:none;transition:border-color .15s}
 .form-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(31,78,121,.08)}
 /* Confirm list */
 .confirm-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:var(--r);padding:9px 12px;border-left:3px solid var(--navy);margin-bottom:7px}
@@ -266,7 +269,7 @@ select.filter-select:focus{border-color:var(--navy)}
 .toast-msg{font-size:12px;font-weight:500;color:var(--text);line-height:1.4;flex:1}
 /* ══ MISC ══ */
 .empty-g{grid-column:1/-1;padding:48px 20px;text-align:center;color:var(--muted)}
-.empty-g-icon{font-size:44px;margin-bottom:10px;color:#cbd5e1}
+.empty-g-icon{font-size:44px;margin-bottom:10px;color:#d5dbd8}
 .empty-g-txt{font-size:14px;font-weight:500}
 @media(max-width:700px){
   .mybids-layout{grid-template-columns:1fr;display:flex;flex-direction:column}
@@ -542,7 +545,7 @@ function goScreen(id, tabEl) {
 // ─────────────────────────────────────────────
 function renderListings() {
   const grid = document.getElementById('listingsGrid');
-  const cats = {'Cars':'#dbeafe','SUVs':'#dcfce7','Bikes':'#fef3c7','Trucks':'#fce7f3','Scooters':'#ede9fe'};
+  const cats = {'Cars':'#e9eff8','SUVs':'#e7f3ec','Bikes':'#f7f0e3','Trucks':'#fce7f3','Scooters':'#ede9fe'};
   grid.innerHTML = AUCTIONS.map(a => `
   <div class="auction-card" onclick="openAuction('${a.id}')">
     <div class="ac-header">
@@ -676,7 +679,7 @@ function buildVehicleCard(v) {
       </div>
       <div class="vc2-actions">
         ${!inGrp
-          ? `<select style="flex:1;padding:5px 24px 5px 10px;border-radius:6px;border:1px solid ${hasGroups?'var(--navy)':'var(--border)'};font-family:'Segoe UI',sans-serif;font-size:12px;font-weight:500;color:${hasGroups?'var(--navy)':'var(--muted)'};background:${hasGroups?'var(--blue-bg)':'var(--bg)'};cursor:pointer;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5'%3E%3Cpath d='M0 0l4.5 5L9 0z' fill='%231F4E79'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 8px center;" onchange="addToGroup('${v.id}',this.value,this)" ${!hasGroups?'disabled':''}>
+          ? `<select style="flex:1;padding:5px 24px 5px 10px;border-radius:6px;border:1px solid ${hasGroups?'var(--navy)':'var(--border)'};font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:${hasGroups?'var(--navy)':'var(--muted)'};background:${hasGroups?'var(--blue-bg)':'var(--bg)'};cursor:pointer;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5'%3E%3Cpath d='M0 0l4.5 5L9 0z' fill='%233f7d73'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 8px center;" onchange="addToGroup('${v.id}',this.value,this)" ${!hasGroups?'disabled':''}>
               <option value="">+ Add to Group</option>
               ${Object.keys(groups).map(gid=>`<option value="${gid}">${groups[gid].name}</option>`).join('')}
             </select>`
@@ -804,7 +807,7 @@ function renderS3() {
   // Sidebar
   const sb = document.getElementById('mbsSidebar');
   if (!gids.length) {
-    sb.innerHTML = '<div style="padding:32px 16px;text-align:center;color:var(--muted)"><div style="margin-bottom:8px;font-size:40px;color:#cbd5e1"><i class="bi bi-collection"></i></div><div style="font-size:13px;font-weight:500">No groups yet</div></div>';
+    sb.innerHTML = '<div style="padding:32px 16px;text-align:center;color:var(--muted)"><div style="margin-bottom:8px;font-size:40px;color:#d5dbd8"><i class="bi bi-collection"></i></div><div style="font-size:13px;font-weight:500">No groups yet</div></div>';
   } else {
     sb.innerHTML = gids.map(gid => {
       const g = groups[gid];
@@ -880,7 +883,7 @@ function renderGroupDetail(gid) {
 
     <div class="mbd-vehicles" id="mbd-vehicles-${gid}">
       ${!vids.length
-        ? `<div style="padding:40px;text-align:center;color:var(--muted)"><div style="margin-bottom:10px;font-size:40px;color:#cbd5e1"><i class="bi bi-car-front"></i></div><div style="font-size:14px;font-weight:500">No vehicles in this group yet</div><button class="btn btn-outline-blue btn-sm" style="margin-top:12px" onclick="goScreen('s2',document.getElementById('tab-s2'))"><i class="bi bi-arrow-left"></i> Browse Auction Listings</button></div>`
+        ? `<div style="padding:40px;text-align:center;color:var(--muted)"><div style="margin-bottom:10px;font-size:40px;color:#d5dbd8"><i class="bi bi-car-front"></i></div><div style="font-size:14px;font-weight:500">No vehicles in this group yet</div><button class="btn btn-outline-blue btn-sm" style="margin-top:12px" onclick="goScreen('s2',document.getElementById('tab-s2'))"><i class="bi bi-arrow-left"></i> Browse Auction Listings</button></div>`
         : vids.map(vid => buildMbdRow(vid, locked)).join('')
       }
     </div>`;
